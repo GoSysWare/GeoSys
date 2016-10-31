@@ -1,0 +1,15 @@
+
+
+
+geoCore  控制器的核心块功能   C++
+geoDB     geoSys的实时历史数据库   C++ 
+geoDraw  geoSys的画面组态工具    QT
+geoMaga  工程组态工具              QT/C#      
+
+geoView   客户端运行界面       QT
+geoWeb    Web端运行界面，包括后端，这个需要一套Draw出来的文件，可以支持两种运行模式   Java
+geoGate   网关，包括各种通信协议内外通信   QT  C++
+geoLogic  逻辑组态软件     QT
+geoSim     数据仿真系统    C++
+geoApp    运行在手机端的HMI客户端 支持 android ios
+geoRept    报表系统        java
