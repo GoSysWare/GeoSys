@@ -71,3 +71,14 @@ GEO_UITLS_API geoTChar * GEO_CALL geo_timestamp(const geoTimeStamp& time_value,
 	date_and_time[date_and_timelen - 1] = '\0';
 	return &date_and_time[10 + (return_pointer_to_first_digit != 0)];
 }
+#if defined (_WIN32)
+GEO_UITLS_API time_t GEO_CALL FileTimeToUnixTime(FILETIME & ft)
+{
+	ULARGE_INTEGER ull;
+
+	ull.LowPart = ft.dwLowDateTime;
+	ull.HighPart = ft.dwHighDateTime;
+
+	return ull.QuadPart / 10000000ULL - 11644473600ULL;
+}
+#endif

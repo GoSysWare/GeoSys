@@ -129,7 +129,7 @@
     <ClCompile Include="preCompile.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="geoCompile.h" />
+    <ClInclude Include="preCompile.h" />
     <ClInclude Include="geoRtdb.h" />
     <ClInclude Include="geoRTDBMacro.h" />
     <ClInclude Include="geoTagEvent.h" />

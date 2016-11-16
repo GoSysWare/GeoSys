@@ -120,9 +120,9 @@ private:
 #endif 
 
 	/// Disallow these operation.
-	GeoA2W(void);
-	GeoA2W(GeoA2W &);
-	GeoA2W operator= (GeoA2W &);
+	GeoA2W(void) = delete;
+	GeoA2W(GeoA2W &) = delete;
+	GeoA2W operator= (GeoA2W &) = delete;
 };
 
 

@@ -17,6 +17,7 @@
 					Error
 					输入输出
 					字符处理
+					GetOpt
 *       
 *  @author   George.Kuo                                                      *
 *  @email    guooujie@163.com												 *
@@ -60,7 +61,7 @@ extern GEO_OSVERSIONINFO  win32_versioninfo_;
 extern HINSTANCE win32_resource_module_;
 #endif // _WIN32
 
-GEO_UITLS_API extern	std::ostream * g_log_output;
+ extern	std::ostream * g_log_output;
 
 
 GEO_UITLS_API geoUInt32 geo_log2(geoUInt32 num);

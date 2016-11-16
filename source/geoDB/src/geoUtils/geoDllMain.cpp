@@ -7,6 +7,7 @@
 #include<Windows.h>
 GEO_OSVERSIONINFO  win32_versioninfo_;
 HINSTANCE win32_resource_module_;
+#endif
 std::ostream * g_log_output;
 
 #ifdef __GNUC__
@@ -18,7 +19,7 @@ static void unit_lib(void) __attribute__((destructor));
 
 static void init_lib(void)
 {
-	g_log_output = new std::ofstream("geologfile.txt"); 
+	g_log_output = new std::ofstream(GEOSYS_DEFAULT_LOG_NAME);
 	GEO_LOG->msg_ostream(g_log_output, 1);    
 	GEO_LOG->open();
 }
@@ -26,7 +27,8 @@ static void unit_lib(void)
 {
 
 }
-
+//
+#ifdef _WIN32
 BOOL WINAPI DllMain(
 	HINSTANCE hinstDLL,  // handle to the DLL module
 	DWORD fdwReason,     // reason for calling function

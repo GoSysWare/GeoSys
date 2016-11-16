@@ -11,7 +11,7 @@ GeoDll::GeoDll()
 	: mOpenMode(0),
 	mHandle(nullptr)
 {
-	memset(mDllName, 0, _MAX_PATH);
+	memset(mDllName, 0, PATH_MAX);
 
 }
 
@@ -19,7 +19,7 @@ GeoDll::GeoDll(const geoTChar  *dll_name,int open_mode)
 	: mOpenMode(open_mode),
 	mHandle(nullptr)
 {
-	memset(mDllName, 0, _MAX_PATH);
+	memset(mDllName, 0, PATH_MAX);
 
 }
 

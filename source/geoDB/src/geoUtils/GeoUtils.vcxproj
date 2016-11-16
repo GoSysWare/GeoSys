@@ -124,6 +124,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="geoAssert.cpp" />
     <ClCompile Include="geoCRC32.cpp" />
     <ClCompile Include="geoCRCccitt.cpp" />
     <ClCompile Include="geoDll.cpp" />
@@ -131,6 +132,7 @@
     <ClCompile Include="geoErrno.cpp" />
     <ClCompile Include="geoError.cpp" />
     <ClCompile Include="geoEvent.cpp" />
+    <ClCompile Include="geoGetOpt.cpp" />
     <ClCompile Include="geoGuid.cpp" />
     <ClCompile Include="geoLogMsg.cpp" />
     <ClCompile Include="geoMutex.cpp" />
@@ -148,11 +150,13 @@
     <ClCompile Include="preCompile.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="geoAssert.h" />
     <ClInclude Include="geoCRC.h" />
     <ClInclude Include="geoDll.h" />
     <ClInclude Include="geoErrno.h" />
     <ClInclude Include="geoError.h" />
     <ClInclude Include="geoEvent.h" />
+    <ClInclude Include="geoGetOpt.h" />
     <ClInclude Include="geoGuid.h" />
     <ClInclude Include="geoLogMsg.h" />
     <ClInclude Include="geoMutex.h" />

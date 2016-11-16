@@ -60,7 +60,7 @@ private:
 	sig_atomic_t mRefcount;
 	SHLIB_HANDLE mHandle;
 	int mOpenMode;
-	geoTChar mDllName[_MAX_PATH];
+	geoTChar mDllName[PATH_MAX];
 	static sig_atomic_t mOpenCalled;
 	std::mutex mMutex;
 };

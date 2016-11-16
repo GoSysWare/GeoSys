@@ -81,6 +81,12 @@
     <ClCompile Include="geoStringMap.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="geoAssert.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="geoGetOpt.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="geoThread.h">
@@ -144,6 +150,12 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="geoStringMap.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="geoAssert.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="geoGetOpt.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

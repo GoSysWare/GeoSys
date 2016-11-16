@@ -1267,9 +1267,9 @@ GeoLog::set(const char *file,
 
  int Log_Msg_NT_Event_Log::open(const geoTChar *logger_key)
  {
-	 geoTChar msg_file[_MAX_PATH];
+	 geoTChar msg_file[PATH_MAX];
 
-	 if (!GEO_GetModuleFileName(win32_resource_module_,msg_file,_MAX_PATH))
+	 if (!GEO_GetModuleFileName(win32_resource_module_,msg_file, PATH_MAX))
 		 return -1;
 
 	 DWORD msg_file_length = static_cast<DWORD> ((geo_strlen(msg_file) + 1) * sizeof(geoTChar));
@@ -1278,10 +1278,10 @@ GeoLog::set(const char *file,
 
 	 // Information is stored in the registry at a location based on the
 	 // program name.
-	 geoTChar reg_key[_MAX_PATH];
+	 geoTChar reg_key[PATH_MAX];
 	 geo_strcpy(reg_key,GEO_TEXT("SYSTEM\\CurrentControlSet\\Services\\EventLog\\Application\\"));
 	 size_t reg_key_length = geo_strlen(reg_key);
-	 geo_strncat(reg_key,event_source_name,_MAX_PATH - reg_key_length);
+	 geo_strncat(reg_key,event_source_name, PATH_MAX - reg_key_length);
 	 HKEY hkey;
 	 GEO_RegCreateKey(HKEY_LOCAL_MACHINE,reg_key,&hkey);
 

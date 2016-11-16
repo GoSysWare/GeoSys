@@ -33,8 +33,8 @@
 #include "geoVersion.h"
 
 
-#define  GEOSYS_DEFAULT_NAME GEO_TEXT("GeoSysWare" )
 
+#define  GEOSYS_DEFAULT_LOG_NAME GEO_TEXT("geoLogFile.txt")
 
 //根据__cplusplus来处理是否支持C++11 C++14 
 //注：VS2015的__cplusplus依然是199711L，不知道为啥。
@@ -127,6 +127,14 @@ do{	\
 # define GEO_TEXT(STRING) STRING
 #endif
 
+// 
+#ifdef CPPUNIT_ENABLE_NAKED_ASSERT
+#include <cppunit/TestAssert.h>
+#ifdef GEO_ASSERT
+#undef  	GEO_ASSERT
+#define  GEO_ASSERT   CPPUNIT_ASSERT 
+#endif
+#endif // CPPUNIT_ENABLE_NAKED_ASSERT=1
 
 
 //不同平台下的环境变量与文件前后缀
@@ -146,6 +154,8 @@ do{	\
 #  define GEO_DLL_SUFFIX GEO_TEXT (".so")
 #  define GEO_DLL_PREFIX GEO_TEXT ("lib")
 #endif 
+
+
 
 //定义无用arg参数宏
 #if !defined (GEO_UNUSED_ARG)
@@ -188,11 +198,127 @@ inline void GEO_UNUSED_ARG(const T& GEO_UNUSED_ID(t)) { }
 
 
 
-#if !defined (_WIN32)
+#if !defined (_WIN32)			//linux
 typedef void * HANDLE
-#else
+typedef SOCKET  HANDLE
+#define INVALID_HANDLE_VALUE -1
+
+#define LPSECURITY_ATTRIBUTES int
+typedef struct stat Geo_stat;
+#define GEO_STAT_FUNC_NAME ::stat
+#define GEO_WSTAT_FUNC_NAME GEO_STAT_FUNC_NAME
+#else						// windows
+typedef unsigned short mode_t;
 typedef int pid_t;
+
+#    if !defined (S_IRWXU)
+#      define S_IRWXU 00700         /* read, write, execute: owner. */
+#    endif /* !S_IRWXU */
+#    if !defined (S_IRUSR)
+#      define S_IRUSR 00400         /* read permission: owner. */
+#    endif /* !S_IRUSR */
+#    if !defined (S_IWUSR)
+#      define S_IWUSR 00200         /* write permission: owner. */
+#    endif /* !S_IWUSR */
+#    if !defined (S_IXUSR)
+#      define S_IXUSR 00100         /* execute permission: owner. */
+#    endif /* !S_IXUSR */
+
+#  if !defined (S_IRWXG)
+#    define S_IRWXG 00070
+#  endif /* S_IRWXG */
+#  if !defined (S_IRGRP)
+#    define S_IRGRP 00040
+#  endif /* S_IRGRP */
+#  if !defined (S_IWGRP)
+#    define S_IWGRP 00020
+#  endif /* S_IWGRP */
+#  if !defined (S_IXGRP)
+#    define S_IXGRP 00010
+#  endif /* S_IXGRP */
+#  if !defined (S_IRWXO)
+#    define S_IRWXO 00007
+#  endif /* S_IRWXO */
+#  if !defined (S_IROTH)
+#    define S_IROTH 00004
+#  endif /* S_IROTH */
+#  if !defined (S_IWOTH)
+#    define S_IWOTH 00002
+#  endif /* S_IWOTH */
+#  if !defined (S_IXOTH)
+#    define S_IXOTH 00001
+#  endif /* S_IXOTH */
+
+#if !defined (S_IFLNK) 
+#define S_IFLNK 0200000
 #endif 
+#if !defined (S_ISLNK)
+# if defined (S_IFLNK)
+#   define S_ISLNK(mode) (((mode)&S_IFLNK) == S_IFLNK)
+# else
+#   define S_ISLNK(mode) 0
+# endif /* S_IFLNK */
+#endif /* S_ISLNK */
+#if !defined (S_ISDIR)
+# define S_ISDIR(mode)   ((mode&S_IFMT) == S_IFDIR)
+#endif
+
+
+
+#endif 
+
+
+#if !defined (DEFAULT_FILE_PERMS)
+#  define DEFAULT_FILE_PERMS (FILE_SHARE_READ | FILE_SHARE_WRITE |  FILE_SHARE_DELETE)
+#endif 
+
+//64位windows系统下
+#ifdef _WIN32
+#if defined (_WIN64) || defined (WIN64)
+#  ifndef _FILE_OFFSET_BITS
+#    define _FILE_OFFSET_BITS 64
+#  endif  /* !_FILE_OFFSET_BITS */
+
+typedef __int64 off_t
+typedef SSIZE_T ssize_t;
+
+#    define GEO_LOW_PART(X) static_cast<DWORD>(X)
+LONG inline GEO_High_Part(off_t value)
+{
+	LARGE_INTEGER new_value;
+	new_value.QuadPart = value;
+	return new_value.HighPart;
+}
+#    define GEO_HIGH_PART(X) GEO_High_Part(X)
+
+
+LONGLONG inline GEO_Combine_Parts(LONG high, DWORD low)
+{
+	LARGE_INTEGER value;
+	value.LowPart = low;    // DWORD
+	value.HighPart = high;  // LONG
+	return value.QuadPart;
+}
+#    define GEO_COMBINE_PARTS(X,Y) GEO_Combine_Parts(X,Y)
+
+typedef struct __stat64 Geo_stat;
+#define GEO_STAT_FUNC_NAME ::_stat64
+#define GEO_WSTAT_FUNC_NAME ::_wstat64
+#else
+
+#    define GEO_LOW_PART(X) X
+#    define GEO_HIGH_PART(X) 0
+#    define GEO_COMBINE_PARTS(X,Y) X
+typedef int ssize_t;
+
+typedef struct _stat Geo_stat;
+#     define GEO_STAT_FUNC_NAME ::_stat
+#     define GEO_WSTAT_FUNC_NAME ::_wstat
+#endif 
+
+#endif // _WIN32
+
+
 
 
 # define GEO_POW(X) (((X) == 0)?1:(X-=1,X|=X>>1,X|=X>>2,X|=X>>4,X|=X>>8,X|=X>>16,(++X)))
@@ -205,9 +331,36 @@ typedef int pid_t;
 # define GEO_CLR_BITS(WORD, BITS) (WORD &= ~(BITS))
 
 
-#ifndef _MAX_PATH
-#define _MAX_PATH    1024
-#endif
+//文件名长度
+#if !defined (NAME_MAX)
+#  if defined (MAXNAMLEN)
+#    define NAME_MAX MAXNAMLEN
+#  elif defined (MAXNAMELEN)
+#    define NAME_MAX MAXNAMELEN
+#  elif defined (FILENAME_MAX)
+#    define NAME_MAX FILENAME_MAX
+#  elif defined (_MAX_FNAME)
+#    define NAME_MAX _MAX_FNAME
+#  else /* _MAX_FNAME */
+#    define NAME_MAX 256
+#  endif /* MAXNAMLEN */
+#endif /* !NAME_MAX */
+
+//主机名长度
+#if !defined (HOST_NAME_MAX)
+#  define HOST_NAME_MAX 256
+#endif /* !HOST_NAME_MAX */
+
+//路径名长度
+#if !defined (PATH_MAX)
+#  if defined (_MAX_PATH)
+#    define PATH_MAX _MAX_PATH
+#  elif defined (MAX_PATH)
+#    define PATH_MAX MAX_PATH
+#  else /* !_MAX_PATH */
+#    define PATH_MAX 1024
+#  endif /* _MAX_PATH */
+#endif /* !PATH_MAX */
 
 # if !defined (MAXLOGMSGLEN)
 #   define MAXLOGMSGLEN (4 * 1024)

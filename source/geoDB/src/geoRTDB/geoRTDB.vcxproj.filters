@@ -38,9 +38,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="geoCompile.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="geoRTDBMacro.h">
       <Filter>头文件</Filter>
     </ClInclude>
@@ -60,6 +57,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="geoRtdb.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="preCompile.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

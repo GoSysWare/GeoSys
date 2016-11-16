@@ -9,7 +9,7 @@
 *																			 *
 *  此模块的运行要在linux，windows，vxworks系统下，所以全部要用c来实现
 *  还有socket通信则需要独立编写，不能利用任何第三方库和C++11语言特性，
-*  需要自己用原始的socket跨平台实现
+*  需要自己用原始的socket跨平台实现,也不用geoBasicType.h中的数据类型
 *
 *  @author   George.Kuo                                                      *
 *  @email    guooujie@163.com												 *

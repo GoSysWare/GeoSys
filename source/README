@@ -1,6 +1,4 @@
 
-
-
 geoCore  控制器的核心块功能   C++
 geoDB     geoSys的实时历史数据库   C++ 
 geoDraw  geoSys的画面组态工具    QT
@@ -13,3 +11,4 @@ geoLogic  逻辑组态软件     QT
 geoSim     数据仿真系统    C++
 geoApp    运行在手机端的HMI客户端 支持 android ios
 geoRept    报表系统        java
+geoSys     系统功能  包括系统故障诊断，系统对时，系统维护等功能

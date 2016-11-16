@@ -32,33 +32,52 @@
 #include"geoBasicType.h"
 
 
-#define geoQueryLevel_ALL	0xFFFF				// 查询结点下的所有内容，用于geoQueryArea
 
+
+#define TAG_DATA_FILENAME GEO_TEXT("rtdb_tag.gf")
+#define TAG_INFO_FILENAME GEO_TEXT("rtdbi_tag.gf")
+
+#define TAG_INFO_DEFAULT_AUTHOR  GEOSYS_AUTHOR
+#define TAG_INFO_DEFAULT_OEM	 GEOSYS_OEM
+
+//配置文件目录 "工作目录\config\rtdb\"
+#define TAG_DEFAULT_CONFIG_DIR     \
+	DIRECTORY_SEPARATOR_STR_A \
+	GEO_TEXT("config")	\
+	DIRECTORY_SEPARATOR_STR_A \
+	GEO_TEXT("rtdb")	\
+	DIRECTORY_SEPARATOR_STR_A
 
 #define TAG_NAME_SIZE   32
 #define TAG_DESC_SIZE   64
 #define TAG_DEVICE_NAME_SIZE   16
 #define TAG_DEVICE_ADDR_SIZE   128
 
+
+///标签最大容量20W
+#define TAG_MAX_CAPACITY   1000*100*2 
+///默认的标签容量4W
+#define TAG_DEFUALT_CAPACITY   1000*10*4
+
+#define TAG_AUTHOR_SIZE   32
+#define TAG_OEM_SIZE	64
+
 #include <pshpack1.h>
 
-///  数据记录定义
-typedef struct
+typedef struct __tag_RtdbInfo
 {
-	geoTime				Time;				// 时间戳
-	geoVariant			Value;				// 值
-	geoUInt8			Quality;			// 质量戳
-} geoData;
+	geoUInt32 Version;		//版本
+	geoUInt32 Capacity;		//容量
+	geoUInt32 ValidCount;	//有效个数
+	geoUInt32 CurrentIndex;
+	geoChar   Author[TAG_AUTHOR_SIZE];	//作者
+	geoChar	  OEM[TAG_OEM_SIZE];		//单位
+	geoUInt32  Check;					//校验
+} geoRtdbInfo;
 
-///	 数据记录列表
-typedef struct
-{
-	geoUInt32			DataCount;			// 数据记录个数
-	geoData*			DataList;			// 数据记录列表
-} geoDataList;
 
 ///	查询范围
-typedef struct
+typedef struct __tag_QueryArea
 {
 	geoUInt32			RootTagId;			// 查询的起始结点（包括它本身）
 	geoUInt16			QueryLevel;			// 查询的树深度，0查本身，geoQueryLevel_ALL查所有，1、2、3...查相关深度
@@ -78,7 +97,9 @@ typedef struct
 	geoUInt8		IsNode : 1;				/// 是否是结点
 	geoUInt8		Unused : 6;				/// 未使用
 }geoTagBaseFlag;
-typedef struct
+
+#define geoQueryLevel_ALL	0xFFFF				// 查询结点下的所有内容，用于geoQueryArea
+typedef struct __tag_geoTagBase
 {
 	//基本属性
 
@@ -90,7 +111,8 @@ typedef struct
 	geoVariant	InitValue;					///初始值
 	geoUInt64	SecurityArea;				/// 点的安全区
 	//内置属性
-	geoUInt32	Id;								/// 结点ID号
+	geoUInt8	NodeId;						///节点ID号
+	geoUInt32	Id;							/// 标签ID号
 	geoUInt32	ExtendId;					/// 点在扩充属性数组中的编号
 	geoTagBaseFlag Flag;						/// 状态标志
 	geoUInt32	ParentId;					/// 父结点
@@ -112,7 +134,7 @@ typedef struct
 	geoUInt32	Peroid;									///周期刷新时间
 	RTK_LIST_ENTRY	DeviceLink;							// 设备驱动链表，内部使用
 	RTK_LIST_ENTRY	RefreshLink;						// 刷新链表，内部使用
-}geoTagRecordBase;
+}geoTagBase;
 
 
 #include <poppack.h>

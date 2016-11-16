@@ -43,6 +43,16 @@ distribution.
 #define DEBUG
 #endif
 
+#	if defined(_MSC_VER) || defined(__BORLANDC__) || defined(__CODEGEARC__)
+#		ifdef LIB_TINYXML_EXPORTS
+#			define TINYXML_API      __declspec(dllexport)
+#		else
+#			define TINYXML_API      __declspec(dllimport)
+#		endif
+#	else
+#define TINYXML_API
+#	endif
+
 #ifdef TIXML_USE_STL
 	#include <string>
  	#include <iostream>
@@ -80,14 +90,21 @@ distribution.
 	#endif
 #endif	
 
-class TiXmlDocument;
-class TiXmlElement;
-class TiXmlComment;
-class TiXmlUnknown;
-class TiXmlAttribute;
-class TiXmlText;
-class TiXmlDeclaration;
-class TiXmlParsingData;
+class TINYXML_API TiXmlDocument;
+class TINYXML_API TiXmlElement;
+class TINYXML_API TiXmlComment;
+class TINYXML_API TiXmlUnknown;
+class TINYXML_API TiXmlAttribute;
+class TINYXML_API TiXmlText;
+class TINYXML_API TiXmlDeclaration;
+class TINYXML_API TiXmlParsingData;
+class TINYXML_API TiXmlNode;
+class TINYXML_API TiXmlCursor;
+class TINYXML_API TiXmlBase;
+class TINYXML_API TiXmlHandle;
+
+class TINYXML_API TiXmlPrinter;
+
 
 const int TIXML_MAJOR_VERSION = 2;
 const int TIXML_MINOR_VERSION = 6;

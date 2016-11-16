@@ -44,6 +44,15 @@ distribution.
 	#define TIXML_EXPLICIT
 #endif
 
+#	if defined(_MSC_VER) || defined(__BORLANDC__) || defined(__CODEGEARC__)
+#		ifdef LIB_TINYXML_EXPORTS
+#			define TINYXML_API      __declspec(dllexport)
+#		else
+#			define TINYXML_API      __declspec(dllimport)
+#		endif
+#	else
+#define TINYXML_API
+#	endif
 
 /*
    TiXmlString is an emulation of a subset of the std::string template.
@@ -52,7 +61,7 @@ distribution.
    The buffer allocation is made by a simplistic power of 2 like mechanism : if we increase
    a string and there's no more room, we allocate a buffer twice as big as we need.
 */
-class TiXmlString
+class TINYXML_API TiXmlString
 {
   public :
 	// The size type used

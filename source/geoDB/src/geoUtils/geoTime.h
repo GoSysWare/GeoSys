@@ -70,7 +70,9 @@ GEO_UITLS_API steady_clock::time_point   GEO_CALL geo_geotime_to_steadytime(geoT
 GEO_UITLS_API geoTChar * GEO_CALL geo_timestamp(const geoTimeStamp& time_value,
 	geoTChar date_and_time[],
 	size_t date_and_timelen,
-	bool return_pointer_to_first_digit DEFAULT_PARAM(false));
+	bool return_pointer_to_first_digit = false);
 
-
+#if defined (_WIN32)
+GEO_UITLS_API time_t GEO_CALL FileTimeToUnixTime(FILETIME & ft);
+#endif
 #endif

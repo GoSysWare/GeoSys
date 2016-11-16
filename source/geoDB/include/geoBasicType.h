@@ -60,26 +60,26 @@ typedef geoUInt64			geoTime;		//做系统运行时的实时处理时间
 typedef geoUInt64			geoTimeStamp;	//做数据信息里的时间戳
 
 
-typedef struct  __tag_GEO_Blob
+typedef struct  __tag_Blob
 {
 	geoUInt32	Length;
 	geoByte*	Data;
 } geoBlob;
 
 //带长度的ASCII c格式的字符串，做存储、通信用
-typedef struct  __tag_GEO_String
+typedef struct  __tag_String
 {
 	geoUInt32	Length;
 	geoChar*	Data;
 } geoString;
 //带长度的ASCII c格式的字符串，做存储、通信用
-typedef struct  __tag_GEO_AString
+typedef struct  __tag_AString
 {
 	geoUInt32	Length;
 	geoChar*	Data;
 } geoAString;
 //带长度的UNICODE c格式的字符串，做存储、通信用
-typedef struct  __tag_GEO_WString
+typedef struct  __tag_WString
 {
 	geoUInt32	Length;
 	geoWChar*	Data;
@@ -92,7 +92,7 @@ typedef std::string			geoStdString;	//C++格式的ASCII字符串，做函数调�
 typedef std::wstring		geoStdWString;	//C++格式的UNICODE字符串，做函数调用处理用
 
 											//带长度的ASCII c格式的字符串，做存储、通信用
-typedef struct  __tag_GEO_StringList
+typedef struct  __tag_StringList
 {
 	geoUInt32	Count;
 	geoStr*		List;
@@ -108,10 +108,15 @@ typedef char			geoTChar;			//ASCII字符
 typedef geoStdString geoStdTString;			//ASCII字符串
 #endif // __UNICODE
 
+typedef struct  __tag_APIStatusList
+{
+	geoUInt32		Count;
+	geoAPIStatus*	List;
+} geoAPIStatusList;
 
 
 
-typedef enum  __tag_GEO_VARTYPE : geoUInt8
+typedef enum  __tag_VARTYPE : geoUInt8
 {
 	vTypeEmpty = 0,
 	vTypeBool,
@@ -137,7 +142,7 @@ typedef enum  __tag_GEO_VARTYPE : geoUInt8
 }geoVarTypeEunm;
 
 
-typedef struct  __tag_GEO_Variant
+typedef struct  __tag_Variant
 {
 	geoVarTypeEunm		vType;
 	union
@@ -164,8 +169,27 @@ typedef struct  __tag_GEO_Variant
 	};
 }geoVariant;
 
+typedef struct  __tag_VariantList
+{
+	geoUInt32	ValueCount;
+	geoVariant*	ValueList;
+}geoVariantList;
 
 
+///  数据记录定义
+typedef struct __tag_Data
+{
+	geoTime				Time;				// 时间戳
+	geoVariant			Value;				// 值
+	geoUInt8			Quality;			// 质量戳
+} geoData;
+
+///	 数据记录列表
+typedef struct __tag_DataList
+{
+	geoUInt32			DataCount;			// 数据记录个数
+	geoData*			DataList;			// 数据记录列表
+} geoDataList;
 #include"poppack.h"
 
 #endif

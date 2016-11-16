@@ -5,8 +5,8 @@
 *  This file is part of GeoSys.                    *
 *                                                                            *
 *  @file     geoLogMsg.h                                                     *
-*  @brief    错误跟踪，输出跟踪，文件日志跟踪处理                                                     *
-*																			 *
+*  @brief    错误跟踪，输出跟踪，文件日志跟踪处理                              *
+*		参考ACE_Log_Msg																	 *
 *    
 *
 *  @author   George.Kuo                                                      *
@@ -45,6 +45,7 @@ struct GeoLogRecord;
 //如果不想启动log，注释本定义
 #define GEO_HAVE_TRACE 
 
+//全局默认日志跟随整个附加进程中的生命周期
 #define GEO_LOG GeoLog::instance()
 
 //只有定义了GEO_HAVE_DEBUG宏，整个系统跟踪信息才写入log
@@ -55,10 +56,10 @@ struct GeoLogRecord;
 #else
 #  define GEO_TRACE(X) \
 do {	\
-int __geo_error = GeoLog::last_error_adapter(); \
-GeoLog *geo = GeoLog::instance(); \
-geo->conditional_set(__FILE__, __LINE__, __geo_error); \
-geo->log X; \
+	int __geo_error = GeoLog::last_error_adapter(); \
+	GeoLog *geo = GeoLog::instance(); \
+	geo->conditional_set(__FILE__, __LINE__, __geo_error); \
+	geo->log X; \
 } while (0)
 
 #endif //  GEO_HAVE_TRACE
@@ -142,7 +143,13 @@ enum Log_Priority
 };
 
 
-
+/**
+* @class GeoLog
+*
+* @brief 本日志可以支持文件输出，OS系统日志输出，控制台输出
+*    
+*
+*/
 class GEO_UITLS_API GeoLog
 {
 public:
@@ -298,7 +305,7 @@ public:
 		int linenum_;
 
 		/// File where the error occurred.
-		char file_[_MAX_PATH + 1];
+		char file_[PATH_MAX + 1];
 
 		geoTChar* msg_; // Add one for NUL-terminator.
 

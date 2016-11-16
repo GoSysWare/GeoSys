@@ -20,7 +20,9 @@ must not be misrepresented as being the original software.
 3. This notice may not be removed or altered from any source
 distribution.
 */
-
+#ifndef LIB_TINYXML_EXPORTS
+#define LIB_TINYXML_EXPORTS
+#endif
 
 #ifndef TIXML_USE_STL
 
