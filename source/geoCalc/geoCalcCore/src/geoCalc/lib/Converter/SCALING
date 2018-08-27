@@ -1,0 +1,15 @@
+static void run_SCALING(void *p)
+{	
+	fb_t *pb = p;
+	pb->d[3].v.f = pb->d[0].v.f * (pb->d[1].v.f - pb->d[2].v.f) + pb->d[2].v.f ;
+}
+
+static fb_t fb_SCALING = {
+	"SCALING", 3, 1, 0, 0, run_SCALING, 
+	{
+		"IN", T_REAL, 0,
+		"MAX", T_REAL, 0,
+		"MIN", T_REAL, 0,
+		"OUT", T_REAL, 0
+	}	
+};

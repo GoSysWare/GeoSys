@@ -1,0 +1,13 @@
+static void run_LR2DT(void *p)
+{	
+	fb_t *pb = p;
+	pb->d[1].v.tm = (Time)(pb->d[0].v.fl); 
+}
+
+static fb_t fb_LR2DT = {
+	"LR2DT", 1, 1, 0, 0, run_LR2DT, 
+	{
+		"IN", T_LREAL, 0,
+		"OUT", T_TIME, 0
+	}
+};

@@ -1,0 +1,14 @@
+static void run_MOVE_LREAL(void *p)
+{	
+	fb_t *pb = p;
+	pb->d[1].v.fl = pb->d[0].v.fl; 
+}
+
+static fb_t fb_MOVE_LREAL = {
+	"MOVE_LREAL", 1, 1, 0, 0, run_MOVE_LREAL, 
+	{
+		"IN", T_LREAL, 0,
+		"OUT", T_LREAL, 0,
+	}
+};
+

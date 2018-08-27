@@ -1,0 +1,25 @@
+static void run_POLYNOM(void *p)
+{	
+	fb_t *pb = p;
+
+	pb->d[7].v.f = pb->d[1].v.f
+				+ pb->d[2].v.f*pb->d[0].v.f
+				+ pb->d[3].v.f*pb->d[0].v.f*pb->d[0].v.f 
+				+ pb->d[4].v.f*pb->d[0].v.f*pb->d[0].v.f*pb->d[0].v.f
+				+ pb->d[5].v.f*pb->d[0].v.f*pb->d[0].v.f*pb->d[0].v.f*pb->d[0].v.f 
+				+ pb->d[6].v.f*pb->d[0].v.f*pb->d[0].v.f*pb->d[0].v.f*pb->d[0].v.f*pb->d[0].v.f;
+}
+
+static fb_t fb_POLYNOM = {
+	"POLYNOM", 7, 1, 0, 0, run_POLYNOM, 
+	{
+		"IN", T_REAL, 0,
+		"C0", T_REAL, 0,
+		"C1", T_REAL, 0,
+		"C2", T_REAL, 0,
+		"C3", T_REAL, 0,
+		"C4", T_REAL, 0,
+		"C5", T_REAL, 0,
+		"OUT", T_REAL, 0,
+	}	
+};

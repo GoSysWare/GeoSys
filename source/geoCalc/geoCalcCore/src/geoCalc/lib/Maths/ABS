@@ -1,0 +1,14 @@
+static void run_ABS(void *p)
+{	
+	fb_t *pb = p;
+
+	pb->d[1].v.f = (Real) fabs( pb->d[0].v.f ); 
+}
+
+static fb_t fb_ABS = {
+	"ABS", 1, 1, 0, 0, run_ABS, 
+	{
+		"IN", T_REAL, 0,
+		"OUT", T_BOOL, 0,
+	}
+};

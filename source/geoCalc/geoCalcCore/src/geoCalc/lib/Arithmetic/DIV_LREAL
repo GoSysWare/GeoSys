@@ -1,0 +1,16 @@
+static void run_DIV_LREAL(void *p)
+{	
+	fb_t *pb = p;
+	if(pb->d[1].v.fl != 0){
+		pb->d[2].v.fl = pb->d[0].v.fl / pb->d[1].v.fl; 
+	}
+}
+
+static fb_t fb_DIV_LREAL = {
+	"DIV_LREAL", 2, 1, 0, 0, run_DIV_LREAL, 
+	{
+		"IN1", T_LREAL, 0,
+		"IN2", T_LREAL, 0,
+		"OUT", T_LREAL, 0
+	}
+};

@@ -1,0 +1,14 @@
+static void run_LE_INT(void *p)
+{	
+	fb_t *pb = p;
+	pb->d[2].v.b = (pb->d[0].v.i <= pb->d[1].v.i ? 1 : 0);
+}
+
+static fb_t fb_LE_INT = {
+	"LE_INT", 2, 1, 0, 0, run_LE_INT , 
+	{
+		"IN1", T_INT, 0,
+		"IN2", T_INT, 0,
+		"OUT", T_BOOL, 0
+	}	
+};

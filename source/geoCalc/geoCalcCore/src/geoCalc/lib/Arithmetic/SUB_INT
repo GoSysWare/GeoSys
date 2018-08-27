@@ -1,0 +1,14 @@
+static void run_SUB_INT(void *p)
+{	
+	fb_t *pb = p;
+	pb->d[2].v.i = pb->d[0].v.i - pb->d[1].v.i; 
+}
+
+static fb_t fb_SUB_INT = {
+	"SUB_INT", 2, 1, 0, 0, run_SUB_INT, 
+	{
+		"IN1", T_INT, 0,
+		"IN2", T_INT, 0,
+		"OUT", T_INT, 0
+	}	
+};

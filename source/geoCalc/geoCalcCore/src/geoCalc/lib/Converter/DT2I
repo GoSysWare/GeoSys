@@ -1,0 +1,13 @@
+static void run_DT2I(void *p)
+{	
+	fb_t *pb = p;
+	pb->d[1].v.i = (Int)(pb->d[0].v.tm); 
+}
+
+static fb_t fb_DT2I = {
+	"DT2I", 1, 1, 0, 0, run_DT2I, 
+	{
+		"IN", T_TIME, 0,
+		"OUT", T_INT, 0
+	}
+};

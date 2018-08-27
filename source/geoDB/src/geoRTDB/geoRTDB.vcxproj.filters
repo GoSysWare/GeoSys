@@ -18,48 +18,12 @@
     <ClCompile Include="preCompile.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="geoTagTree.cpp">
-      <Filter>资源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="geoTagVector.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="geoTagView.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="geoTagMap.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="geoTagEvent.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="geoRtdb.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="geoRTDBMacro.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="geoTagTree.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="geoTagVector.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="geoTagView.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="geoTagMap.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="geoTagEvent.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="geoRtdb.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="preCompile.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="geoRTDB.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

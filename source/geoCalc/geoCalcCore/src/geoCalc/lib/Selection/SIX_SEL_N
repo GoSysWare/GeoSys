@@ -1,0 +1,32 @@
+static void run_SIX_SEL_N(void *p)
+{	
+	fb_t *pb = p;
+
+	pb->d[8].v.i = (Int)pb->d[0].v.b + (Int)pb->d[1].v.b + (Int)pb->d[2].v.b
+	    + (Int)pb->d[3].v.b + (Int)pb->d[4].v.b + (Int)pb->d[5].v.b;
+	
+	if((pb->d[6].v.i <=0 ) || (pb->d[6].v.i > 6)){
+		pb->d[7].v.b = 0;
+	}else{
+		if(pb->d[8].v.i >= pb->d[6].v.i){ 
+			pb->d[7].v.b = 1;
+		}else{
+			pb->d[7].v.b = 0;
+		}
+	}
+}
+
+static fb_t fb_SIX_SEL_N = {
+	"SIX_SEL_N", 7, 2, 0, 0, run_SIX_SEL_N, 
+	{		
+		"IN1", T_BOOL, 0,
+		"IN2", T_BOOL, 0,
+		"IN3", T_BOOL, 0,
+		"IN4", T_BOOL, 0,
+		"IN5", T_BOOL, 0,
+		"IN6", T_BOOL, 0,
+		"SEL", T_INT, 0,
+		"OUT", T_BOOL, 0,
+		"N", T_INT, 0,
+	}
+};

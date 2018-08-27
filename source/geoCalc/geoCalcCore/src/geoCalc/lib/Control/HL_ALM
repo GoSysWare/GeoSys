@@ -1,0 +1,42 @@
+static void run_HL_ALM(void *p)
+{	
+	fb_t *pb = p;
+
+	if((pb->d[4].v.f < 0) || (pb->d[5].v.f < 0) || (pb->d[2].v.f < pb->d[3].v.f) || pb->d[1].v.b){
+		pb->d[6].v.b = 0;
+		pb->d[7].v.b = 0;
+		pb->d[8].v.b = 1;
+		return;
+	}else{
+		pb->d[8].v.b = 0;
+	}
+
+	if(pb->d[0].v.f > pb->d[2].v.f + pb->d[4].v.f){
+		pb->d[6].v.b = 1;
+		pb->d[7].v.b = 0;
+	}else if(pb->d[0].v.f < pb->d[2].v.f - pb->d[4].v.f){
+		pb->d[6].v.b = 0;
+	}
+
+	if(pb->d[0].v.f < pb->d[3].v.f - pb->d[5].v.f){
+		pb->d[7].v.b= 1;
+		pb->d[6].v.b = 0;
+	}else if(pb->d[0].v.f > pb->d[3].v.f + pb->d[5].v.f){
+		pb->d[7].v.b = 0;
+	}
+}
+
+static fb_t fb_HL_ALM = {
+	"HL_ALM", 6, 3, 0, 0, run_HL_ALM, 
+	{
+		"IN", T_REAL, 0,	
+		"IN_ERR", T_BOOL, 0,	
+		"H", T_REAL, 0,	
+		"L", T_REAL, 0,
+		"HDB", T_REAL, 0,
+		"LDB", T_REAL, 0,	
+		"D_H", T_BOOL, 0,	
+		"D_L", T_BOOL, 0,
+		"ERR", T_BOOL, 0,	
+	}	
+};

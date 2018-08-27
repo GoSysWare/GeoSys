@@ -1,0 +1,16 @@
+static void run_SysState(void *p)
+{	
+	fb_t *pb = p;
+	Time dt = clk_cycle();
+
+	pb->d[0].v.i = pb->d[0].v.i++;	
+	pb->d[1].v.tm = (Real)dt;
+}
+
+static fb_t fb_SysState = {
+	"SysState", 0, 2, 0, 0, run_SysState, 
+	{	
+		"CYCLE", T_INT, 0,
+		"TIME", T_TIME, 0
+	}
+};

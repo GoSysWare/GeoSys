@@ -1,0 +1,46 @@
+static void run_RAT_ALM(void *p)
+{	
+	fb_t *pb = p;
+
+	Time dt = clk_cycle();
+
+	Real v;
+
+	if(pb->d[0].v.f >= pb->d[6].v.f){
+		v = (pb->d[0].v.f - pb->d[6].v.f) / (Real)dt;
+		if(v > pb->d[1].v.f){
+			pb->d[4].v.b = 1;
+			pb->d[5].v.b = 0;
+		}else{
+			pb->d[4].v.b = 0;
+			pb->d[5].v.b = 0;
+		}
+	}
+	
+	if(pb->d[0].v.f < pb->d[6].v.f){
+		v = (pb->d[6].v.f - pb->d[0].v.f) / (Real)dt;
+		if(v > pb->d[2].v.f){
+			pb->d[4].v.b = 0;
+			pb->d[5].v.b = 1;
+		}else{
+			pb->d[4].v.b = 0;
+			pb->d[5].v.b = 0;
+		}
+	}	
+	
+	pb->d[3].v.b = pb->d[4].v.b || pb->d[5].v.b;
+	pb->d[6].v.f = pb->d[0].v.f;
+}
+
+static fb_t fb_RAT_ALM = {
+	"RAT_ALM", 3, 3, 1, 0, run_RAT_ALM, 
+	{
+		"IN", T_REAL, 0,	
+		"V_P", T_REAL, 0,	
+		"V_N", T_REAL, 0,	
+		"D", T_BOOL, 0,
+		"D_P", T_BOOL, 0,
+		"D_N", T_BOOL, 0,
+		"old_IN", T_REAL, 0,
+	}
+};

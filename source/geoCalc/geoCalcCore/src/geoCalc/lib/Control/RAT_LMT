@@ -1,0 +1,33 @@
+static void run_RAT_LMT(void *p)
+{	
+	fb_t *pb = p;
+
+	Time dt = clk_cycle();
+
+	Real v;
+
+	v = (pb->d[0].v.f - pb->d[4].v.f) / (Real)dt;
+	
+	if(v > pb->d[1].v.f){
+		pb->d[3].v.f = pb->d[5].v.f + pb->d[1].v.f * (Real)dt;
+	}else if(v < pb->d[2].v.f){
+		pb->d[3].v.f = pb->d[5].v.f + pb->d[2].v.f * (Real)dt;
+	}else{
+		pb->d[3].v.f = pb->d[0].v.f;
+	}	
+	
+	pb->d[4].v.f = pb->d[0].v.f;
+	pb->d[5].v.f = pb->d[3].v.f;
+}
+
+static fb_t fb_RAT_LMT = {
+	"RAT_LMT", 3, 1, 2, 0, run_RAT_LMT, 
+	{
+		"IN", T_REAL, 0,	
+		"V_P", T_REAL, 0,	
+		"V_N", T_REAL, 0,	
+		"OUT", T_REAL, 0,
+		"OLD_IN", T_REAL, 0,
+		"OLD_OUT", T_REAL, 0,
+	}
+};

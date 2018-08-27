@@ -1,0 +1,13 @@
+static void run_I2R(void *p)
+{	
+	fb_t *pb = p;
+	pb->d[1].v.f = (Real)(pb->d[0].v.i); 
+}
+
+static fb_t fb_I2R= {
+	"I2R", 1, 1, 0, 0, run_I2R, 
+	{
+		"IN", T_INT, 0,
+		"OUT", T_REAL, 0
+	}
+};

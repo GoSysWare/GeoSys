@@ -1,0 +1,20 @@
+static void run_D_TRIG(void *p)
+{	
+	fb_t *pb = p;
+
+	if(pb->d[2].v.b && !pb->d[0].v.b){
+		pb->d[1].v.b = 1;
+	}else{
+		pb->d[1].v.b = 0;
+	}
+	pb->d[2].v.b = pb->d[0].v.b;
+}
+
+static fb_t fb_D_TRIG = {
+	"D_TRIG", 1, 1, 1, 0, run_D_TRIG, 
+	{	
+		"CLK", T_BOOL, 0,
+		"Q", T_BOOL, 0,
+		"OLD_CLK", T_BOOL, 0,
+	}
+};

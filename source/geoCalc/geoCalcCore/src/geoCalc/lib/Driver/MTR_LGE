@@ -1,0 +1,237 @@
+static void run_MTR_LGE(void *p)
+{	
+	fb_t *pb = p;
+
+	Time dt = clk_cycle();
+	
+	Bool L_R = pb->d[0].v.b;
+	Bool AM = pb->d[1].v.b;
+	Bool KO = pb->d[2].v.b;
+	Bool AO = pb->d[3].v.b;
+	Bool PO = pb->d[4].v.b;
+	Bool FO = pb->d[5].v.b;
+	Bool LO = pb->d[6].v.b;
+	Bool RUN = pb->d[7].v.b;
+	Bool DIS = pb->d[8].v.b;
+	Bool STOP = pb->d[9].v.b;
+	Bool LC = pb->d[10].v.b;
+	Bool FZ = pb->d[11].v.b;
+	Bool PC = pb->d[12].v.b;
+	
+	Bool PZ = pb->d[13].v.b;
+	Bool AC = pb->d[14].v.b;
+	Bool KC = pb->d[15].v.b;
+	Bool MPP = pb->d[16].v.b;
+
+	Bool FIX = pb->d[17].v.b;
+	Bool MT = pb->d[18].v.b;
+	Time TON = pb->d[19].v.tm;
+	Time TOFF = pb->d[20].v.tm;
+
+//
+	if(!RUN && pb->d[47].v.b){
+		pb->d[48].v.b = 1;
+	}else{
+		pb->d[48].v.b = 0;
+	}
+	pb->d[47].v.b = RUN;
+	
+
+	if(!MT){
+		pb->d[34].v.b = (((AM && AO) || KO || PO) && FO && !PC && !DIS && !LO && !FIX);
+	}else{
+		pb->d[34].v.b = (((AM && AO) || KO || PO) && FO && !PC && !DIS && !LO && !FIX && STOP);
+	}
+	pb->d[21].v.b = (((AM && AO) || KO || PO) && !pb->d[34].v.b);
+	pb->d[39].v.b = (pb->d[24].v.b || pb->d[23].v.b || L_R || pb->d[48].v.b || (MPP && !pb->d[34].v.b) || (pb->d[27].v.i > 2));
+	pb->d[28].v.b = FO;
+	pb->d[29].v.b = FZ;
+	
+	if(pb->d[39].v.b){
+		pb->d[36].v.b = 0;
+	}else if((pb->d[34].v.b || RUN)){
+		pb->d[36].v.b = 1;
+	}
+	
+	if(pb->d[39].v.b){
+		pb->d[37].v.b = 0;
+	}else if(RUN){
+		pb->d[37].v.b = 1;
+	}
+	pb->d[22].v.b = ((pb->d[36].v.b && !RUN) && !pb->d[37].v.b);
+	pb->d[30].v.b = PO;
+	
+
+	if(!MT){
+		pb->d[35].v.b = ((((AM && AC) || KC || PZ) && FZ && !DIS && !LC && !FIX) || PC);
+	}else{
+		pb->d[35].v.b = ((((AM && AC) || KC || PZ) && FZ && !DIS && !LC && !FIX && RUN) || PC);
+	}
+	pb->d[25].v.b = (((AM && AC) || KC || PZ) && !(((AM && AC) || KC || PZ) && FZ && !DIS && !LC && !FIX)); 
+	
+	pb->d[40].v.b = (pb->d[34].v.b || pb->d[35].v.b);
+	pb->d[41].v.b = (STOP || pb->d[38].v.b || pb->d[22].v.b || L_R || (MPP && !pb->d[35].v.b) || (pb->d[27].v.i > 2));
+	
+	if(pb->d[40].v.b){
+		pb->d[38].v.b = 0;
+	}else if(pb->d[42].v.b){
+		pb->d[38].v.b = 1;
+	}
+	
+	if(pb->d[41].v.b){
+		pb->d[24].v.b = 0;
+	}else if(pb->d[35].v.b){
+		pb->d[24].v.b = 1;
+	}
+	pb->d[31].v.b = PC || PZ;
+
+
+
+	if(pb->d[22].v.b){
+		if(!pb->d[43].v.b){
+			pb->d[32].v.tm = 0;
+			pb->d[52].v.tm = 0;
+		}else if(pb->d[52].v.tm >= TON){
+			pb->d[45].v.b = 1;
+			pb->d[32].v.tm = TON;
+			pb->d[52].v.tm = TON;
+		}else{
+			pb->d[45].v.b = 0;
+			pb->d[52].v.tm += dt;
+			pb->d[32].v.tm = pb->d[52].v.tm; 
+		}
+	}else{
+		pb->d[45].v.b = 0;
+		pb->d[32].v.tm = 0;
+	}
+	pb->d[43].v.b = pb->d[22].v.b;
+
+
+	if(pb->d[24].v.b){
+		if(!pb->d[44].v.b){
+			pb->d[33].v.tm = 0;
+			pb->d[53].v.tm = 0;
+		}else if(pb->d[53].v.tm >= TOFF){
+			pb->d[46].v.b = 1;
+			pb->d[33].v.tm = TOFF;
+			pb->d[53].v.tm = TOFF;
+		}else{
+			pb->d[46].v.b = 0;
+			pb->d[53].v.tm += dt;
+			pb->d[33].v.tm = pb->d[53].v.tm; 
+		}
+	}else{
+		pb->d[46].v.b = 0;
+		pb->d[33].v.tm = 0;
+	}
+	pb->d[44].v.b = pb->d[24].v.b;
+
+
+	if(MPP && !pb->d[34].v.b && !pb->d[35].v.b){
+		pb->d[23].v.b = 0;
+	}else if(((STOP && RUN) || pb->d[42].v.b || pb->d[45].v.b)){
+		pb->d[23].v.b = 1;
+	}	
+	pb->d[42].v.b = pb->d[46].v.b;
+	
+	
+
+	pb->d[49].v.b = !pb->d[35].v.b && pb->d[50].v.b && STOP && !MPP;
+	if(MPP){
+		pb->d[26].v.b = 0;
+	}else{
+		if(pb->d[49].v.b){
+			if(!pb->d[51].v.b){
+				pb->d[54].v.tm = 0;
+			}else if(pb->d[54].v.tm >= 0.5){
+				pb->d[26].v.b = 1;
+				pb->d[54].v.tm = 0.5;
+			}else{
+				pb->d[26].v.b = 0;
+				pb->d[54].v.tm += dt; 
+			}
+		}else{
+			pb->d[26].v.b = 0;
+			pb->d[54].v.tm = 0;
+		}
+		pb->d[51].v.b = pb->d[49].v.b;		
+	}
+	pb->d[50].v.b = RUN;	
+
+	pb->d[27].v.i = (Int)RUN * 1 + (Int)STOP * 2 + (Int)(DIS || pb->d[23].v.b || pb->d[26].v.b) * 3;
+}
+
+static fb_t fb_MTR_LGE = {
+	"MTR_LGE", 21, 13, 21, 0, run_MTR_LGE, 
+	{
+		"L_R", T_BOOL, 0,
+
+		"AM", T_BOOL, 0,		
+		"KO", T_BOOL, 0,	
+		"AO", T_BOOL, 0,
+		"PO", T_BOOL, 0,
+
+		"FO", T_BOOL, 0,
+		"LO", T_BOOL, 0,
+		"RUN", T_BOOL, 0,
+		"DIS", T_BOOL, 0,
+
+		"STOP", T_BOOL, 0,
+		"LC", T_BOOL, 0,
+		"FZ", T_BOOL, 0,
+		"PC", T_BOOL, 0,
+
+		"PZ", T_BOOL, 0,
+		"AC", T_BOOL, 0,
+		"KC", T_BOOL, 0,
+		"MPP", T_BOOL, 0,
+
+		"FIX", T_BOOL, 0,
+		"MT", T_BOOL, 0,
+		"TON", T_TIME, 0,
+		"TOFF", T_TIME, 0,
+
+		"STRENO", T_BOOL, 0,
+		"STRCMD", T_BOOL, 0,
+		"MOTRDIS", T_BOOL, 0,
+		"STPCMD", T_BOOL, 0,
+		
+		"STPENO", T_BOOL, 0,
+		"DTrip", T_BOOL, 0,
+		"Status", T_INT, 0,
+		
+		"V_FO", T_BOOL, 0,
+		"V_FZ", T_BOOL, 0,
+		"V_PO", T_BOOL, 0,
+		"V_PC", T_BOOL, 0,
+		
+		"ETon", T_TIME, 0,
+		"EToff", T_TIME, 0,
+		
+		"OP", T_BOOL, 0,
+		"CL", T_BOOL, 0,
+		"Q1", T_BOOL, 0,
+		"Q2", T_BOOL, 0,
+		"Q3", T_BOOL, 0,
+		
+		"R1", T_BOOL, 0,
+		"R2", T_BOOL, 0,
+		"R3", T_BOOL, 0,
+		"OVERTIME", T_BOOL, 0,
+
+		"old_T1", T_BOOL, 0,
+		"old_T2", T_BOOL, 0,
+		"T1Q", T_BOOL, 0,
+		"T2Q", T_BOOL, 0,
+
+		"lastRUN", T_BOOL, 0,
+		"RFalEdge", T_BOOL, 0,
+		"set_DT", T_BOOL, 0,
+		"old_RUN", T_BOOL, 0,
+		"old_DT", T_BOOL, 0,
+
+		"t1", T_TIME, 0,
+		"t2", T_TIME, 0,
+		"t3", T_TIME, 0,
+	}
+};

@@ -1,0 +1,15 @@
+static void run_RG_BOOL(void *p)
+{	
+	fb_t *pb = p;
+
+}
+
+static fb_t fb_RG_BOOL = {
+	"RG_BOOL", 3, 1, 0, 0, run_RG_BOOL, 
+	{
+		"IN", T_REAL, 0,	
+		"T_D", T_TIME, 0,	
+		"SET", T_BOOL, 0,
+		"HOLD", T_BOOL, 0,	
+	}	
+};

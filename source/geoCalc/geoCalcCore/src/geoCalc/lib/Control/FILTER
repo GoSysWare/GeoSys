@@ -1,0 +1,46 @@
+static void run_FILTER(void *p)
+{	
+	fb_t *pb = p;
+
+	pb->d[10].v.f = pb->d[0].v.f/8 + 7*pb->d[9].v.f/8;
+	pb->d[9].v.f = pb->d[0].v.f/7 + 6*pb->d[8].v.f/7;
+	pb->d[8].v.f = pb->d[0].v.f/6 + 5*pb->d[7].v.f/6;
+	pb->d[7].v.f = pb->d[0].v.f/5 + 4*pb->d[6].v.f/5;
+	pb->d[6].v.f = pb->d[0].v.f/4 + 3*pb->d[5].v.f/4;
+	pb->d[5].v.f = pb->d[0].v.f/3 + 2*pb->d[4].v.f/3;
+	pb->d[4].v.f = pb->d[0].v.f/2 + pb->d[3].v.f/2;
+	
+	if(pb->d[1].v.i == 0){
+		pb->d[2].v.f = pb->d[0].v.f;	
+	}else if(pb->d[1].v.i == 1){
+		if(pb->d[0].v.f >= 0.0){
+			pb->d[2].v.f = (Real)(sqrt(pb->d[0].v.f));
+		}else{
+			pb->d[2].v.f = (Real)((-1) * sqrt((-1) * pb->d[0].v.f));
+		}	
+	}else if(pb->d[1].v.i == 2){
+		pb->d[2].v.f = pb->d[4].v.f;
+	}else if(pb->d[1].v.i == 3){
+		pb->d[2].v.f = pb->d[10].v.f;
+	}else{
+		return;
+	}	 
+	 pb->d[3].v.f = pb->d[0].v.f;
+}
+
+static fb_t fb_FILTER = {
+	"FILTER", 2, 1, 8, 0, run_FILTER, 
+	{
+		"IN", T_REAL, 0,
+		"MODE", T_INT, 0,
+		"OUT", T_REAL, 0,
+		"OLD_IN", T_REAL, 0,
+		"x0", T_REAL, 0,
+		"x1", T_REAL, 0,
+		"x2", T_REAL, 0,
+		"x3", T_REAL, 0,
+		"x4", T_REAL, 0,
+		"x5", T_REAL, 0,
+		"x6", T_REAL, 0,
+	}	
+};

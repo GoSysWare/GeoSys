@@ -136,7 +136,6 @@ int GeoAsioMcast::onRecieveFrom(int recvlen)
 //子类重载此函数，buff不要释放
 int GeoAsioMcast::onData(void * buff, int len)
 {
-	printf("onData...\n");
 	return 0;
 
 }

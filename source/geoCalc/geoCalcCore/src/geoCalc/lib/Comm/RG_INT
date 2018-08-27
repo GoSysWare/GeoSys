@@ -1,0 +1,27 @@
+static void run_RG_INT(void *p)
+{	
+	fb_t *pb = p;
+
+}
+
+static fb_t fb_RG_INT = {
+	"RG_INT", 4, 10, 0, 0, run_RG_INT, 
+	{
+		"IN", T_REAL, 0,	
+		"T_D", T_TIME, 0,	
+		"SET", T_BOOL, 0,
+		"HOLD", T_BOOL, 0,	
+		
+		"OUT", T_REAL, 0,
+		"N", T_INT, 0,
+		"a0", T_REAL, 0,
+		"a1", T_REAL, 0,
+		"a2", T_REAL, 0,
+		"a126", T_REAL, 0,
+		"a127", T_REAL, 0,
+
+		"i", T_INT, 0,
+		"t", T_TIME, 0,
+		"dt", T_TIME, 0,
+	}	
+};

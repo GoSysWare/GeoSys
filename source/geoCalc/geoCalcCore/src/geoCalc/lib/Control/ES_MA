@@ -1,0 +1,77 @@
+static Real limit(Real t, Real max, Real min)
+{
+	if(t > max){
+		t = max;
+	}else if(t < min){
+		t = min;
+	}
+	return t;
+}
+
+static void run_ES_MA(void *p)
+{	
+	fb_t *pb = p;
+
+	if(pb->d[2].v.b){
+		pb->d[9].v.f = limit(pb->d[1].v.f, pb->d[4].v.f, pb->d[5].v.f);
+		pb->d[10].v.f = limit(pb->d[1].v.f, pb->d[4].v.f, pb->d[5].v.f);
+		return;
+	}
+
+
+	if(pb->d[3].v.b){
+		pb->d[11].v.b = 1;
+	}else{
+		pb->d[11].v.b = 0;
+	}
+
+	
+	if(pb->d[6].v.b){
+		pb->d[14].v.b = 1;
+		return;
+	}
+	
+	pb->d[14].v.b = 0;
+
+
+	if(!pb->d[11].v.b){
+		pb->d[9].v.f = limit(pb->d[8].v.f, pb->d[4].v.f, pb->d[5].v.f);
+		pb->d[10].v.f = limit(pb->d[8].v.f, pb->d[4].v.f, pb->d[5].v.f);
+		
+		pb->d[12].v.f = pb->d[9].v.f - pb->d[0].v.f;
+		pb->d[13].v.f = pb->d[9].v.f - pb->d[0].v.f;
+		
+		return;
+	}
+
+
+	if(pb->d[11].v.b){
+		pb->d[12].v.f = pb->d[7].v.f;
+		pb->d[13].v.f = pb->d[7].v.f;
+
+		pb->d[9].v.f = limit((pb->d[0].v.f + pb->d[7].v.f), pb->d[4].v.f, pb->d[5].v.f);
+		pb->d[10].v.f = limit((pb->d[0].v.f + pb->d[7].v.f), pb->d[4].v.f, pb->d[5].v.f);
+	}
+}
+
+static fb_t fb_ES_MA = {
+	"ES_MA", 9, 6, 0, 0, run_ES_MA, 
+	{
+		"IN", T_REAL, 0,
+		"OV", T_REAL, 0,
+		"OS", T_BOOL, 0,
+		"M_A", T_BOOL, 0,
+		"MAX", T_REAL, 0,
+		"MIN", T_REAL, 0,
+		"L", T_BOOL, 0,
+		"B", T_REAL, 0,	
+		"OUT_M", T_REAL, 0,
+		
+		"OUT", T_REAL, 0,
+		"out", T_REAL, 0,
+		"S", T_BOOL, 0,
+		"BO", T_REAL, 0,
+		"bo", T_REAL, 0,
+		"Lock", T_BOOL, 0,
+	}	
+};

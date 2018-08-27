@@ -1,0 +1,230 @@
+static void run_DELAY(void *p)
+{	
+	fb_t *pb = p;
+
+	Time dt = clk_cycle();
+
+	Real IN = pb->d[0].v.f;
+	Time TD = pb->d[1].v.tm;
+	Bool SET =  pb->d[2].v.b;
+	Bool HOLD =  pb->d[3].v.b;
+
+	Int i;
+	pin_t *q;
+	q = &pb->d[7];
+	
+	if(!SET){
+		pb->d[4].v.f = IN;
+		for(i = 0; i < 128; i++){
+			(*(q + i)).v.f = 0;
+		}
+	}
+
+	if(SET){
+		if(TD == 0){
+			pb->d[135].v.f = IN;
+			for(i = 0; i < 128; i++){
+				(*(q + i)).v.f = IN;
+			}
+			if(!HOLD){
+				pb->d[4].v.f = pb->d[135].v.f;
+			}
+			return;
+		}
+		
+		if(dt != 0){
+			pb->d[5].v.i = (Int)(TD / dt);
+		}else{
+			return;
+		}
+		
+
+		if(TD <= dt * 128){
+			pb->d[135] = *q;
+			for(i = 0; i < (pb->d[5].v.i - 1); i++){
+				*(q + i) = *(q + (i + 1));
+			}
+			(*(q + (pb->d[5].v.i - 1))).v.f = IN;		
+		}
+	
+
+		if(TD > dt * 128){
+			pb->d[135] = *q;
+		
+			pb->d[6].v.tm += dt;
+			
+			if(pb->d[6].v.tm >= TD/128){
+				for(i = 0; i < 127; i++){
+					*(q + i) = *(q + (i + 1));
+				}
+				(*(q + 127)).v.f = IN;
+				
+				pb->d[6].v.tm = 0;
+			}		
+		}
+	
+		if(!HOLD){
+			pb->d[4].v.f = pb->d[135].v.f;
+		}else{
+			return;
+		}
+	}
+}
+
+static fb_t fb_DELAY = {
+	"DELAY", 4, 1, 131, 0, run_DELAY, 
+	{
+		"IN", T_REAL, 0,	
+		"TD", T_TIME, 0,	
+		"SET", T_BOOL, 0,
+		"HOLD", T_BOOL, 0,	
+		
+		"OUT", T_REAL, 0,
+		
+		"N", T_INT, 0,
+		"t", T_TIME, 0,
+
+		"a0", T_REAL, 0,
+		"a1", T_REAL, 0,
+		"a2", T_REAL, 0,
+		"a3", T_REAL, 0,
+		"a4", T_REAL, 0,
+		"a5", T_REAL, 0,
+		"a6", T_REAL, 0,
+		"a7", T_REAL, 0,
+		"a8", T_REAL, 0,
+		"a9", T_REAL, 0,
+
+		"a10", T_REAL, 0,
+		"a11", T_REAL, 0,
+		"a12", T_REAL, 0,
+		"a13", T_REAL, 0,
+		"a14", T_REAL, 0,
+		"a15", T_REAL, 0,
+		"a16", T_REAL, 0,
+		"a17", T_REAL, 0,
+		"a18", T_REAL, 0,
+		"a19", T_REAL, 0,
+
+		"a20", T_REAL, 0,
+		"a21", T_REAL, 0,
+		"a22", T_REAL, 0,
+		"a23", T_REAL, 0,
+		"a24", T_REAL, 0,
+		"a25", T_REAL, 0,
+		"a26", T_REAL, 0,
+		"a27", T_REAL, 0,
+		"a28", T_REAL, 0,
+		"a29", T_REAL, 0,
+
+		"a30", T_REAL, 0,
+		"a31", T_REAL, 0,
+		"a32", T_REAL, 0,
+		"a33", T_REAL, 0,
+		"a34", T_REAL, 0,
+		"a35", T_REAL, 0,
+		"a36", T_REAL, 0,
+		"a37", T_REAL, 0,
+		"a38", T_REAL, 0,
+		"a39", T_REAL, 0,
+
+		"a40", T_REAL, 0,
+		"a41", T_REAL, 0,
+		"a42", T_REAL, 0,
+		"a43", T_REAL, 0,
+		"a44", T_REAL, 0,
+		"a45", T_REAL, 0,
+		"a46", T_REAL, 0,
+		"a47", T_REAL, 0,
+		"a48", T_REAL, 0,
+		"a49", T_REAL, 0,
+
+		"a50", T_REAL, 0,
+		"a51", T_REAL, 0,
+		"a52", T_REAL, 0,
+		"a53", T_REAL, 0,
+		"a54", T_REAL, 0,
+		"a55", T_REAL, 0,
+		"a56", T_REAL, 0,
+		"a57", T_REAL, 0,
+		"a58", T_REAL, 0,
+		"a59", T_REAL, 0,
+
+		"a60", T_REAL, 0,
+		"a61", T_REAL, 0,
+		"a62", T_REAL, 0,
+		"a63", T_REAL, 0,
+		"a64", T_REAL, 0,
+		"a65", T_REAL, 0,
+		"a66", T_REAL, 0,
+		"a67", T_REAL, 0,
+		"a68", T_REAL, 0,
+		"a69", T_REAL, 0,
+
+		"a70", T_REAL, 0,
+		"a71", T_REAL, 0,
+		"a72", T_REAL, 0,
+		"a73", T_REAL, 0,
+		"a74", T_REAL, 0,
+		"a75", T_REAL, 0,
+		"a76", T_REAL, 0,
+		"a77", T_REAL, 0,
+		"a78", T_REAL, 0,
+		"a79", T_REAL, 0,
+
+		"a80", T_REAL, 0,
+		"a81", T_REAL, 0,
+		"a82", T_REAL, 0,
+		"a83", T_REAL, 0,
+		"a84", T_REAL, 0,
+		"a85", T_REAL, 0,
+		"a86", T_REAL, 0,
+		"a87", T_REAL, 0,
+		"a88", T_REAL, 0,
+		"a89", T_REAL, 0,
+
+		"a90", T_REAL, 0,
+		"a91", T_REAL, 0,
+		"a92", T_REAL, 0,
+		"a93", T_REAL, 0,
+		"a94", T_REAL, 0,
+		"a95", T_REAL, 0,
+		"a96", T_REAL, 0,
+		"a97", T_REAL, 0,
+		"a98", T_REAL, 0,
+		"a99", T_REAL, 0,
+
+		"a100", T_REAL, 0,
+		"a101", T_REAL, 0,
+		"a102", T_REAL, 0,
+		"a103", T_REAL, 0,
+		"a104", T_REAL, 0,
+		"a105", T_REAL, 0,
+		"a106", T_REAL, 0,
+		"a107", T_REAL, 0,
+		"a108", T_REAL, 0,
+		"a109", T_REAL, 0,
+
+		"a110", T_REAL, 0,
+		"a111", T_REAL, 0,
+		"a112", T_REAL, 0,
+		"a113", T_REAL, 0,
+		"a114", T_REAL, 0,
+		"a115", T_REAL, 0,
+		"a116", T_REAL, 0,
+		"a117", T_REAL, 0,
+		"a118", T_REAL, 0,
+		"a119", T_REAL, 0,
+
+		"a120", T_REAL, 0,
+		"a121", T_REAL, 0,
+		"a122", T_REAL, 0,
+		"a123", T_REAL, 0,
+		"a124", T_REAL, 0,
+		"a125", T_REAL, 0,	
+		"a126", T_REAL, 0,
+		"a127", T_REAL, 0,
+
+		"Y", T_REAL, 0,
+	}
+};

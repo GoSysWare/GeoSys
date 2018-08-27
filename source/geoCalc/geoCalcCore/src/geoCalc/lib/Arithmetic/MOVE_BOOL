@@ -1,0 +1,13 @@
+static void run_MOVE_BOOL(void *p)
+{	
+	fb_t *pb = p;
+	pb->d[1].v.f = pb->d[0].v.f; 
+}
+
+static fb_t fb_MOVE_BOOL = {
+	"MOVE_BOOL", 1, 1, 0, 0, run_MOVE_BOOL, 
+	{
+		"IN", T_BOOL, 0,
+		"OUT", T_BOOL, 0
+	}
+};

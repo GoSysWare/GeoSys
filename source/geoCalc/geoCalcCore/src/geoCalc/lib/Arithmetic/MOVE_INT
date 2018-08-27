@@ -1,0 +1,13 @@
+static void run_MOVE_INT(void *p)
+{	
+	fb_t *pb = p;
+	pb->d[1].v.i = pb->d[0].v.i; 
+}
+
+static fb_t fb_MOVE_INT = {
+	"MOVE_INT", 1, 1, 0, 0, run_MOVE_INT, 
+	{	
+		"IN", T_INT, 0,
+		"OUT", T_INT, 0
+	}
+};

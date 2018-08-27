@@ -1,0 +1,14 @@
+static void run_LOG(void *p)
+{	
+	fb_t *pb = p;
+
+	pb->d[1].v.f = (Real) log10 ( pb->d[0].v.f ); 
+}
+
+static fb_t fb_LOG = {
+	"LOG", 1, 1, 0, 0, run_LOG, 
+	{
+		"IN", T_REAL, 0,
+		"OUT", T_REAL, 0,
+	}
+};

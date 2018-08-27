@@ -1,0 +1,27 @@
+static void run_INTEG(void *p)
+{	
+	fb_t *pb = p;
+
+	Time dt = clk_cycle();
+
+	if(pb->d[2].v.b){
+		pb->d[5].v.f = 0;
+		pb->d[3].v.f = 0;
+	}else{
+		pb->d[3].v.f = pb->d[5].v.f + pb->d[1].v.f * (Real)dt * (pb->d[0].v.f + pb->d[4].v.f)/2;
+	}
+	pb->d[4].v.f = pb->d[0].v.f;
+	pb->d[5].v.f = pb->d[3].v.f;
+}
+
+static fb_t fb_INTEG = {
+	"INTEG", 3, 1, 2, 0, run_INTEG, 
+	{
+		"IN", T_REAL, 0,	
+		"K", T_REAL, 0,
+		"RST", T_BOOL, 0,			
+		"OUT", T_REAL, 0,
+		"old_IN", T_REAL, 0,
+		"old_OUT", T_REAL, 0,
+	}	
+};

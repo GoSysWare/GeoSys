@@ -1,0 +1,65 @@
+static void run_LIMV(void *p)
+{	
+	fb_t *pb = p;
+
+	Real err;
+
+	if((pb->d[5].v.f > pb->d[4].v.f) || (pb->d[1].v.f > 100) || (pb->d[1].v.f < 0)){
+		pb->d[8].v.b = 0;
+		pb->d[9].v.b = 0;
+		pb->d[10].v.b = 1;
+		return;
+	}else{
+		pb->d[10].v.b = 0;
+	}
+
+	err = pb->d[0].v.f - pb->d[7].v.f;
+
+	if(!pb->d[3].v.b && !pb->d[2].v.b){
+		pb->d[7].v.f = pb->d[11].v.f + pb->d[1].v.f * err / 100;
+	}else if(pb->d[3].v.b){
+		pb->d[7].v.f = pb->d[6].v.f;
+	}
+	
+		
+	if(!pb->d[9].v.b && !pb->d[8].v.b){
+		pb->d[11].v.f = pb->d[7].v.f;
+	}else if(pb->d[8].v.b){
+		pb->d[11].v.f = pb->d[4].v.f;
+	}else{
+		pb->d[11].v.f = pb->d[5].v.f;
+	}
+
+	
+	if(pb->d[7].v.f > pb->d[4].v.f){
+		pb->d[8].v.b = 1;
+		pb->d[7].v.f = pb->d[4].v.f;
+	}else{
+		pb->d[8].v.b = 0;
+	}
+	
+	if(pb->d[7].v.f < pb->d[5].v.f){
+		pb->d[9].v.b = 1;
+		pb->d[7].v.f = pb->d[5].v.f;
+	}else{
+		pb->d[9].v.b = 0;
+	}
+}
+
+static fb_t fb_LIMV = {
+	"LIMV", 7, 4, 1, 0, run_LIMV, 
+	{
+		"IN", T_REAL, 0,	
+		"RATE", T_REAL, 0,	
+		"HALT", T_BOOL, 0,	
+		"MAN", T_BOOL, 0,
+		"MAX", T_REAL, 0,
+		"MIN", T_REAL, 0,		
+		"OUT_M", T_REAL, 0,
+		"OUT", T_REAL, 0,
+		"QMAX", T_BOOL, 0,
+		"QMIN", T_BOOL, 0,
+		"ERR", T_BOOL, 0,
+		"old_OUT", T_REAL, 0,
+	}
+};

@@ -1,0 +1,13 @@
+static void run_LR2I(void *p)
+{	
+	fb_t *pb = p;
+	pb->d[1].v.i = (Int)(pb->d[0].v.fl); 
+}
+
+static fb_t fb_LR2I = {
+	"LR2I", 1, 1, 0, 0, run_LR2I, 
+	{
+		"IN", T_LREAL, 0,
+		"OUT", T_INT, 0
+	}
+};

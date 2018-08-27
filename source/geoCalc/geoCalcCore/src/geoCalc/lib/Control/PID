@@ -1,0 +1,152 @@
+static void run_PID(void *p)
+{	
+	fb_t *pb = p;
+
+	Time t = clk_cycle();
+	Real dt = (Real)t;
+
+	Bool MAN = pb->d[0].v.b;
+	Bool HALT = pb->d[1].v.b;
+	Real SP = pb->d[2].v.f;
+	Real PV = pb->d[3].v.f;
+	Real BIAS = pb->d[4].v.f;
+	Bool EN_P = pb->d[5].v.b;
+	Bool EN_I = pb->d[6].v.b;
+	Bool EN_D = pb->d[7].v.b;
+	Bool D_ON_X = pb->d[8].v.b;
+	Real GAIN = pb->d[9].v.f;
+	Time TI = pb->d[10].v.tm;
+	Time TD = pb->d[11].v.tm;
+	Time TD_LAG = pb->d[12].v.tm;
+	Real YMAX = pb->d[13].v.f;
+	Real YMIN = pb->d[14].v.f;
+	Real YMAN = pb->d[15].v.f;
+
+	Real err = SP - PV;
+	Real ti = (Real)TI;
+	Real td = (Real)TD;
+	Real td_lag = (Real)TD_LAG;
+	
+	if(EN_P == 1){
+		pb->d[20].v.f = GAIN * err;
+	}else{
+		pb->d[20].v.f = 0;
+	}
+
+	if((MAN == 0) && (HALT == 0)){
+		if(EN_I){
+			if(!pb->d[18].v.b && !pb->d[19].v.b){
+				if((pb->d[21].v.f <= (YMAX - pb->d[20].v.f -BIAS)) && (pb->d[21].v.f >= (YMIN - pb->d[20].v.f -BIAS))){
+					pb->d[21].v.f = pb->d[23].v.f + GAIN * dt / ti * (err + pb->d[25].v.f) / 2;
+				}else if(pb->d[21].v.f > (YMAX - pb->d[20].v.f -BIAS)){
+					pb->d[21].v.f = YMAX - pb->d[20].v.f - BIAS;
+				}else if(pb->d[21].v.f < (YMIN - pb->d[20].v.f -BIAS)){
+					pb->d[21].v.f = YMIN - pb->d[20].v.f -BIAS;
+				}				
+			}
+		}else{
+			pb->d[21].v.f = 0;
+		}
+
+		if(EN_D){
+		 	if(D_ON_X){
+				pb->d[22].v.f = (pb->d[24].v.f * td_lag + td * GAIN * (err - pb->d[25].v.f)) / (dt + td_lag);
+			}else{
+				pb->d[22].v.f = (pb->d[24].v.f * td_lag + td * GAIN * (pb->d[26].v.f - PV)) / (dt + td_lag);
+			}
+		}else{
+			pb->d[22].v.f = 0;
+		}
+	}
+
+	//
+	if(!MAN){
+		if(!HALT){
+			pb->d[16].v.f = pb->d[20].v.f + pb->d[21].v.f + pb->d[22].v.f;
+		}else{
+			if(EN_I){
+				if((pb->d[21].v.f <= (YMAX - pb->d[20].v.f -BIAS)) && (pb->d[21].v.f >= (YMIN - pb->d[20].v.f -BIAS))){
+					pb->d[21].v.f = pb->d[16].v.f - pb->d[20].v.f - BIAS;
+				}else if(pb->d[21].v.f > (YMAX - pb->d[20].v.f -BIAS)){
+					pb->d[21].v.f = YMAX - pb->d[20].v.f - BIAS;
+				}else if(pb->d[21].v.f < (YMIN - pb->d[20].v.f -BIAS)){
+					pb->d[21].v.f = YMIN - pb->d[20].v.f -BIAS;
+				}
+			}else{
+				pb->d[21].v.f = 0;
+			}
+		pb->d[22].v.f = 0;
+		}
+	}else{
+		pb->d[16].v.f = YMAN;
+		if(EN_I){
+			if((pb->d[21].v.f <= (YMAX - pb->d[20].v.f -BIAS)) && (pb->d[21].v.f >= (YMIN - pb->d[20].v.f -BIAS))){
+				pb->d[21].v.f = pb->d[16].v.f - pb->d[20].v.f - BIAS;
+			}else if(pb->d[21].v.f > (YMAX - pb->d[20].v.f -BIAS)){
+				pb->d[21].v.f = YMAX - pb->d[20].v.f - BIAS;
+			}else if(pb->d[21].v.f < (YMIN - pb->d[20].v.f -BIAS)){
+				pb->d[21].v.f = YMIN - pb->d[20].v.f -BIAS;
+			}
+		}else{
+			pb->d[21].v.f = 0;
+		}
+		pb->d[22].v.f = 0;
+	}
+
+	if(pb->d[16].v.f > YMAX){
+		pb->d[18].v.b = 1;
+		pb->d[16].v.f = YMAX;
+	}else{
+		pb->d[18].v.b = 0;
+	}
+	if(pb->d[16].v.f < YMIN){
+		pb->d[19].v.b = 1;
+		pb->d[16].v.f = YMIN;
+	}else{
+		pb->d[19].v.b = 0;
+	}
+	
+	pb->d[23].v.f = pb->d[21].v.f;
+	pb->d[24].v.f = pb->d[22].v.f;
+	pb->d[26].v.f = PV;
+	pb->d[25].v.f = err;
+}
+
+static fb_t fb_PID = {
+	"PID", 16, 4, 7, 0, run_PID, 
+	{	
+		"MAN", T_BOOL, 0,
+		"HALT", T_BOOL, 0,
+		"SP", T_REAL, 0,
+		"PV", T_REAL, 0,
+		"BIAS", T_REAL, 0,
+
+		"EN_P", T_BOOL, 0,
+		"EN_I", T_BOOL, 0,
+		"EN_D", T_BOOL, 0,
+		"D_ON_X", T_BOOL, 0,
+
+		"GAIN", T_REAL, 0,
+		"TI", T_TIME, 0,
+		"TD", T_TIME, 0,
+		"TD_LAG", T_TIME, 0,
+
+		"YMAX", T_REAL, 0,
+		"YMIN", T_REAL, 0,
+		"YMAN", T_REAL, 0,
+
+		"Y", T_REAL, 0,
+		"err", T_REAL, 0,
+		"QMAX", T_BOOL, 0,
+		"QMIN", T_BOOL, 0,
+
+		"YP", T_REAL, 0,
+		"YI", T_REAL, 0,
+		"YD", T_REAL, 0,
+
+		"old_YI", T_REAL, 0,
+		"old_YD", T_REAL, 0,
+		"old_err", T_REAL, 0,
+		"old_PV", T_REAL, 0,
+	}
+};

@@ -1,0 +1,13 @@
+static void run_B2I(void *p)
+{	
+	fb_t *pb = p;
+	pb->d[1].v.i = (Int)(pb->d[0].v.b); 
+}
+
+static fb_t fb_B2I = {
+	"B2I", 1, 1, 0, 0, run_B2I, 
+	{
+		"IN", T_BOOL, 0,
+		"OUT", T_INT, 0
+	}
+};

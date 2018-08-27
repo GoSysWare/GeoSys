@@ -1,0 +1,13 @@
+static void run_I2DT(void *p)
+{	
+	fb_t *pb = p;
+	pb->d[1].v.tm = (Time)(pb->d[0].v.i); 
+}
+
+static fb_t fb_I2DT= {
+	"I2DT", 1, 1, 0, 0, run_I2DT, 
+	{
+		"IN", T_INT, 0,
+		"OUT", T_TIME, 0
+	}	
+};

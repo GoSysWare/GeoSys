@@ -1,0 +1,14 @@
+static void run_ASIN(void *p)
+{	
+	fb_t *pb = p;
+
+	pb->d[1].v.f = (Real) asin ( pb->d[0].v.f ); 
+}
+
+static fb_t fb_ASIN = {
+	"ASIN", 1, 1, 0, 0, run_ASIN, 
+	{
+		"IN", T_REAL, 0,
+		"OUT", T_REAL, 0,
+	}	
+};

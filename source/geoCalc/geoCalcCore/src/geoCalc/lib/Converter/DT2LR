@@ -1,0 +1,13 @@
+static void run_DT2LR(void *p)
+{	
+	fb_t *pb = p;
+	pb->d[1].v.fl = (LReal)(pb->d[0].v.tm); 
+}
+
+static fb_t fb_DT2LR = {
+	"DT2LR", 1, 1, 0, 0, run_DT2LR, 
+	{
+		"IN", T_TIME, 0,
+		"OUT", T_LREAL, 0
+	}
+};

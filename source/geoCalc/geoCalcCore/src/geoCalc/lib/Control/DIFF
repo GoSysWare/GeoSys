@@ -1,0 +1,39 @@
+static void run_DIFF(void *p)
+{	
+	fb_t *pb = p;
+
+	Time dt = clk_cycle();
+
+	if(pb->d[2].v.tm < 0){
+		return;
+	}
+
+	if(pb->d[5].v.b){
+		pb->d[6].v.f = pb->d[0].v.f;
+		pb->d[7].v.f = pb->d[3].v.f;
+		pb->d[5].v.b = 0;
+		return;
+	}
+
+	pb->d[3].v.f = ((Real)(pb->d[2].v.tm) * pb->d[7].v.f + 
+		pb->d[1].v.f * (pb->d[0].v.f - pb->d[6].v.f)) / (Real)(dt + pb->d[2].v.tm);	
+		
+	pb->d[4].v.tm = dt;
+
+	pb->d[6].v.f = pb->d[0].v.f;
+	pb->d[7].v.f = pb->d[3].v.f;	
+}
+
+static fb_t fb_DIFF = {
+	"DIFF", 3, 1, 4, 0, run_DIFF, 
+	{	
+		"IN", T_REAL, 0,	
+		"K", T_REAL, 0,	
+		"Td", T_TIME, 0,	
+		"OUT", T_REAL, 0,
+		"DT", T_TIME, 0,
+		"FIRST", T_BOOL, 1,
+		"OLD_IN", T_REAL, 0,
+		"OLD_OUT", T_REAL, 0,
+	}
+};

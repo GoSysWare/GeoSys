@@ -1,0 +1,60 @@
+static void run_DM1x1(void *p)
+{	
+	fb_t *pb = p;
+
+	int s,c,i;
+	Word d;
+	iocell_t *cell;
+	s=pb->d[0].v.i;
+	c=pb->d[1].v.i;
+	if(s<0 || s>=IOSTATIONCOUNT){
+		pb->d[2].v.b=1;
+		return;
+	}
+	if(c<0 || c>=IOCELLCOUNT){
+		pb->d[2].v.b=1;
+		return;
+	}
+	cell=io_getcellin(s,c);
+	if(strncmp(cell->id,"DM1x1",sizeof("DM1x1"))!=0){
+		pb->d[2].v.b=1;
+	}else{
+		pb->d[2].v.b=0;
+		memcpy(&d,cell->data,sizeof(d));
+		word_invert(&d);
+		for(i=0;i<16;i++){
+			if(d & (0x0001<<i)){
+				pb->d[3+i].v.b=1;
+			}else{
+				pb->d[3+i].v.b=0;
+			}
+		}
+	}
+	cell=io_getcellout(s,c);
+	strcpy(cell->id,"DM1x1");
+}
+
+static fb_t fb_DM1x1 = {
+	"DM1x1", 2, 17, 0, FBFLAGIO, run_DM1x1, 
+	{
+		"S", T_INT, 0,
+		"M", T_INT, 0,
+		"ERR", T_BOOL, 0,
+		"C1", T_BOOL, 0,
+		"C2", T_BOOL, 0,
+		"C3", T_BOOL, 0,
+		"C4", T_BOOL, 0,
+		"C5", T_BOOL, 0,
+		"C6", T_BOOL, 0,
+		"C7", T_BOOL, 0,
+		"C8", T_BOOL, 0,
+		"C9", T_BOOL, 0,
+		"C10", T_BOOL, 0,
+		"C11", T_BOOL, 0,
+		"C12", T_BOOL, 0,
+		"C13", T_BOOL, 0,
+		"C14", T_BOOL, 0,
+		"C15", T_BOOL, 0,
+		"C16", T_BOOL, 0,
+	}
+};

@@ -1,0 +1,14 @@
+static void run_MUL_INT(void *p)
+{	
+	fb_t *pb = p;
+	pb->d[2].v.i = pb->d[0].v.i * pb->d[1].v.i; 
+}
+
+static fb_t fb_MUL_INT = {
+	"MUL_INT", 2, 1, 0, 0, run_MUL_INT, 
+	{
+		"IN1", T_INT, 0,
+		"IN2", T_INT, 0,
+		"OUT", T_INT, 0
+	}
+};

@@ -1,0 +1,18 @@
+static void run_I2B(void *p)
+{	
+	fb_t *pb = p;
+
+	if(pb->d[0].v.i == 0){
+		pb->d[1].v.b = 0;
+	}else{
+		pb->d[1].v.b = 1;
+	}
+}
+
+static fb_t fb_I2B= {
+	"I2B", 1, 1, 0, 0, run_I2B, 
+	{
+		"IN", T_INT, 0,
+		"OUT", T_BOOL, 0
+	}
+};

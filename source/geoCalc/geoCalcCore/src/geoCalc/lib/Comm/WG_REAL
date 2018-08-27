@@ -1,0 +1,14 @@
+static void run_WG_REAL(void *p)
+{	
+	fb_t *pb = p;
+}
+
+static fb_t fb_WG_REAL = {
+	"WG_REAL", 4, 0, 0, 0, run_WG_REAL, 
+	{
+		"IN", T_REAL, 0,	
+		"T_D", T_TIME, 0,	
+		"SET", T_BOOL, 0,
+		"HOLD", T_BOOL, 0,	
+	}	
+};

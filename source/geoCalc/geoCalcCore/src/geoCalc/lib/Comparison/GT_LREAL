@@ -1,0 +1,14 @@
+static void run_GT_LREAL(void *p)
+{	
+	fb_t *pb = p;
+	pb->d[2].v.b = (pb->d[0].v.fl > pb->d[1].v.fl ? 1 : 0);
+}
+
+static fb_t fb_GT_LREAL = {
+	"GT_LREAL", 2, 1, 0, 0, run_GT_LREAL , 
+	{
+		"IN1", T_LREAL, 0,
+		"IN2", T_LREAL, 0,
+		"OUT", T_BOOL, 0
+	}
+};

@@ -1,0 +1,20 @@
+static void run_SFT_BOOL(void *p)
+{	
+	fb_t *pb = p;
+
+	if(pb->d[2].v.b){
+		pb->d[3].v.b = pb->d[1].v.b;
+	}else{
+		pb->d[3].v.b = pb->d[0].v.b;
+	}
+}
+
+static fb_t fb_SFT_BOOL = {
+	"SFT_BOOL", 3, 1, 0, 0, run_SFT_BOOL, 
+	{
+		"IN1", T_BOOL, 0,	
+		"IN2", T_BOOL, 0,	
+		"Z", T_BOOL, 0,	
+		"OUT", T_BOOL, 0,
+	}	
+};

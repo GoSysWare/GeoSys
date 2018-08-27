@@ -1,0 +1,14 @@
+static void run_LT_REAL(void *p)
+{	
+	fb_t *pb = p;
+	pb->d[2].v.b = (pb->d[0].v.f < pb->d[1].v.f ? 1 : 0);
+}
+
+static fb_t fb_LT_REAL = {
+	"LT_REAL", 2, 1, 0, 0, run_LT_REAL , 
+	{
+		"IN1", T_REAL, 0,
+		"IN2", T_REAL, 0,
+		"OUT", T_BOOL, 0
+	}
+};

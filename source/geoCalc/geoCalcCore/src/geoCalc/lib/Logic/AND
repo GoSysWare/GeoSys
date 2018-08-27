@@ -1,0 +1,14 @@
+static void run_AND(void *p)
+{	
+	fb_t *pb = p;
+	pb->d[2].v.b = pb->d[0].v.b && pb->d[1].v.b; 
+}
+
+static fb_t fb_AND = {
+	"AND", 2, 1, 0, 0, run_AND, 
+	{
+		"IN1", T_BOOL, 0,
+		"IN2", T_BOOL, 0,
+		"OUT", T_BOOL, 0
+	}	
+};

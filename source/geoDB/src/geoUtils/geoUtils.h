@@ -17,7 +17,7 @@
 					Error
 					输入输出
 					字符处理
-					GetOpt
+					Arg Options
 *       
 *  @author   George.Kuo                                                      *
 *  @email    guooujie@163.com												 *

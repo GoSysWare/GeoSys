@@ -1,0 +1,59 @@
+static void run_BALANCE(void *p)
+{	
+	fb_t *pb = p;
+
+	if(pb->d[6].v.f < pb->d[7].v.f){
+		pb->d[8].v.f = 0;
+		pb->d[9].v.f = 0;
+		pb->d[10].v.b = 1;
+	}else{
+		pb->d[10].v.b = 0;
+		if((pb->d[7].v.f < pb->d[8].v.f < pb->d[6].v.f) && (pb->d[7].v.f < pb->d[9].v.f < pb->d[6].v.f)){
+			if(pb->d[3].v.b && pb->d[5].v.b){
+				pb->d[8].v.f = pb->d[2].v.f;
+				pb->d[9].v.f = pb->d[4].v.f;
+			}
+			if((!pb->d[3].v.b) && (!pb->d[5].v.b)){
+				pb->d[8].v.f = pb->d[0].v.f + pb->d[1].v.f;
+				pb->d[9].v.f = pb->d[0].v.f - pb->d[1].v.f;
+			}
+			if(pb->d[3].v.b && (!pb->d[5].v.b)){
+				pb->d[8].v.f = pb->d[2].v.f;
+				pb->d[9].v.f = 2 * pb->d[0].v.f - pb->d[8].v.f;
+			}
+			if((!pb->d[3].v.b) && pb->d[5].v.b){
+				pb->d[9].v.f = pb->d[4].v.f;
+				pb->d[8].v.f = 2 * pb->d[0].v.f - pb->d[9].v.f;
+			}
+		}
+		if(pb->d[8].v.f >= pb->d[6].v.f){
+			pb->d[8].v.f = pb->d[6].v.f;	
+		}
+		if(pb->d[9].v.f >= pb->d[6].v.f){
+			pb->d[9].v.f = pb->d[6].v.f;	
+		}
+		if(pb->d[8].v.f <= pb->d[7].v.f){
+			pb->d[8].v.f = pb->d[7].v.f;	
+		}
+		if(pb->d[9].v.f <= pb->d[7].v.f){
+			pb->d[9].v.f = pb->d[7].v.f;	
+		}
+	}
+}
+
+static fb_t fb_BALANCE = {
+	"BALANCE", 8, 3, 0, 0, run_BALANCE, 
+	{
+		"IN", T_REAL, 0,	
+		"DB", T_REAL, 0,	
+		"TR1", T_REAL, 0,	
+		"TS1", T_BOOL, 0,
+		"TR2", T_REAL, 0,
+		"TS2", T_BOOL, 0,
+		"MAX", T_REAL, 0,
+		"MIN", T_REAL, 0,
+		"OUT1", T_REAL, 0,
+		"OUT2", T_REAL, 0,
+		"ERR", T_BOOL, 0,
+	}
+};

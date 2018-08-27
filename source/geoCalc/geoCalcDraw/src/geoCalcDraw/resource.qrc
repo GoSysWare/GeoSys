@@ -1,0 +1,31 @@
+<RCC>
+    <qresource prefix="/">
+        <file>images/copy.png</file>
+        <file>images/new.png</file>
+        <file>images/open.png</file>
+        <file>images/paste.png</file>
+        <file>images/print.png</file>
+        <file>images/save.png</file>
+        <file>images/delete.png</file>
+        <file>images/all.png</file>
+        <file>images/download.png</file>
+        <file>images/monitor.png</file>
+        <file>images/offline.png</file>
+        <file>images/online.png</file>
+        <file>images/sync.png</file>
+        <file>images/target.png</file>
+        <file>images/upload.png</file>
+        <file>images/variable.png</file>
+        <file>images/zoomnormal.png</file>
+        <file>images/about.png</file>
+        <file>images/zoomin.png</file>
+        <file>images/zoomout.png</file>
+        <file>images/proj.png</file>
+        <file>images/cursorcp.png</file>
+        <file>images/cursorev.png</file>
+        <file>images/cursorfb.png</file>
+        <file>images/cursorlk.png</file>
+        <file>images/cursorna.png</file>
+        <file>images/saveas.png</file>
+    </qresource>
+</RCC>

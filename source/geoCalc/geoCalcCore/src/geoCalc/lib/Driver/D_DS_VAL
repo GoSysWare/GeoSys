@@ -1,0 +1,157 @@
+static void run_D_DS_VAL(void *p)
+{	
+	fb_t *pb = p;
+
+	Time dt = clk_cycle();
+
+	Bool AM = pb->d[0].v.b;
+	Bool KO = pb->d[1].v.b;
+	Bool AO = pb->d[2].v.b;
+	Bool PO = pb->d[3].v.b;
+	Bool OPN = pb->d[4].v.b;
+	Bool KO_FB = pb->d[5].v.b;
+	Bool LO = pb->d[6].v.b;
+	Bool FO = pb->d[7].v.b;
+	Bool MPP = pb->d[8].v.b;
+	Bool LC = pb->d[9].v.b;
+	Bool KC_FB = pb->d[10].v.b;
+	Bool FZ = pb->d[11].v.b;
+	Bool CLS = pb->d[12].v.b;
+	Bool PC = pb->d[13].v.b;
+	Bool AC = pb->d[14].v.b;
+	Bool KC = pb->d[15].v.b;
+	Bool PS = pb->d[16].v.b;
+	Time TD = pb->d[17].v.tm;
+
+
+	pb->d[24].v.b = (((AM && AO && !AC) || (KO && !KO_FB && !KC)|| PO) && FO && !PS && !LO && !PC) && !OPN;
+	pb->d[25].v.b = (((AM && AC && !AO) || (KC && !KC_FB && !KO)|| PC) && FZ && !PS && !LC) && !CLS;
+	pb->d[18].v.b = (((AM && AO && !AC) || (KO && !KO_FB && !KC)|| PO)&& !pb->d[24].v.b);
+	pb->d[20].v.b = (((AM && AC && !AO) || (KC && !KC_FB && !KO)|| PC)&& !pb->d[25].v.b);
+	pb->d[26].v.b = (pb->d[24].v.b && !pb->d[29].v.b);
+	pb->d[27].v.b = (OPN || MPP || KC);
+	pb->d[29].v.b = (pb->d[25].v.b && !pb->d[26].v.b);
+	pb->d[30].v.b = (CLS || MPP || KO);
+	
+
+	if(pb->d[26].v.b){
+		pb->d[28].v.b = 1;
+	}else if(pb->d[27].v.b){
+		pb->d[28].v.b = 0;
+	}
+	pb->d[19].v.b = pb->d[28].v.b && !pb->d[22].v.b;
+	
+
+	if(pb->d[29].v.b){
+		pb->d[31].v.b = 1;
+	}else if(pb->d[30].v.b){
+		pb->d[31].v.b = 0;
+	}
+	pb->d[20].v.b = pb->d[31].v.b && !pb->d[22].v.b;
+	
+
+	pb->d[38].v.b = MPP;
+	pb->d[39].v.b = pb->d[26].v.b || pb->d[29].v.b;
+	if(pb->d[38].v.b){
+		pb->d[40].v.b = 1;
+	}else if(pb->d[39].v.b){
+		pb->d[40].v.b = 0;
+	}
+	
+	pb->d[32].v.b = pb->d[28].v.b || pb->d[31].v.b;
+	pb->d[35].v.b = OPN && CLS && !pb->d[40].v.b;
+	
+	if(pb->d[32].v.b){
+		if(!pb->d[33].v.b){
+			pb->d[23].v.tm = 0;
+			pb->d[41].v.tm = 0;
+		}else if(pb->d[41].v.tm >= TD){
+			pb->d[34].v.b = 1;
+			pb->d[41].v.tm = TD;
+			pb->d[23].v.tm = TD;
+		}else{
+			pb->d[34].v.b = 0;
+			pb->d[41].v.tm += dt;
+			pb->d[23].v.tm = pb->d[41].v.tm; 
+		}
+	}else{
+		pb->d[34].v.b = 0;
+		pb->d[23].v.tm = 0;
+	}
+	pb->d[33].v.b = pb->d[32].v.b;
+	
+	if(pb->d[35].v.b){
+		if(!pb->d[36].v.b){
+			pb->d[42].v.tm = 0;
+		}else if(pb->d[42].v.tm >= 20){
+			pb->d[37].v.b = 1;
+			pb->d[42].v.tm = 20;
+		}else{
+			pb->d[37].v.b = 0;
+			pb->d[42].v.tm += dt;
+		}
+	}else{
+		pb->d[37].v.b = 0;
+	}
+	pb->d[36].v.b = pb->d[35].v.b;
+	
+	pb->d[22].v.b = pb->d[34].v.b || pb->d[37].v.b;
+}
+
+static fb_t fb_D_DS_VAL = {
+	"D_DS_VAL", 18, 6, 19, 0, run_D_DS_VAL, 
+	{
+		"AM", T_BOOL, 0,	
+		"KO", T_BOOL, 0,	
+		"AO", T_BOOL, 0,
+		"PO", T_BOOL, 0,
+		"OPN", T_BOOL, 0,	
+		"KO_FB", T_BOOL, 0,	
+		"LO", T_BOOL, 0,
+		"FO", T_BOOL, 0,
+		"MPP", T_BOOL, 0,	
+		"LC", T_BOOL, 0,	
+		"KC_FB", T_BOOL, 0,
+		"FZ", T_BOOL, 0,
+		"CLS", T_BOOL, 0,	
+		"PC", T_BOOL, 0,	
+		"AC", T_BOOL, 0,
+		"KC", T_BOOL, 0,	
+		"PS", T_BOOL, 0,
+		"TD", T_TIME, 0,
+		
+		"ONENO", T_BOOL, 0,	
+		"ONCMD", T_BOOL, 0,	
+		"OFFCMD", T_BOOL, 0,
+		"OFFENO", T_BOOL, 0,	
+
+		"TIMEOUT", T_BOOL, 0,
+		"ETD", T_TIME, 0,
+		
+		"OP", T_BOOL, 0,
+		"CL", T_BOOL, 0,
+
+		"OpenS", T_BOOL, 0,
+		"OpenR", T_BOOL, 0,
+		"OpenQ", T_BOOL, 0,
+
+		"CloseS", T_BOOL, 0,
+		"CloseR", T_BOOL, 0,
+		"CloseQ", T_BOOL, 0,
+
+		"TDset", T_BOOL, 0,
+		"old_TD", T_BOOL, 0,
+		"TDQ", T_BOOL, 0,
+
+		"MPPTDS", T_BOOL, 0,
+		"old_MTD", T_BOOL, 0,
+		"MPPTDQ", T_BOOL, 0,
+
+		"MPPS", T_BOOL, 0,
+		"MPPR", T_BOOL, 0,
+		"MPPQ", T_BOOL, 0,
+		
+		"Td", T_TIME, 0,
+		"Tm", T_TIME, 0,
+	}
+};

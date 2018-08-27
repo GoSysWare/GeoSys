@@ -1,0 +1,17 @@
+static void run_R2B(void *p)
+{	
+	fb_t *pb = p;
+	if(pb->d[0].v.b == 0){
+		pb->d[1].v.b = 0;
+	}else{
+		pb->d[1].v.b = 1;
+	}
+}
+
+static fb_t fb_R2B = {
+	"R2B", 1, 1, 0, 0, run_R2B, 
+	{
+		"IN", T_REAL, 0,
+		"OUT", T_BOOL, 0
+	}
+};

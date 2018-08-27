@@ -1,0 +1,14 @@
+static void run_COS(void *p)
+{	
+	fb_t *pb = p;
+
+	pb->d[1].v.f = (Real)cos(pb->d[0].v.f); 
+}
+
+static fb_t fb_COS = {
+	"COS", 1, 1, 0, 0, run_COS, 
+	{
+		"IN", T_REAL, 0,
+		"OUT", T_REAL, 0,
+	}
+};

@@ -1,0 +1,66 @@
+static void run_TWOSEL(void *p)
+{	
+	fb_t *pb = p;
+
+	Int i = pb->d[4].v.i;
+
+	if(pb->d[2].v.b && pb->d[3].v.b){
+		pb->d[7].v.b = 1;
+		return;
+	}else if(pb->d[2].v.b){
+		pb->d[7].v.b  = 0;
+		pb->d[6].v.f = pb->d[1].v.f;
+	}else if(pb->d[3].v.b){
+		pb->d[7].v.b  = 0;
+		pb->d[6].v.f = pb->d[0].v.f;
+	}else{
+		if((pb->d[5].v.f < 0) || (fabs(pb->d[0].v.f - pb->d[1].v.f) > pb->d[5].v.f)){
+			pb->d[7].v.b = 1;
+			return;
+		}else{
+			if((i > 4) || (i < 0)){
+				pb->d[7].v.b  = 1;
+				return;
+			}else if(i == 0){
+				pb->d[7].v.b  = 0;
+				pb->d[6].v.f = (pb->d[0].v.f + pb->d[1].v.f)/2;
+			}else if(i == 1){
+				if(pb->d[0].v.f >= pb->d[1].v.f){
+					pb->d[7].v.b  = 0;
+					pb->d[6].v.f = pb->d[1].v.f;
+				}else{
+					pb->d[7].v.b  = 0;
+					pb->d[6].v.f = pb->d[0].v.f;
+				}
+			}else if(i == 2){
+				if(pb->d[0].v.f >= pb->d[1].v.f){
+					pb->d[7].v.b  = 0;
+					pb->d[6].v.f = pb->d[0].v.f;
+				}else{
+					pb->d[7].v.b  = 0;
+					pb->d[6].v.f = pb->d[1].v.f;
+				}
+			}else if(i == 3){
+				pb->d[7].v.b  = 0;
+				pb->d[6].v.f = pb->d[0].v.f;
+			}else if(i == 4){
+				pb->d[7].v.b  = 0;
+				pb->d[6].v.f = pb->d[1].v.f;
+			}
+		}
+	}
+}
+
+static fb_t fb_TWOSEL = {
+	"TWOSEL", 6, 2, 0, 0, run_TWOSEL, 
+	{
+		"IN1", T_REAL, 0,
+		"IN2", T_REAL, 0,
+		"IN1_ERR", T_BOOL, 0,
+		"IN2_ERR", T_BOOL, 0,
+		"MODE", T_INT, 0,
+		"DB", T_REAL, 0,
+		"OUT", T_REAL, 0,
+		"ERR", T_BOOL, 0,
+	}
+};

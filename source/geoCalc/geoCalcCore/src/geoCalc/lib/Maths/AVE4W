@@ -1,0 +1,33 @@
+static void run_AVE4W(void *p)
+{	
+	fb_t *pb = p;
+
+	pb->d[10].v.f = pb->d[4].v.f + pb->d[5].v.f + pb->d[6].v.f + pb->d[7].v.f;
+	pb->d[9].v.f = pb->d[4].v.f * pb->d[0].v.f + pb->d[5].v.f * pb->d[1].v.f + pb->d[6].v.f * pb->d[2].v.f + pb->d[7].v.f * pb->d[3].v.f;
+	
+	if(fabs(pb->d[10].v.f) < 0.00000001){
+		pb->d[11].v.b = 1;
+		return;
+	}else{
+		pb->d[11].v.b = 0;
+		pb->d[8].v.f = pb->d[9].v.f / pb->d[10].v.f;
+	}
+}
+
+static fb_t fb_AVE4W = {
+	"AVE4W", 8, 4, 0, 0, run_AVE4W, 
+	{
+		"IN1", T_REAL, 0,	
+		"IN2", T_REAL, 0,	
+		"IN3", T_REAL, 0,	
+		"IN4", T_REAL, 0,	
+		"K1", T_REAL, 0,	
+		"K2", T_REAL, 0,	
+		"K3", T_REAL, 0,	
+		"K4", T_REAL, 0,	
+		"OUT", T_REAL, 0,	
+		"W_SUM", T_REAL, 0,	
+		"K_SUM", T_REAL, 0,	
+		"ERR", T_BOOL, 0,	
+	}	
+};

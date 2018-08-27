@@ -1,0 +1,18 @@
+static void run_RS(void *p)
+{	
+	fb_t *pb = p;
+	if(pb->d[1].v.b){
+		pb->d[2].v.b = 0;
+	}else if(pb->d[0].v.b){
+		pb->d[2].v.b = 1;
+	}
+}
+
+static fb_t fb_RS = {
+	"RS", 2, 1, 0, 0,  run_RS, 
+	{
+		"S", T_BOOL, 0,
+		"R", T_BOOL, 0,
+		"Q", T_BOOL, 0
+	}
+};

@@ -24,6 +24,7 @@
 *  2016/10/7 | 1.0.0.1   | George.Kuo      | Create file                    *
 *----------------------------------------------------------------------------*
 *                                                                            *
+*/
 #ifndef  GEOSYS_UTILS_SETTINGS_H__
 #define  GEOSYS_UTILS_SETTINGS_H__
 

@@ -1,14 +1,18 @@
 
-geoCore  �������ĺ��Ŀ鹦��   C++
-geoDB     geoSys��ʵʱ��ʷ���ݿ�   C++ 
-geoDraw  geoSys�Ļ�����̬����    QT
-geoMaga  ������̬����              QT/C#      
-
-geoView   �ͻ������н���       QT
-geoWeb    Web�����н��棬������ˣ������Ҫһ��Draw�������ļ�������֧����������ģʽ   Java
-geoGate   ���أ���������ͨ��Э������ͨ��   QT  C++
-geoLogic  �߼���̬����     QT
-geoSim     ���ݷ���ϵͳ    C++
-geoApp    �������ֻ��˵�HMI�ͻ��� ֧�� android ios
-geoRept    ����ϵͳ        java
-geoSys     ϵͳ����  ����ϵͳ������ϣ�ϵͳ��ʱ��ϵͳά���ȹ���
+geoCore   控制器的核心块功能   C++
+geoDB     geoSys的实时历史数据库   C++ 
+geoRun    geoSys的其他二次权限、报警、打印、声音、Web、规程等运行服务
+geoDraw   geoSys的画面组态工具    QT
+geoMaga   工程组态工具              QT/C#      
+geoCalc   计算引擎包括计算组态画面   C++ & QT
+geoView   客户端运行界面       QT
+geoWeb    Web端运行界面，包括后端，这个需要一套Draw出来的文件，可以支持两种运行模式   Java
+geoGate   软件网关，包括各种modbus opc通信协议通信   QT  C++
+geoLogic  逻辑组态软件     QT
+geoSim    数据仿真系统    C++
+geoApp    运行在手机端的HMI客户端 支持 android ios
+geoRept   报表系统        java
+geoSys    系统功能  包括系统故障诊断，系统对时，系统维护等功能
+geoBase   系统公共和基础处理功能函数类库 各类网络、字符、日志、授权等基础件 被以上各个功能库调用
+geoTools  系统工具类集合 ALL
+geoDev    系统设备驱动   C++

@@ -1,0 +1,14 @@
+static void run_SUB_REAL(void *p)
+{	
+	fb_t *pb = p;
+	pb->d[2].v.f = pb->d[0].v.f - pb->d[1].v.f; 
+}
+
+static fb_t fb_SUB_REAL = {
+	"SUB_REAL", 2, 1, 0, 0,  run_SUB_REAL, 
+	{	
+		"IN1", T_REAL, 0,
+		"IN2", T_REAL, 0,
+		"OUT", T_REAL, 0
+	}	
+};

@@ -1,0 +1,65 @@
+static void run_CTUD_INT(void *p)
+{	
+	fb_t *pb = p;
+
+	if(pb->d[2].v.b){
+		pb->d[5].v.b = 0;
+		pb->d[6].v.b = 0;
+		pb->d[7].v.i = 0;
+
+		pb->d[8].v.b = 0;	
+		pb->d[9].v.b = 0;
+		return;	
+	}
+	
+	if(pb->d[3].v.b){
+		pb->d[7].v.i = pb->d[4].v.i;
+		pb->d[5].v.b = 0;
+		pb->d[6].v.b = 0;
+			
+		pb->d[8].v.b = 0;	
+		pb->d[9].v.b = 0;	
+	}
+
+	if(!pb->d[3].v.b){
+		if(!pb->d[8].v.b && pb->d[0].v.b){
+			pb->d[7].v.i = pb->d[7].v.i + 1;
+		}
+
+		if(!pb->d[9].v.b && pb->d[1].v.b){
+			pb->d[7].v.i = pb->d[7].v.i - 1;
+		}
+			
+		pb->d[8].v.b = pb->d[0].v.b;	
+		pb->d[9].v.b = pb->d[1].v.b;
+	
+		if(pb->d[7].v.i > pb->d[4].v.i){
+			pb->d[5].v.b = 1;
+			pb->d[6].v.b = 0;
+		}else if(pb->d[7].v.i < 0){
+			pb->d[5].v.b = 0;
+			pb->d[6].v.b = 1;
+		}else{
+			pb->d[5].v.b = 0;
+			pb->d[6].v.b = 0;
+		}	
+	}
+}
+
+static fb_t fb_CTUD_INT = {
+	"CTUD_INT", 5, 3, 2, 0, run_CTUD_INT, 
+	{	
+		"CTU", T_BOOL, 0,
+		"CTD", T_BOOL, 0,
+		"RST", T_BOOL, 0,
+		"LD", T_BOOL, 0,
+		"PV", T_INT, 0,
+		
+		"QU", T_BOOL, 0,
+		"QD", T_BOOL, 0,
+		"OUT", T_INT, 0,
+
+		"OLD_CTU", T_BOOL, 0,
+		"OLD_CTD", T_BOOL, 0,
+	}	
+};

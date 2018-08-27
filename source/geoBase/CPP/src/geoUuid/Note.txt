@@ -1,0 +1,92 @@
+
+//libuuid不是linux的标配，而windows下由UuidCreate()生成
+
+libuuid源码 libuuid-1.0.3 
+原则上只能在linux编译，但也能在windows下编译，需要作一些处理
+
+	1. vs的项目配置中宏定义中添加
+		HAVE_CONFIG_H
+
+	2. 在vs的编译中加入宏 
+		-D "_CRT_SECURE_NO_DEPRECATE" 
+		-D "_CRT_NONSTDC_NO_WARNINGS"
+
+	3. 编写添加config.h文件
+
+		#define HAVE_STDINT_H
+		#define HAVE_INTTYPES_H
+		#define HAVE_UNISTD_H
+
+		#if defined(_MSC_VER)
+		#include <BaseTsd.h>
+		typedef SSIZE_T ssize_t;
+		typedef unsigned int mode_t;
+		#endif
+		#ifndef _SUSECONDS_T
+		#define _SUSECONDS_T
+		typedef long useconds_t; /* signed # of microseconds */
+		#endif  /* _SUSECONDS_T */
+
+		//#define _CRT_SECURE_NO_DEPRECATE
+		//#define _CRT_NONSTDC_NO_WARNINGS
+		//#define _CRT_SECURE_NO_WARNINGS
+
+		#define HAVE_ERR
+		#define HAVE_ERRX
+		#define HAVE_WARN
+		#define HAVE_WARNX
+
+     4. 在gen_uuid.c中实现ftruncate函数，修改have_random_source函数
+          #ifdef _WIN32
+		 int ftruncate(int handle, int offset)
+		{
+			   LARGE_INTEGER loff;
+			   loff.QuadPart = offset;
+			   if (SetFilePointerEx(handle, loff, 0, FILE_BEGIN))
+					   return SetEndOfFile(handle);
+			   else
+					   return (-1);
+		}
+		#endif
+		static int have_random_source(void)
+		{
+		#ifdef _WIN32
+			   return 1;
+		#else
+			   struct stat s;
+			   return (!stat("/dev/random", &s) || !stat("/dev/urandom", &s));
+		#endif // _WIN32
+		}
+5. 修改randutils.c文件的头文件包含
+		#ifndef _WIN32
+		#include <sys/time.h>
+		#include <sys/syscall.h>
+		#else
+		#include <time.h>
+		#endif
+
+    randutils .c 中实现重新实现
+		int random_get_fd(void)
+		{
+			   return 0;
+		}
+		void random_get_bytes(void *buf, size_t nbytes)
+		{
+			   char *pt =(char*)buf;
+			   unsigned  long fd;
+			   int j = nbytes /4;
+			   int k = nbytes % 4;
+			   int m = 0, n = 0;
+			   for (m = 0; m < j; m++)
+			   {
+					   rand_s(&fd);
+					   memcpy(pt, &fd, 4);
+					   pt += 4;
+			   }
+			   if (k > 0)
+			   {
+					   rand_s(&fd);
+					   memcpy(pt, &fd, k);
+			   }
+		}
+6.处理添加 __declspec(dllexport)

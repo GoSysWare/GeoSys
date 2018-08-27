@@ -54,10 +54,10 @@ struct option
 };
 
 //struct option long_options[] = {
-//	{ "a123", required_argument, 0, 'a' },
+//	{ "a123", required_argument, 0, 'a' },getopt_long
 //	{ "c123", no_argument, 0, 'c' },
 //}
-//现在，如果命令行的参数是 - a 123，那么调用getopt_long()将返回字符'a', 
+//现在，如果命令行的参数是 - a 123，那么调用()将返回字符'a', 
 //并且将字符串123由optarg返回(注意注意！字符串123由optarg带回！optarg不需要定义，在getopt.h中已经有定义)，
 //那么，如果命令行参数是 - c，那么调用getopt_long()将返回字符'c', 
 //而此时，optarg是null。
