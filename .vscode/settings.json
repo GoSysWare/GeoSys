@@ -1,0 +1,10 @@
+{
+    "makefile.extensionOutputFolder": "./.vscode",
+    "files.associations": {
+        "*.json": "json",
+        "*.cfg": "properties",
+        "k_datatype.h": "c",
+        "evbus.h": "c",
+        "k_evdata.h": "c"
+    }
+}
