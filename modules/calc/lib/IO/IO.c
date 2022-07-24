@@ -3,8 +3,8 @@
 #include <string.h>
 #include <stdio.h>
 
-#include "k_functionblock.h"
-#include "k_io.h"
+#include "modules/calc/include/k_functionblock.h"
+#include "modules/calc/include/k_io.h"
 
 #include "DM1x1"
 #include "DM2x1"

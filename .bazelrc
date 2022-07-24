@@ -1,0 +1,25 @@
+# +------------------------------------------------------------+
+# | Build Configurations                                       |
+# +------------------------------------------------------------+
+# Do not show warnings from external dependencies.
+build --output_filter="^//"
+
+build --show_timestamps
+
+# Work around the sandbox issue.
+build --spawn_strategy=local
+
+build --compilation_mode=dbg
+
+
+build --nokeep_state_after_build
+
+
+
+# Enable C++14
+build --cxxopt="-std=c++14" 
+
+# Enable colorful output of GCC
+build --cxxopt="-fdiagnostics-color=always"
+
+#build --cxxopt="-fpermissive" 

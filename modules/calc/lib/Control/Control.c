@@ -1,8 +1,8 @@
 #include <stddef.h>
 #include <math.h>
 
-#include "k_functionblock.h"
-#include "k_util.h"
+#include "modules/calc/include/k_functionblock.h"
+#include "modules/calc/include/k_util.h"
 
 #include "BALANCE"
 #include "DDS"

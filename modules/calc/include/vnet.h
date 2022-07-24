@@ -27,8 +27,10 @@ extern "C" {
 typedef int SOCKET;
 #define SOCKET_ERROR -1
 #define INVALID_SOCKET (SOCKET)(~0)
-#define vnet_closesocket(x)  close(x)
 #endif
+
+
+
 
 typedef void (*frecv)(int, char *);
 typedef void (*frecvfrom)(int, int, char *);

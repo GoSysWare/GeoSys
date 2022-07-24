@@ -1,6 +1,6 @@
 #include <stdio.h>
-#include "k_util.h"
-#include "vnet.h"
+#include "modules/calc/include/k_util.h"
+#include "modules/calc/include/vnet.h"
 
 #ifdef _LINUX
 #include <sys/types.h>
@@ -103,14 +103,14 @@ int vnet_init()
 			return 0;
 		}	
 		
-		//printf("interface is '%s'\n", interface);
+		printf("interface is '%s'\n", interface);
 		for(i = 0; i < strlen(interface); i++){
 			if(interface[i] != ':'){
 				continue;
 			}else{
 				ifs_temp[intfCount] = strncpy(newifs, interface, i);
 				strcpy(ifr.ifr_name, newifs);			
-				//printf("ifs_temp[%d] is %s\n", intfCount, ifs_temp[intfCount]);			
+				printf("ifs_temp[%d] is %s\n", intfCount, ifs_temp[intfCount]);			
 				
 				if(intfCount == 0){
 						if(ioctl(inet_sock, SIOCGIFADDR, &ifr) < 0){
@@ -173,6 +173,6 @@ int vnet_closesocket(SOCKET s)
 	return closesocket(s);
 #endif
 #ifdef _LINUX
-	close(s);
+	return close(s);
 #endif
 }

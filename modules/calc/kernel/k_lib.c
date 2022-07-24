@@ -1,22 +1,21 @@
 #include <stddef.h>
 #include <string.h>
-#include "k_lib.h"
-
-#include "lib/Arithmetic.h"
-#include "lib/Bistable.h"
-#include "lib/Comm.h"
-#include "lib/Comparison.h"
-#include "lib/Converter.h"
-#include "lib/Control.h"
-#include "lib/Counter.h"
-#include "lib/Driver.h"
-#include "lib/IO.h"
-#include "lib/Logic.h"
-#include "lib/Maths.h"
-#include "lib/Selection.h"
-#include "lib/System.h"
-#include "lib/Trigger.h"
-#include "lib/Timer.h"
+#include "modules/calc/include/k_lib.h"
+#include "modules/calc/include/lib/Arithmetic.h"
+#include "modules/calc/include/lib/Bistable.h"
+#include "modules/calc/include/lib/Comm.h"
+#include "modules/calc/include/lib/Comparison.h"
+#include "modules/calc/include/lib/Converter.h"
+#include "modules/calc/include/lib/Control.h"
+#include "modules/calc/include/lib/Counter.h"
+#include "modules/calc/include/lib/Driver.h"
+#include "modules/calc/include/lib/IO.h"
+#include "modules/calc/include/lib/Logic.h"
+#include "modules/calc/include/lib/Maths.h"
+#include "modules/calc/include/lib/Selection.h"
+#include "modules/calc/include/lib/System.h"
+#include "modules/calc/include/lib/Trigger.h"
+#include "modules/calc/include/lib/Timer.h"
 
 #define NLIBCOUNT 15
 static int cursor;

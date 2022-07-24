@@ -1,8 +1,8 @@
 #include <stdio.h>
-#include <k_util.h>
-#include <k_process.h>
-#include <vnet.h>
-#include <vudp.h>
+#include "modules/calc/include/k_util.h"
+#include "modules/calc/include/k_process.h"
+#include "modules/calc/include/vnet.h"
+#include "modules/calc/include/vudp.h"
 
 #define INADDR_VBUS "230.10.10.10"
 #define BASE_PORT 15555
@@ -171,8 +171,8 @@ static void vudp_recv_thread(void *p)
 		}
 	}
 
-	closesocket(uports[port].sm);
-	//closesocket(uports[port].sr);
+	vnet_closesocket(uports[port].sm);
+	//vnet_closesocket(uports[port].sr);
 
 	uports[port].bind = 0;
 }

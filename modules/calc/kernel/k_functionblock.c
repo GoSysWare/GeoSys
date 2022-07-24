@@ -2,8 +2,8 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "k_functionblock.h"
-#include "k_util.h"
+#include "modules/calc/include/k_functionblock.h"
+#include "modules/calc/include/k_util.h"
 
 static size_t fb_size(fb_t *p_fb)
 {
@@ -29,7 +29,7 @@ void fb_delete(fb_t *p_fb)
 	k_free(p_fb);
 }
 
-/* n从0开始 */
+/* n锟斤拷0锟斤拷始 */
 pin_t *fb_getpin(fb_t *p_fb, int pintype, unsigned int n)
 {
 	int np;

@@ -4,57 +4,33 @@ load("//tools:cpplint.bzl", "cpplint")
 package(default_visibility = ["//visibility:public"])
 
 cc_library(
-    name = "rtdb",
+    name = "calc_rtdb",
     deps = [
-        "//modules/calc/rtdb:bin_tree",
+        "//modules/calc/rtdb:rtdb_lib",
     ],
 )
 cc_library(
     name = "rtdb_lib",
-    hdrs = ["rtdb.h"],
-    srcs = ["rtdb.c"],
-    deps = [
-    ]
-)
-        
-cc_library(
-    name = "bin_tree",
-    hdrs = ["BinTree.h"],
-    srcs = ["BinTree.c"],
-    deps = [
-        "//modules/calc/rtdb:capi_gloabel"
-    ]
-        
-)
-cc_library(
-    name = "helper",
-    hdrs = ["helper.h"],
-    srcs = ["helper.c"],
-    deps = [
-    ]
-        
-)
-
-cc_library(
-    name = "capi_gloabel",
-    hdrs = ["CapiGlobal.h"],
-    srcs = [],
-    deps = [
+    hdrs = [
+        "station.h",
+        "rtdb.h",
+        "RBTree.h",
+        "BinTree.h",
+        "helper.h",
+        "CapiGlobal.h"
     ],
-)
-cc_library(
-    name = "rb_tree",
-    hdrs = ["RBTree.h"],
-    srcs = ["RBTree.c"],
+    srcs = [
+        "station.c",
+        "rtdb.c",
+        "RBTree.c",
+        "BinTree.c",
+        "helper.c",
+        ],
     deps = [
-       "//modules/calc/rtdb:capi_gloabel",
-       "//modules/calc/rtdb:bin_tree"
-
+        "//modules/calc/include:calc_include",
     ]
-        
+
 )
-
-
 
 
 cpplint()

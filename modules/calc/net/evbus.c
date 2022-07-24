@@ -1,8 +1,8 @@
 #include <assert.h>
 #include <stdlib.h>
-#include "vnet.h"
-#include "vudp.h"
-#include "evbus.h"
+#include "modules/calc/include/vnet.h"
+#include "modules/calc/include/vudp.h"
+#include "modules/calc/include/evbus.h"
 
 static evframeproc on_evframe=NULL;
 

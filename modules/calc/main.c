@@ -1,8 +1,9 @@
-#include "k_project.h"
-#include "k_command.h"
-#include <k_process.h>
+#include "modules/calc/include/k_project.h"
+#include "modules/calc/include/k_command.h"
+#include "modules/calc/include/k_process.h"
 
-#include "stdlib.h"
+#include <stdlib.h>
+#include <stdio.h>
 
 
 static char line[80];
@@ -68,7 +69,7 @@ int main(int argc, char *argv[])
 	//	gets(line);
 	//} while (parse_line(line));
 
-	while (!_kbhit())
+	while (!getchar())
 	{
 		k_sleep(3000);
 	}

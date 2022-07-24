@@ -1,12 +1,12 @@
 #include <stdio.h>
 
-#include "vnet.h"
-#include "vtcp.h"
-#include "cfgbus.h"
-#include "stbbus.h"
-#include "k_util.h"
-#include "k_command.h"
-#include "k_process.h"
+#include "modules/calc/include/vnet.h"
+#include "modules/calc/include/vtcp.h"
+#include "modules/calc/include/cfgbus.h"
+#include "modules/calc/include/stbbus.h"
+#include "modules/calc/include/k_util.h"
+#include "modules/calc/include/k_command.h"
+#include "modules/calc/include/k_process.h"
 
 #define FRMTIMEOUT 1000
 

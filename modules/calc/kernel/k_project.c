@@ -2,11 +2,11 @@
 #include <stdio.h>
 #include <assert.h>
 
-#include "k_util.h"
-#include "k_process.h"
-#include "k_project.h"
-#include "k_compress.h"
-#include "k_state.h"
+#include "modules/calc/include/k_util.h"
+#include "modules/calc/include/k_process.h"
+#include "modules/calc/include/k_project.h"
+#include "modules/calc/include/k_compress.h"
+#include "modules/calc/include/k_state.h"
 
 static prjinfo_t info;
 static prjinfo_t info_p;

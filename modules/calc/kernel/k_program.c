@@ -1,11 +1,11 @@
 #include <stddef.h>
 #include <stdio.h>
 
-#include "k_util.h"
-#include "k_lib.h"
-#include "k_evdata.h"
-#include "k_program.h"
-#include "k_project.h"
+#include "modules/calc/include/k_util.h"
+#include "modules/calc/include/k_lib.h"
+#include "modules/calc/include/k_evdata.h"
+#include "modules/calc/include/k_program.h"
+#include "modules/calc/include/k_project.h"
 
 static enode_t *en_new()
 {

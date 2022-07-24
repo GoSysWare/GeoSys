@@ -7,14 +7,22 @@ package(default_visibility = ["//visibility:public"])
 cc_binary(
     name = "calc_core",
     srcs = [
-        "main.cc",
+        "main.c",
 
     ],
     linkopts = [
+        "-lpthread",
 
     ],
     linkstatic = False,
     deps = [
+        "//modules/calc/kernel:calc_kernel",
+        "//modules/calc/lib:calc_library",
+        "//modules/calc/net:calc_net",
+        "//modules/calc/rtdb:calc_rtdb",
+        "//modules/calc/include:calc_include",
+        "//modules/calc/include/lib:lib_include",
+
     ],
 )
 

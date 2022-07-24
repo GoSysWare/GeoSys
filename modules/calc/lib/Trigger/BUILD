@@ -1,0 +1,22 @@
+load("@rules_cc//cc:defs.bzl", "cc_library", "cc_test")
+load("//tools:cpplint.bzl", "cpplint")
+
+package(default_visibility = ["//visibility:public"])
+
+
+cc_library(
+    name = "Trigger",
+    includes = [
+    ],
+    hdrs = [
+        "D_TRIG",
+        "U_TRIG",
+    ],
+    srcs = [
+        "Trigger.c",
+    ],
+    deps = [
+        "//modules/calc/include:calc_include",
+        "//modules/calc/include/lib:lib_include",
+    ],
+)

@@ -1,10 +1,10 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <math.h>
-#include "k_util.h"
-#include "k_datatype.h"
-#include "k_evdata.h"
-#include "k_compress.h"
+#include "modules/calc/include/k_util.h"
+#include "modules/calc/include/k_datatype.h"
+#include "modules/calc/include/k_evdata.h"
+#include "modules/calc/include/k_compress.h"
 
 static evnode_t vn_head={&vn_head, &vn_head, 0, "", 0, 0, 0};
 static evnode_t *p_vn_select=&vn_head;

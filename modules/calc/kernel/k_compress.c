@@ -1,8 +1,8 @@
 #include <memory.h>
 
-#include "k_datatype.h"
-#include "k_evdata.h"
-#include "k_io.h"
+#include "modules/calc/include/k_datatype.h"
+#include "modules/calc/include/k_evdata.h"
+#include "modules/calc/include/k_io.h"
 
 int cmps_zvar(const var_t *p_var, Int type, char *buf)
 {

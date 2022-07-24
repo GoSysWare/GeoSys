@@ -1,6 +1,6 @@
 #include <math.h>
 #include <stddef.h>
-#include "k_functionblock.h"
+#include "modules/calc/include/k_functionblock.h"
 
 #include "ABS"
 #include "MOD"

@@ -1,18 +1,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "k_process.h"
-#include "k_config.h"
-#include "k_state.h"
-#include "k_io.h"
-#include "stbbus.h"
+#include "modules/calc/include/k_process.h"
+#include "modules/calc/include/k_config.h"
+#include "modules/calc/include/k_state.h"
+#include "modules/calc/include/k_io.h"
+#include "modules/calc/include/stbbus.h"
 
-//只有三种状态：unknown(状态0)；primary(状态1)；standby(状态2)
-//三种状态的条件分别由以下四组条件决定：
-//	stop/run
-//	connect/disconnect
-//	????	sync/async
-//	IO collision/not collision
+
 
 #define WAITA 5
 #define WAITB 10
@@ -29,7 +24,7 @@ static void reset_wait()
 	}
 }
 
-//主站状态
+
 static void primary_phase()
 {
 	stbbus_sync_data();
@@ -44,7 +39,7 @@ static void primary2unknown()
 	reset_wait();
 }
 
-//备站状态
+
 static void standby_phase()
 {
 }
@@ -59,7 +54,7 @@ static void standby2unknown()
     reset_wait();
 }
 
-//未知状态
+
 static void unknown_phase()
 {
 	if(wait>0){
@@ -126,12 +121,7 @@ void state_init()
 	reset_wait();
 }
 
-//以上共16种情况，组合为若干条件
-//主站条件；
-//备站条件；
-//未知条件。
 
-//主程序，不停扫描
 void state_check()
 {
 	prjinfo_t *k,*p;

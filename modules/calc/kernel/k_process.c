@@ -1,6 +1,6 @@
 #include <stdio.h>
-#include "k_util.h"
-#include "k_process.h"
+#include "modules/calc/include/k_util.h"
+#include "modules/calc/include/k_process.h"
 
 #ifdef _WIN32
 	#include <windows.h>

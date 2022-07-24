@@ -1,5 +1,5 @@
 #include <stddef.h>
-#include "k_functionblock.h"
+#include "modules/calc/include/k_functionblock.h"
 
 #include "U_TRIG"
 #include "D_TRIG"

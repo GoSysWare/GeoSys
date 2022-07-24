@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <k_datatype.h>
-#include <k_evdata.h>
-#include <k_util.h>
+#include "modules/calc/include/k_datatype.h"
+#include "modules/calc/include/k_evdata.h"
+#include "modules/calc/include/k_util.h"
 #include "helper.h"
 #include "rtdb.h"
 #include "station.h"

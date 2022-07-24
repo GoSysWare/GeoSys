@@ -1,11 +1,10 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-
-#include "k_command.h"
-#include "k_lib.h"
-#include "k_evdata.h"
-#include "k_project.h"
+#include "modules/calc/include/k_command.h"
+#include "modules/calc/include/k_lib.h"
+#include "modules/calc/include/k_evdata.h"
+#include "modules/calc/include/k_project.h"
 #define NWORD 1024
 #define NLINE 1024
 static int get_word(char *line, char *word, int *cursor)

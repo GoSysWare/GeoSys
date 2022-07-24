@@ -1,5 +1,5 @@
 #include <stddef.h>
-#include "k_functionblock.h"
+#include "modules/calc/include/k_functionblock.h"
 
 #include "ADD_INT"
 #include "ADD_REAL"

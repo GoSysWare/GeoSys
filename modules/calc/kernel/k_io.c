@@ -2,14 +2,14 @@
 #include <stdlib.h>
 #include <string.h>
 #include <memory.h>
-#include "k_io.h"
-#include "k_util.h"
-#include "k_compress.h"
-#include "k_config.h"
-#include "k_process.h"
-#include "k_project.h"
-#include "k_state.h"
-#include "cfgbus.h"
+#include "modules/calc/include/k_io.h"
+#include "modules/calc/include/k_util.h"
+#include "modules/calc/include/k_compress.h"
+#include "modules/calc/include/k_config.h"
+#include "modules/calc/include/k_process.h"
+#include "modules/calc/include/k_project.h"
+#include "modules/calc/include/k_state.h"
+#include "modules/calc/include/cfgbus.h"
 
 #ifdef IONETUDP
 #define IOPORT 7

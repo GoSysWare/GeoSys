@@ -1,9 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "k_config.h"
-#include "k_datatype.h"
-#include "k_util.h"
+#include "modules/calc/include/k_config.h"
+#include "modules/calc/include/k_datatype.h"
+#include "modules/calc/include/k_util.h"
 #include <time.h>
 
 static unsigned int clock_prev;
