@@ -588,6 +588,7 @@ int prg_lkadd(prog_t *p_prg, int id, int fbsrc, int pinsrc, int fbtgt, int pintg
 	en_addafter(p_en, p_src);
 
 	prg_setrank(p_prg);
+	//
 	if(p_src->rank > p_tgt->rank){
 		p_en = p_src->p_next;
 		en_movebefore(p_src, p_tgt);
