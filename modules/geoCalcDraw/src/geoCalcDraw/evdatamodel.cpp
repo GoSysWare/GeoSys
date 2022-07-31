@@ -89,10 +89,10 @@ QVariant EVDataModel::data(const QModelIndex &index, int role) const
         PLEVData ev = gMainModel->evList.at(index.row());
         char type[128], value[128];
         type2str(type, ev.initValue.t);
-        var2str(value, ev.initValue.v, ev.value.t);
+        var2str(value, ev.initValue, ev.value.t);
         QString sType = type;
         QString sInitValue = value;
-        var2str(value, ev.value.v, ev.value.t);
+        var2str(value, ev.value, ev.value.t);
         QString sValue = value;
         QString sRef;
         sRef.sprintf("In:%d / Out:%d", ev.refIn, ev.refOut);

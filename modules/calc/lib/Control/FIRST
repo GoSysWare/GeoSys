@@ -15,120 +15,120 @@ static void run_FIRST(void *p)
 	Int Yp = 0;
 
 
-	if(pb->d[0].v.b){
-		pb->d[18].v.i = set_first(1, pb->d[18].v.i);
+	if(pb->d[0].v.v.b){
+		pb->d[18].v.v.i = set_first(1, pb->d[18].v.v.i);
 		Yp = Yp | 0x0001;
 		n++;
 	}
 
-	if(pb->d[1].v.b){
-		pb->d[18].v.i = set_first(2, pb->d[18].v.i);
+	if(pb->d[1].v.v.b){
+		pb->d[18].v.v.i = set_first(2, pb->d[18].v.v.i);
 		Yp = Yp | 0x0002;
 		n++;
 	}
 
-	if(pb->d[2].v.b){
-		pb->d[18].v.i = set_first(3, pb->d[18].v.i);
+	if(pb->d[2].v.v.b){
+		pb->d[18].v.v.i = set_first(3, pb->d[18].v.v.i);
 		Yp = Yp | 0x0004;
 		n++;
 	}
 
-	if(pb->d[3].v.b){
-		pb->d[18].v.i = set_first(4, pb->d[18].v.i);
+	if(pb->d[3].v.v.b){
+		pb->d[18].v.v.i = set_first(4, pb->d[18].v.v.i);
 		Yp = Yp | 0x0008;
 		n++;
 	}
 
-	if(pb->d[4].v.b){
-		pb->d[18].v.i = set_first(5, pb->d[18].v.i);
+	if(pb->d[4].v.v.b){
+		pb->d[18].v.v.i = set_first(5, pb->d[18].v.v.i);
 		Yp = Yp | 0x0010;
 		n++;
 	}
 
-	if(pb->d[5].v.b){
-		pb->d[18].v.i = set_first(6, pb->d[18].v.i);
+	if(pb->d[5].v.v.b){
+		pb->d[18].v.v.i = set_first(6, pb->d[18].v.v.i);
 		Yp = Yp | 0x0020;
 		n++;
 	}
 
-	if(pb->d[6].v.b){
-		pb->d[18].v.i = set_first(7, pb->d[18].v.i);
+	if(pb->d[6].v.v.b){
+		pb->d[18].v.v.i = set_first(7, pb->d[18].v.v.i);
 		Yp = Yp | 0x0040;
 		n++;
 	}
 
-	if(pb->d[7].v.b){
-		pb->d[18].v.i = set_first(8, pb->d[18].v.i);
+	if(pb->d[7].v.v.b){
+		pb->d[18].v.v.i = set_first(8, pb->d[18].v.v.i);
 		Yp = Yp | 0x0080;
 		n++;
 	}
 
-	if(pb->d[8].v.b){
-		pb->d[18].v.i = set_first(9, pb->d[18].v.i);
+	if(pb->d[8].v.v.b){
+		pb->d[18].v.v.i = set_first(9, pb->d[18].v.v.i);
 		Yp = Yp | 0x0100;
 		n++;
 	}
 
-	if(pb->d[9].v.b){
-		pb->d[18].v.i = set_first(10, pb->d[18].v.i);
+	if(pb->d[9].v.v.b){
+		pb->d[18].v.v.i = set_first(10, pb->d[18].v.v.i);
 		Yp = Yp | 0x0200;
 		n++;
 	}
 
-	if(pb->d[10].v.b){
-		pb->d[18].v.i = set_first(11, pb->d[18].v.i);
+	if(pb->d[10].v.v.b){
+		pb->d[18].v.v.i = set_first(11, pb->d[18].v.v.i);
 		Yp = Yp | 0x0400;
 		n++;
 	}
 
-	if(pb->d[11].v.b){
-		pb->d[18].v.i = set_first(12, pb->d[18].v.i);
+	if(pb->d[11].v.v.b){
+		pb->d[18].v.v.i = set_first(12, pb->d[18].v.v.i);
 		Yp = Yp | 0x0800;
 		n++;
 	}
 
-	if(pb->d[12].v.b){
-		pb->d[18].v.i = set_first(13, pb->d[18].v.i);
+	if(pb->d[12].v.v.b){
+		pb->d[18].v.v.i = set_first(13, pb->d[18].v.v.i);
 		Yp = Yp | 0x1000;
 		n++;
 	}
 
-	if(pb->d[13].v.b){
-		pb->d[18].v.i = set_first(14, pb->d[18].v.i);
+	if(pb->d[13].v.v.b){
+		pb->d[18].v.v.i = set_first(14, pb->d[18].v.v.i);
 		Yp = Yp | 0x2000;
 		n++;
 	}
 
-	if(pb->d[14].v.b){
-		pb->d[18].v.i = set_first(15, pb->d[18].v.i);
+	if(pb->d[14].v.v.b){
+		pb->d[18].v.v.i = set_first(15, pb->d[18].v.v.i);
 		Yp = Yp | 0x4000;
 		n++;
 	}
 
-	if(pb->d[15].v.b){
-		pb->d[18].v.i = set_first(16, pb->d[18].v.i);
+	if(pb->d[15].v.v.b){
+		pb->d[18].v.v.i = set_first(16, pb->d[18].v.v.i);
 		Yp = Yp | 0x8000;
 		n++;
 	}
 
 	
-	if((n == 0) && pb->d[17].v.b){
-		pb->d[18].v.i = 0;
+	if((n == 0) && pb->d[17].v.v.b){
+		pb->d[18].v.v.i = 0;
 	}
 
-	if(n >= pb->d[16].v.i){
-		pb->d[21].v.b = 1;
+	if(n >= pb->d[16].v.v.i){
+		pb->d[21].v.v.b = 1;
 	}else{
-		pb->d[21].v.b = 0;
+		pb->d[21].v.v.b = 0;
 	}
 	
-	if(pb->d[18].v.i == 0){
-		pb->d[20].v.b = 0;
+	if(pb->d[18].v.v.i == 0){
+		pb->d[20].v.v.b = 0;
 	}else{
-		pb->d[20].v.b = 1;
+		pb->d[20].v.v.b = 1;
 	}
 
-	pb->d[19].v.i = Yp;
+	pb->d[19].v.v.i = Yp;
 }
 
 static fb_t fb_FIRST = {

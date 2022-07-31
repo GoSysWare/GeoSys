@@ -1,7 +1,7 @@
 static void run_NE_REAL(void *p)
 {	
 	fb_t *pb = (fb_t *)p;
-	pb->d[2].v.b = (pb->d[0].v.f != pb->d[1].v.f ? 1 : 0);
+	pb->d[2].v.v.b = (pb->d[0].v.v.f != pb->d[1].v.v.f ? 1 : 0);
 }
 
 static fb_t fb_NE_REAL = {

@@ -5,26 +5,26 @@ static void run_TOFF(void *p)
 	Time dt = clk_cycle();
 	Time t;
 
-	if(pb->d[0].v.b){
-		pb->d[2].v.b = 1;
-		pb->d[3].v.tm = 0;
+	if(pb->d[0].v.v.b){
+		pb->d[2].v.v.b = 1;
+		pb->d[3].v.v.tm = 0;
 		return;
 	}
 	
-	if(!pb->d[0].v.b && (pb->d[3].v.tm == 0)){
-		t = pb->d[3].v.tm + dt;
-		pb->d[3].v.tm = t;
-		pb->d[2].v.b = 1; 
+	if(!pb->d[0].v.v.b && (pb->d[3].v.v.tm == 0)){
+		t = pb->d[3].v.v.tm + dt;
+		pb->d[3].v.v.tm = t;
+		pb->d[2].v.v.b = 1; 
 	}
 
-	if(!pb->d[0].v.b && (pb->d[3].v.tm != 0)){
-		if(pb->d[3].v.tm >= pb->d[1].v.tm){
-			pb->d[3].v.tm = pb->d[1].v.tm;
-			pb->d[2].v.b = 0;
+	if(!pb->d[0].v.v.b && (pb->d[3].v.v.tm != 0)){
+		if(pb->d[3].v.v.tm >= pb->d[1].v.v.tm){
+			pb->d[3].v.v.tm = pb->d[1].v.v.tm;
+			pb->d[2].v.v.b = 0;
 		}else{
-			t = pb->d[3].v.tm + dt;
-			pb->d[3].v.tm = t;
-			pb->d[2].v.b = 1;
+			t = pb->d[3].v.v.tm + dt;
+			pb->d[3].v.v.tm = t;
+			pb->d[2].v.v.b = 1;
 		}
 	}
 }

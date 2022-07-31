@@ -248,7 +248,7 @@ void PLMainModel::makeEvNewCmd(PLCommand &cmd, PLEVData &ev, bool newId)
 
     char type[128], value[128];
     type2str(type, ev.initValue.t);
-    var2str(value, ev.initValue.v, ev.initValue.t);
+    var2str(value, ev.initValue, ev.initValue.t);
     cmd.para.sprintf("%d,%s,%s", ev.id, type, value);
     cmd.res = ev.name;
     cmd.res += ",";
@@ -262,7 +262,7 @@ void PLMainModel::makeEvSetCmd(PLCommand &cmd, PLEVData &ev)
     cmd.id = cmdID;
     cmd.fun = "setev";
     char value[128];
-    var2str(value, ev.initValue.v, ev.initValue.t);
+    var2str(value, ev.initValue, ev.initValue.t);
     cmd.para.sprintf("%d,%s", ev.id, value);
     cmd.res = ev.name;
     cmd.res += ",";

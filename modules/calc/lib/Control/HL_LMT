@@ -2,20 +2,20 @@ static void run_HL_LMT(void *p)
 {	
 	fb_t *pb = (fb_t *)p;
 
-	if( pb->d[1].v.f >  pb->d[2].v.f){
-		pb->d[4].v.b = 1;		
+	if( pb->d[1].v.v.f >  pb->d[2].v.v.f){
+		pb->d[4].v.v.b = 1;		
 		return;
 	}
 	
-	if(pb->d[0].v.f <=  pb->d[1].v.f){
-		pb->d[3].v.f = pb->d[1].v.f; 
-	}else if(pb->d[0].v.f >=  pb->d[2].v.f){
-		pb->d[3].v.f = pb->d[2].v.f;
+	if(pb->d[0].v.v.f <=  pb->d[1].v.v.f){
+		pb->d[3].v.v.f = pb->d[1].v.v.f; 
+	}else if(pb->d[0].v.v.f >=  pb->d[2].v.v.f){
+		pb->d[3].v.v.f = pb->d[2].v.v.f;
 	}else{
-		pb->d[3].v.f = pb->d[0].v.f;
+		pb->d[3].v.v.f = pb->d[0].v.v.f;
 	}
 
-	pb->d[4].v.b = 0;	
+	pb->d[4].v.v.b = 0;	
 }
 
 static fb_t fb_HL_LMT = {

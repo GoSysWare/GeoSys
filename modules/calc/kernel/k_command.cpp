@@ -323,7 +323,7 @@ static int showev(char *line, int *cursor)
 		return -1;
 	}
 
-	var2str(word,p_ev->v,p_ev->t);
+	var2str(word,*p_ev,p_ev->t);
 	printf("%s\n", word);
 
 	return 0;
@@ -343,7 +343,7 @@ static int setev(char *line, int *cursor)
 		return -1;
 	}
 	get_word(line, word, cursor);
-	str2var(word,&p_val->v,p_val->t);
+	str2var(word,p_val,p_val->t);
 
 	return 0;
 }
@@ -353,7 +353,7 @@ static int setpin(char *line, int *cursor)
 	char word[NWORD];
 	int idprg;
 	int idfb, pin;
-	var_t v;
+	val_t v;
 	fb_t *p_fb;
 
 	get_word(line, word, cursor);

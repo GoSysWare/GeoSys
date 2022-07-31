@@ -3,8 +3,8 @@ static void run_SysState(void *p)
 	fb_t *pb = (fb_t *)p;
 	Time dt = clk_cycle();
 
-	pb->d[0].v.i = pb->d[0].v.i++;	
-	pb->d[1].v.tm = (Real)dt;
+	pb->d[0].v.v.i = pb->d[0].v.v.i++;	
+	pb->d[1].v.v.tm = (Real)dt;
 }
 
 static fb_t fb_SysState = {

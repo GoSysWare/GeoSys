@@ -34,7 +34,7 @@ typedef struct Tag{
 	float hi;
 	float hihi;
 	Time uptime;
-	var_t val;
+	val_t val;
 } tag_t;
 
 typedef struct TagID{

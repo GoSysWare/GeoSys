@@ -1,7 +1,7 @@
 static void run_LT_LREAL(void *p)
 {	
 	fb_t *pb = (fb_t *)p;
-	pb->d[2].v.b = (pb->d[0].v.fl < pb->d[1].v.fl ? 1 : 0);
+	pb->d[2].v.v.b = (pb->d[0].v.v.fl < pb->d[1].v.v.fl ? 1 : 0);
 }
 
 static fb_t fb_LT_LREAL = {

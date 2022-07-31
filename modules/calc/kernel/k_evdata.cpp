@@ -6,7 +6,7 @@
 #include "modules/calc/include/k_evdata.h"
 #include "modules/calc/include/k_compress.h"
 
-static evnode_t vn_head={&vn_head, &vn_head, 0, "", 0, 0, 0};
+static evnode_t vn_head={&vn_head, &vn_head, 0, "",{0,0,0}};
 static evnode_t *p_vn_select=&vn_head;
 
 void type2str(char *ct, int it)
@@ -33,8 +33,8 @@ void type2str(char *ct, int it)
 	case T_ANY:
 		strcpy(ct, "ANY");
 		break;
-	case T_CVIMG:
-		strcpy(ct, "CVIMG");
+	case T_CVMAT:
+		strcpy(ct, "CVMAT");
 		break;
 	case T_STRING:
 		strcpy(ct, "STRING");
@@ -59,7 +59,7 @@ void str2type(char *ct, int *it)
 	}else if(strcmp(ct, "ANY")==0){
 		*it = T_ANY;
 	}else if(strcmp(ct, "CVIMG")==0){
-		*it = T_CVIMG;
+		*it = T_CVMAT;
 	}else if(strcmp(ct, "STRING")==0){
 		*it = T_STRING;
 	}else{
@@ -67,63 +67,64 @@ void str2type(char *ct, int *it)
 	}
 }
 
-void var2str(char *str, const var_t &v, int it)
+void var2str(char *str, const val_t &v, int it)
 {
 	switch(it){
 	case T_NONE:
 		*str = 0;
 		break;
 	case T_BOOL:
-		sprintf(str, "%d", v.b);
+		sprintf(str, "%d", v.v.b);
 		break;
 	case T_INT:
-		sprintf(str, "%d", v.i);
+		sprintf(str, "%d", v.v.i);
 		break;
 	case T_REAL:
-		sprintf(str, "%g", v.f);
+		sprintf(str, "%g", v.v.f);
 		break;
 	case T_LREAL:
-		sprintf(str, "%g", v.fl);
+		sprintf(str, "%g", v.v.fl);
 		break;
 	case T_TIME:
-		sprintf(str, "%g", v.tm);
+		sprintf(str, "%g", v.v.tm);
 		break;
 	case T_ANY:
 		*str = 0;
 		break;
-	case T_CVIMG:
-		sprintf(str, "(%g,%g)", v.mat->cols,v.mat->rows);
+	case T_CVMAT:
+		sprintf(str, "(%d,%d)", v.v.mat.cols,v.v.mat.rows);
 		break;
 	case T_STRING:
-		sprintf(str, "%s", v.str->data());
+		sprintf(str, "%s", v.v.str.c_str());
 		break;
 	default:
 		strcat(str, "UNKNOWN");
 	}
 }
 
-void str2var(char *str, var_t *v, int it)
+void str2var(char *str, val_t *v, int it)
 {
+	v->t = it;
 	switch(it){
 	case T_NONE:
 		break;
 	case T_BOOL:
-		v->b = atoi(str);
+		v->v.b = atoi(str);
 		break;
 	case T_INT:
-		v->i = atoi(str);
+		v->v.i = atoi(str);
 		break;
 	case T_REAL:
-		v->f = (float)atof(str);
+		v->v.f = (float)atof(str);
 		break;
 	case T_LREAL:
-		v->fl = atof(str);
+		v->v.fl = atof(str);
 		break;
-	case T_CVIMG:
+	case T_CVMAT:
 		;
 		break;
 	case T_STRING:
-		*(v->str) = str;
+		new (&v->v.str) String(str);
 	case T_ANY:
 		;
 		break;
@@ -206,7 +207,7 @@ val_t *ev_find(int id)
 int ev_add(int id, char *type, char *val, char *name)
 {
 	int it;
-	var_t v;
+	val_t v;
 	evnode_t *p_vn;
 
 	p_vn = v_new();
@@ -217,8 +218,7 @@ int ev_add(int id, char *type, char *val, char *name)
 	str2type(type, &it);
 	str2var(val, &v, it);
     p_vn->id = id;
-	p_vn->v.t = it;
-	p_vn->v.v = v;
+	p_vn->v = v;
 
 	strncpy(p_vn->name, name, EVNAMESIZE);
 	v_addbefore(p_vn, &vn_head);
@@ -277,7 +277,7 @@ void ev_dump()
 	p_vn = vn_head.p_next;
 	while(p_vn != &vn_head){
 		type2str(type, p_vn->v.t);
-		var2str(value, p_vn->v.v, p_vn->v.t);
+		var2str(value, p_vn->v, p_vn->v.t);
 		printf("ev:%d - %s,%s,%s\n", p_vn->id, p_vn->name, type, value);
 		p_vn = p_vn->p_next;
 	}

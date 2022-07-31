@@ -12,45 +12,45 @@ static void run_ES_MA(void *p)
 {	
 	fb_t *pb = (fb_t *)p;
 
-	if(pb->d[2].v.b){
-		pb->d[9].v.f = limit(pb->d[1].v.f, pb->d[4].v.f, pb->d[5].v.f);
-		pb->d[10].v.f = limit(pb->d[1].v.f, pb->d[4].v.f, pb->d[5].v.f);
+	if(pb->d[2].v.v.b){
+		pb->d[9].v.v.f = limit(pb->d[1].v.v.f, pb->d[4].v.v.f, pb->d[5].v.v.f);
+		pb->d[10].v.v.f = limit(pb->d[1].v.v.f, pb->d[4].v.v.f, pb->d[5].v.v.f);
 		return;
 	}
 
 
-	if(pb->d[3].v.b){
-		pb->d[11].v.b = 1;
+	if(pb->d[3].v.v.b){
+		pb->d[11].v.v.b = 1;
 	}else{
-		pb->d[11].v.b = 0;
+		pb->d[11].v.v.b = 0;
 	}
 
 	
-	if(pb->d[6].v.b){
-		pb->d[14].v.b = 1;
+	if(pb->d[6].v.v.b){
+		pb->d[14].v.v.b = 1;
 		return;
 	}
 	
-	pb->d[14].v.b = 0;
+	pb->d[14].v.v.b = 0;
 
 
-	if(!pb->d[11].v.b){
-		pb->d[9].v.f = limit(pb->d[8].v.f, pb->d[4].v.f, pb->d[5].v.f);
-		pb->d[10].v.f = limit(pb->d[8].v.f, pb->d[4].v.f, pb->d[5].v.f);
+	if(!pb->d[11].v.v.b){
+		pb->d[9].v.v.f = limit(pb->d[8].v.v.f, pb->d[4].v.v.f, pb->d[5].v.v.f);
+		pb->d[10].v.v.f = limit(pb->d[8].v.v.f, pb->d[4].v.v.f, pb->d[5].v.v.f);
 		
-		pb->d[12].v.f = pb->d[9].v.f - pb->d[0].v.f;
-		pb->d[13].v.f = pb->d[9].v.f - pb->d[0].v.f;
+		pb->d[12].v.v.f = pb->d[9].v.v.f - pb->d[0].v.v.f;
+		pb->d[13].v.v.f = pb->d[9].v.v.f - pb->d[0].v.v.f;
 		
 		return;
 	}
 
 
-	if(pb->d[11].v.b){
-		pb->d[12].v.f = pb->d[7].v.f;
-		pb->d[13].v.f = pb->d[7].v.f;
+	if(pb->d[11].v.v.b){
+		pb->d[12].v.v.f = pb->d[7].v.v.f;
+		pb->d[13].v.v.f = pb->d[7].v.v.f;
 
-		pb->d[9].v.f = limit((pb->d[0].v.f + pb->d[7].v.f), pb->d[4].v.f, pb->d[5].v.f);
-		pb->d[10].v.f = limit((pb->d[0].v.f + pb->d[7].v.f), pb->d[4].v.f, pb->d[5].v.f);
+		pb->d[9].v.v.f = limit((pb->d[0].v.v.f + pb->d[7].v.v.f), pb->d[4].v.v.f, pb->d[5].v.v.f);
+		pb->d[10].v.v.f = limit((pb->d[0].v.v.f + pb->d[7].v.v.f), pb->d[4].v.v.f, pb->d[5].v.v.f);
 	}
 }
 

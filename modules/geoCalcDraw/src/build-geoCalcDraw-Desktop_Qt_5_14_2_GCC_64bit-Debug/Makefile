@@ -17,7 +17,7 @@ CXX           = g++
 DEFINES       = -DWIN32_LEAN_AND_MEAN -DQT_QML_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB
 CFLAGS        = -pipe -g -Wall -Wextra -D_REENTRANT -fPIC $(DEFINES)
 CXXFLAGS      = -pipe -g -Wall -Wextra -D_REENTRANT -fPIC $(DEFINES)
-INCPATH       = -I../geoCalcDraw -I. -I../../../calc/include -I/home/shuimujie/Works/GeoSys -I../../include -I/home/shuimujie/Works/GeoSys/modules/geoCalcDraw/src/include -I/home/shuimujie/Works/GeoSys/modules/geoCalcDraw/src/geoCalcDraw/include -I/opt/Qt5.14.2/5.14.2/gcc_64/include -I/opt/Qt5.14.2/5.14.2/gcc_64/include/QtWidgets -I/opt/Qt5.14.2/5.14.2/gcc_64/include/QtGui -I/opt/Qt5.14.2/5.14.2/gcc_64/include/QtCore -I../../temp/Compile/nicCalcDraw/Debug -isystem /usr/include/libdrm -I/opt/Qt5.14.2/5.14.2/gcc_64/mkspecs/linux-g++
+INCPATH       = -I../geoCalcDraw -I. -I../../../calc/include -I/home/shuimujie/Works/GeoSys -isystem /usr/include/opencv4 -I../../include -I/home/shuimujie/Works/GeoSys/modules/geoCalcDraw/src/include -I/home/shuimujie/Works/GeoSys/modules/geoCalcDraw/src/geoCalcDraw/include -I/opt/Qt5.14.2/5.14.2/gcc_64/include -I/opt/Qt5.14.2/5.14.2/gcc_64/include/QtWidgets -I/opt/Qt5.14.2/5.14.2/gcc_64/include/QtGui -I/opt/Qt5.14.2/5.14.2/gcc_64/include/QtCore -I../../temp/Compile/nicCalcDraw/Debug -isystem /usr/include/libdrm -I/opt/Qt5.14.2/5.14.2/gcc_64/mkspecs/linux-g++
 QMAKE         = /opt/Qt5.14.2/5.14.2/gcc_64/bin/qmake
 DEL_FILE      = rm -f
 CHK_DIR_EXISTS= test -d
@@ -40,7 +40,7 @@ DISTNAME      = nicCalcDraw2.2.3
 DISTDIR = /home/shuimujie/Works/GeoSys/modules/geoCalcDraw/temp/Compile/nicCalcDraw/Debug/nicCalcDraw2.2.3
 LINK          = g++
 LFLAGS        = -Wl,-rpath,/opt/Qt5.14.2/5.14.2/gcc_64/lib
-LIBS          = $(SUBLIBS) -L/home/shuimujie/Works/GeoSys/modules/geoCalcDraw/lib/Debug -L/home/shuimujie/Works/GeoSys/modules/geoCalcDraw/bin/Debug /opt/Qt5.14.2/5.14.2/gcc_64/lib/libQt5Widgets.so /opt/Qt5.14.2/5.14.2/gcc_64/lib/libQt5Gui.so /opt/Qt5.14.2/5.14.2/gcc_64/lib/libQt5Core.so -lGL -lpthread   
+LIBS          = $(SUBLIBS) -L/home/shuimujie/Works/GeoSys/modules/geoCalcDraw/lib/Debug -L/home/shuimujie/Works/GeoSys/modules/geoCalcDraw/bin/Debug -lopencv_core -lopencv_highgui -lopencv_imgproc -lopencv_imgcodecs /opt/Qt5.14.2/5.14.2/gcc_64/lib/libQt5Widgets.so /opt/Qt5.14.2/5.14.2/gcc_64/lib/libQt5Gui.so /opt/Qt5.14.2/5.14.2/gcc_64/lib/libQt5Core.so -lGL -lpthread   
 AR            = ar cqs
 RANLIB        = 
 SED           = sed
@@ -79,43 +79,44 @@ SOURCES       = ../geoCalcDraw/main.cpp \
 		../geoCalcDraw/plionode.cpp \
 		../geoCalcDraw/pliomodel.cpp \
 		../geoCalcDraw/dlgipaddress.cpp \
-		../../../calc/kernel/k_command.c \
-		../../../calc/kernel/k_compress.c \
-		../../../calc/kernel/k_evdata.c \
-		../../../calc/kernel/k_functionblock.c \
-		../../../calc/kernel/k_io.c \
-		../../../calc/kernel/k_lib.c \
-		../../../calc/kernel/k_process.c \
-		../../../calc/kernel/k_program.c \
-		../../../calc/kernel/k_project.c \
-		../../../calc/kernel/k_state.c \
-		../../../calc/kernel/k_util.c \
-		../../../calc/net/cfgbus.c \
-		../../../calc/net/evbus.c \
-		../../../calc/net/stbbus.c \
-		../../../calc/net/vnet.c \
-		../../../calc/net/vtcp.c \
-		../../../calc/net/vudp.c \
-		../../../calc/rtdb/BinTree.c \
-		../../../calc/rtdb/helper.c \
-		../../../calc/rtdb/RBTree.c \
-		../../../calc/rtdb/rtdb.c \
-		../../../calc/rtdb/station.c \
-		../../../calc/lib/Arithmetic/Arithmetic.c \
-		../../../calc/lib/Bistable/Bistable.c \
-		../../../calc/lib/Comm/Comm.c \
-		../../../calc/lib/Comparison/Comparison.c \
-		../../../calc/lib/Control/Control.c \
-		../../../calc/lib/Converter/Converter.c \
-		../../../calc/lib/Counter/Counter.c \
-		../../../calc/lib/Driver/Driver.c \
-		../../../calc/lib/IO/IO.c \
-		../../../calc/lib/Logic/Logic.c \
-		../../../calc/lib/Maths/Maths.c \
-		../../../calc/lib/Selection/Selection.c \
-		../../../calc/lib/System/System.c \
-		../../../calc/lib/Timer/Timer.c \
-		../../../calc/lib/Trigger/Trigger.c ../../res/qrc_resource.cpp \
+		../../../calc/kernel/k_command.cpp \
+		../../../calc/kernel/k_compress.cpp \
+		../../../calc/kernel/k_evdata.cpp \
+		../../../calc/kernel/k_functionblock.cpp \
+		../../../calc/kernel/k_io.cpp \
+		../../../calc/kernel/k_lib.cpp \
+		../../../calc/kernel/k_process.cpp \
+		../../../calc/kernel/k_program.cpp \
+		../../../calc/kernel/k_project.cpp \
+		../../../calc/kernel/k_state.cpp \
+		../../../calc/kernel/k_util.cpp \
+		../../../calc/net/cfgbus.cpp \
+		../../../calc/net/evbus.cpp \
+		../../../calc/net/stbbus.cpp \
+		../../../calc/net/vnet.cpp \
+		../../../calc/net/vtcp.cpp \
+		../../../calc/net/vudp.cpp \
+		../../../calc/rtdb/BinTree.cpp \
+		../../../calc/rtdb/helper.cpp \
+		../../../calc/rtdb/RBTree.cpp \
+		../../../calc/rtdb/rtdb.cpp \
+		../../../calc/rtdb/station.cpp \
+		../../../calc/lib/Arithmetic/Arithmetic.cpp \
+		../../../calc/lib/Bistable/Bistable.cpp \
+		../../../calc/lib/Comm/Comm.cpp \
+		../../../calc/lib/Comparison/Comparison.cpp \
+		../../../calc/lib/Control/Control.cpp \
+		../../../calc/lib/Converter/Converter.cpp \
+		../../../calc/lib/Counter/Counter.cpp \
+		../../../calc/lib/Driver/Driver.cpp \
+		../../../calc/lib/IO/IO.cpp \
+		../../../calc/lib/Logic/Logic.cpp \
+		../../../calc/lib/Maths/Maths.cpp \
+		../../../calc/lib/Opencv/Opencv.cpp \
+		../../../calc/lib/Selection/Selection.cpp \
+		../../../calc/lib/System/System.cpp \
+		../../../calc/lib/Timer/Timer.cpp \
+		../../../calc/lib/Trigger/Trigger.cpp ../../res/qrc_resource.cpp \
 		../../res/qrc_images.cpp \
 		../../temp/Compile/nicCalcDraw/Debug/moc_plmainframe.cpp \
 		../../temp/Compile/nicCalcDraw/Debug/moc_libpanel.cpp \
@@ -187,6 +188,7 @@ OBJECTS       = ../../temp/Compile/nicCalcDraw/Debug/main.o \
 		../../temp/Compile/nicCalcDraw/Debug/IO.o \
 		../../temp/Compile/nicCalcDraw/Debug/Logic.o \
 		../../temp/Compile/nicCalcDraw/Debug/Maths.o \
+		../../temp/Compile/nicCalcDraw/Debug/Opencv.o \
 		../../temp/Compile/nicCalcDraw/Debug/Selection.o \
 		../../temp/Compile/nicCalcDraw/Debug/System.o \
 		../../temp/Compile/nicCalcDraw/Debug/Timer.o \
@@ -577,43 +579,44 @@ DIST          = ../geoCalcDraw/images_win7/about.png \
 		../geoCalcDraw/plionode.cpp \
 		../geoCalcDraw/pliomodel.cpp \
 		../geoCalcDraw/dlgipaddress.cpp \
-		../../../calc/kernel/k_command.c \
-		../../../calc/kernel/k_compress.c \
-		../../../calc/kernel/k_evdata.c \
-		../../../calc/kernel/k_functionblock.c \
-		../../../calc/kernel/k_io.c \
-		../../../calc/kernel/k_lib.c \
-		../../../calc/kernel/k_process.c \
-		../../../calc/kernel/k_program.c \
-		../../../calc/kernel/k_project.c \
-		../../../calc/kernel/k_state.c \
-		../../../calc/kernel/k_util.c \
-		../../../calc/net/cfgbus.c \
-		../../../calc/net/evbus.c \
-		../../../calc/net/stbbus.c \
-		../../../calc/net/vnet.c \
-		../../../calc/net/vtcp.c \
-		../../../calc/net/vudp.c \
-		../../../calc/rtdb/BinTree.c \
-		../../../calc/rtdb/helper.c \
-		../../../calc/rtdb/RBTree.c \
-		../../../calc/rtdb/rtdb.c \
-		../../../calc/rtdb/station.c \
-		../../../calc/lib/Arithmetic/Arithmetic.c \
-		../../../calc/lib/Bistable/Bistable.c \
-		../../../calc/lib/Comm/Comm.c \
-		../../../calc/lib/Comparison/Comparison.c \
-		../../../calc/lib/Control/Control.c \
-		../../../calc/lib/Converter/Converter.c \
-		../../../calc/lib/Counter/Counter.c \
-		../../../calc/lib/Driver/Driver.c \
-		../../../calc/lib/IO/IO.c \
-		../../../calc/lib/Logic/Logic.c \
-		../../../calc/lib/Maths/Maths.c \
-		../../../calc/lib/Selection/Selection.c \
-		../../../calc/lib/System/System.c \
-		../../../calc/lib/Timer/Timer.c \
-		../../../calc/lib/Trigger/Trigger.c
+		../../../calc/kernel/k_command.cpp \
+		../../../calc/kernel/k_compress.cpp \
+		../../../calc/kernel/k_evdata.cpp \
+		../../../calc/kernel/k_functionblock.cpp \
+		../../../calc/kernel/k_io.cpp \
+		../../../calc/kernel/k_lib.cpp \
+		../../../calc/kernel/k_process.cpp \
+		../../../calc/kernel/k_program.cpp \
+		../../../calc/kernel/k_project.cpp \
+		../../../calc/kernel/k_state.cpp \
+		../../../calc/kernel/k_util.cpp \
+		../../../calc/net/cfgbus.cpp \
+		../../../calc/net/evbus.cpp \
+		../../../calc/net/stbbus.cpp \
+		../../../calc/net/vnet.cpp \
+		../../../calc/net/vtcp.cpp \
+		../../../calc/net/vudp.cpp \
+		../../../calc/rtdb/BinTree.cpp \
+		../../../calc/rtdb/helper.cpp \
+		../../../calc/rtdb/RBTree.cpp \
+		../../../calc/rtdb/rtdb.cpp \
+		../../../calc/rtdb/station.cpp \
+		../../../calc/lib/Arithmetic/Arithmetic.cpp \
+		../../../calc/lib/Bistable/Bistable.cpp \
+		../../../calc/lib/Comm/Comm.cpp \
+		../../../calc/lib/Comparison/Comparison.cpp \
+		../../../calc/lib/Control/Control.cpp \
+		../../../calc/lib/Converter/Converter.cpp \
+		../../../calc/lib/Counter/Counter.cpp \
+		../../../calc/lib/Driver/Driver.cpp \
+		../../../calc/lib/IO/IO.cpp \
+		../../../calc/lib/Logic/Logic.cpp \
+		../../../calc/lib/Maths/Maths.cpp \
+		../../../calc/lib/Opencv/Opencv.cpp \
+		../../../calc/lib/Selection/Selection.cpp \
+		../../../calc/lib/System/System.cpp \
+		../../../calc/lib/Timer/Timer.cpp \
+		../../../calc/lib/Trigger/Trigger.cpp
 QMAKE_TARGET  = nicCalcDraw
 DESTDIR       = ../../bin/Debug/
 TARGET        = ../../bin/Debug/nicCalcDraw
@@ -1008,7 +1011,7 @@ distdir: FORCE
 	$(COPY_FILE) --parents ../geoCalcDraw/resource.qrc ../geoCalcDraw/images.qrc $(DISTDIR)/
 	$(COPY_FILE) --parents /opt/Qt5.14.2/5.14.2/gcc_64/mkspecs/features/data/dummy.cpp $(DISTDIR)/
 	$(COPY_FILE) --parents ../geoCalcDraw/plmainframe.h ../geoCalcDraw/cadpanel.h ../geoCalcDraw/libpanel.h ../geoCalcDraw/progpanel.h ../geoCalcDraw/plmainmodel.h ../geoCalcDraw/gdefine.h ../geoCalcDraw/plfunctionblock.h ../geoCalcDraw/plpin.h ../geoCalcDraw/plpoint.h ../geoCalcDraw/pllink.h ../geoCalcDraw/plvlink.h ../geoCalcDraw/plevdata.h ../geoCalcDraw/plprogram.h ../geoCalcDraw/plcommand.h ../geoCalcDraw/pltarget.h ../geoCalcDraw/plselobject.h ../geoCalcDraw/dlgaddprog.h ../geoCalcDraw/plproject.h ../geoCalcDraw/evdatapanel.h ../geoCalcDraw/evdatamodel.h ../geoCalcDraw/dlgevdata.h ../geoCalcDraw/dlgpinset.h ../geoCalcDraw/dlgsaveproj.h ../geoCalcDraw/dlgobjname.h ../geoCalcDraw/plionode.h ../geoCalcDraw/pliomodel.h ../geoCalcDraw/dlgipaddress.h ../../../calc/rtdb/BinTree.h ../../../calc/rtdb/CapiGlobal.h ../../../calc/rtdb/helper.h ../../../calc/rtdb/RBTree.h ../../../calc/rtdb/rtdb.h ../../../calc/rtdb/station.h $(DISTDIR)/
-	$(COPY_FILE) --parents ../geoCalcDraw/main.cpp ../geoCalcDraw/plmainframe.cpp ../geoCalcDraw/cadpanel.cpp ../geoCalcDraw/libpanel.cpp ../geoCalcDraw/progpanel.cpp ../geoCalcDraw/plmainmodel.cpp ../geoCalcDraw/plfunctionblock.cpp ../geoCalcDraw/plpin.cpp ../geoCalcDraw/plpoint.cpp ../geoCalcDraw/pllink.cpp ../geoCalcDraw/plvlink.cpp ../geoCalcDraw/plevdata.cpp ../geoCalcDraw/plprogram.cpp ../geoCalcDraw/plcommand.cpp ../geoCalcDraw/pltarget.cpp ../geoCalcDraw/plselobject.cpp ../geoCalcDraw/dlgaddprog.cpp ../geoCalcDraw/plproject.cpp ../geoCalcDraw/evdatapanel.cpp ../geoCalcDraw/evdatamodel.cpp ../geoCalcDraw/dlgevdata.cpp ../geoCalcDraw/dlgpinset.cpp ../geoCalcDraw/dlgsaveproj.cpp ../geoCalcDraw/dlgobjname.cpp ../geoCalcDraw/plionode.cpp ../geoCalcDraw/pliomodel.cpp ../geoCalcDraw/dlgipaddress.cpp ../../../calc/kernel/k_command.c ../../../calc/kernel/k_compress.c ../../../calc/kernel/k_evdata.c ../../../calc/kernel/k_functionblock.c ../../../calc/kernel/k_io.c ../../../calc/kernel/k_lib.c ../../../calc/kernel/k_process.c ../../../calc/kernel/k_program.c ../../../calc/kernel/k_project.c ../../../calc/kernel/k_state.c ../../../calc/kernel/k_util.c ../../../calc/net/cfgbus.c ../../../calc/net/evbus.c ../../../calc/net/stbbus.c ../../../calc/net/vnet.c ../../../calc/net/vtcp.c ../../../calc/net/vudp.c ../../../calc/rtdb/BinTree.c ../../../calc/rtdb/helper.c ../../../calc/rtdb/RBTree.c ../../../calc/rtdb/rtdb.c ../../../calc/rtdb/station.c ../../../calc/lib/Arithmetic/Arithmetic.c ../../../calc/lib/Bistable/Bistable.c ../../../calc/lib/Comm/Comm.c ../../../calc/lib/Comparison/Comparison.c ../../../calc/lib/Control/Control.c ../../../calc/lib/Converter/Converter.c ../../../calc/lib/Counter/Counter.c ../../../calc/lib/Driver/Driver.c ../../../calc/lib/IO/IO.c ../../../calc/lib/Logic/Logic.c ../../../calc/lib/Maths/Maths.c ../../../calc/lib/Selection/Selection.c ../../../calc/lib/System/System.c ../../../calc/lib/Timer/Timer.c ../../../calc/lib/Trigger/Trigger.c $(DISTDIR)/
+	$(COPY_FILE) --parents ../geoCalcDraw/main.cpp ../geoCalcDraw/plmainframe.cpp ../geoCalcDraw/cadpanel.cpp ../geoCalcDraw/libpanel.cpp ../geoCalcDraw/progpanel.cpp ../geoCalcDraw/plmainmodel.cpp ../geoCalcDraw/plfunctionblock.cpp ../geoCalcDraw/plpin.cpp ../geoCalcDraw/plpoint.cpp ../geoCalcDraw/pllink.cpp ../geoCalcDraw/plvlink.cpp ../geoCalcDraw/plevdata.cpp ../geoCalcDraw/plprogram.cpp ../geoCalcDraw/plcommand.cpp ../geoCalcDraw/pltarget.cpp ../geoCalcDraw/plselobject.cpp ../geoCalcDraw/dlgaddprog.cpp ../geoCalcDraw/plproject.cpp ../geoCalcDraw/evdatapanel.cpp ../geoCalcDraw/evdatamodel.cpp ../geoCalcDraw/dlgevdata.cpp ../geoCalcDraw/dlgpinset.cpp ../geoCalcDraw/dlgsaveproj.cpp ../geoCalcDraw/dlgobjname.cpp ../geoCalcDraw/plionode.cpp ../geoCalcDraw/pliomodel.cpp ../geoCalcDraw/dlgipaddress.cpp ../../../calc/kernel/k_command.cpp ../../../calc/kernel/k_compress.cpp ../../../calc/kernel/k_evdata.cpp ../../../calc/kernel/k_functionblock.cpp ../../../calc/kernel/k_io.cpp ../../../calc/kernel/k_lib.cpp ../../../calc/kernel/k_process.cpp ../../../calc/kernel/k_program.cpp ../../../calc/kernel/k_project.cpp ../../../calc/kernel/k_state.cpp ../../../calc/kernel/k_util.cpp ../../../calc/net/cfgbus.cpp ../../../calc/net/evbus.cpp ../../../calc/net/stbbus.cpp ../../../calc/net/vnet.cpp ../../../calc/net/vtcp.cpp ../../../calc/net/vudp.cpp ../../../calc/rtdb/BinTree.cpp ../../../calc/rtdb/helper.cpp ../../../calc/rtdb/RBTree.cpp ../../../calc/rtdb/rtdb.cpp ../../../calc/rtdb/station.cpp ../../../calc/lib/Arithmetic/Arithmetic.cpp ../../../calc/lib/Bistable/Bistable.cpp ../../../calc/lib/Comm/Comm.cpp ../../../calc/lib/Comparison/Comparison.cpp ../../../calc/lib/Control/Control.cpp ../../../calc/lib/Converter/Converter.cpp ../../../calc/lib/Counter/Counter.cpp ../../../calc/lib/Driver/Driver.cpp ../../../calc/lib/IO/IO.cpp ../../../calc/lib/Logic/Logic.cpp ../../../calc/lib/Maths/Maths.cpp ../../../calc/lib/Opencv/Opencv.cpp ../../../calc/lib/Selection/Selection.cpp ../../../calc/lib/System/System.cpp ../../../calc/lib/Timer/Timer.cpp ../../../calc/lib/Trigger/Trigger.cpp $(DISTDIR)/
 
 
 clean: compiler_clean 
@@ -1476,7 +1479,7 @@ compiler_moc_header_clean:
 		/opt/Qt5.14.2/5.14.2/gcc_64/include/QtWidgets/qtableview.h \
 		../../temp/Compile/nicCalcDraw/Debug/moc_predefs.h \
 		/opt/Qt5.14.2/5.14.2/gcc_64/bin/moc
-	/opt/Qt5.14.2/5.14.2/gcc_64/bin/moc $(DEFINES) --include /home/shuimujie/Works/GeoSys/modules/geoCalcDraw/temp/Compile/nicCalcDraw/Debug/moc_predefs.h -I/opt/Qt5.14.2/5.14.2/gcc_64/mkspecs/linux-g++ -I/home/shuimujie/Works/GeoSys/modules/geoCalcDraw/src/geoCalcDraw -I/home/shuimujie/Works/GeoSys/modules/calc/include -I/home/shuimujie/Works/GeoSys -I/home/shuimujie/Works/GeoSys/modules/geoCalcDraw/include -I/home/shuimujie/Works/GeoSys/modules/geoCalcDraw/src/include -I/home/shuimujie/Works/GeoSys/modules/geoCalcDraw/src/geoCalcDraw/include -I/opt/Qt5.14.2/5.14.2/gcc_64/include -I/opt/Qt5.14.2/5.14.2/gcc_64/include/QtWidgets -I/opt/Qt5.14.2/5.14.2/gcc_64/include/QtGui -I/opt/Qt5.14.2/5.14.2/gcc_64/include/QtCore -I. -I/usr/include/c++/9 -I/usr/include/x86_64-linux-gnu/c++/9 -I/usr/include/c++/9/backward -I/usr/lib/gcc/x86_64-linux-gnu/9/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include ../geoCalcDraw/plmainframe.h -o ../../temp/Compile/nicCalcDraw/Debug/moc_plmainframe.cpp
+	/opt/Qt5.14.2/5.14.2/gcc_64/bin/moc $(DEFINES) --include /home/shuimujie/Works/GeoSys/modules/geoCalcDraw/temp/Compile/nicCalcDraw/Debug/moc_predefs.h -I/opt/Qt5.14.2/5.14.2/gcc_64/mkspecs/linux-g++ -I/home/shuimujie/Works/GeoSys/modules/geoCalcDraw/src/geoCalcDraw -I/home/shuimujie/Works/GeoSys/modules/calc/include -I/home/shuimujie/Works/GeoSys -I/usr/include/opencv4 -I/home/shuimujie/Works/GeoSys/modules/geoCalcDraw/include -I/home/shuimujie/Works/GeoSys/modules/geoCalcDraw/src/include -I/home/shuimujie/Works/GeoSys/modules/geoCalcDraw/src/geoCalcDraw/include -I/opt/Qt5.14.2/5.14.2/gcc_64/include -I/opt/Qt5.14.2/5.14.2/gcc_64/include/QtWidgets -I/opt/Qt5.14.2/5.14.2/gcc_64/include/QtGui -I/opt/Qt5.14.2/5.14.2/gcc_64/include/QtCore -I. -I/usr/include/c++/9 -I/usr/include/x86_64-linux-gnu/c++/9 -I/usr/include/c++/9/backward -I/usr/lib/gcc/x86_64-linux-gnu/9/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include ../geoCalcDraw/plmainframe.h -o ../../temp/Compile/nicCalcDraw/Debug/moc_plmainframe.cpp
 
 ../../temp/Compile/nicCalcDraw/Debug/moc_libpanel.cpp: ../geoCalcDraw/libpanel.h \
 		/opt/Qt5.14.2/5.14.2/gcc_64/include/QtWidgets/QWidget \
@@ -1613,7 +1616,7 @@ compiler_moc_header_clean:
 		/opt/Qt5.14.2/5.14.2/gcc_64/include/QtWidgets/qlistwidget.h \
 		../../temp/Compile/nicCalcDraw/Debug/moc_predefs.h \
 		/opt/Qt5.14.2/5.14.2/gcc_64/bin/moc
-	/opt/Qt5.14.2/5.14.2/gcc_64/bin/moc $(DEFINES) --include /home/shuimujie/Works/GeoSys/modules/geoCalcDraw/temp/Compile/nicCalcDraw/Debug/moc_predefs.h -I/opt/Qt5.14.2/5.14.2/gcc_64/mkspecs/linux-g++ -I/home/shuimujie/Works/GeoSys/modules/geoCalcDraw/src/geoCalcDraw -I/home/shuimujie/Works/GeoSys/modules/calc/include -I/home/shuimujie/Works/GeoSys -I/home/shuimujie/Works/GeoSys/modules/geoCalcDraw/include -I/home/shuimujie/Works/GeoSys/modules/geoCalcDraw/src/include -I/home/shuimujie/Works/GeoSys/modules/geoCalcDraw/src/geoCalcDraw/include -I/opt/Qt5.14.2/5.14.2/gcc_64/include -I/opt/Qt5.14.2/5.14.2/gcc_64/include/QtWidgets -I/opt/Qt5.14.2/5.14.2/gcc_64/include/QtGui -I/opt/Qt5.14.2/5.14.2/gcc_64/include/QtCore -I. -I/usr/include/c++/9 -I/usr/include/x86_64-linux-gnu/c++/9 -I/usr/include/c++/9/backward -I/usr/lib/gcc/x86_64-linux-gnu/9/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include ../geoCalcDraw/libpanel.h -o ../../temp/Compile/nicCalcDraw/Debug/moc_libpanel.cpp
+	/opt/Qt5.14.2/5.14.2/gcc_64/bin/moc $(DEFINES) --include /home/shuimujie/Works/GeoSys/modules/geoCalcDraw/temp/Compile/nicCalcDraw/Debug/moc_predefs.h -I/opt/Qt5.14.2/5.14.2/gcc_64/mkspecs/linux-g++ -I/home/shuimujie/Works/GeoSys/modules/geoCalcDraw/src/geoCalcDraw -I/home/shuimujie/Works/GeoSys/modules/calc/include -I/home/shuimujie/Works/GeoSys -I/usr/include/opencv4 -I/home/shuimujie/Works/GeoSys/modules/geoCalcDraw/include -I/home/shuimujie/Works/GeoSys/modules/geoCalcDraw/src/include -I/home/shuimujie/Works/GeoSys/modules/geoCalcDraw/src/geoCalcDraw/include -I/opt/Qt5.14.2/5.14.2/gcc_64/include -I/opt/Qt5.14.2/5.14.2/gcc_64/include/QtWidgets -I/opt/Qt5.14.2/5.14.2/gcc_64/include/QtGui -I/opt/Qt5.14.2/5.14.2/gcc_64/include/QtCore -I. -I/usr/include/c++/9 -I/usr/include/x86_64-linux-gnu/c++/9 -I/usr/include/c++/9/backward -I/usr/lib/gcc/x86_64-linux-gnu/9/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include ../geoCalcDraw/libpanel.h -o ../../temp/Compile/nicCalcDraw/Debug/moc_libpanel.cpp
 
 ../../temp/Compile/nicCalcDraw/Debug/moc_progpanel.cpp: ../geoCalcDraw/progpanel.h \
 		/opt/Qt5.14.2/5.14.2/gcc_64/include/QtCore/QDebug \
@@ -1750,7 +1753,7 @@ compiler_moc_header_clean:
 		/opt/Qt5.14.2/5.14.2/gcc_64/include/QtWidgets/qgridlayout.h \
 		../../temp/Compile/nicCalcDraw/Debug/moc_predefs.h \
 		/opt/Qt5.14.2/5.14.2/gcc_64/bin/moc
-	/opt/Qt5.14.2/5.14.2/gcc_64/bin/moc $(DEFINES) --include /home/shuimujie/Works/GeoSys/modules/geoCalcDraw/temp/Compile/nicCalcDraw/Debug/moc_predefs.h -I/opt/Qt5.14.2/5.14.2/gcc_64/mkspecs/linux-g++ -I/home/shuimujie/Works/GeoSys/modules/geoCalcDraw/src/geoCalcDraw -I/home/shuimujie/Works/GeoSys/modules/calc/include -I/home/shuimujie/Works/GeoSys -I/home/shuimujie/Works/GeoSys/modules/geoCalcDraw/include -I/home/shuimujie/Works/GeoSys/modules/geoCalcDraw/src/include -I/home/shuimujie/Works/GeoSys/modules/geoCalcDraw/src/geoCalcDraw/include -I/opt/Qt5.14.2/5.14.2/gcc_64/include -I/opt/Qt5.14.2/5.14.2/gcc_64/include/QtWidgets -I/opt/Qt5.14.2/5.14.2/gcc_64/include/QtGui -I/opt/Qt5.14.2/5.14.2/gcc_64/include/QtCore -I. -I/usr/include/c++/9 -I/usr/include/x86_64-linux-gnu/c++/9 -I/usr/include/c++/9/backward -I/usr/lib/gcc/x86_64-linux-gnu/9/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include ../geoCalcDraw/progpanel.h -o ../../temp/Compile/nicCalcDraw/Debug/moc_progpanel.cpp
+	/opt/Qt5.14.2/5.14.2/gcc_64/bin/moc $(DEFINES) --include /home/shuimujie/Works/GeoSys/modules/geoCalcDraw/temp/Compile/nicCalcDraw/Debug/moc_predefs.h -I/opt/Qt5.14.2/5.14.2/gcc_64/mkspecs/linux-g++ -I/home/shuimujie/Works/GeoSys/modules/geoCalcDraw/src/geoCalcDraw -I/home/shuimujie/Works/GeoSys/modules/calc/include -I/home/shuimujie/Works/GeoSys -I/usr/include/opencv4 -I/home/shuimujie/Works/GeoSys/modules/geoCalcDraw/include -I/home/shuimujie/Works/GeoSys/modules/geoCalcDraw/src/include -I/home/shuimujie/Works/GeoSys/modules/geoCalcDraw/src/geoCalcDraw/include -I/opt/Qt5.14.2/5.14.2/gcc_64/include -I/opt/Qt5.14.2/5.14.2/gcc_64/include/QtWidgets -I/opt/Qt5.14.2/5.14.2/gcc_64/include/QtGui -I/opt/Qt5.14.2/5.14.2/gcc_64/include/QtCore -I. -I/usr/include/c++/9 -I/usr/include/x86_64-linux-gnu/c++/9 -I/usr/include/c++/9/backward -I/usr/lib/gcc/x86_64-linux-gnu/9/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include ../geoCalcDraw/progpanel.h -o ../../temp/Compile/nicCalcDraw/Debug/moc_progpanel.cpp
 
 ../../temp/Compile/nicCalcDraw/Debug/moc_dlgaddprog.cpp: ../geoCalcDraw/dlgaddprog.h \
 		/opt/Qt5.14.2/5.14.2/gcc_64/include/QtWidgets/QDialog \
@@ -1880,7 +1883,7 @@ compiler_moc_header_clean:
 		/opt/Qt5.14.2/5.14.2/gcc_64/include/QtWidgets/qdialogbuttonbox.h \
 		../../temp/Compile/nicCalcDraw/Debug/moc_predefs.h \
 		/opt/Qt5.14.2/5.14.2/gcc_64/bin/moc
-	/opt/Qt5.14.2/5.14.2/gcc_64/bin/moc $(DEFINES) --include /home/shuimujie/Works/GeoSys/modules/geoCalcDraw/temp/Compile/nicCalcDraw/Debug/moc_predefs.h -I/opt/Qt5.14.2/5.14.2/gcc_64/mkspecs/linux-g++ -I/home/shuimujie/Works/GeoSys/modules/geoCalcDraw/src/geoCalcDraw -I/home/shuimujie/Works/GeoSys/modules/calc/include -I/home/shuimujie/Works/GeoSys -I/home/shuimujie/Works/GeoSys/modules/geoCalcDraw/include -I/home/shuimujie/Works/GeoSys/modules/geoCalcDraw/src/include -I/home/shuimujie/Works/GeoSys/modules/geoCalcDraw/src/geoCalcDraw/include -I/opt/Qt5.14.2/5.14.2/gcc_64/include -I/opt/Qt5.14.2/5.14.2/gcc_64/include/QtWidgets -I/opt/Qt5.14.2/5.14.2/gcc_64/include/QtGui -I/opt/Qt5.14.2/5.14.2/gcc_64/include/QtCore -I. -I/usr/include/c++/9 -I/usr/include/x86_64-linux-gnu/c++/9 -I/usr/include/c++/9/backward -I/usr/lib/gcc/x86_64-linux-gnu/9/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include ../geoCalcDraw/dlgaddprog.h -o ../../temp/Compile/nicCalcDraw/Debug/moc_dlgaddprog.cpp
+	/opt/Qt5.14.2/5.14.2/gcc_64/bin/moc $(DEFINES) --include /home/shuimujie/Works/GeoSys/modules/geoCalcDraw/temp/Compile/nicCalcDraw/Debug/moc_predefs.h -I/opt/Qt5.14.2/5.14.2/gcc_64/mkspecs/linux-g++ -I/home/shuimujie/Works/GeoSys/modules/geoCalcDraw/src/geoCalcDraw -I/home/shuimujie/Works/GeoSys/modules/calc/include -I/home/shuimujie/Works/GeoSys -I/usr/include/opencv4 -I/home/shuimujie/Works/GeoSys/modules/geoCalcDraw/include -I/home/shuimujie/Works/GeoSys/modules/geoCalcDraw/src/include -I/home/shuimujie/Works/GeoSys/modules/geoCalcDraw/src/geoCalcDraw/include -I/opt/Qt5.14.2/5.14.2/gcc_64/include -I/opt/Qt5.14.2/5.14.2/gcc_64/include/QtWidgets -I/opt/Qt5.14.2/5.14.2/gcc_64/include/QtGui -I/opt/Qt5.14.2/5.14.2/gcc_64/include/QtCore -I. -I/usr/include/c++/9 -I/usr/include/x86_64-linux-gnu/c++/9 -I/usr/include/c++/9/backward -I/usr/lib/gcc/x86_64-linux-gnu/9/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include ../geoCalcDraw/dlgaddprog.h -o ../../temp/Compile/nicCalcDraw/Debug/moc_dlgaddprog.cpp
 
 ../../temp/Compile/nicCalcDraw/Debug/moc_evdatapanel.cpp: ../geoCalcDraw/evdatapanel.h \
 		/opt/Qt5.14.2/5.14.2/gcc_64/include/QtWidgets/QWidget \
@@ -2021,7 +2024,7 @@ compiler_moc_header_clean:
 		../../../calc/include/k_datatype.h \
 		../../temp/Compile/nicCalcDraw/Debug/moc_predefs.h \
 		/opt/Qt5.14.2/5.14.2/gcc_64/bin/moc
-	/opt/Qt5.14.2/5.14.2/gcc_64/bin/moc $(DEFINES) --include /home/shuimujie/Works/GeoSys/modules/geoCalcDraw/temp/Compile/nicCalcDraw/Debug/moc_predefs.h -I/opt/Qt5.14.2/5.14.2/gcc_64/mkspecs/linux-g++ -I/home/shuimujie/Works/GeoSys/modules/geoCalcDraw/src/geoCalcDraw -I/home/shuimujie/Works/GeoSys/modules/calc/include -I/home/shuimujie/Works/GeoSys -I/home/shuimujie/Works/GeoSys/modules/geoCalcDraw/include -I/home/shuimujie/Works/GeoSys/modules/geoCalcDraw/src/include -I/home/shuimujie/Works/GeoSys/modules/geoCalcDraw/src/geoCalcDraw/include -I/opt/Qt5.14.2/5.14.2/gcc_64/include -I/opt/Qt5.14.2/5.14.2/gcc_64/include/QtWidgets -I/opt/Qt5.14.2/5.14.2/gcc_64/include/QtGui -I/opt/Qt5.14.2/5.14.2/gcc_64/include/QtCore -I. -I/usr/include/c++/9 -I/usr/include/x86_64-linux-gnu/c++/9 -I/usr/include/c++/9/backward -I/usr/lib/gcc/x86_64-linux-gnu/9/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include ../geoCalcDraw/evdatapanel.h -o ../../temp/Compile/nicCalcDraw/Debug/moc_evdatapanel.cpp
+	/opt/Qt5.14.2/5.14.2/gcc_64/bin/moc $(DEFINES) --include /home/shuimujie/Works/GeoSys/modules/geoCalcDraw/temp/Compile/nicCalcDraw/Debug/moc_predefs.h -I/opt/Qt5.14.2/5.14.2/gcc_64/mkspecs/linux-g++ -I/home/shuimujie/Works/GeoSys/modules/geoCalcDraw/src/geoCalcDraw -I/home/shuimujie/Works/GeoSys/modules/calc/include -I/home/shuimujie/Works/GeoSys -I/usr/include/opencv4 -I/home/shuimujie/Works/GeoSys/modules/geoCalcDraw/include -I/home/shuimujie/Works/GeoSys/modules/geoCalcDraw/src/include -I/home/shuimujie/Works/GeoSys/modules/geoCalcDraw/src/geoCalcDraw/include -I/opt/Qt5.14.2/5.14.2/gcc_64/include -I/opt/Qt5.14.2/5.14.2/gcc_64/include/QtWidgets -I/opt/Qt5.14.2/5.14.2/gcc_64/include/QtGui -I/opt/Qt5.14.2/5.14.2/gcc_64/include/QtCore -I. -I/usr/include/c++/9 -I/usr/include/x86_64-linux-gnu/c++/9 -I/usr/include/c++/9/backward -I/usr/lib/gcc/x86_64-linux-gnu/9/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include ../geoCalcDraw/evdatapanel.h -o ../../temp/Compile/nicCalcDraw/Debug/moc_evdatapanel.cpp
 
 ../../temp/Compile/nicCalcDraw/Debug/moc_dlgevdata.cpp: ../geoCalcDraw/dlgevdata.h \
 		/opt/Qt5.14.2/5.14.2/gcc_64/include/QtWidgets/QDialog \
@@ -2175,7 +2178,7 @@ compiler_moc_header_clean:
 		../../../calc/include/k_datatype.h \
 		../../temp/Compile/nicCalcDraw/Debug/moc_predefs.h \
 		/opt/Qt5.14.2/5.14.2/gcc_64/bin/moc
-	/opt/Qt5.14.2/5.14.2/gcc_64/bin/moc $(DEFINES) --include /home/shuimujie/Works/GeoSys/modules/geoCalcDraw/temp/Compile/nicCalcDraw/Debug/moc_predefs.h -I/opt/Qt5.14.2/5.14.2/gcc_64/mkspecs/linux-g++ -I/home/shuimujie/Works/GeoSys/modules/geoCalcDraw/src/geoCalcDraw -I/home/shuimujie/Works/GeoSys/modules/calc/include -I/home/shuimujie/Works/GeoSys -I/home/shuimujie/Works/GeoSys/modules/geoCalcDraw/include -I/home/shuimujie/Works/GeoSys/modules/geoCalcDraw/src/include -I/home/shuimujie/Works/GeoSys/modules/geoCalcDraw/src/geoCalcDraw/include -I/opt/Qt5.14.2/5.14.2/gcc_64/include -I/opt/Qt5.14.2/5.14.2/gcc_64/include/QtWidgets -I/opt/Qt5.14.2/5.14.2/gcc_64/include/QtGui -I/opt/Qt5.14.2/5.14.2/gcc_64/include/QtCore -I. -I/usr/include/c++/9 -I/usr/include/x86_64-linux-gnu/c++/9 -I/usr/include/c++/9/backward -I/usr/lib/gcc/x86_64-linux-gnu/9/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include ../geoCalcDraw/dlgevdata.h -o ../../temp/Compile/nicCalcDraw/Debug/moc_dlgevdata.cpp
+	/opt/Qt5.14.2/5.14.2/gcc_64/bin/moc $(DEFINES) --include /home/shuimujie/Works/GeoSys/modules/geoCalcDraw/temp/Compile/nicCalcDraw/Debug/moc_predefs.h -I/opt/Qt5.14.2/5.14.2/gcc_64/mkspecs/linux-g++ -I/home/shuimujie/Works/GeoSys/modules/geoCalcDraw/src/geoCalcDraw -I/home/shuimujie/Works/GeoSys/modules/calc/include -I/home/shuimujie/Works/GeoSys -I/usr/include/opencv4 -I/home/shuimujie/Works/GeoSys/modules/geoCalcDraw/include -I/home/shuimujie/Works/GeoSys/modules/geoCalcDraw/src/include -I/home/shuimujie/Works/GeoSys/modules/geoCalcDraw/src/geoCalcDraw/include -I/opt/Qt5.14.2/5.14.2/gcc_64/include -I/opt/Qt5.14.2/5.14.2/gcc_64/include/QtWidgets -I/opt/Qt5.14.2/5.14.2/gcc_64/include/QtGui -I/opt/Qt5.14.2/5.14.2/gcc_64/include/QtCore -I. -I/usr/include/c++/9 -I/usr/include/x86_64-linux-gnu/c++/9 -I/usr/include/c++/9/backward -I/usr/lib/gcc/x86_64-linux-gnu/9/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include ../geoCalcDraw/dlgevdata.h -o ../../temp/Compile/nicCalcDraw/Debug/moc_dlgevdata.cpp
 
 ../../temp/Compile/nicCalcDraw/Debug/moc_dlgpinset.cpp: ../geoCalcDraw/dlgpinset.h \
 		/opt/Qt5.14.2/5.14.2/gcc_64/include/QtWidgets/QDialog \
@@ -2325,7 +2328,7 @@ compiler_moc_header_clean:
 		../../../calc/include/k_datatype.h \
 		../../temp/Compile/nicCalcDraw/Debug/moc_predefs.h \
 		/opt/Qt5.14.2/5.14.2/gcc_64/bin/moc
-	/opt/Qt5.14.2/5.14.2/gcc_64/bin/moc $(DEFINES) --include /home/shuimujie/Works/GeoSys/modules/geoCalcDraw/temp/Compile/nicCalcDraw/Debug/moc_predefs.h -I/opt/Qt5.14.2/5.14.2/gcc_64/mkspecs/linux-g++ -I/home/shuimujie/Works/GeoSys/modules/geoCalcDraw/src/geoCalcDraw -I/home/shuimujie/Works/GeoSys/modules/calc/include -I/home/shuimujie/Works/GeoSys -I/home/shuimujie/Works/GeoSys/modules/geoCalcDraw/include -I/home/shuimujie/Works/GeoSys/modules/geoCalcDraw/src/include -I/home/shuimujie/Works/GeoSys/modules/geoCalcDraw/src/geoCalcDraw/include -I/opt/Qt5.14.2/5.14.2/gcc_64/include -I/opt/Qt5.14.2/5.14.2/gcc_64/include/QtWidgets -I/opt/Qt5.14.2/5.14.2/gcc_64/include/QtGui -I/opt/Qt5.14.2/5.14.2/gcc_64/include/QtCore -I. -I/usr/include/c++/9 -I/usr/include/x86_64-linux-gnu/c++/9 -I/usr/include/c++/9/backward -I/usr/lib/gcc/x86_64-linux-gnu/9/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include ../geoCalcDraw/dlgpinset.h -o ../../temp/Compile/nicCalcDraw/Debug/moc_dlgpinset.cpp
+	/opt/Qt5.14.2/5.14.2/gcc_64/bin/moc $(DEFINES) --include /home/shuimujie/Works/GeoSys/modules/geoCalcDraw/temp/Compile/nicCalcDraw/Debug/moc_predefs.h -I/opt/Qt5.14.2/5.14.2/gcc_64/mkspecs/linux-g++ -I/home/shuimujie/Works/GeoSys/modules/geoCalcDraw/src/geoCalcDraw -I/home/shuimujie/Works/GeoSys/modules/calc/include -I/home/shuimujie/Works/GeoSys -I/usr/include/opencv4 -I/home/shuimujie/Works/GeoSys/modules/geoCalcDraw/include -I/home/shuimujie/Works/GeoSys/modules/geoCalcDraw/src/include -I/home/shuimujie/Works/GeoSys/modules/geoCalcDraw/src/geoCalcDraw/include -I/opt/Qt5.14.2/5.14.2/gcc_64/include -I/opt/Qt5.14.2/5.14.2/gcc_64/include/QtWidgets -I/opt/Qt5.14.2/5.14.2/gcc_64/include/QtGui -I/opt/Qt5.14.2/5.14.2/gcc_64/include/QtCore -I. -I/usr/include/c++/9 -I/usr/include/x86_64-linux-gnu/c++/9 -I/usr/include/c++/9/backward -I/usr/lib/gcc/x86_64-linux-gnu/9/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include ../geoCalcDraw/dlgpinset.h -o ../../temp/Compile/nicCalcDraw/Debug/moc_dlgpinset.cpp
 
 ../../temp/Compile/nicCalcDraw/Debug/moc_dlgsaveproj.cpp: ../geoCalcDraw/dlgsaveproj.h \
 		/opt/Qt5.14.2/5.14.2/gcc_64/include/QtWidgets/QFileDialog \
@@ -2447,7 +2450,7 @@ compiler_moc_header_clean:
 		/opt/Qt5.14.2/5.14.2/gcc_64/include/QtWidgets/qgridlayout.h \
 		../../temp/Compile/nicCalcDraw/Debug/moc_predefs.h \
 		/opt/Qt5.14.2/5.14.2/gcc_64/bin/moc
-	/opt/Qt5.14.2/5.14.2/gcc_64/bin/moc $(DEFINES) --include /home/shuimujie/Works/GeoSys/modules/geoCalcDraw/temp/Compile/nicCalcDraw/Debug/moc_predefs.h -I/opt/Qt5.14.2/5.14.2/gcc_64/mkspecs/linux-g++ -I/home/shuimujie/Works/GeoSys/modules/geoCalcDraw/src/geoCalcDraw -I/home/shuimujie/Works/GeoSys/modules/calc/include -I/home/shuimujie/Works/GeoSys -I/home/shuimujie/Works/GeoSys/modules/geoCalcDraw/include -I/home/shuimujie/Works/GeoSys/modules/geoCalcDraw/src/include -I/home/shuimujie/Works/GeoSys/modules/geoCalcDraw/src/geoCalcDraw/include -I/opt/Qt5.14.2/5.14.2/gcc_64/include -I/opt/Qt5.14.2/5.14.2/gcc_64/include/QtWidgets -I/opt/Qt5.14.2/5.14.2/gcc_64/include/QtGui -I/opt/Qt5.14.2/5.14.2/gcc_64/include/QtCore -I. -I/usr/include/c++/9 -I/usr/include/x86_64-linux-gnu/c++/9 -I/usr/include/c++/9/backward -I/usr/lib/gcc/x86_64-linux-gnu/9/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include ../geoCalcDraw/dlgsaveproj.h -o ../../temp/Compile/nicCalcDraw/Debug/moc_dlgsaveproj.cpp
+	/opt/Qt5.14.2/5.14.2/gcc_64/bin/moc $(DEFINES) --include /home/shuimujie/Works/GeoSys/modules/geoCalcDraw/temp/Compile/nicCalcDraw/Debug/moc_predefs.h -I/opt/Qt5.14.2/5.14.2/gcc_64/mkspecs/linux-g++ -I/home/shuimujie/Works/GeoSys/modules/geoCalcDraw/src/geoCalcDraw -I/home/shuimujie/Works/GeoSys/modules/calc/include -I/home/shuimujie/Works/GeoSys -I/usr/include/opencv4 -I/home/shuimujie/Works/GeoSys/modules/geoCalcDraw/include -I/home/shuimujie/Works/GeoSys/modules/geoCalcDraw/src/include -I/home/shuimujie/Works/GeoSys/modules/geoCalcDraw/src/geoCalcDraw/include -I/opt/Qt5.14.2/5.14.2/gcc_64/include -I/opt/Qt5.14.2/5.14.2/gcc_64/include/QtWidgets -I/opt/Qt5.14.2/5.14.2/gcc_64/include/QtGui -I/opt/Qt5.14.2/5.14.2/gcc_64/include/QtCore -I. -I/usr/include/c++/9 -I/usr/include/x86_64-linux-gnu/c++/9 -I/usr/include/c++/9/backward -I/usr/lib/gcc/x86_64-linux-gnu/9/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include ../geoCalcDraw/dlgsaveproj.h -o ../../temp/Compile/nicCalcDraw/Debug/moc_dlgsaveproj.cpp
 
 ../../temp/Compile/nicCalcDraw/Debug/moc_dlgobjname.cpp: ../geoCalcDraw/dlgobjname.h \
 		/opt/Qt5.14.2/5.14.2/gcc_64/include/QtWidgets/QDialog \
@@ -2577,7 +2580,7 @@ compiler_moc_header_clean:
 		/opt/Qt5.14.2/5.14.2/gcc_64/include/QtWidgets/qdialogbuttonbox.h \
 		../../temp/Compile/nicCalcDraw/Debug/moc_predefs.h \
 		/opt/Qt5.14.2/5.14.2/gcc_64/bin/moc
-	/opt/Qt5.14.2/5.14.2/gcc_64/bin/moc $(DEFINES) --include /home/shuimujie/Works/GeoSys/modules/geoCalcDraw/temp/Compile/nicCalcDraw/Debug/moc_predefs.h -I/opt/Qt5.14.2/5.14.2/gcc_64/mkspecs/linux-g++ -I/home/shuimujie/Works/GeoSys/modules/geoCalcDraw/src/geoCalcDraw -I/home/shuimujie/Works/GeoSys/modules/calc/include -I/home/shuimujie/Works/GeoSys -I/home/shuimujie/Works/GeoSys/modules/geoCalcDraw/include -I/home/shuimujie/Works/GeoSys/modules/geoCalcDraw/src/include -I/home/shuimujie/Works/GeoSys/modules/geoCalcDraw/src/geoCalcDraw/include -I/opt/Qt5.14.2/5.14.2/gcc_64/include -I/opt/Qt5.14.2/5.14.2/gcc_64/include/QtWidgets -I/opt/Qt5.14.2/5.14.2/gcc_64/include/QtGui -I/opt/Qt5.14.2/5.14.2/gcc_64/include/QtCore -I. -I/usr/include/c++/9 -I/usr/include/x86_64-linux-gnu/c++/9 -I/usr/include/c++/9/backward -I/usr/lib/gcc/x86_64-linux-gnu/9/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include ../geoCalcDraw/dlgobjname.h -o ../../temp/Compile/nicCalcDraw/Debug/moc_dlgobjname.cpp
+	/opt/Qt5.14.2/5.14.2/gcc_64/bin/moc $(DEFINES) --include /home/shuimujie/Works/GeoSys/modules/geoCalcDraw/temp/Compile/nicCalcDraw/Debug/moc_predefs.h -I/opt/Qt5.14.2/5.14.2/gcc_64/mkspecs/linux-g++ -I/home/shuimujie/Works/GeoSys/modules/geoCalcDraw/src/geoCalcDraw -I/home/shuimujie/Works/GeoSys/modules/calc/include -I/home/shuimujie/Works/GeoSys -I/usr/include/opencv4 -I/home/shuimujie/Works/GeoSys/modules/geoCalcDraw/include -I/home/shuimujie/Works/GeoSys/modules/geoCalcDraw/src/include -I/home/shuimujie/Works/GeoSys/modules/geoCalcDraw/src/geoCalcDraw/include -I/opt/Qt5.14.2/5.14.2/gcc_64/include -I/opt/Qt5.14.2/5.14.2/gcc_64/include/QtWidgets -I/opt/Qt5.14.2/5.14.2/gcc_64/include/QtGui -I/opt/Qt5.14.2/5.14.2/gcc_64/include/QtCore -I. -I/usr/include/c++/9 -I/usr/include/x86_64-linux-gnu/c++/9 -I/usr/include/c++/9/backward -I/usr/lib/gcc/x86_64-linux-gnu/9/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include ../geoCalcDraw/dlgobjname.h -o ../../temp/Compile/nicCalcDraw/Debug/moc_dlgobjname.cpp
 
 ../../temp/Compile/nicCalcDraw/Debug/moc_dlgipaddress.cpp: ../geoCalcDraw/dlgipaddress.h \
 		/opt/Qt5.14.2/5.14.2/gcc_64/include/QtWidgets/QDialog \
@@ -2707,7 +2710,7 @@ compiler_moc_header_clean:
 		/opt/Qt5.14.2/5.14.2/gcc_64/include/QtWidgets/qdialogbuttonbox.h \
 		../../temp/Compile/nicCalcDraw/Debug/moc_predefs.h \
 		/opt/Qt5.14.2/5.14.2/gcc_64/bin/moc
-	/opt/Qt5.14.2/5.14.2/gcc_64/bin/moc $(DEFINES) --include /home/shuimujie/Works/GeoSys/modules/geoCalcDraw/temp/Compile/nicCalcDraw/Debug/moc_predefs.h -I/opt/Qt5.14.2/5.14.2/gcc_64/mkspecs/linux-g++ -I/home/shuimujie/Works/GeoSys/modules/geoCalcDraw/src/geoCalcDraw -I/home/shuimujie/Works/GeoSys/modules/calc/include -I/home/shuimujie/Works/GeoSys -I/home/shuimujie/Works/GeoSys/modules/geoCalcDraw/include -I/home/shuimujie/Works/GeoSys/modules/geoCalcDraw/src/include -I/home/shuimujie/Works/GeoSys/modules/geoCalcDraw/src/geoCalcDraw/include -I/opt/Qt5.14.2/5.14.2/gcc_64/include -I/opt/Qt5.14.2/5.14.2/gcc_64/include/QtWidgets -I/opt/Qt5.14.2/5.14.2/gcc_64/include/QtGui -I/opt/Qt5.14.2/5.14.2/gcc_64/include/QtCore -I. -I/usr/include/c++/9 -I/usr/include/x86_64-linux-gnu/c++/9 -I/usr/include/c++/9/backward -I/usr/lib/gcc/x86_64-linux-gnu/9/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include ../geoCalcDraw/dlgipaddress.h -o ../../temp/Compile/nicCalcDraw/Debug/moc_dlgipaddress.cpp
+	/opt/Qt5.14.2/5.14.2/gcc_64/bin/moc $(DEFINES) --include /home/shuimujie/Works/GeoSys/modules/geoCalcDraw/temp/Compile/nicCalcDraw/Debug/moc_predefs.h -I/opt/Qt5.14.2/5.14.2/gcc_64/mkspecs/linux-g++ -I/home/shuimujie/Works/GeoSys/modules/geoCalcDraw/src/geoCalcDraw -I/home/shuimujie/Works/GeoSys/modules/calc/include -I/home/shuimujie/Works/GeoSys -I/usr/include/opencv4 -I/home/shuimujie/Works/GeoSys/modules/geoCalcDraw/include -I/home/shuimujie/Works/GeoSys/modules/geoCalcDraw/src/include -I/home/shuimujie/Works/GeoSys/modules/geoCalcDraw/src/geoCalcDraw/include -I/opt/Qt5.14.2/5.14.2/gcc_64/include -I/opt/Qt5.14.2/5.14.2/gcc_64/include/QtWidgets -I/opt/Qt5.14.2/5.14.2/gcc_64/include/QtGui -I/opt/Qt5.14.2/5.14.2/gcc_64/include/QtCore -I. -I/usr/include/c++/9 -I/usr/include/x86_64-linux-gnu/c++/9 -I/usr/include/c++/9/backward -I/usr/lib/gcc/x86_64-linux-gnu/9/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include ../geoCalcDraw/dlgipaddress.h -o ../../temp/Compile/nicCalcDraw/Debug/moc_dlgipaddress.cpp
 
 compiler_moc_objc_header_make_all:
 compiler_moc_objc_header_clean:
@@ -9083,7 +9086,7 @@ compiler_clean: compiler_rcc_clean compiler_moc_predefs_clean compiler_moc_heade
 		/opt/Qt5.14.2/5.14.2/gcc_64/include/QtWidgets/qdialogbuttonbox.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../../temp/Compile/nicCalcDraw/Debug/dlgipaddress.o ../geoCalcDraw/dlgipaddress.cpp
 
-../../temp/Compile/nicCalcDraw/Debug/k_command.o: ../../../calc/kernel/k_command.c ../../../calc/include/k_command.h \
+../../temp/Compile/nicCalcDraw/Debug/k_command.o: ../../../calc/kernel/k_command.cpp ../../../calc/include/k_command.h \
 		../../../calc/include/k_lib.h \
 		../../../calc/include/k_config.h \
 		../../../calc/include/k_functionblock.h \
@@ -9092,30 +9095,30 @@ compiler_clean: compiler_rcc_clean compiler_moc_predefs_clean compiler_moc_heade
 		../../../calc/include/k_project.h \
 		../../../calc/include/k_program.h \
 		../../../calc/include/k_io.h
-	$(CC) -c $(CFLAGS) $(INCPATH) -o ../../temp/Compile/nicCalcDraw/Debug/k_command.o ../../../calc/kernel/k_command.c
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../../temp/Compile/nicCalcDraw/Debug/k_command.o ../../../calc/kernel/k_command.cpp
 
-../../temp/Compile/nicCalcDraw/Debug/k_compress.o: ../../../calc/kernel/k_compress.c ../../../calc/include/k_datatype.h \
+../../temp/Compile/nicCalcDraw/Debug/k_compress.o: ../../../calc/kernel/k_compress.cpp ../../../calc/include/k_datatype.h \
 		../../../calc/include/k_evdata.h \
 		../../../calc/include/k_config.h \
 		../../../calc/include/k_io.h
-	$(CC) -c $(CFLAGS) $(INCPATH) -o ../../temp/Compile/nicCalcDraw/Debug/k_compress.o ../../../calc/kernel/k_compress.c
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../../temp/Compile/nicCalcDraw/Debug/k_compress.o ../../../calc/kernel/k_compress.cpp
 
-../../temp/Compile/nicCalcDraw/Debug/k_evdata.o: ../../../calc/kernel/k_evdata.c ../../../calc/include/k_util.h \
+../../temp/Compile/nicCalcDraw/Debug/k_evdata.o: ../../../calc/kernel/k_evdata.cpp ../../../calc/include/k_util.h \
 		../../../calc/include/k_datatype.h \
 		../../../calc/include/k_evdata.h \
 		../../../calc/include/k_config.h \
 		../../../calc/include/k_compress.h \
 		../../../calc/include/k_io.h
-	$(CC) -c $(CFLAGS) $(INCPATH) -o ../../temp/Compile/nicCalcDraw/Debug/k_evdata.o ../../../calc/kernel/k_evdata.c
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../../temp/Compile/nicCalcDraw/Debug/k_evdata.o ../../../calc/kernel/k_evdata.cpp
 
-../../temp/Compile/nicCalcDraw/Debug/k_functionblock.o: ../../../calc/kernel/k_functionblock.c ../../../calc/include/k_functionblock.h \
+../../temp/Compile/nicCalcDraw/Debug/k_functionblock.o: ../../../calc/kernel/k_functionblock.cpp ../../../calc/include/k_functionblock.h \
 		../../../calc/include/k_config.h \
 		../../../calc/include/k_datatype.h \
 		../../../calc/include/k_evdata.h \
 		../../../calc/include/k_util.h
-	$(CC) -c $(CFLAGS) $(INCPATH) -o ../../temp/Compile/nicCalcDraw/Debug/k_functionblock.o ../../../calc/kernel/k_functionblock.c
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../../temp/Compile/nicCalcDraw/Debug/k_functionblock.o ../../../calc/kernel/k_functionblock.cpp
 
-../../temp/Compile/nicCalcDraw/Debug/k_io.o: ../../../calc/kernel/k_io.c ../../../calc/include/k_io.h \
+../../temp/Compile/nicCalcDraw/Debug/k_io.o: ../../../calc/kernel/k_io.cpp ../../../calc/include/k_io.h \
 		../../../calc/include/k_config.h \
 		../../../calc/include/k_datatype.h \
 		../../../calc/include/k_util.h \
@@ -9129,9 +9132,9 @@ compiler_clean: compiler_rcc_clean compiler_moc_predefs_clean compiler_moc_heade
 		../../../calc/include/cfgbus.h \
 		../../../calc/include/vudp.h \
 		../../../calc/include/vnet.h
-	$(CC) -c $(CFLAGS) $(INCPATH) -o ../../temp/Compile/nicCalcDraw/Debug/k_io.o ../../../calc/kernel/k_io.c
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../../temp/Compile/nicCalcDraw/Debug/k_io.o ../../../calc/kernel/k_io.cpp
 
-../../temp/Compile/nicCalcDraw/Debug/k_lib.o: ../../../calc/kernel/k_lib.c ../../../calc/include/k_lib.h \
+../../temp/Compile/nicCalcDraw/Debug/k_lib.o: ../../../calc/kernel/k_lib.cpp ../../../calc/include/k_lib.h \
 		../../../calc/include/k_config.h \
 		../../../calc/include/k_functionblock.h \
 		../../../calc/include/k_datatype.h \
@@ -9147,19 +9150,20 @@ compiler_clean: compiler_rcc_clean compiler_moc_predefs_clean compiler_moc_heade
 		../../../calc/include/lib/IO.h \
 		../../../calc/include/lib/Logic.h \
 		../../../calc/include/lib/Maths.h \
+		../../../calc/include/lib/Opencv.h \
 		../../../calc/include/lib/Selection.h \
 		../../../calc/include/lib/System.h \
 		../../../calc/include/lib/Trigger.h \
 		../../../calc/include/lib/Timer.h
-	$(CC) -c $(CFLAGS) $(INCPATH) -o ../../temp/Compile/nicCalcDraw/Debug/k_lib.o ../../../calc/kernel/k_lib.c
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../../temp/Compile/nicCalcDraw/Debug/k_lib.o ../../../calc/kernel/k_lib.cpp
 
-../../temp/Compile/nicCalcDraw/Debug/k_process.o: ../../../calc/kernel/k_process.c ../../../calc/include/k_util.h \
+../../temp/Compile/nicCalcDraw/Debug/k_process.o: ../../../calc/kernel/k_process.cpp ../../../calc/include/k_util.h \
 		../../../calc/include/k_datatype.h \
 		../../../calc/include/k_process.h \
 		../../../calc/include/k_config.h
-	$(CC) -c $(CFLAGS) $(INCPATH) -o ../../temp/Compile/nicCalcDraw/Debug/k_process.o ../../../calc/kernel/k_process.c
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../../temp/Compile/nicCalcDraw/Debug/k_process.o ../../../calc/kernel/k_process.cpp
 
-../../temp/Compile/nicCalcDraw/Debug/k_program.o: ../../../calc/kernel/k_program.c ../../../calc/include/k_util.h \
+../../temp/Compile/nicCalcDraw/Debug/k_program.o: ../../../calc/kernel/k_program.cpp ../../../calc/include/k_util.h \
 		../../../calc/include/k_datatype.h \
 		../../../calc/include/k_lib.h \
 		../../../calc/include/k_config.h \
@@ -9168,9 +9172,9 @@ compiler_clean: compiler_rcc_clean compiler_moc_predefs_clean compiler_moc_heade
 		../../../calc/include/k_program.h \
 		../../../calc/include/k_project.h \
 		../../../calc/include/k_io.h
-	$(CC) -c $(CFLAGS) $(INCPATH) -o ../../temp/Compile/nicCalcDraw/Debug/k_program.o ../../../calc/kernel/k_program.c
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../../temp/Compile/nicCalcDraw/Debug/k_program.o ../../../calc/kernel/k_program.cpp
 
-../../temp/Compile/nicCalcDraw/Debug/k_project.o: ../../../calc/kernel/k_project.c ../../../calc/include/k_util.h \
+../../temp/Compile/nicCalcDraw/Debug/k_project.o: ../../../calc/kernel/k_project.cpp ../../../calc/include/k_util.h \
 		../../../calc/include/k_datatype.h \
 		../../../calc/include/k_process.h \
 		../../../calc/include/k_config.h \
@@ -9181,9 +9185,9 @@ compiler_clean: compiler_rcc_clean compiler_moc_predefs_clean compiler_moc_heade
 		../../../calc/include/k_io.h \
 		../../../calc/include/k_compress.h \
 		../../../calc/include/k_state.h
-	$(CC) -c $(CFLAGS) $(INCPATH) -o ../../temp/Compile/nicCalcDraw/Debug/k_project.o ../../../calc/kernel/k_project.c
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../../temp/Compile/nicCalcDraw/Debug/k_project.o ../../../calc/kernel/k_project.cpp
 
-../../temp/Compile/nicCalcDraw/Debug/k_state.o: ../../../calc/kernel/k_state.c ../../../calc/include/k_process.h \
+../../temp/Compile/nicCalcDraw/Debug/k_state.o: ../../../calc/kernel/k_state.cpp ../../../calc/include/k_process.h \
 		../../../calc/include/k_config.h \
 		../../../calc/include/k_state.h \
 		../../../calc/include/k_io.h \
@@ -9194,14 +9198,14 @@ compiler_clean: compiler_rcc_clean compiler_moc_predefs_clean compiler_moc_heade
 		../../../calc/include/k_project.h \
 		../../../calc/include/k_program.h \
 		../../../calc/include/k_functionblock.h
-	$(CC) -c $(CFLAGS) $(INCPATH) -o ../../temp/Compile/nicCalcDraw/Debug/k_state.o ../../../calc/kernel/k_state.c
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../../temp/Compile/nicCalcDraw/Debug/k_state.o ../../../calc/kernel/k_state.cpp
 
-../../temp/Compile/nicCalcDraw/Debug/k_util.o: ../../../calc/kernel/k_util.c ../../../calc/include/k_config.h \
+../../temp/Compile/nicCalcDraw/Debug/k_util.o: ../../../calc/kernel/k_util.cpp ../../../calc/include/k_config.h \
 		../../../calc/include/k_datatype.h \
 		../../../calc/include/k_util.h
-	$(CC) -c $(CFLAGS) $(INCPATH) -o ../../temp/Compile/nicCalcDraw/Debug/k_util.o ../../../calc/kernel/k_util.c
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../../temp/Compile/nicCalcDraw/Debug/k_util.o ../../../calc/kernel/k_util.cpp
 
-../../temp/Compile/nicCalcDraw/Debug/cfgbus.o: ../../../calc/net/cfgbus.c ../../../calc/include/vnet.h \
+../../temp/Compile/nicCalcDraw/Debug/cfgbus.o: ../../../calc/net/cfgbus.cpp ../../../calc/include/vnet.h \
 		../../../calc/include/k_config.h \
 		../../../calc/include/vtcp.h \
 		../../../calc/include/cfgbus.h \
@@ -9215,17 +9219,17 @@ compiler_clean: compiler_rcc_clean compiler_moc_predefs_clean compiler_moc_heade
 		../../../calc/include/k_util.h \
 		../../../calc/include/k_command.h \
 		../../../calc/include/k_process.h
-	$(CC) -c $(CFLAGS) $(INCPATH) -o ../../temp/Compile/nicCalcDraw/Debug/cfgbus.o ../../../calc/net/cfgbus.c
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../../temp/Compile/nicCalcDraw/Debug/cfgbus.o ../../../calc/net/cfgbus.cpp
 
-../../temp/Compile/nicCalcDraw/Debug/evbus.o: ../../../calc/net/evbus.c ../../../calc/include/vnet.h \
+../../temp/Compile/nicCalcDraw/Debug/evbus.o: ../../../calc/net/evbus.cpp ../../../calc/include/vnet.h \
 		../../../calc/include/k_config.h \
 		../../../calc/include/vudp.h \
 		../../../calc/include/evbus.h \
 		../../../calc/include/k_datatype.h \
 		../../../calc/include/k_evdata.h
-	$(CC) -c $(CFLAGS) $(INCPATH) -o ../../temp/Compile/nicCalcDraw/Debug/evbus.o ../../../calc/net/evbus.c
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../../temp/Compile/nicCalcDraw/Debug/evbus.o ../../../calc/net/evbus.cpp
 
-../../temp/Compile/nicCalcDraw/Debug/stbbus.o: ../../../calc/net/stbbus.c ../../../calc/include/vnet.h \
+../../temp/Compile/nicCalcDraw/Debug/stbbus.o: ../../../calc/net/stbbus.cpp ../../../calc/include/vnet.h \
 		../../../calc/include/k_config.h \
 		../../../calc/include/vtcp.h \
 		../../../calc/include/stbbus.h \
@@ -9240,43 +9244,43 @@ compiler_clean: compiler_rcc_clean compiler_moc_predefs_clean compiler_moc_heade
 		../../../calc/include/k_util.h \
 		../../../calc/include/k_process.h \
 		../../../calc/include/k_command.h
-	$(CC) -c $(CFLAGS) $(INCPATH) -o ../../temp/Compile/nicCalcDraw/Debug/stbbus.o ../../../calc/net/stbbus.c
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../../temp/Compile/nicCalcDraw/Debug/stbbus.o ../../../calc/net/stbbus.cpp
 
-../../temp/Compile/nicCalcDraw/Debug/vnet.o: ../../../calc/net/vnet.c ../../../calc/include/k_util.h \
+../../temp/Compile/nicCalcDraw/Debug/vnet.o: ../../../calc/net/vnet.cpp ../../../calc/include/k_util.h \
 		../../../calc/include/k_datatype.h \
 		../../../calc/include/vnet.h \
 		../../../calc/include/k_config.h
-	$(CC) -c $(CFLAGS) $(INCPATH) -o ../../temp/Compile/nicCalcDraw/Debug/vnet.o ../../../calc/net/vnet.c
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../../temp/Compile/nicCalcDraw/Debug/vnet.o ../../../calc/net/vnet.cpp
 
-../../temp/Compile/nicCalcDraw/Debug/vtcp.o: ../../../calc/net/vtcp.c ../../../calc/include/k_config.h \
+../../temp/Compile/nicCalcDraw/Debug/vtcp.o: ../../../calc/net/vtcp.cpp ../../../calc/include/k_config.h \
 		../../../calc/include/k_util.h \
 		../../../calc/include/k_datatype.h \
 		../../../calc/include/k_process.h \
 		../../../calc/include/vnet.h \
 		../../../calc/include/vtcp.h
-	$(CC) -c $(CFLAGS) $(INCPATH) -o ../../temp/Compile/nicCalcDraw/Debug/vtcp.o ../../../calc/net/vtcp.c
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../../temp/Compile/nicCalcDraw/Debug/vtcp.o ../../../calc/net/vtcp.cpp
 
-../../temp/Compile/nicCalcDraw/Debug/vudp.o: ../../../calc/net/vudp.c ../../../calc/include/k_util.h \
+../../temp/Compile/nicCalcDraw/Debug/vudp.o: ../../../calc/net/vudp.cpp ../../../calc/include/k_util.h \
 		../../../calc/include/k_datatype.h \
 		../../../calc/include/k_process.h \
 		../../../calc/include/k_config.h \
 		../../../calc/include/vnet.h \
 		../../../calc/include/vudp.h
-	$(CC) -c $(CFLAGS) $(INCPATH) -o ../../temp/Compile/nicCalcDraw/Debug/vudp.o ../../../calc/net/vudp.c
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../../temp/Compile/nicCalcDraw/Debug/vudp.o ../../../calc/net/vudp.cpp
 
-../../temp/Compile/nicCalcDraw/Debug/BinTree.o: ../../../calc/rtdb/BinTree.c ../../../calc/rtdb/CapiGlobal.h \
+../../temp/Compile/nicCalcDraw/Debug/BinTree.o: ../../../calc/rtdb/BinTree.cpp ../../../calc/rtdb/CapiGlobal.h \
 		../../../calc/rtdb/BinTree.h
-	$(CC) -c $(CFLAGS) $(INCPATH) -o ../../temp/Compile/nicCalcDraw/Debug/BinTree.o ../../../calc/rtdb/BinTree.c
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../../temp/Compile/nicCalcDraw/Debug/BinTree.o ../../../calc/rtdb/BinTree.cpp
 
-../../temp/Compile/nicCalcDraw/Debug/helper.o: ../../../calc/rtdb/helper.c ../../../calc/rtdb/helper.h
-	$(CC) -c $(CFLAGS) $(INCPATH) -o ../../temp/Compile/nicCalcDraw/Debug/helper.o ../../../calc/rtdb/helper.c
+../../temp/Compile/nicCalcDraw/Debug/helper.o: ../../../calc/rtdb/helper.cpp ../../../calc/rtdb/helper.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../../temp/Compile/nicCalcDraw/Debug/helper.o ../../../calc/rtdb/helper.cpp
 
-../../temp/Compile/nicCalcDraw/Debug/RBTree.o: ../../../calc/rtdb/RBTree.c ../../../calc/rtdb/CapiGlobal.h \
+../../temp/Compile/nicCalcDraw/Debug/RBTree.o: ../../../calc/rtdb/RBTree.cpp ../../../calc/rtdb/CapiGlobal.h \
 		../../../calc/rtdb/BinTree.h \
 		../../../calc/rtdb/RBTree.h
-	$(CC) -c $(CFLAGS) $(INCPATH) -o ../../temp/Compile/nicCalcDraw/Debug/RBTree.o ../../../calc/rtdb/RBTree.c
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../../temp/Compile/nicCalcDraw/Debug/RBTree.o ../../../calc/rtdb/RBTree.cpp
 
-../../temp/Compile/nicCalcDraw/Debug/rtdb.o: ../../../calc/rtdb/rtdb.c ../../../calc/include/evbus.h \
+../../temp/Compile/nicCalcDraw/Debug/rtdb.o: ../../../calc/rtdb/rtdb.cpp ../../../calc/include/evbus.h \
 		../../../calc/include/k_datatype.h \
 		../../../calc/include/k_evdata.h \
 		../../../calc/include/k_config.h \
@@ -9286,9 +9290,9 @@ compiler_clean: compiler_rcc_clean compiler_moc_predefs_clean compiler_moc_heade
 		../../../calc/rtdb/BinTree.h \
 		../../../calc/rtdb/RBTree.h \
 		../../../calc/rtdb/rtdb.h
-	$(CC) -c $(CFLAGS) $(INCPATH) -o ../../temp/Compile/nicCalcDraw/Debug/rtdb.o ../../../calc/rtdb/rtdb.c
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../../temp/Compile/nicCalcDraw/Debug/rtdb.o ../../../calc/rtdb/rtdb.cpp
 
-../../temp/Compile/nicCalcDraw/Debug/station.o: ../../../calc/rtdb/station.c ../../../calc/include/k_datatype.h \
+../../temp/Compile/nicCalcDraw/Debug/station.o: ../../../calc/rtdb/station.cpp ../../../calc/include/k_datatype.h \
 		../../../calc/include/k_evdata.h \
 		../../../calc/include/k_config.h \
 		../../../calc/include/k_util.h \
@@ -9299,9 +9303,9 @@ compiler_clean: compiler_rcc_clean compiler_moc_predefs_clean compiler_moc_heade
 		../../../calc/rtdb/CapiGlobal.h \
 		../../../calc/rtdb/BinTree.h \
 		../../../calc/rtdb/RBTree.h
-	$(CC) -c $(CFLAGS) $(INCPATH) -o ../../temp/Compile/nicCalcDraw/Debug/station.o ../../../calc/rtdb/station.c
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../../temp/Compile/nicCalcDraw/Debug/station.o ../../../calc/rtdb/station.cpp
 
-../../temp/Compile/nicCalcDraw/Debug/Arithmetic.o: ../../../calc/lib/Arithmetic/Arithmetic.c ../../../calc/include/k_functionblock.h \
+../../temp/Compile/nicCalcDraw/Debug/Arithmetic.o: ../../../calc/lib/Arithmetic/Arithmetic.cpp ../../../calc/include/k_functionblock.h \
 		../../../calc/include/k_config.h \
 		../../../calc/include/k_datatype.h \
 		../../../calc/include/k_evdata.h \
@@ -9321,17 +9325,17 @@ compiler_clean: compiler_rcc_clean compiler_moc_predefs_clean compiler_moc_heade
 		../../../calc/lib/Arithmetic/MOVE_INT \
 		../../../calc/lib/Arithmetic/MOVE_REAL \
 		../../../calc/lib/Arithmetic/MOVE_LREAL
-	$(CC) -c $(CFLAGS) $(INCPATH) -o ../../temp/Compile/nicCalcDraw/Debug/Arithmetic.o ../../../calc/lib/Arithmetic/Arithmetic.c
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../../temp/Compile/nicCalcDraw/Debug/Arithmetic.o ../../../calc/lib/Arithmetic/Arithmetic.cpp
 
-../../temp/Compile/nicCalcDraw/Debug/Bistable.o: ../../../calc/lib/Bistable/Bistable.c ../../../calc/include/k_functionblock.h \
+../../temp/Compile/nicCalcDraw/Debug/Bistable.o: ../../../calc/lib/Bistable/Bistable.cpp ../../../calc/include/k_functionblock.h \
 		../../../calc/include/k_config.h \
 		../../../calc/include/k_datatype.h \
 		../../../calc/include/k_evdata.h \
 		../../../calc/lib/Bistable/RS \
 		../../../calc/lib/Bistable/SR
-	$(CC) -c $(CFLAGS) $(INCPATH) -o ../../temp/Compile/nicCalcDraw/Debug/Bistable.o ../../../calc/lib/Bistable/Bistable.c
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../../temp/Compile/nicCalcDraw/Debug/Bistable.o ../../../calc/lib/Bistable/Bistable.cpp
 
-../../temp/Compile/nicCalcDraw/Debug/Comm.o: ../../../calc/lib/Comm/Comm.c ../../../calc/include/k_functionblock.h \
+../../temp/Compile/nicCalcDraw/Debug/Comm.o: ../../../calc/lib/Comm/Comm.cpp ../../../calc/include/k_functionblock.h \
 		../../../calc/include/k_config.h \
 		../../../calc/include/k_datatype.h \
 		../../../calc/include/k_evdata.h \
@@ -9341,9 +9345,9 @@ compiler_clean: compiler_rcc_clean compiler_moc_predefs_clean compiler_moc_heade
 		../../../calc/lib/Comm/WG_BOOL \
 		../../../calc/lib/Comm/WG_INT \
 		../../../calc/lib/Comm/WG_REAL
-	$(CC) -c $(CFLAGS) $(INCPATH) -o ../../temp/Compile/nicCalcDraw/Debug/Comm.o ../../../calc/lib/Comm/Comm.c
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../../temp/Compile/nicCalcDraw/Debug/Comm.o ../../../calc/lib/Comm/Comm.cpp
 
-../../temp/Compile/nicCalcDraw/Debug/Comparison.o: ../../../calc/lib/Comparison/Comparison.c ../../../calc/include/k_functionblock.h \
+../../temp/Compile/nicCalcDraw/Debug/Comparison.o: ../../../calc/lib/Comparison/Comparison.cpp ../../../calc/include/k_functionblock.h \
 		../../../calc/include/k_config.h \
 		../../../calc/include/k_datatype.h \
 		../../../calc/include/k_evdata.h \
@@ -9365,9 +9369,9 @@ compiler_clean: compiler_rcc_clean compiler_moc_predefs_clean compiler_moc_heade
 		../../../calc/lib/Comparison/NE_INT \
 		../../../calc/lib/Comparison/NE_REAL \
 		../../../calc/lib/Comparison/NE_LREAL
-	$(CC) -c $(CFLAGS) $(INCPATH) -o ../../temp/Compile/nicCalcDraw/Debug/Comparison.o ../../../calc/lib/Comparison/Comparison.c
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../../temp/Compile/nicCalcDraw/Debug/Comparison.o ../../../calc/lib/Comparison/Comparison.cpp
 
-../../temp/Compile/nicCalcDraw/Debug/Control.o: ../../../calc/lib/Control/Control.c ../../../calc/include/k_functionblock.h \
+../../temp/Compile/nicCalcDraw/Debug/Control.o: ../../../calc/lib/Control/Control.cpp ../../../calc/include/k_functionblock.h \
 		../../../calc/include/k_config.h \
 		../../../calc/include/k_datatype.h \
 		../../../calc/include/k_evdata.h \
@@ -9391,9 +9395,9 @@ compiler_clean: compiler_rcc_clean compiler_moc_predefs_clean compiler_moc_heade
 		../../../calc/lib/Control/SFT_REAL \
 		../../../calc/lib/Control/SS_MA \
 		../../../calc/lib/Control/TOTALIZER
-	$(CC) -c $(CFLAGS) $(INCPATH) -o ../../temp/Compile/nicCalcDraw/Debug/Control.o ../../../calc/lib/Control/Control.c
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../../temp/Compile/nicCalcDraw/Debug/Control.o ../../../calc/lib/Control/Control.cpp
 
-../../temp/Compile/nicCalcDraw/Debug/Converter.o: ../../../calc/lib/Converter/Converter.c ../../../calc/include/k_functionblock.h \
+../../temp/Compile/nicCalcDraw/Debug/Converter.o: ../../../calc/lib/Converter/Converter.cpp ../../../calc/include/k_functionblock.h \
 		../../../calc/include/k_config.h \
 		../../../calc/include/k_datatype.h \
 		../../../calc/include/k_evdata.h \
@@ -9418,16 +9422,16 @@ compiler_clean: compiler_rcc_clean compiler_moc_predefs_clean compiler_moc_heade
 		../../../calc/lib/Converter/DT2R \
 		../../../calc/lib/Converter/DT2LR \
 		../../../calc/lib/Converter/SCALING
-	$(CC) -c $(CFLAGS) $(INCPATH) -o ../../temp/Compile/nicCalcDraw/Debug/Converter.o ../../../calc/lib/Converter/Converter.c
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../../temp/Compile/nicCalcDraw/Debug/Converter.o ../../../calc/lib/Converter/Converter.cpp
 
-../../temp/Compile/nicCalcDraw/Debug/Counter.o: ../../../calc/lib/Counter/Counter.c ../../../calc/include/k_functionblock.h \
+../../temp/Compile/nicCalcDraw/Debug/Counter.o: ../../../calc/lib/Counter/Counter.cpp ../../../calc/include/k_functionblock.h \
 		../../../calc/include/k_config.h \
 		../../../calc/include/k_datatype.h \
 		../../../calc/include/k_evdata.h \
 		../../../calc/lib/Counter/CTUD_INT
-	$(CC) -c $(CFLAGS) $(INCPATH) -o ../../temp/Compile/nicCalcDraw/Debug/Counter.o ../../../calc/lib/Counter/Counter.c
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../../temp/Compile/nicCalcDraw/Debug/Counter.o ../../../calc/lib/Counter/Counter.cpp
 
-../../temp/Compile/nicCalcDraw/Debug/Driver.o: ../../../calc/lib/Driver/Driver.c ../../../calc/include/k_functionblock.h \
+../../temp/Compile/nicCalcDraw/Debug/Driver.o: ../../../calc/lib/Driver/Driver.cpp ../../../calc/include/k_functionblock.h \
 		../../../calc/include/k_config.h \
 		../../../calc/include/k_datatype.h \
 		../../../calc/include/k_evdata.h \
@@ -9438,9 +9442,9 @@ compiler_clean: compiler_rcc_clean compiler_moc_predefs_clean compiler_moc_heade
 		../../../calc/lib/Driver/MTR_LGE \
 		../../../calc/lib/Driver/MTR_LTE \
 		../../../calc/lib/Driver/S_E_VAL
-	$(CC) -c $(CFLAGS) $(INCPATH) -o ../../temp/Compile/nicCalcDraw/Debug/Driver.o ../../../calc/lib/Driver/Driver.c
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../../temp/Compile/nicCalcDraw/Debug/Driver.o ../../../calc/lib/Driver/Driver.cpp
 
-../../temp/Compile/nicCalcDraw/Debug/IO.o: ../../../calc/lib/IO/IO.c ../../../calc/include/k_functionblock.h \
+../../temp/Compile/nicCalcDraw/Debug/IO.o: ../../../calc/lib/IO/IO.cpp ../../../calc/include/k_functionblock.h \
 		../../../calc/include/k_config.h \
 		../../../calc/include/k_datatype.h \
 		../../../calc/include/k_evdata.h \
@@ -9449,9 +9453,9 @@ compiler_clean: compiler_rcc_clean compiler_moc_predefs_clean compiler_moc_heade
 		../../../calc/lib/IO/DM2x1 \
 		../../../calc/lib/IO/DM3x1 \
 		../../../calc/lib/IO/DM4x1
-	$(CC) -c $(CFLAGS) $(INCPATH) -o ../../temp/Compile/nicCalcDraw/Debug/IO.o ../../../calc/lib/IO/IO.c
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../../temp/Compile/nicCalcDraw/Debug/IO.o ../../../calc/lib/IO/IO.cpp
 
-../../temp/Compile/nicCalcDraw/Debug/Logic.o: ../../../calc/lib/Logic/Logic.c ../../../calc/include/k_functionblock.h \
+../../temp/Compile/nicCalcDraw/Debug/Logic.o: ../../../calc/lib/Logic/Logic.cpp ../../../calc/include/k_functionblock.h \
 		../../../calc/include/k_config.h \
 		../../../calc/include/k_datatype.h \
 		../../../calc/include/k_evdata.h \
@@ -9461,9 +9465,9 @@ compiler_clean: compiler_rcc_clean compiler_moc_predefs_clean compiler_moc_heade
 		../../../calc/lib/Logic/OR4 \
 		../../../calc/lib/Logic/NOT \
 		../../../calc/lib/Logic/XOR
-	$(CC) -c $(CFLAGS) $(INCPATH) -o ../../temp/Compile/nicCalcDraw/Debug/Logic.o ../../../calc/lib/Logic/Logic.c
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../../temp/Compile/nicCalcDraw/Debug/Logic.o ../../../calc/lib/Logic/Logic.cpp
 
-../../temp/Compile/nicCalcDraw/Debug/Maths.o: ../../../calc/lib/Maths/Maths.c ../../../calc/include/k_functionblock.h \
+../../temp/Compile/nicCalcDraw/Debug/Maths.o: ../../../calc/lib/Maths/Maths.cpp ../../../calc/include/k_functionblock.h \
 		../../../calc/include/k_config.h \
 		../../../calc/include/k_datatype.h \
 		../../../calc/include/k_evdata.h \
@@ -9482,26 +9486,33 @@ compiler_clean: compiler_rcc_clean compiler_moc_predefs_clean compiler_moc_heade
 		../../../calc/lib/Maths/FUN12 \
 		../../../calc/lib/Maths/POLYNOM \
 		../../../calc/lib/Maths/AVE4W
-	$(CC) -c $(CFLAGS) $(INCPATH) -o ../../temp/Compile/nicCalcDraw/Debug/Maths.o ../../../calc/lib/Maths/Maths.c
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../../temp/Compile/nicCalcDraw/Debug/Maths.o ../../../calc/lib/Maths/Maths.cpp
 
-../../temp/Compile/nicCalcDraw/Debug/Selection.o: ../../../calc/lib/Selection/Selection.c ../../../calc/include/k_functionblock.h \
+../../temp/Compile/nicCalcDraw/Debug/Opencv.o: ../../../calc/lib/Opencv/Opencv.cpp ../../../calc/include/k_functionblock.h \
+		../../../calc/include/k_config.h \
+		../../../calc/include/k_datatype.h \
+		../../../calc/include/k_evdata.h \
+		../../../calc/lib/Opencv/IMG_OPEN
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../../temp/Compile/nicCalcDraw/Debug/Opencv.o ../../../calc/lib/Opencv/Opencv.cpp
+
+../../temp/Compile/nicCalcDraw/Debug/Selection.o: ../../../calc/lib/Selection/Selection.cpp ../../../calc/include/k_functionblock.h \
 		../../../calc/include/k_config.h \
 		../../../calc/include/k_datatype.h \
 		../../../calc/include/k_evdata.h \
 		../../../calc/lib/Selection/TWOSEL \
 		../../../calc/lib/Selection/THRSEL \
 		../../../calc/lib/Selection/SIX_SEL_N
-	$(CC) -c $(CFLAGS) $(INCPATH) -o ../../temp/Compile/nicCalcDraw/Debug/Selection.o ../../../calc/lib/Selection/Selection.c
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../../temp/Compile/nicCalcDraw/Debug/Selection.o ../../../calc/lib/Selection/Selection.cpp
 
-../../temp/Compile/nicCalcDraw/Debug/System.o: ../../../calc/lib/System/System.c ../../../calc/include/k_functionblock.h \
+../../temp/Compile/nicCalcDraw/Debug/System.o: ../../../calc/lib/System/System.cpp ../../../calc/include/k_functionblock.h \
 		../../../calc/include/k_config.h \
 		../../../calc/include/k_datatype.h \
 		../../../calc/include/k_evdata.h \
 		../../../calc/include/k_util.h \
 		../../../calc/lib/System/SysState
-	$(CC) -c $(CFLAGS) $(INCPATH) -o ../../temp/Compile/nicCalcDraw/Debug/System.o ../../../calc/lib/System/System.c
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../../temp/Compile/nicCalcDraw/Debug/System.o ../../../calc/lib/System/System.cpp
 
-../../temp/Compile/nicCalcDraw/Debug/Timer.o: ../../../calc/lib/Timer/Timer.c ../../../calc/include/k_functionblock.h \
+../../temp/Compile/nicCalcDraw/Debug/Timer.o: ../../../calc/lib/Timer/Timer.cpp ../../../calc/include/k_functionblock.h \
 		../../../calc/include/k_config.h \
 		../../../calc/include/k_datatype.h \
 		../../../calc/include/k_evdata.h \
@@ -9511,15 +9522,15 @@ compiler_clean: compiler_rcc_clean compiler_moc_predefs_clean compiler_moc_heade
 		../../../calc/lib/Timer/TOFF \
 		../../../calc/lib/Timer/TON \
 		../../../calc/lib/Timer/TP
-	$(CC) -c $(CFLAGS) $(INCPATH) -o ../../temp/Compile/nicCalcDraw/Debug/Timer.o ../../../calc/lib/Timer/Timer.c
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../../temp/Compile/nicCalcDraw/Debug/Timer.o ../../../calc/lib/Timer/Timer.cpp
 
-../../temp/Compile/nicCalcDraw/Debug/Trigger.o: ../../../calc/lib/Trigger/Trigger.c ../../../calc/include/k_functionblock.h \
+../../temp/Compile/nicCalcDraw/Debug/Trigger.o: ../../../calc/lib/Trigger/Trigger.cpp ../../../calc/include/k_functionblock.h \
 		../../../calc/include/k_config.h \
 		../../../calc/include/k_datatype.h \
 		../../../calc/include/k_evdata.h \
 		../../../calc/lib/Trigger/U_TRIG \
 		../../../calc/lib/Trigger/D_TRIG
-	$(CC) -c $(CFLAGS) $(INCPATH) -o ../../temp/Compile/nicCalcDraw/Debug/Trigger.o ../../../calc/lib/Trigger/Trigger.c
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../../temp/Compile/nicCalcDraw/Debug/Trigger.o ../../../calc/lib/Trigger/Trigger.cpp
 
 ../../temp/Compile/nicCalcDraw/Debug/qrc_resource.o: ../../res/qrc_resource.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../../temp/Compile/nicCalcDraw/Debug/qrc_resource.o ../../res/qrc_resource.cpp

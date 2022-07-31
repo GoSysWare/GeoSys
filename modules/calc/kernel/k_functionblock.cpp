@@ -58,7 +58,7 @@ pin_t *fb_getpin(fb_t *p_fb, int pintype, unsigned int n)
 	return p_pin;
 }
 
-int fb_setpin(fb_t *p_fb, int pintype, unsigned int n, var_t v)
+int fb_setpin(fb_t *p_fb, int pintype, unsigned int n, val_t v)
 {
 	int np;
 	pin_t *p_pin;

@@ -15,14 +15,15 @@
 
 
 typedef int Bool;
+typedef unsigned short Word;
 typedef int Int;
 typedef float Real;
 typedef double LReal;
 typedef double Time;
-typedef cv::Mat CvImg;
-typedef void**  Any;
-typedef unsigned short Word;
+typedef cv::Mat CvMat;
 typedef std::string String;
+
+typedef void**  Any;
 
 // #ifdef __cplusplus
 // }

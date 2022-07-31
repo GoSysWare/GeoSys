@@ -2,41 +2,41 @@ static void run_BALANCE(void *p)
 {	
 	fb_t *pb = (fb_t *)p;
 
-	if(pb->d[6].v.f < pb->d[7].v.f){
-		pb->d[8].v.f = 0;
-		pb->d[9].v.f = 0;
-		pb->d[10].v.b = 1;
+	if(pb->d[6].v.v.f < pb->d[7].v.v.f){
+		pb->d[8].v.v.f = 0;
+		pb->d[9].v.v.f = 0;
+		pb->d[10].v.v.b = 1;
 	}else{
-		pb->d[10].v.b = 0;
-		if((pb->d[7].v.f < pb->d[8].v.f < pb->d[6].v.f) && (pb->d[7].v.f < pb->d[9].v.f < pb->d[6].v.f)){
-			if(pb->d[3].v.b && pb->d[5].v.b){
-				pb->d[8].v.f = pb->d[2].v.f;
-				pb->d[9].v.f = pb->d[4].v.f;
+		pb->d[10].v.v.b = 0;
+		if((pb->d[7].v.v.f < pb->d[8].v.v.f < pb->d[6].v.v.f) && (pb->d[7].v.v.f < pb->d[9].v.v.f < pb->d[6].v.v.f)){
+			if(pb->d[3].v.v.b && pb->d[5].v.v.b){
+				pb->d[8].v.v.f = pb->d[2].v.v.f;
+				pb->d[9].v.v.f = pb->d[4].v.v.f;
 			}
-			if((!pb->d[3].v.b) && (!pb->d[5].v.b)){
-				pb->d[8].v.f = pb->d[0].v.f + pb->d[1].v.f;
-				pb->d[9].v.f = pb->d[0].v.f - pb->d[1].v.f;
+			if((!pb->d[3].v.v.b) && (!pb->d[5].v.v.b)){
+				pb->d[8].v.v.f = pb->d[0].v.v.f + pb->d[1].v.v.f;
+				pb->d[9].v.v.f = pb->d[0].v.v.f - pb->d[1].v.v.f;
 			}
-			if(pb->d[3].v.b && (!pb->d[5].v.b)){
-				pb->d[8].v.f = pb->d[2].v.f;
-				pb->d[9].v.f = 2 * pb->d[0].v.f - pb->d[8].v.f;
+			if(pb->d[3].v.v.b && (!pb->d[5].v.v.b)){
+				pb->d[8].v.v.f = pb->d[2].v.v.f;
+				pb->d[9].v.v.f = 2 * pb->d[0].v.v.f - pb->d[8].v.v.f;
 			}
-			if((!pb->d[3].v.b) && pb->d[5].v.b){
-				pb->d[9].v.f = pb->d[4].v.f;
-				pb->d[8].v.f = 2 * pb->d[0].v.f - pb->d[9].v.f;
+			if((!pb->d[3].v.v.b) && pb->d[5].v.v.b){
+				pb->d[9].v.v.f = pb->d[4].v.v.f;
+				pb->d[8].v.v.f = 2 * pb->d[0].v.v.f - pb->d[9].v.v.f;
 			}
 		}
-		if(pb->d[8].v.f >= pb->d[6].v.f){
-			pb->d[8].v.f = pb->d[6].v.f;	
+		if(pb->d[8].v.v.f >= pb->d[6].v.v.f){
+			pb->d[8].v.v.f = pb->d[6].v.v.f;	
 		}
-		if(pb->d[9].v.f >= pb->d[6].v.f){
-			pb->d[9].v.f = pb->d[6].v.f;	
+		if(pb->d[9].v.v.f >= pb->d[6].v.v.f){
+			pb->d[9].v.v.f = pb->d[6].v.v.f;	
 		}
-		if(pb->d[8].v.f <= pb->d[7].v.f){
-			pb->d[8].v.f = pb->d[7].v.f;	
+		if(pb->d[8].v.v.f <= pb->d[7].v.v.f){
+			pb->d[8].v.v.f = pb->d[7].v.v.f;	
 		}
-		if(pb->d[9].v.f <= pb->d[7].v.f){
-			pb->d[9].v.f = pb->d[7].v.f;	
+		if(pb->d[9].v.v.f <= pb->d[7].v.v.f){
+			pb->d[9].v.v.f = pb->d[7].v.v.f;	
 		}
 	}
 }

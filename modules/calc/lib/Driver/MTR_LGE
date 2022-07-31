@@ -4,161 +4,161 @@ static void run_MTR_LGE(void *p)
 
 	Time dt = clk_cycle();
 	
-	Bool L_R = pb->d[0].v.b;
-	Bool AM = pb->d[1].v.b;
-	Bool KO = pb->d[2].v.b;
-	Bool AO = pb->d[3].v.b;
-	Bool PO = pb->d[4].v.b;
-	Bool FO = pb->d[5].v.b;
-	Bool LO = pb->d[6].v.b;
-	Bool RUN = pb->d[7].v.b;
-	Bool DIS = pb->d[8].v.b;
-	Bool STOP = pb->d[9].v.b;
-	Bool LC = pb->d[10].v.b;
-	Bool FZ = pb->d[11].v.b;
-	Bool PC = pb->d[12].v.b;
+	Bool L_R = pb->d[0].v.v.b;
+	Bool AM = pb->d[1].v.v.b;
+	Bool KO = pb->d[2].v.v.b;
+	Bool AO = pb->d[3].v.v.b;
+	Bool PO = pb->d[4].v.v.b;
+	Bool FO = pb->d[5].v.v.b;
+	Bool LO = pb->d[6].v.v.b;
+	Bool RUN = pb->d[7].v.v.b;
+	Bool DIS = pb->d[8].v.v.b;
+	Bool STOP = pb->d[9].v.v.b;
+	Bool LC = pb->d[10].v.v.b;
+	Bool FZ = pb->d[11].v.v.b;
+	Bool PC = pb->d[12].v.v.b;
 	
-	Bool PZ = pb->d[13].v.b;
-	Bool AC = pb->d[14].v.b;
-	Bool KC = pb->d[15].v.b;
-	Bool MPP = pb->d[16].v.b;
+	Bool PZ = pb->d[13].v.v.b;
+	Bool AC = pb->d[14].v.v.b;
+	Bool KC = pb->d[15].v.v.b;
+	Bool MPP = pb->d[16].v.v.b;
 
-	Bool FIX = pb->d[17].v.b;
-	Bool MT = pb->d[18].v.b;
-	Time TON = pb->d[19].v.tm;
-	Time TOFF = pb->d[20].v.tm;
+	Bool FIX = pb->d[17].v.v.b;
+	Bool MT = pb->d[18].v.v.b;
+	Time TON = pb->d[19].v.v.tm;
+	Time TOFF = pb->d[20].v.v.tm;
 
 //
-	if(!RUN && pb->d[47].v.b){
-		pb->d[48].v.b = 1;
+	if(!RUN && pb->d[47].v.v.b){
+		pb->d[48].v.v.b = 1;
 	}else{
-		pb->d[48].v.b = 0;
+		pb->d[48].v.v.b = 0;
 	}
-	pb->d[47].v.b = RUN;
+	pb->d[47].v.v.b = RUN;
 	
 
 	if(!MT){
-		pb->d[34].v.b = (((AM && AO) || KO || PO) && FO && !PC && !DIS && !LO && !FIX);
+		pb->d[34].v.v.b = (((AM && AO) || KO || PO) && FO && !PC && !DIS && !LO && !FIX);
 	}else{
-		pb->d[34].v.b = (((AM && AO) || KO || PO) && FO && !PC && !DIS && !LO && !FIX && STOP);
+		pb->d[34].v.v.b = (((AM && AO) || KO || PO) && FO && !PC && !DIS && !LO && !FIX && STOP);
 	}
-	pb->d[21].v.b = (((AM && AO) || KO || PO) && !pb->d[34].v.b);
-	pb->d[39].v.b = (pb->d[24].v.b || pb->d[23].v.b || L_R || pb->d[48].v.b || (MPP && !pb->d[34].v.b) || (pb->d[27].v.i > 2));
-	pb->d[28].v.b = FO;
-	pb->d[29].v.b = FZ;
+	pb->d[21].v.v.b = (((AM && AO) || KO || PO) && !pb->d[34].v.v.b);
+	pb->d[39].v.v.b = (pb->d[24].v.v.b || pb->d[23].v.v.b || L_R || pb->d[48].v.v.b || (MPP && !pb->d[34].v.v.b) || (pb->d[27].v.v.i > 2));
+	pb->d[28].v.v.b = FO;
+	pb->d[29].v.v.b = FZ;
 	
-	if(pb->d[39].v.b){
-		pb->d[36].v.b = 0;
-	}else if((pb->d[34].v.b || RUN)){
-		pb->d[36].v.b = 1;
+	if(pb->d[39].v.v.b){
+		pb->d[36].v.v.b = 0;
+	}else if((pb->d[34].v.v.b || RUN)){
+		pb->d[36].v.v.b = 1;
 	}
 	
-	if(pb->d[39].v.b){
-		pb->d[37].v.b = 0;
+	if(pb->d[39].v.v.b){
+		pb->d[37].v.v.b = 0;
 	}else if(RUN){
-		pb->d[37].v.b = 1;
+		pb->d[37].v.v.b = 1;
 	}
-	pb->d[22].v.b = ((pb->d[36].v.b && !RUN) && !pb->d[37].v.b);
-	pb->d[30].v.b = PO;
+	pb->d[22].v.v.b = ((pb->d[36].v.v.b && !RUN) && !pb->d[37].v.v.b);
+	pb->d[30].v.v.b = PO;
 	
 
 	if(!MT){
-		pb->d[35].v.b = ((((AM && AC) || KC || PZ) && FZ && !DIS && !LC && !FIX) || PC);
+		pb->d[35].v.v.b = ((((AM && AC) || KC || PZ) && FZ && !DIS && !LC && !FIX) || PC);
 	}else{
-		pb->d[35].v.b = ((((AM && AC) || KC || PZ) && FZ && !DIS && !LC && !FIX && RUN) || PC);
+		pb->d[35].v.v.b = ((((AM && AC) || KC || PZ) && FZ && !DIS && !LC && !FIX && RUN) || PC);
 	}
-	pb->d[25].v.b = (((AM && AC) || KC || PZ) && !(((AM && AC) || KC || PZ) && FZ && !DIS && !LC && !FIX)); 
+	pb->d[25].v.v.b = (((AM && AC) || KC || PZ) && !(((AM && AC) || KC || PZ) && FZ && !DIS && !LC && !FIX)); 
 	
-	pb->d[40].v.b = (pb->d[34].v.b || pb->d[35].v.b);
-	pb->d[41].v.b = (STOP || pb->d[38].v.b || pb->d[22].v.b || L_R || (MPP && !pb->d[35].v.b) || (pb->d[27].v.i > 2));
+	pb->d[40].v.v.b = (pb->d[34].v.v.b || pb->d[35].v.v.b);
+	pb->d[41].v.v.b = (STOP || pb->d[38].v.v.b || pb->d[22].v.v.b || L_R || (MPP && !pb->d[35].v.v.b) || (pb->d[27].v.v.i > 2));
 	
-	if(pb->d[40].v.b){
-		pb->d[38].v.b = 0;
-	}else if(pb->d[42].v.b){
-		pb->d[38].v.b = 1;
+	if(pb->d[40].v.v.b){
+		pb->d[38].v.v.b = 0;
+	}else if(pb->d[42].v.v.b){
+		pb->d[38].v.v.b = 1;
 	}
 	
-	if(pb->d[41].v.b){
-		pb->d[24].v.b = 0;
-	}else if(pb->d[35].v.b){
-		pb->d[24].v.b = 1;
+	if(pb->d[41].v.v.b){
+		pb->d[24].v.v.b = 0;
+	}else if(pb->d[35].v.v.b){
+		pb->d[24].v.v.b = 1;
 	}
-	pb->d[31].v.b = PC || PZ;
+	pb->d[31].v.v.b = PC || PZ;
 
 
 
-	if(pb->d[22].v.b){
-		if(!pb->d[43].v.b){
-			pb->d[32].v.tm = 0;
-			pb->d[52].v.tm = 0;
-		}else if(pb->d[52].v.tm >= TON){
-			pb->d[45].v.b = 1;
-			pb->d[32].v.tm = TON;
-			pb->d[52].v.tm = TON;
+	if(pb->d[22].v.v.b){
+		if(!pb->d[43].v.v.b){
+			pb->d[32].v.v.tm = 0;
+			pb->d[52].v.v.tm = 0;
+		}else if(pb->d[52].v.v.tm >= TON){
+			pb->d[45].v.v.b = 1;
+			pb->d[32].v.v.tm = TON;
+			pb->d[52].v.v.tm = TON;
 		}else{
-			pb->d[45].v.b = 0;
-			pb->d[52].v.tm += dt;
-			pb->d[32].v.tm = pb->d[52].v.tm; 
+			pb->d[45].v.v.b = 0;
+			pb->d[52].v.v.tm += dt;
+			pb->d[32].v.v.tm = pb->d[52].v.v.tm; 
 		}
 	}else{
-		pb->d[45].v.b = 0;
-		pb->d[32].v.tm = 0;
+		pb->d[45].v.v.b = 0;
+		pb->d[32].v.v.tm = 0;
 	}
-	pb->d[43].v.b = pb->d[22].v.b;
+	pb->d[43].v.v.b = pb->d[22].v.v.b;
 
 
-	if(pb->d[24].v.b){
-		if(!pb->d[44].v.b){
-			pb->d[33].v.tm = 0;
-			pb->d[53].v.tm = 0;
-		}else if(pb->d[53].v.tm >= TOFF){
-			pb->d[46].v.b = 1;
-			pb->d[33].v.tm = TOFF;
-			pb->d[53].v.tm = TOFF;
+	if(pb->d[24].v.v.b){
+		if(!pb->d[44].v.v.b){
+			pb->d[33].v.v.tm = 0;
+			pb->d[53].v.v.tm = 0;
+		}else if(pb->d[53].v.v.tm >= TOFF){
+			pb->d[46].v.v.b = 1;
+			pb->d[33].v.v.tm = TOFF;
+			pb->d[53].v.v.tm = TOFF;
 		}else{
-			pb->d[46].v.b = 0;
-			pb->d[53].v.tm += dt;
-			pb->d[33].v.tm = pb->d[53].v.tm; 
+			pb->d[46].v.v.b = 0;
+			pb->d[53].v.v.tm += dt;
+			pb->d[33].v.v.tm = pb->d[53].v.v.tm; 
 		}
 	}else{
-		pb->d[46].v.b = 0;
-		pb->d[33].v.tm = 0;
+		pb->d[46].v.v.b = 0;
+		pb->d[33].v.v.tm = 0;
 	}
-	pb->d[44].v.b = pb->d[24].v.b;
+	pb->d[44].v.v.b = pb->d[24].v.v.b;
 
 
-	if(MPP && !pb->d[34].v.b && !pb->d[35].v.b){
-		pb->d[23].v.b = 0;
-	}else if(((STOP && RUN) || pb->d[42].v.b || pb->d[45].v.b)){
-		pb->d[23].v.b = 1;
+	if(MPP && !pb->d[34].v.v.b && !pb->d[35].v.v.b){
+		pb->d[23].v.v.b = 0;
+	}else if(((STOP && RUN) || pb->d[42].v.v.b || pb->d[45].v.v.b)){
+		pb->d[23].v.v.b = 1;
 	}	
-	pb->d[42].v.b = pb->d[46].v.b;
+	pb->d[42].v.v.b = pb->d[46].v.v.b;
 	
 	
 
-	pb->d[49].v.b = !pb->d[35].v.b && pb->d[50].v.b && STOP && !MPP;
+	pb->d[49].v.v.b = !pb->d[35].v.v.b && pb->d[50].v.v.b && STOP && !MPP;
 	if(MPP){
-		pb->d[26].v.b = 0;
+		pb->d[26].v.v.b = 0;
 	}else{
-		if(pb->d[49].v.b){
-			if(!pb->d[51].v.b){
-				pb->d[54].v.tm = 0;
-			}else if(pb->d[54].v.tm >= 0.5){
-				pb->d[26].v.b = 1;
-				pb->d[54].v.tm = 0.5;
+		if(pb->d[49].v.v.b){
+			if(!pb->d[51].v.v.b){
+				pb->d[54].v.v.tm = 0;
+			}else if(pb->d[54].v.v.tm >= 0.5){
+				pb->d[26].v.v.b = 1;
+				pb->d[54].v.v.tm = 0.5;
 			}else{
-				pb->d[26].v.b = 0;
-				pb->d[54].v.tm += dt; 
+				pb->d[26].v.v.b = 0;
+				pb->d[54].v.v.tm += dt; 
 			}
 		}else{
-			pb->d[26].v.b = 0;
-			pb->d[54].v.tm = 0;
+			pb->d[26].v.v.b = 0;
+			pb->d[54].v.v.tm = 0;
 		}
-		pb->d[51].v.b = pb->d[49].v.b;		
+		pb->d[51].v.v.b = pb->d[49].v.v.b;		
 	}
-	pb->d[50].v.b = RUN;	
+	pb->d[50].v.v.b = RUN;	
 
-	pb->d[27].v.i = (Int)RUN * 1 + (Int)STOP * 2 + (Int)(DIS || pb->d[23].v.b || pb->d[26].v.b) * 3;
+	pb->d[27].v.v.i = (Int)RUN * 1 + (Int)STOP * 2 + (Int)(DIS || pb->d[23].v.v.b || pb->d[26].v.v.b) * 3;
 }
 
 static fb_t fb_MTR_LGE = {

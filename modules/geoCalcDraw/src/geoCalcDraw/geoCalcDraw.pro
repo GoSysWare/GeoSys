@@ -35,43 +35,44 @@ SOURCES += main.cpp \
     plionode.cpp \
     pliomodel.cpp \
     dlgipaddress.cpp \
-    ../../../calc/kernel/k_command.c \
-    ../../../calc/kernel/k_compress.c \
-    ../../../calc/kernel/k_evdata.c \
-    ../../../calc/kernel/k_functionblock.c \
-    ../../../calc/kernel/k_io.c \
-    ../../../calc/kernel/k_lib.c \
-    ../../../calc/kernel/k_process.c \
-    ../../../calc/kernel/k_program.c \
-    ../../../calc/kernel/k_project.c \
-    ../../../calc/kernel/k_state.c \
-    ../../../calc/kernel/k_util.c \
-    ../../../calc/net/cfgbus.c \
-    ../../../calc/net/evbus.c \
-    ../../../calc/net/stbbus.c \
-    ../../../calc/net/vnet.c \
-    ../../../calc/net/vtcp.c \
-    ../../../calc/net/vudp.c \
-    ../../../calc/rtdb/BinTree.c \
-    ../../../calc/rtdb/helper.c \
-    ../../../calc/rtdb/RBTree.c \
-    ../../../calc/rtdb/rtdb.c \
-    ../../../calc/rtdb/station.c \
-    ../../../calc/lib/Arithmetic/Arithmetic.c \
-    ../../../calc/lib/Bistable/Bistable.c \
-    ../../../calc/lib/Comm/Comm.c \
-    ../../../calc/lib/Comparison/Comparison.c \
-    ../../../calc/lib/Control/Control.c \
-    ../../../calc/lib/Converter/Converter.c \
-    ../../../calc/lib/Counter/Counter.c \
-    ../../../calc/lib/Driver/Driver.c \
-    ../../../calc/lib/IO/IO.c \
-    ../../../calc/lib/Logic/Logic.c \
-    ../../../calc/lib/Maths/Maths.c \
-    ../../../calc/lib/Selection/Selection.c \
-    ../../../calc/lib/System/System.c \
-    ../../../calc/lib/Timer/Timer.c \
-    ../../../calc/lib/Trigger/Trigger.c
+    ../../../calc/kernel/k_command.cpp \
+    ../../../calc/kernel/k_compress.cpp \
+    ../../../calc/kernel/k_evdata.cpp \
+    ../../../calc/kernel/k_functionblock.cpp \
+    ../../../calc/kernel/k_io.cpp \
+    ../../../calc/kernel/k_lib.cpp \
+    ../../../calc/kernel/k_process.cpp \
+    ../../../calc/kernel/k_program.cpp \
+    ../../../calc/kernel/k_project.cpp \
+    ../../../calc/kernel/k_state.cpp \
+    ../../../calc/kernel/k_util.cpp \
+    ../../../calc/net/cfgbus.cpp \
+    ../../../calc/net/evbus.cpp \
+    ../../../calc/net/stbbus.cpp \
+    ../../../calc/net/vnet.cpp \
+    ../../../calc/net/vtcp.cpp \
+    ../../../calc/net/vudp.cpp \
+    ../../../calc/rtdb/BinTree.cpp \
+    ../../../calc/rtdb/helper.cpp \
+    ../../../calc/rtdb/RBTree.cpp \
+    ../../../calc/rtdb/rtdb.cpp \
+    ../../../calc/rtdb/station.cpp \
+    ../../../calc/lib/Arithmetic/Arithmetic.cpp \
+    ../../../calc/lib/Bistable/Bistable.cpp \
+    ../../../calc/lib/Comm/Comm.cpp \
+    ../../../calc/lib/Comparison/Comparison.cpp \
+    ../../../calc/lib/Control/Control.cpp \
+    ../../../calc/lib/Converter/Converter.cpp \
+    ../../../calc/lib/Counter/Counter.cpp \
+    ../../../calc/lib/Driver/Driver.cpp \
+    ../../../calc/lib/IO/IO.cpp \
+    ../../../calc/lib/Logic/Logic.cpp \
+    ../../../calc/lib/Maths/Maths.cpp \
+    ../../../calc/lib/Opencv/Opencv.cpp \
+    ../../../calc/lib/Selection/Selection.cpp \
+    ../../../calc/lib/System/System.cpp \
+    ../../../calc/lib/Timer/Timer.cpp \
+    ../../../calc/lib/Trigger/Trigger.cpp
 HEADERS += plmainframe.h \
     cadpanel.h \
     libpanel.h \
@@ -116,12 +117,16 @@ DEFINES += WIN32_LEAN_AND_MEAN
 
 #this source files and header files  may be add something by yourself
 INCLUDEPATH += ../../../calc/include \
-                ../../../../
+                ../../../../ \
+                /usr/include/opencv4
 
 #set other lib dir if you need
 QMAKE_LIBDIR +=
 
-LIBS +=
+LIBS += -lopencv_core \
+        -lopencv_highgui \
+        -lopencv_imgproc \
+        -lopencv_imgcodecs
 
 
 include(../../gpostfix.pri)

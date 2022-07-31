@@ -116,7 +116,7 @@ void DlgEVData::setValue(PLEVData &ev, int m)
         QMessageBox::critical(this, "Error", "Unknown data type");
     }
     char value[128];
-    var2str(value, ev.initValue.v, ev.initValue.t);
+    var2str(value, ev.initValue, ev.initValue.t);
     textValue->setText(QString(value));
 }
 
@@ -145,5 +145,5 @@ void DlgEVData::getValue(PLEVData &ev)
     }
     char value[128];
     strcpy(value, textValue->text().toStdString().c_str());
-    str2var(value, &ev.initValue.v, ev.initValue.t);
+    str2var(value, &ev.initValue, ev.initValue.t);
 }

@@ -1,7 +1,7 @@
 static void run_R2DT(void *p)
 {	
 	fb_t *pb = (fb_t *)p;
-	pb->d[1].v.tm = (Time)(pb->d[0].v.f); 
+	pb->d[1].v.v.tm = (Time)(pb->d[0].v.v.f); 
 }
 
 static fb_t fb_R2DT = {

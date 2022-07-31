@@ -12,38 +12,38 @@ static void run_SS_MA(void *p)
 {	
 	fb_t *pb = (fb_t *)p;
 	
-	if(pb->d[2].v.b){
-		pb->d[8].v.f = limit_y(pb->d[1].v.f, pb->d[4].v.f, pb->d[5].v.f);
-		pb->d[9].v.f = limit_y(pb->d[1].v.f, pb->d[4].v.f, pb->d[5].v.f);
+	if(pb->d[2].v.v.b){
+		pb->d[8].v.v.f = limit_y(pb->d[1].v.v.f, pb->d[4].v.v.f, pb->d[5].v.v.f);
+		pb->d[9].v.v.f = limit_y(pb->d[1].v.v.f, pb->d[4].v.v.f, pb->d[5].v.v.f);
 		return;
 	}
 
 	
-	if(pb->d[3].v.b){
-		pb->d[10].v.b = 1;
+	if(pb->d[3].v.v.b){
+		pb->d[10].v.v.b = 1;
 	}else{
-		pb->d[10].v.b = 0;
+		pb->d[10].v.v.b = 0;
 	}
 
 	
-	if(pb->d[6].v.b){
-		pb->d[11].v.b = 1;
+	if(pb->d[6].v.v.b){
+		pb->d[11].v.v.b = 1;
 		return;
 	}
 	
-	pb->d[11].v.b = 0;
+	pb->d[11].v.v.b = 0;
 
 
-	if(!pb->d[10].v.b){
-		pb->d[8].v.f = limit_y(pb->d[7].v.f, pb->d[4].v.f, pb->d[5].v.f);
-		pb->d[9].v.f = limit_y(pb->d[7].v.f, pb->d[4].v.f, pb->d[5].v.f);
+	if(!pb->d[10].v.v.b){
+		pb->d[8].v.v.f = limit_y(pb->d[7].v.v.f, pb->d[4].v.v.f, pb->d[5].v.v.f);
+		pb->d[9].v.v.f = limit_y(pb->d[7].v.v.f, pb->d[4].v.v.f, pb->d[5].v.v.f);
 		return;
 	}
 	
 	
-	if(pb->d[10].v.b){
-		pb->d[8].v.f = limit_y(pb->d[0].v.f, pb->d[4].v.f, pb->d[5].v.f);
-		pb->d[9].v.f = limit_y(pb->d[0].v.f, pb->d[4].v.f, pb->d[5].v.f);
+	if(pb->d[10].v.v.b){
+		pb->d[8].v.v.f = limit_y(pb->d[0].v.v.f, pb->d[4].v.v.f, pb->d[5].v.v.f);
+		pb->d[9].v.v.f = limit_y(pb->d[0].v.v.f, pb->d[4].v.v.f, pb->d[5].v.v.f);
 	}
 }
 

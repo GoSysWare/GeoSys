@@ -1,7 +1,7 @@
 static void run_ADD_LREAL(void *p)
 {	
 	fb_t *pb = (fb_t *)p;
-	pb->d[2].v.fl = pb->d[0].v.fl + pb->d[1].v.fl; 
+	pb->d[2].v.v.fl = pb->d[0].v.v.fl + pb->d[1].v.v.fl; 
 }
 
 static fb_t fb_ADD_LREAL = {

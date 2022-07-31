@@ -5,30 +5,30 @@ static void run_RMP(void *p)
 	Time dt = clk_cycle();
 	Real dy;
 
-	if(pb->d[4].v.b){
-		pb->d[5].v.f = pb->d[0].v.f;
-		pb->d[6].v.b = 0;
-	}else if(pb->d[0].v.f <= pb->d[1].v.f){
-		if(!pb->d[3].v.b){
-			dy = (Real)dt * pb->d[2].v.f;
-			pb->d[5].v.f += dy;
+	if(pb->d[4].v.v.b){
+		pb->d[5].v.v.f = pb->d[0].v.v.f;
+		pb->d[6].v.v.b = 0;
+	}else if(pb->d[0].v.v.f <= pb->d[1].v.v.f){
+		if(!pb->d[3].v.v.b){
+			dy = (Real)dt * pb->d[2].v.v.f;
+			pb->d[5].v.v.f += dy;
 		}
-		if(pb->d[5].v.f >= pb->d[1].v.f){
-			pb->d[5].v.f = pb->d[1].v.f;
-			pb->d[6].v.b = 1;
+		if(pb->d[5].v.v.f >= pb->d[1].v.v.f){
+			pb->d[5].v.v.f = pb->d[1].v.v.f;
+			pb->d[6].v.v.b = 1;
 		}else{
-			pb->d[6].v.b = 0;
+			pb->d[6].v.v.b = 0;
 		}
-	}else if(pb->d[0].v.f > pb->d[1].v.f){
-		if(!pb->d[3].v.b){
-			dy = (Real)dt * pb->d[2].v.f;
-			pb->d[5].v.f -= dy;
+	}else if(pb->d[0].v.v.f > pb->d[1].v.v.f){
+		if(!pb->d[3].v.v.b){
+			dy = (Real)dt * pb->d[2].v.v.f;
+			pb->d[5].v.v.f -= dy;
 		}
-		if(pb->d[5].v.f <= pb->d[1].v.f){
-			pb->d[5].v.f = pb->d[1].v.f;
-			pb->d[6].v.b = 1;
+		if(pb->d[5].v.v.f <= pb->d[1].v.v.f){
+			pb->d[5].v.v.f = pb->d[1].v.v.f;
+			pb->d[6].v.v.b = 1;
 		}else{
-			pb->d[6].v.b = 0;
+			pb->d[6].v.v.b = 0;
 		}
 	}
 }

@@ -4,98 +4,98 @@ static void run_D_DS_VAL(void *p)
 
 	Time dt = clk_cycle();
 
-	Bool AM = pb->d[0].v.b;
-	Bool KO = pb->d[1].v.b;
-	Bool AO = pb->d[2].v.b;
-	Bool PO = pb->d[3].v.b;
-	Bool OPN = pb->d[4].v.b;
-	Bool KO_FB = pb->d[5].v.b;
-	Bool LO = pb->d[6].v.b;
-	Bool FO = pb->d[7].v.b;
-	Bool MPP = pb->d[8].v.b;
-	Bool LC = pb->d[9].v.b;
-	Bool KC_FB = pb->d[10].v.b;
-	Bool FZ = pb->d[11].v.b;
-	Bool CLS = pb->d[12].v.b;
-	Bool PC = pb->d[13].v.b;
-	Bool AC = pb->d[14].v.b;
-	Bool KC = pb->d[15].v.b;
-	Bool PS = pb->d[16].v.b;
-	Time TD = pb->d[17].v.tm;
+	Bool AM = pb->d[0].v.v.b;
+	Bool KO = pb->d[1].v.v.b;
+	Bool AO = pb->d[2].v.v.b;
+	Bool PO = pb->d[3].v.v.b;
+	Bool OPN = pb->d[4].v.v.b;
+	Bool KO_FB = pb->d[5].v.v.b;
+	Bool LO = pb->d[6].v.v.b;
+	Bool FO = pb->d[7].v.v.b;
+	Bool MPP = pb->d[8].v.v.b;
+	Bool LC = pb->d[9].v.v.b;
+	Bool KC_FB = pb->d[10].v.v.b;
+	Bool FZ = pb->d[11].v.v.b;
+	Bool CLS = pb->d[12].v.v.b;
+	Bool PC = pb->d[13].v.v.b;
+	Bool AC = pb->d[14].v.v.b;
+	Bool KC = pb->d[15].v.v.b;
+	Bool PS = pb->d[16].v.v.b;
+	Time TD = pb->d[17].v.v.tm;
 
 
-	pb->d[24].v.b = (((AM && AO && !AC) || (KO && !KO_FB && !KC)|| PO) && FO && !PS && !LO && !PC) && !OPN;
-	pb->d[25].v.b = (((AM && AC && !AO) || (KC && !KC_FB && !KO)|| PC) && FZ && !PS && !LC) && !CLS;
-	pb->d[18].v.b = (((AM && AO && !AC) || (KO && !KO_FB && !KC)|| PO)&& !pb->d[24].v.b);
-	pb->d[20].v.b = (((AM && AC && !AO) || (KC && !KC_FB && !KO)|| PC)&& !pb->d[25].v.b);
-	pb->d[26].v.b = (pb->d[24].v.b && !pb->d[29].v.b);
-	pb->d[27].v.b = (OPN || MPP || KC);
-	pb->d[29].v.b = (pb->d[25].v.b && !pb->d[26].v.b);
-	pb->d[30].v.b = (CLS || MPP || KO);
+	pb->d[24].v.v.b = (((AM && AO && !AC) || (KO && !KO_FB && !KC)|| PO) && FO && !PS && !LO && !PC) && !OPN;
+	pb->d[25].v.v.b = (((AM && AC && !AO) || (KC && !KC_FB && !KO)|| PC) && FZ && !PS && !LC) && !CLS;
+	pb->d[18].v.v.b = (((AM && AO && !AC) || (KO && !KO_FB && !KC)|| PO)&& !pb->d[24].v.v.b);
+	pb->d[20].v.v.b = (((AM && AC && !AO) || (KC && !KC_FB && !KO)|| PC)&& !pb->d[25].v.v.b);
+	pb->d[26].v.v.b = (pb->d[24].v.v.b && !pb->d[29].v.v.b);
+	pb->d[27].v.v.b = (OPN || MPP || KC);
+	pb->d[29].v.v.b = (pb->d[25].v.v.b && !pb->d[26].v.v.b);
+	pb->d[30].v.v.b = (CLS || MPP || KO);
 	
 
-	if(pb->d[26].v.b){
-		pb->d[28].v.b = 1;
-	}else if(pb->d[27].v.b){
-		pb->d[28].v.b = 0;
+	if(pb->d[26].v.v.b){
+		pb->d[28].v.v.b = 1;
+	}else if(pb->d[27].v.v.b){
+		pb->d[28].v.v.b = 0;
 	}
-	pb->d[19].v.b = pb->d[28].v.b && !pb->d[22].v.b;
+	pb->d[19].v.v.b = pb->d[28].v.v.b && !pb->d[22].v.v.b;
 	
 
-	if(pb->d[29].v.b){
-		pb->d[31].v.b = 1;
-	}else if(pb->d[30].v.b){
-		pb->d[31].v.b = 0;
+	if(pb->d[29].v.v.b){
+		pb->d[31].v.v.b = 1;
+	}else if(pb->d[30].v.v.b){
+		pb->d[31].v.v.b = 0;
 	}
-	pb->d[20].v.b = pb->d[31].v.b && !pb->d[22].v.b;
+	pb->d[20].v.v.b = pb->d[31].v.v.b && !pb->d[22].v.v.b;
 	
 
-	pb->d[38].v.b = MPP;
-	pb->d[39].v.b = pb->d[26].v.b || pb->d[29].v.b;
-	if(pb->d[38].v.b){
-		pb->d[40].v.b = 1;
-	}else if(pb->d[39].v.b){
-		pb->d[40].v.b = 0;
+	pb->d[38].v.v.b = MPP;
+	pb->d[39].v.v.b = pb->d[26].v.v.b || pb->d[29].v.v.b;
+	if(pb->d[38].v.v.b){
+		pb->d[40].v.v.b = 1;
+	}else if(pb->d[39].v.v.b){
+		pb->d[40].v.v.b = 0;
 	}
 	
-	pb->d[32].v.b = pb->d[28].v.b || pb->d[31].v.b;
-	pb->d[35].v.b = OPN && CLS && !pb->d[40].v.b;
+	pb->d[32].v.v.b = pb->d[28].v.v.b || pb->d[31].v.v.b;
+	pb->d[35].v.v.b = OPN && CLS && !pb->d[40].v.v.b;
 	
-	if(pb->d[32].v.b){
-		if(!pb->d[33].v.b){
-			pb->d[23].v.tm = 0;
-			pb->d[41].v.tm = 0;
-		}else if(pb->d[41].v.tm >= TD){
-			pb->d[34].v.b = 1;
-			pb->d[41].v.tm = TD;
-			pb->d[23].v.tm = TD;
+	if(pb->d[32].v.v.b){
+		if(!pb->d[33].v.v.b){
+			pb->d[23].v.v.tm = 0;
+			pb->d[41].v.v.tm = 0;
+		}else if(pb->d[41].v.v.tm >= TD){
+			pb->d[34].v.v.b = 1;
+			pb->d[41].v.v.tm = TD;
+			pb->d[23].v.v.tm = TD;
 		}else{
-			pb->d[34].v.b = 0;
-			pb->d[41].v.tm += dt;
-			pb->d[23].v.tm = pb->d[41].v.tm; 
+			pb->d[34].v.v.b = 0;
+			pb->d[41].v.v.tm += dt;
+			pb->d[23].v.v.tm = pb->d[41].v.v.tm; 
 		}
 	}else{
-		pb->d[34].v.b = 0;
-		pb->d[23].v.tm = 0;
+		pb->d[34].v.v.b = 0;
+		pb->d[23].v.v.tm = 0;
 	}
-	pb->d[33].v.b = pb->d[32].v.b;
+	pb->d[33].v.v.b = pb->d[32].v.v.b;
 	
-	if(pb->d[35].v.b){
-		if(!pb->d[36].v.b){
-			pb->d[42].v.tm = 0;
-		}else if(pb->d[42].v.tm >= 20){
-			pb->d[37].v.b = 1;
-			pb->d[42].v.tm = 20;
+	if(pb->d[35].v.v.b){
+		if(!pb->d[36].v.v.b){
+			pb->d[42].v.v.tm = 0;
+		}else if(pb->d[42].v.v.tm >= 20){
+			pb->d[37].v.v.b = 1;
+			pb->d[42].v.v.tm = 20;
 		}else{
-			pb->d[37].v.b = 0;
-			pb->d[42].v.tm += dt;
+			pb->d[37].v.v.b = 0;
+			pb->d[42].v.v.tm += dt;
 		}
 	}else{
-		pb->d[37].v.b = 0;
+		pb->d[37].v.v.b = 0;
 	}
-	pb->d[36].v.b = pb->d[35].v.b;
+	pb->d[36].v.v.b = pb->d[35].v.v.b;
 	
-	pb->d[22].v.b = pb->d[34].v.b || pb->d[37].v.b;
+	pb->d[22].v.v.b = pb->d[34].v.v.b || pb->d[37].v.v.b;
 }
 
 static fb_t fb_D_DS_VAL = {

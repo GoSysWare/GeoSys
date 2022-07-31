@@ -1,7 +1,7 @@
 static void run_B2I(void *p)
 {	
 	fb_t *pb = (fb_t *)p;
-	pb->d[1].v.i = (Int)(pb->d[0].v.b); 
+	pb->d[1].v.v.i = (Int)(pb->d[0].v.v.b); 
 }
 
 static fb_t fb_B2I = {

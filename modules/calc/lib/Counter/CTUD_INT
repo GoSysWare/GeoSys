@@ -2,46 +2,46 @@ static void run_CTUD_INT(void *p)
 {	
 	fb_t *pb = (fb_t *)p;
 
-	if(pb->d[2].v.b){
-		pb->d[5].v.b = 0;
-		pb->d[6].v.b = 0;
-		pb->d[7].v.i = 0;
+	if(pb->d[2].v.v.b){
+		pb->d[5].v.v.b = 0;
+		pb->d[6].v.v.b = 0;
+		pb->d[7].v.v.i = 0;
 
-		pb->d[8].v.b = 0;	
-		pb->d[9].v.b = 0;
+		pb->d[8].v.v.b = 0;	
+		pb->d[9].v.v.b = 0;
 		return;	
 	}
 	
-	if(pb->d[3].v.b){
-		pb->d[7].v.i = pb->d[4].v.i;
-		pb->d[5].v.b = 0;
-		pb->d[6].v.b = 0;
+	if(pb->d[3].v.v.b){
+		pb->d[7].v.v.i = pb->d[4].v.v.i;
+		pb->d[5].v.v.b = 0;
+		pb->d[6].v.v.b = 0;
 			
-		pb->d[8].v.b = 0;	
-		pb->d[9].v.b = 0;	
+		pb->d[8].v.v.b = 0;	
+		pb->d[9].v.v.b = 0;	
 	}
 
-	if(!pb->d[3].v.b){
-		if(!pb->d[8].v.b && pb->d[0].v.b){
-			pb->d[7].v.i = pb->d[7].v.i + 1;
+	if(!pb->d[3].v.v.b){
+		if(!pb->d[8].v.v.b && pb->d[0].v.v.b){
+			pb->d[7].v.v.i = pb->d[7].v.v.i + 1;
 		}
 
-		if(!pb->d[9].v.b && pb->d[1].v.b){
-			pb->d[7].v.i = pb->d[7].v.i - 1;
+		if(!pb->d[9].v.v.b && pb->d[1].v.v.b){
+			pb->d[7].v.v.i = pb->d[7].v.v.i - 1;
 		}
 			
-		pb->d[8].v.b = pb->d[0].v.b;	
-		pb->d[9].v.b = pb->d[1].v.b;
+		pb->d[8].v.v.b = pb->d[0].v.v.b;	
+		pb->d[9].v.v.b = pb->d[1].v.v.b;
 	
-		if(pb->d[7].v.i > pb->d[4].v.i){
-			pb->d[5].v.b = 1;
-			pb->d[6].v.b = 0;
-		}else if(pb->d[7].v.i < 0){
-			pb->d[5].v.b = 0;
-			pb->d[6].v.b = 1;
+		if(pb->d[7].v.v.i > pb->d[4].v.v.i){
+			pb->d[5].v.v.b = 1;
+			pb->d[6].v.v.b = 0;
+		}else if(pb->d[7].v.v.i < 0){
+			pb->d[5].v.v.b = 0;
+			pb->d[6].v.v.b = 1;
 		}else{
-			pb->d[5].v.b = 0;
-			pb->d[6].v.b = 0;
+			pb->d[5].v.v.b = 0;
+			pb->d[6].v.v.b = 0;
 		}	
 	}
 }

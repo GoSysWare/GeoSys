@@ -4,24 +4,24 @@ static void run_DIFF(void *p)
 
 	Time dt = clk_cycle();
 
-	if(pb->d[2].v.tm < 0){
+	if(pb->d[2].v.v.tm < 0){
 		return;
 	}
 
-	if(pb->d[5].v.b){
-		pb->d[6].v.f = pb->d[0].v.f;
-		pb->d[7].v.f = pb->d[3].v.f;
-		pb->d[5].v.b = 0;
+	if(pb->d[5].v.v.b){
+		pb->d[6].v.v.f = pb->d[0].v.v.f;
+		pb->d[7].v.v.f = pb->d[3].v.v.f;
+		pb->d[5].v.v.b = 0;
 		return;
 	}
 
-	pb->d[3].v.f = ((Real)(pb->d[2].v.tm) * pb->d[7].v.f + 
-		pb->d[1].v.f * (pb->d[0].v.f - pb->d[6].v.f)) / (Real)(dt + pb->d[2].v.tm);	
+	pb->d[3].v.v.f = ((Real)(pb->d[2].v.v.tm) * pb->d[7].v.v.f + 
+		pb->d[1].v.v.f * (pb->d[0].v.v.f - pb->d[6].v.v.f)) / (Real)(dt + pb->d[2].v.v.tm);	
 		
-	pb->d[4].v.tm = dt;
+	pb->d[4].v.v.tm = dt;
 
-	pb->d[6].v.f = pb->d[0].v.f;
-	pb->d[7].v.f = pb->d[3].v.f;	
+	pb->d[6].v.v.f = pb->d[0].v.v.f;
+	pb->d[7].v.v.f = pb->d[3].v.v.f;	
 }
 
 static fb_t fb_DIFF = {

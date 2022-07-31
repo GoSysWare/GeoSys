@@ -11,38 +11,38 @@ static void run_FUN12(void *p)
 {	
 	fb_t *pb = (fb_t *)p;
 
-	Real x[12] = {pb->d[1].v.f, pb->d[3].v.f, pb->d[5].v.f, pb->d[7].v.f, pb->d[9].v.f, pb->d[11].v.f, 
-				  pb->d[13].v.f, pb->d[15].v.f, pb->d[17].v.f, pb->d[19].v.f, pb->d[21].v.f, pb->d[23].v.f};
-	Real y[12] = {pb->d[2].v.f, pb->d[4].v.f, pb->d[6].v.f, pb->d[8].v.f, pb->d[10].v.f, pb->d[12].v.f, 
-				  pb->d[14].v.f, pb->d[16].v.f, pb->d[18].v.f, pb->d[20].v.f, pb->d[22].v.f, pb->d[24].v.f};
+	Real x[12] = {pb->d[1].v.v.f, pb->d[3].v.v.f, pb->d[5].v.v.f, pb->d[7].v.v.f, pb->d[9].v.v.f, pb->d[11].v.v.f, 
+				  pb->d[13].v.v.f, pb->d[15].v.v.f, pb->d[17].v.v.f, pb->d[19].v.v.f, pb->d[21].v.v.f, pb->d[23].v.v.f};
+	Real y[12] = {pb->d[2].v.v.f, pb->d[4].v.v.f, pb->d[6].v.v.f, pb->d[8].v.v.f, pb->d[10].v.v.f, pb->d[12].v.v.f, 
+				  pb->d[14].v.v.f, pb->d[16].v.v.f, pb->d[18].v.v.f, pb->d[20].v.v.f, pb->d[22].v.v.f, pb->d[24].v.v.f};
 	
 
-	if(pb->d[0].v.f < x[0]){
-		pb->d[25].v.f = y[0];
-	}else if(pb->d[0].v.f < x[1]){
-		pb->d[25].v.f = get_VALUE(pb->d[0].v.f, x[0], y[0], x[1], y[1]);
-	}else if(pb->d[0].v.f < x[2]){
-		pb->d[25].v.f = get_VALUE(pb->d[0].v.f, x[1], y[1], x[2], y[2]);
-	}else if(pb->d[0].v.f < x[3]){
-		pb->d[25].v.f = get_VALUE(pb->d[0].v.f, x[2], y[2], x[3], y[3]);
-	}else if(pb->d[0].v.f < x[4]){
-		pb->d[25].v.f = get_VALUE(pb->d[0].v.f, x[3], y[3], x[4], y[4]);
-	}else if(pb->d[0].v.f < x[5]){
-		pb->d[25].v.f = get_VALUE(pb->d[0].v.f, x[4], y[4], x[5], y[5]);
-	}else if(pb->d[0].v.f < x[6]){
-		pb->d[25].v.f = get_VALUE(pb->d[0].v.f, x[5], y[5], x[6], y[6]);
-	}else if(pb->d[0].v.f < x[7]){
-		pb->d[25].v.f = get_VALUE(pb->d[0].v.f, x[6], y[6], x[7], y[7]);
-	}else if(pb->d[0].v.f < x[8]){
-		pb->d[25].v.f = get_VALUE(pb->d[0].v.f, x[7], y[7], x[8], y[8]);
-	}else if(pb->d[0].v.f < x[9]){
-		pb->d[25].v.f = get_VALUE(pb->d[0].v.f, x[8], y[8], x[9], y[9]);
-	}else if(pb->d[0].v.f < x[10]){
-		pb->d[25].v.f = get_VALUE(pb->d[0].v.f, x[9], y[9], x[10], y[10]);
-	}else if(pb->d[0].v.f < x[11]){
-		pb->d[25].v.f = get_VALUE(pb->d[0].v.f, x[10], y[10], x[11], y[11]);
+	if(pb->d[0].v.v.f < x[0]){
+		pb->d[25].v.v.f = y[0];
+	}else if(pb->d[0].v.v.f < x[1]){
+		pb->d[25].v.v.f = get_VALUE(pb->d[0].v.v.f, x[0], y[0], x[1], y[1]);
+	}else if(pb->d[0].v.v.f < x[2]){
+		pb->d[25].v.v.f = get_VALUE(pb->d[0].v.v.f, x[1], y[1], x[2], y[2]);
+	}else if(pb->d[0].v.v.f < x[3]){
+		pb->d[25].v.v.f = get_VALUE(pb->d[0].v.v.f, x[2], y[2], x[3], y[3]);
+	}else if(pb->d[0].v.v.f < x[4]){
+		pb->d[25].v.v.f = get_VALUE(pb->d[0].v.v.f, x[3], y[3], x[4], y[4]);
+	}else if(pb->d[0].v.v.f < x[5]){
+		pb->d[25].v.v.f = get_VALUE(pb->d[0].v.v.f, x[4], y[4], x[5], y[5]);
+	}else if(pb->d[0].v.v.f < x[6]){
+		pb->d[25].v.v.f = get_VALUE(pb->d[0].v.v.f, x[5], y[5], x[6], y[6]);
+	}else if(pb->d[0].v.v.f < x[7]){
+		pb->d[25].v.v.f = get_VALUE(pb->d[0].v.v.f, x[6], y[6], x[7], y[7]);
+	}else if(pb->d[0].v.v.f < x[8]){
+		pb->d[25].v.v.f = get_VALUE(pb->d[0].v.v.f, x[7], y[7], x[8], y[8]);
+	}else if(pb->d[0].v.v.f < x[9]){
+		pb->d[25].v.v.f = get_VALUE(pb->d[0].v.v.f, x[8], y[8], x[9], y[9]);
+	}else if(pb->d[0].v.v.f < x[10]){
+		pb->d[25].v.v.f = get_VALUE(pb->d[0].v.v.f, x[9], y[9], x[10], y[10]);
+	}else if(pb->d[0].v.v.f < x[11]){
+		pb->d[25].v.v.f = get_VALUE(pb->d[0].v.v.f, x[10], y[10], x[11], y[11]);
 	}else{
-		pb->d[25].v.f = y[11];
+		pb->d[25].v.v.f = y[11];
 	}
 }
 

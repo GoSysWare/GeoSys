@@ -2,30 +2,30 @@ static void run_FILTER(void *p)
 {	
 	fb_t *pb = (fb_t *)p;
 
-	pb->d[10].v.f = pb->d[0].v.f/8 + 7*pb->d[9].v.f/8;
-	pb->d[9].v.f = pb->d[0].v.f/7 + 6*pb->d[8].v.f/7;
-	pb->d[8].v.f = pb->d[0].v.f/6 + 5*pb->d[7].v.f/6;
-	pb->d[7].v.f = pb->d[0].v.f/5 + 4*pb->d[6].v.f/5;
-	pb->d[6].v.f = pb->d[0].v.f/4 + 3*pb->d[5].v.f/4;
-	pb->d[5].v.f = pb->d[0].v.f/3 + 2*pb->d[4].v.f/3;
-	pb->d[4].v.f = pb->d[0].v.f/2 + pb->d[3].v.f/2;
+	pb->d[10].v.v.f = pb->d[0].v.v.f/8 + 7*pb->d[9].v.v.f/8;
+	pb->d[9].v.v.f = pb->d[0].v.v.f/7 + 6*pb->d[8].v.v.f/7;
+	pb->d[8].v.v.f = pb->d[0].v.v.f/6 + 5*pb->d[7].v.v.f/6;
+	pb->d[7].v.v.f = pb->d[0].v.v.f/5 + 4*pb->d[6].v.v.f/5;
+	pb->d[6].v.v.f = pb->d[0].v.v.f/4 + 3*pb->d[5].v.v.f/4;
+	pb->d[5].v.v.f = pb->d[0].v.v.f/3 + 2*pb->d[4].v.v.f/3;
+	pb->d[4].v.v.f = pb->d[0].v.v.f/2 + pb->d[3].v.v.f/2;
 	
-	if(pb->d[1].v.i == 0){
-		pb->d[2].v.f = pb->d[0].v.f;	
-	}else if(pb->d[1].v.i == 1){
-		if(pb->d[0].v.f >= 0.0){
-			pb->d[2].v.f = (Real)(sqrt(pb->d[0].v.f));
+	if(pb->d[1].v.v.i == 0){
+		pb->d[2].v.v.f = pb->d[0].v.v.f;	
+	}else if(pb->d[1].v.v.i == 1){
+		if(pb->d[0].v.v.f >= 0.0){
+			pb->d[2].v.v.f = (Real)(sqrt(pb->d[0].v.v.f));
 		}else{
-			pb->d[2].v.f = (Real)((-1) * sqrt((-1) * pb->d[0].v.f));
+			pb->d[2].v.v.f = (Real)((-1) * sqrt((-1) * pb->d[0].v.v.f));
 		}	
-	}else if(pb->d[1].v.i == 2){
-		pb->d[2].v.f = pb->d[4].v.f;
-	}else if(pb->d[1].v.i == 3){
-		pb->d[2].v.f = pb->d[10].v.f;
+	}else if(pb->d[1].v.v.i == 2){
+		pb->d[2].v.v.f = pb->d[4].v.v.f;
+	}else if(pb->d[1].v.v.i == 3){
+		pb->d[2].v.v.f = pb->d[10].v.v.f;
 	}else{
 		return;
 	}	 
-	 pb->d[3].v.f = pb->d[0].v.f;
+	 pb->d[3].v.v.f = pb->d[0].v.v.f;
 }
 
 static fb_t fb_FILTER = {

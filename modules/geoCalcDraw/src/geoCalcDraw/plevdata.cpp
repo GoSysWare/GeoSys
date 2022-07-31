@@ -23,7 +23,7 @@ QString PLEVData::getStrValue()
     QString ret;
     char temp[128];
 
-    var2str(temp, value.v, value.t);
+    var2str(temp, value, value.t);
     ret.sprintf("%s", temp);
 
     return ret;

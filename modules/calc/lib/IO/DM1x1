@@ -5,28 +5,28 @@ static void run_DM1x1(void *p)
 	int s,c,i;
 	Word d;
 	iocell_t *cell;
-	s=pb->d[0].v.i;
-	c=pb->d[1].v.i;
+	s=pb->d[0].v.v.i;
+	c=pb->d[1].v.v.i;
 	if(s<0 || s>=IOSTATIONCOUNT){
-		pb->d[2].v.b=1;
+		pb->d[2].v.v.b=1;
 		return;
 	}
 	if(c<0 || c>=IOCELLCOUNT){
-		pb->d[2].v.b=1;
+		pb->d[2].v.v.b=1;
 		return;
 	}
 	cell=io_getcellin(s,c);
 	if(strncmp(cell->id,"DM1x1",sizeof("DM1x1"))!=0){
-		pb->d[2].v.b=1;
+		pb->d[2].v.v.b=1;
 	}else{
-		pb->d[2].v.b=0;
+		pb->d[2].v.v.b=0;
 		memcpy(&d,cell->data,sizeof(d));
 		word_invert(&d);
 		for(i=0;i<16;i++){
 			if(d & (0x0001<<i)){
-				pb->d[3+i].v.b=1;
+				pb->d[3+i].v.v.b=1;
 			}else{
-				pb->d[3+i].v.b=0;
+				pb->d[3+i].v.v.b=0;
 			}
 		}
 	}

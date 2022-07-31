@@ -2,15 +2,15 @@ static void run_AVE4W(void *p)
 {	
 	fb_t *pb = (fb_t *)p;
 
-	pb->d[10].v.f = pb->d[4].v.f + pb->d[5].v.f + pb->d[6].v.f + pb->d[7].v.f;
-	pb->d[9].v.f = pb->d[4].v.f * pb->d[0].v.f + pb->d[5].v.f * pb->d[1].v.f + pb->d[6].v.f * pb->d[2].v.f + pb->d[7].v.f * pb->d[3].v.f;
+	pb->d[10].v.v.f = pb->d[4].v.v.f + pb->d[5].v.v.f + pb->d[6].v.v.f + pb->d[7].v.v.f;
+	pb->d[9].v.v.f = pb->d[4].v.v.f * pb->d[0].v.v.f + pb->d[5].v.v.f * pb->d[1].v.v.f + pb->d[6].v.v.f * pb->d[2].v.v.f + pb->d[7].v.v.f * pb->d[3].v.v.f;
 	
-	if(fabs(pb->d[10].v.f) < 0.00000001){
-		pb->d[11].v.b = 1;
+	if(fabs(pb->d[10].v.v.f) < 0.00000001){
+		pb->d[11].v.v.b = 1;
 		return;
 	}else{
-		pb->d[11].v.b = 0;
-		pb->d[8].v.f = pb->d[9].v.f / pb->d[10].v.f;
+		pb->d[11].v.v.b = 0;
+		pb->d[8].v.v.f = pb->d[9].v.v.f / pb->d[10].v.v.f;
 	}
 }
 

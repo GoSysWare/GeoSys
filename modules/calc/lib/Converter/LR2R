@@ -1,7 +1,7 @@
 static void run_LR2R(void *p)
 {	
 	fb_t *pb = (fb_t *)p;
-	pb->d[1].v.f = (Real)(pb->d[0].v.fl); 
+	pb->d[1].v.v.f = (Real)(pb->d[0].v.v.fl); 
 }
 
 static fb_t fb_LR2R = {

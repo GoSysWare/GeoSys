@@ -2,10 +2,10 @@ static void run_I2B(void *p)
 {	
 	fb_t *pb = (fb_t *)p;
 
-	if(pb->d[0].v.i == 0){
-		pb->d[1].v.b = 0;
+	if(pb->d[0].v.v.i == 0){
+		pb->d[1].v.v.b = 0;
 	}else{
-		pb->d[1].v.b = 1;
+		pb->d[1].v.v.b = 1;
 	}
 }
 

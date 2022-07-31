@@ -422,17 +422,17 @@ int prj_to_img(prjimg_t *pimg)
 				p_fb = p_en->p_fb;
 				for(i = 0; i < p_fb->h.ni; i++){
 					ppin=&p_fb->d[i];
-					buf+=cmps_zvar(&ppin->v,ppin->t,buf);
+					buf+=cmps_zvar(&ppin->v.v,ppin->t,buf);
 					s++;
 				}
 				for(i = 0; i < p_fb->h.no; i++){
 					ppin=&p_fb->d[i + p_fb->h.ni];
-					buf+=cmps_zvar(&ppin->v,ppin->t,buf);
+					buf+=cmps_zvar(&ppin->v.v,ppin->t,buf);
 					s++;
 				}
 				for(i = 0; i < p_fb->h.np; i++){
 					ppin=&p_fb->d[i + p_fb->h.ni + p_fb->h.no];
-					buf+=cmps_zvar(&ppin->v,ppin->t,buf);
+					buf+=cmps_zvar(&ppin->v.v,ppin->t,buf);
 					s++;
 				}
 			}
@@ -492,15 +492,15 @@ int prj_from_img(prjimg_t *pimg)
 				p_fb = p_en->p_fb;
 				for(i = 0; i < p_fb->h.ni; i++){
 					ppin=&p_fb->d[i];
-					buf+=cmps_uzvar(buf,&ppin->v,&t);
+					buf+=cmps_uzvar(buf,&ppin->v.v,&t);
 				}
 				for(i = 0; i < p_fb->h.no; i++){
 					ppin=&p_fb->d[i + p_fb->h.ni];
-					buf+=cmps_uzvar(buf,&ppin->v,&t);
+					buf+=cmps_uzvar(buf,&ppin->v.v,&t);
 				}
 				for(i = 0; i < p_fb->h.np; i++){
 					ppin=&p_fb->d[i + p_fb->h.ni + p_fb->h.no];
-					buf+=cmps_uzvar(buf,&ppin->v,&t);
+					buf+=cmps_uzvar(buf,&ppin->v.v,&t);
 				}
 			}
 			p_en = p_en->p_next;

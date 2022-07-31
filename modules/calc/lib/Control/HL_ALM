@@ -2,27 +2,27 @@ static void run_HL_ALM(void *p)
 {	
 	fb_t *pb = (fb_t *)p;
 
-	if((pb->d[4].v.f < 0) || (pb->d[5].v.f < 0) || (pb->d[2].v.f < pb->d[3].v.f) || pb->d[1].v.b){
-		pb->d[6].v.b = 0;
-		pb->d[7].v.b = 0;
-		pb->d[8].v.b = 1;
+	if((pb->d[4].v.v.f < 0) || (pb->d[5].v.v.f < 0) || (pb->d[2].v.v.f < pb->d[3].v.v.f) || pb->d[1].v.v.b){
+		pb->d[6].v.v.b = 0;
+		pb->d[7].v.v.b = 0;
+		pb->d[8].v.v.b = 1;
 		return;
 	}else{
-		pb->d[8].v.b = 0;
+		pb->d[8].v.v.b = 0;
 	}
 
-	if(pb->d[0].v.f > pb->d[2].v.f + pb->d[4].v.f){
-		pb->d[6].v.b = 1;
-		pb->d[7].v.b = 0;
-	}else if(pb->d[0].v.f < pb->d[2].v.f - pb->d[4].v.f){
-		pb->d[6].v.b = 0;
+	if(pb->d[0].v.v.f > pb->d[2].v.v.f + pb->d[4].v.v.f){
+		pb->d[6].v.v.b = 1;
+		pb->d[7].v.v.b = 0;
+	}else if(pb->d[0].v.v.f < pb->d[2].v.v.f - pb->d[4].v.v.f){
+		pb->d[6].v.v.b = 0;
 	}
 
-	if(pb->d[0].v.f < pb->d[3].v.f - pb->d[5].v.f){
-		pb->d[7].v.b= 1;
-		pb->d[6].v.b = 0;
-	}else if(pb->d[0].v.f > pb->d[3].v.f + pb->d[5].v.f){
-		pb->d[7].v.b = 0;
+	if(pb->d[0].v.v.f < pb->d[3].v.v.f - pb->d[5].v.v.f){
+		pb->d[7].v.v.b= 1;
+		pb->d[6].v.v.b = 0;
+	}else if(pb->d[0].v.v.f > pb->d[3].v.v.f + pb->d[5].v.v.f){
+		pb->d[7].v.v.b = 0;
 	}
 }
 

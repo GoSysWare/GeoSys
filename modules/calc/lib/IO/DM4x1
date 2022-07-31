@@ -6,25 +6,25 @@ static void run_DM4x1(void *p)
 	Word d;
 	float f;
 	iocell_t *cell;
-	s=pb->d[0].v.i;
-	c=pb->d[1].v.i;
+	s=pb->d[0].v.v.i;
+	c=pb->d[1].v.v.i;
 	if(s<0 || s>=IOSTATIONCOUNT){
-		pb->d[10].v.b=1;
+		pb->d[10].v.v.b=1;
 		return;
 	}
 	if(c<0 || c>=IOCELLCOUNT){
-		pb->d[10].v.b=1;
+		pb->d[10].v.v.b=1;
 		return;
 	}
 	cell=io_getcellin(s,c);
 	if(strncmp(cell->id,"DM4x1",sizeof("DM4x1"))!=0){
-		pb->d[10].v.b=1;
+		pb->d[10].v.v.b=1;
 	}else{
-		pb->d[10].v.b=0;
+		pb->d[10].v.v.b=0;
 	}
 	cell=io_getcellout(s,c);
 	for(i=0;i<8;i++){
-		f=pb->d[2+i].v.f;
+		f=pb->d[2+i].v.v.f;
 		if(f<0.){
 			f=0.;
 		}

@@ -6,18 +6,18 @@ static void run_RAT_LMT(void *p)
 
 	Real v;
 
-	v = (pb->d[0].v.f - pb->d[4].v.f) / (Real)dt;
+	v = (pb->d[0].v.v.f - pb->d[4].v.v.f) / (Real)dt;
 	
-	if(v > pb->d[1].v.f){
-		pb->d[3].v.f = pb->d[5].v.f + pb->d[1].v.f * (Real)dt;
-	}else if(v < pb->d[2].v.f){
-		pb->d[3].v.f = pb->d[5].v.f + pb->d[2].v.f * (Real)dt;
+	if(v > pb->d[1].v.v.f){
+		pb->d[3].v.v.f = pb->d[5].v.v.f + pb->d[1].v.v.f * (Real)dt;
+	}else if(v < pb->d[2].v.v.f){
+		pb->d[3].v.v.f = pb->d[5].v.v.f + pb->d[2].v.v.f * (Real)dt;
 	}else{
-		pb->d[3].v.f = pb->d[0].v.f;
+		pb->d[3].v.v.f = pb->d[0].v.v.f;
 	}	
 	
-	pb->d[4].v.f = pb->d[0].v.f;
-	pb->d[5].v.f = pb->d[3].v.f;
+	pb->d[4].v.v.f = pb->d[0].v.v.f;
+	pb->d[5].v.v.f = pb->d[3].v.v.f;
 }
 
 static fb_t fb_RAT_LMT = {
