@@ -5,9 +5,9 @@
 
 #ifndef k_program_h
 #define k_program_h
-#ifdef __cplusplus
-extern "C" {
-#endif
+// #ifdef __cplusplus
+// extern "C" {
+// #endif
 
 #include "k_functionblock.h"
 
@@ -68,7 +68,7 @@ int prg_checkloop(prog_t *p_prg, int idSrc, int idTgt);
 
 fb_t *prg_fbfind(prog_t *p_prg, int id);
 
-#ifdef __cplusplus
-}
-#endif
+// #ifdef __cplusplus
+// }
+// #endif
 #endif

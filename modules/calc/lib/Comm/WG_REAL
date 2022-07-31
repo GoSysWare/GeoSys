@@ -1,6 +1,6 @@
 static void run_WG_REAL(void *p)
 {	
-	fb_t *pb = p;
+	fb_t *pb = (fb_t *)p;
 }
 
 static fb_t fb_WG_REAL = {

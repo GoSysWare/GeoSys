@@ -1,6 +1,6 @@
 static void run_POLYNOM(void *p)
 {	
-	fb_t *pb = p;
+	fb_t *pb = (fb_t *)p;
 
 	pb->d[7].v.f = pb->d[1].v.f
 				+ pb->d[2].v.f*pb->d[0].v.f

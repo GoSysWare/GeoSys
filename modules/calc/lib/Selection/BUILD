@@ -14,7 +14,7 @@ cc_library(
         "TWOSEL",
     ],
     srcs = [
-        "Selection.c",
+        "Selection.cpp",
     ],
     deps = [
         "//modules/calc/include:calc_include",

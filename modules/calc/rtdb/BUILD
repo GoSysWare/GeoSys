@@ -20,11 +20,11 @@ cc_library(
         "CapiGlobal.h"
     ],
     srcs = [
-        "station.c",
-        "rtdb.c",
-        "RBTree.c",
-        "BinTree.c",
-        "helper.c",
+        "station.cpp",
+        "rtdb.cpp",
+        "RBTree.cpp",
+        "BinTree.cpp",
+        "helper.cpp",
         ],
     deps = [
         "//modules/calc/include:calc_include",

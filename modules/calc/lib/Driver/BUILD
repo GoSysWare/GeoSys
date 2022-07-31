@@ -17,7 +17,7 @@ cc_library(
         "S_E_VAL",
     ],
     srcs = [
-        "Driver.c",
+        "Driver.cpp",
     ],
     deps = [
         "//modules/calc/include:calc_include",

@@ -18,9 +18,9 @@
 #define __CAPIGLOBAL_H__
 
 #include <memory.h>
-#ifdef __cplusplus
-extern "C" {
-#endif
+// #ifdef __cplusplus
+// extern "C" {
+// #endif
 
 #define CAPI_SUCCESS        0
 #define CAPI_FAILED         1
@@ -77,8 +77,8 @@ typedef UINT (*GETKEYFUNC)( void *pData, UINT uKeyIndex );
 */
 typedef UINT (*HASHFUNC)(void *pKey, UINT uBucketNum);
 
-#ifdef __cplusplus
-}
-#endif
+// #ifdef __cplusplus
+// }
+// #endif
 
 #endif /* __CAPIGLOBAL_H__ */

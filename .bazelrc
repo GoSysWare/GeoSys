@@ -17,7 +17,7 @@ build --nokeep_state_after_build
 
 
 # Enable C++14
-build --cxxopt="-std=c++14" 
+build --cxxopt="-std=c++11" 
 
 # Enable colorful output of GCC
 build --cxxopt="-fdiagnostics-color=always"

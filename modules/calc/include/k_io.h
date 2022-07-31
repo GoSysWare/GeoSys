@@ -1,8 +1,8 @@
 #ifndef k_io_h
 #define k_io_h
-#ifdef __cplusplus
-extern "C" {
-#endif
+// #ifdef __cplusplus
+// extern "C" {
+// #endif
 
 #include "k_config.h"
 #include "k_datatype.h"
@@ -40,7 +40,7 @@ void word_invert(Word *w);
 char *io_to_img(char *buf);
 char *io_from_img(char *buf);
 
-#ifdef __cplusplus
-}
-#endif
+// #ifdef __cplusplus
+// }
+// #endif
 #endif

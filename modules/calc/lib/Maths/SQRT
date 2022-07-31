@@ -1,6 +1,6 @@
 static void run_SQRT(void *p)
 {	
-	fb_t *pb = p;
+	fb_t *pb = (fb_t *)p;
 
 	if(pb->d[0].v.f >= 0){
 		pb->d[1].v.f = (Real) sqrt ( pb->d[0].v.f ); 

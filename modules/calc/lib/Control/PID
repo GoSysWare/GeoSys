@@ -1,6 +1,6 @@
 static void run_PID(void *p)
 {	
-	fb_t *pb = p;
+	fb_t *pb = (fb_t *)p;
 
 	Time t = clk_cycle();
 	Real dt = (Real)t;

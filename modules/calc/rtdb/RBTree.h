@@ -12,9 +12,9 @@
 #ifndef __RBTREE_H__
 #define __RBTREE_H__
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+// #ifdef __cplusplus
+// extern "C" {
+// #endif
 
 #define     RBTREE_COLOR_RED    0
 #define     RBTREE_COLOR_BLACK  1
@@ -48,9 +48,9 @@ void * RBTree_EnumNext(RBTREE *pTree);
 void *RBTree_GetMinium(RBTREE *pTree, RBTREENODE *pNode);
 void *RBTree_GetMaxium(RBTREE *pTree, RBTREENODE *pNode);
 
-#ifdef __cplusplus
-}
-#endif
+// #ifdef __cplusplus
+// }
+// #endif
 
 
 #endif /* __RBTREE_H__ */

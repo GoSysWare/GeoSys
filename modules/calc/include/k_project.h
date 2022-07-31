@@ -1,8 +1,8 @@
 #ifndef k_project_h
 #define k_project_h
-#ifdef __cplusplus
-extern "C" {
-#endif
+// #ifdef __cplusplus
+// extern "C" {
+// #endif
 
 #include "k_config.h"
 #include "k_program.h"
@@ -22,7 +22,7 @@ typedef struct PrjInfo{
 typedef struct PrjImg{
 	prjinfo_t info;
 	int bufsize;
-	char imgbuf[];
+	char imgbuf[IMAGSIZE];
 }prjimg_t;
 
 
@@ -35,7 +35,7 @@ typedef struct PNode{
 }pnode_t;
 
 
-void prj_main_loop(void* sth);
+void *prj_main_loop(void* sth);
 
 void prj_run();
 void prj_stop();
@@ -69,7 +69,7 @@ int prj_img_size();
 int prj_to_img(prjimg_t *img);
 int prj_from_img(prjimg_t *pimg);
 
-#ifdef __cplusplus
-}
-#endif
+// #ifdef __cplusplus
+// }
+// #endif
 #endif

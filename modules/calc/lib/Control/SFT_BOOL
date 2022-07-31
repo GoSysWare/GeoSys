@@ -1,6 +1,6 @@
 static void run_SFT_BOOL(void *p)
 {	
-	fb_t *pb = p;
+	fb_t *pb = (fb_t *)p;
 
 	if(pb->d[2].v.b){
 		pb->d[3].v.b = pb->d[1].v.b;

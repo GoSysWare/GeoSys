@@ -16,7 +16,7 @@ cc_library(
         "TP",
     ],
     srcs = [
-        "Timer.c",
+        "Timer.cpp",
     ],
     deps = [
         "//modules/calc/include:calc_include",

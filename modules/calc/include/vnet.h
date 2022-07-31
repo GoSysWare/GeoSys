@@ -19,9 +19,9 @@
 #include <arpa/inet.h>
 #endif
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+// #ifdef __cplusplus
+// extern "C" {
+// #endif
 
 #ifdef _LINUX
 typedef int SOCKET;
@@ -41,8 +41,8 @@ typedef void (*frecvfrom)(int, int, char *);
 typedef struct{
 	struct in_addr ip;
 } local_intf_t;
-local_intf_t local_intfs[MAX_IF_COUNT];
-local_intf_t intfs[MAX_IF_COUNT];
+extern local_intf_t local_intfs[MAX_IF_COUNT];
+extern local_intf_t intfs[MAX_IF_COUNT];
 //#endif
 
 extern int intfCount;
@@ -57,9 +57,9 @@ unsigned char vnet_iomask();
 
 int vnet_closesocket(SOCKET);
 
-#ifdef __cplusplus
-}
-#endif
+// #ifdef __cplusplus
+// }
+// #endif
 #endif
 
 

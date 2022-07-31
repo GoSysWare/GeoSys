@@ -27,7 +27,7 @@ cc_library(
         "SUB_REAL",
     ],
     srcs = [
-        "Arithmetic.c",
+        "Arithmetic.cpp",
     ],
     deps = [
         "//modules/calc/include:calc_include",

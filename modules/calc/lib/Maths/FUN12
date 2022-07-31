@@ -9,7 +9,7 @@ Real get_VALUE(Real x, Real x1, Real y1, Real x2, Real y2)
 
 static void run_FUN12(void *p)
 {	
-	fb_t *pb = p;
+	fb_t *pb = (fb_t *)p;
 
 	Real x[12] = {pb->d[1].v.f, pb->d[3].v.f, pb->d[5].v.f, pb->d[7].v.f, pb->d[9].v.f, pb->d[11].v.f, 
 				  pb->d[13].v.f, pb->d[15].v.f, pb->d[17].v.f, pb->d[19].v.f, pb->d[21].v.f, pb->d[23].v.f};

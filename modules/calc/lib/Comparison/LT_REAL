@@ -1,6 +1,6 @@
 static void run_LT_REAL(void *p)
 {	
-	fb_t *pb = p;
+	fb_t *pb = (fb_t *)p;
 	pb->d[2].v.b = (pb->d[0].v.f < pb->d[1].v.f ? 1 : 0);
 }
 

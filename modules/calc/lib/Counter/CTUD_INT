@@ -1,6 +1,6 @@
 static void run_CTUD_INT(void *p)
 {	
-	fb_t *pb = p;
+	fb_t *pb = (fb_t *)p;
 
 	if(pb->d[2].v.b){
 		pb->d[5].v.b = 0;

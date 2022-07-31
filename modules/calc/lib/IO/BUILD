@@ -15,7 +15,7 @@ cc_library(
         "DM4x1",
     ],
     srcs = [
-        "IO.c",
+        "IO.cpp",
     ],
     deps = [
         "//modules/calc/include:calc_include",

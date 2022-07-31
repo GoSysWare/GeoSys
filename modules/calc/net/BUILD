@@ -12,12 +12,12 @@ cc_library(
 
     ],
     srcs = [
-        "cfgbus.c",
-        "evbus.c",
-        "stbbus.c",
-        "vnet.c",
-        "vtcp.c",
-        "vudp.c",
+        "cfgbus.cpp",
+        "evbus.cpp",
+        "stbbus.cpp",
+        "vnet.cpp",
+        "vtcp.cpp",
+        "vudp.cpp",
     ],
     deps = [
         "//modules/calc/include:calc_include",

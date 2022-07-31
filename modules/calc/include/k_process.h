@@ -5,15 +5,15 @@
 
 #include "k_config.h"
 
-typedef void (*run_proc)(void *);
+typedef void* (*run_proc)(void *);
 
 #ifdef _LINUX
 #include <pthread.h>
 #endif
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+// #ifdef __cplusplus
+// extern "C" {
+// #endif
 
 void k_sleep(int ms);
 void k_thread_start(run_proc proc, void *cookie);
@@ -46,7 +46,7 @@ void k_runlock(rwlock_t *plock);
 void k_wlock(rwlock_t *plock);
 void k_wunlock(rwlock_t *plock);
 
-#ifdef __cplusplus
-}
-#endif
+// #ifdef __cplusplus
+// }
+// #endif
 #endif

@@ -1,8 +1,8 @@
 #ifndef rtdb_h
 #define rtdb_h
-#ifdef __cplusplus
-extern "C" {
-#endif
+// #ifdef __cplusplus
+// extern "C" {
+// #endif
 
 #include "modules/calc/include/k_datatype.h"
 #include "modules/calc/include/k_evdata.h"
@@ -48,7 +48,7 @@ void rtdb_uninit();
 void rtdb_loadcfg();
 void rtdb_savecfg();
 
-#ifdef __cplusplus
-}
-#endif
+// #ifdef __cplusplus
+// }
+// #endif
 #endif

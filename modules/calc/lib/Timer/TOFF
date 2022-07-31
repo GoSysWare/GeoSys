@@ -1,6 +1,6 @@
 static void run_TOFF(void *p)
 {	
-	fb_t *pb = p;
+	fb_t *pb = (fb_t *)p;
 
 	Time dt = clk_cycle();
 	Time t;

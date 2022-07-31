@@ -18,6 +18,7 @@ cc_library(
         "IO.h",
         "Logic.h",
         "Maths.h",
+        "Opencv.h",
         "Selection.h",
         "System.h",
         "Timer.h",

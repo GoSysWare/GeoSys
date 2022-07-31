@@ -1,8 +1,8 @@
 #ifndef stbbus_h
 #define stbbus_h
-#ifdef __cplusplus
-extern "C" {
-#endif
+// #ifdef __cplusplus
+// extern "C" {
+// #endif
 
 #include "cfgbus.h"
 
@@ -17,7 +17,7 @@ void stbbus_uninit();
 void stbbus_sync_data();
 void stbbus_sync_prog(cfgframe_t *p_frm);
 
-#ifdef __cplusplus
-}
-#endif
+// #ifdef __cplusplus
+// }
+// #endif
 #endif

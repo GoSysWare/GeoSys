@@ -1,6 +1,6 @@
 static void run_SIX_SEL_N(void *p)
 {	
-	fb_t *pb = p;
+	fb_t *pb = (fb_t *)p;
 
 	pb->d[8].v.i = (Int)pb->d[0].v.b + (Int)pb->d[1].v.b + (Int)pb->d[2].v.b
 	    + (Int)pb->d[3].v.b + (Int)pb->d[4].v.b + (Int)pb->d[5].v.b;

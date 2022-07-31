@@ -6,9 +6,9 @@
 #include "k_datatype.h"
 #include "k_evdata.h"
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+// #ifdef __cplusplus
+// extern "C" {
+// #endif
 
 #define EVMAGIC 0x52566662
 #define EVDATAPORT 0
@@ -22,7 +22,7 @@ typedef struct EVFrame{
 	Int magic;
 	Int station;
 	Int count;
-	tagvalue_t val[];
+	tagvalue_t val[FBPINSIZE];
 }evframe_t;
 
 typedef void (*evframeproc)(evframe_t *frm);
@@ -38,7 +38,7 @@ void evbus_hook(evframeproc proc);
 //int evbus_freereal(int i);
 //void evbus_sendev();
 
-#ifdef __cplusplus
-}
-#endif
+// #ifdef __cplusplus
+// }
+// #endif
 #endif

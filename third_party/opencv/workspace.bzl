@@ -9,5 +9,5 @@ def repo():
     native.new_local_repository(
         name = "opencv",
         build_file = clean_dep("//third_party/opencv:opencv.BUILD"),
-        path = "/usr/include/opencv2",
+        path = "/usr/include/opencv4",
     )

@@ -28,4 +28,8 @@ cc_library(
         "vtcp.h",
         "vudp.h"
     ],
+      deps = [
+        "@opencv",
+
+    ],  
 )

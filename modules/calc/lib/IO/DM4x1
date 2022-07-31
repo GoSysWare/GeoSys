@@ -1,6 +1,6 @@
 static void run_DM4x1(void *p)
 {	
-	fb_t *pb = p;
+	fb_t *pb = (fb_t *)p;
 
 	int s,c,i;
 	Word d;

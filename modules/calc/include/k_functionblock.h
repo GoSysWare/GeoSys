@@ -1,8 +1,8 @@
 #ifndef k_functionblock_h
 #define k_functionblock_h
-#ifdef __cplusplus
-extern "C" {
-#endif
+// #ifdef __cplusplus
+// extern "C" {
+// #endif
 
 #include "k_config.h"
 #include "k_datatype.h"
@@ -15,6 +15,7 @@ typedef void (*fbrun)(void *);
 #define PINPROPERTY 3
 #define FBFLAGIO	0x00000001
 #define FBFLAGEXPORT	0x00000002
+
 typedef struct FBHead{
 	char fcname[FCNAMESIZE];	/* function name */
 	unsigned int ni;		/* in count */
@@ -32,7 +33,7 @@ typedef struct Pin{
 
 typedef struct FB{
 	fbhead_t h;
-	pin_t d[];
+	pin_t d[FBPINSIZE];
 } fb_t;
 
 fb_t *fb_new(fb_t *p_source);
@@ -43,7 +44,7 @@ void fb_pins_to_string(fb_t *p_fb, char *str);
 void fb_vars_to_string(fb_t *p_fb, char *str);
 void fb_dump(fb_t *p_fb);
 
-#ifdef __cplusplus
-}
-#endif
+// #ifdef __cplusplus
+// }
+// #endif
 #endif

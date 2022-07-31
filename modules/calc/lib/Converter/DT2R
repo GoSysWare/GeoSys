@@ -1,6 +1,6 @@
 static void run_DT2R(void *p)
 {	
-	fb_t *pb = p;
+	fb_t *pb = (fb_t *)p;
 	pb->d[1].v.f = (Real)(pb->d[0].v.tm); 
 }
 
@@ -8,5 +8,6 @@ static fb_t fb_DT2R = {
 	"DT2R", 1, 1, 0, 0, run_DT2R, 
 	{
 		"IN", T_TIME, 0,
-		"OUT", T_REAL, 0	}
+		"OUT", T_REAL, 0
+	}
 };

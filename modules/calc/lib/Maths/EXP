@@ -1,6 +1,6 @@
 static void run_EXP(void *p)
 {	
-	fb_t *pb = p;
+	fb_t *pb = (fb_t *)p;
 
 	pb->d[1].v.f = (Real) exp ( pb->d[0].v.f ); 
 }

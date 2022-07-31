@@ -1,8 +1,8 @@
 #ifndef k_evdata_h
 #define k_evdata_h
-#ifdef __cplusplus
-extern "C" {
-#endif
+// #ifdef __cplusplus
+// extern "C" {
+// #endif
 
 #include "k_config.h"
 #include "k_datatype.h"
@@ -14,6 +14,9 @@ extern "C" {
 #define T_LREAL	0x40
 #define T_TIME  0x50
 #define	T_ANY	0x60
+#define	T_CVIMG	0x70
+#define	T_STRING 0x80
+
 #define T_MASK	0xf0
 
 typedef union{
@@ -22,6 +25,9 @@ typedef union{
 	Real f;
 	LReal fl;
 	Time tm;
+	CvImg *mat;
+	String *str;
+
 } var_t;
 
 typedef struct{
@@ -41,7 +47,7 @@ typedef struct EVNode{
 
 void type2str(char *ct, int it);
 void str2type(char *ct, int *it);
-void var2str(char *str, var_t v, int it);
+void var2str(char *str, const var_t &v, int it);
 void str2var(char *str, var_t *v, int it);
 
 val_t* ev_find(int id);
@@ -54,7 +60,7 @@ int ev_img_size();
 char *ev_to_img(char *buf);
 char *ev_from_img(char *buf);
 
-#ifdef __cplusplus
-}
-#endif
+// #ifdef __cplusplus
+// }
+// #endif
 #endif

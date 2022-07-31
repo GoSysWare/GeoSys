@@ -1,8 +1,8 @@
 #ifndef cfgbus_h
 #define cfgbus_h
-#ifdef __cplusplus
-extern "C" {
-#endif
+// #ifdef __cplusplus
+// extern "C" {
+// #endif
 
 #include "k_config.h"
 #include "k_evdata.h"
@@ -45,7 +45,7 @@ int cfgbus_send(int fun, int len, char *p);
 prjinfo_t *cfgbus_prjinfo();
 char *cfgbus_cmdsbuf();
 
-#ifdef __cplusplus
-}
-#endif
+// #ifdef __cplusplus
+// }
+// #endif
 #endif

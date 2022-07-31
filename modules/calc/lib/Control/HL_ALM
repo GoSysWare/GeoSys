@@ -1,6 +1,6 @@
 static void run_HL_ALM(void *p)
 {	
-	fb_t *pb = p;
+	fb_t *pb = (fb_t *)p;
 
 	if((pb->d[4].v.f < 0) || (pb->d[5].v.f < 0) || (pb->d[2].v.f < pb->d[3].v.f) || pb->d[1].v.b){
 		pb->d[6].v.b = 0;

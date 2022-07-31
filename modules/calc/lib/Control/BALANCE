@@ -1,6 +1,6 @@
 static void run_BALANCE(void *p)
 {	
-	fb_t *pb = p;
+	fb_t *pb = (fb_t *)p;
 
 	if(pb->d[6].v.f < pb->d[7].v.f){
 		pb->d[8].v.f = 0;

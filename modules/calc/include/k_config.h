@@ -1,17 +1,20 @@
 #ifndef k_config_h
 #define k_config_h
-#ifdef __cplusplus
-extern "C" {
-#endif
+// #ifdef __cplusplus
+// extern "C" {
+// #endif
 
 #define UUIDSIZE 40
-#define LIBNAMESIZE 16	/* lib name length */
-#define FBNAMESIZE 32
-#define FCNAMESIZE 16	/* function name length */
-#define PINNAMESIZE 8	/* pin name length */
+#define LIBNAMESIZE 32	/* lib name length */
+#define FBNAMESIZE 64
+#define FCNAMESIZE 32	/* function name length */
+#define PINNAMESIZE 32	/* pin name length */
 #define EVNAMESIZE 32
-#define PRGNAMESIZE 32
-#define PRJNAMESIZE 32
+#define PRGNAMESIZE 64
+#define PRJNAMESIZE 64
+
+#define FBPINSIZE 256
+#define IMAGSIZE (10*1024*1024)
 
 #define IOSTATIONCOUNT 32
 #define IOCELLCOUNT 16
@@ -49,7 +52,7 @@ extern "C" {
 #else
 #endif
 
-#ifdef __cplusplus
-}
-#endif
+// #ifdef __cplusplus
+// }
+// #endif
 #endif

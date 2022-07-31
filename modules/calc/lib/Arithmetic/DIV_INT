@@ -1,6 +1,6 @@
 static void run_DIV_INT(void *p)
 {	
-	fb_t *pb = p;
+	fb_t *pb = (fb_t *)p;
 	if(pb->d[1].v.i != 0){
 		pb->d[2].v.i = pb->d[0].v.i / pb->d[1].v.i; 
 	}

@@ -41,6 +41,9 @@
         "in.h": "c",
         "stdio.h": "c",
         "stdlib.h": "c",
-        "add_int": "c"
+        "add_int": "c",
+        "img_open": "c",
+        "sstream": "cpp",
+        "regex": "cpp"
     }
 }

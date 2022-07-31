@@ -29,7 +29,7 @@ cc_library(
         "NE_REAL",
     ],
     srcs = [
-        "Comparison.c",
+        "Comparison.cpp",
     ],
     deps = [
         "//modules/calc/include:calc_include",

@@ -1,6 +1,6 @@
 static void run_FILTER(void *p)
 {	
-	fb_t *pb = p;
+	fb_t *pb = (fb_t *)p;
 
 	pb->d[10].v.f = pb->d[0].v.f/8 + 7*pb->d[9].v.f/8;
 	pb->d[9].v.f = pb->d[0].v.f/7 + 6*pb->d[8].v.f/7;

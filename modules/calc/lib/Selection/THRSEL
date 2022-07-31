@@ -1,6 +1,6 @@
 static void run_THRSEL(void *p)
 {	
-	fb_t *pb = p;
+	fb_t *pb = (fb_t *)p;
 
 	Real IN1 = pb->d[0].v.f;
 	Real IN2 = pb->d[1].v.f;

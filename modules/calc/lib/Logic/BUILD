@@ -17,7 +17,7 @@ cc_library(
         "XOR",
     ],
     srcs = [
-        "Logic.c",
+        "Logic.cpp",
     ],
     deps = [
         "//modules/calc/include:calc_include",

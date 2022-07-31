@@ -1,6 +1,6 @@
 static void run_MUL_LREAL(void *p)
 {	
-	fb_t *pb = p;
+	fb_t *pb = (fb_t *)p;
 	pb->d[2].v.fl = pb->d[0].v.fl * pb->d[1].v.fl; 
 }
 

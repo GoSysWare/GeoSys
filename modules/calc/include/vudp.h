@@ -7,9 +7,9 @@
 #include "k_config.h"
 #include "vnet.h"
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+// #ifdef __cplusplus
+// extern "C" {
+// #endif
 
 
 int vudp_init();
@@ -27,7 +27,7 @@ unsigned char vudp_get_mask(int port);
 int vudp_get_loop(int port);
 int vudp_get_ttl(int port);
 
-#ifdef __cplusplus
-}
-#endif
+// #ifdef __cplusplus
+// }
+// #endif
 #endif

@@ -7,12 +7,12 @@ package(default_visibility = ["//visibility:public"])
 cc_library(
     name = "Counter",
     includes = [
-    ],
-    hdrs = [
         "CTUD_INT",
     ],
+    hdrs = [
+    ],
     srcs = [
-        "Counter.c",
+        "Counter.cpp",
     ],
     deps = [
         "//modules/calc/include:calc_include",

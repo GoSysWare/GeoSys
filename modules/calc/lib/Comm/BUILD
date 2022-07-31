@@ -18,7 +18,7 @@ cc_library(
 
     ],
     srcs = [
-        "Comm.c",
+        "Comm.cpp",
     ],
     deps = [
         "//modules/calc/include:calc_include",

@@ -1,6 +1,6 @@
 static void run_RG_INT(void *p)
 {	
-	fb_t *pb = p;
+	fb_t *pb = (fb_t *)p;
 
 }
 

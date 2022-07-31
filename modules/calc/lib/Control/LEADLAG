@@ -1,6 +1,6 @@
 static void run_LEADLAG(void *p)
 {	
-	fb_t *pb = p;
+	fb_t *pb = (fb_t *)p;
 
 	Time dt = clk_cycle();
 	Real K1, K2, K3;

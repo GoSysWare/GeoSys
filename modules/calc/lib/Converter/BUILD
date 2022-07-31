@@ -32,7 +32,7 @@ cc_library(
         "SCALING",
     ],
     srcs = [
-        "Converter.c",
+        "Converter.cpp",
     ],
     deps = [
         "//modules/calc/include:calc_include",

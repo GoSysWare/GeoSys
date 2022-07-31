@@ -12,7 +12,7 @@ cc_library(
         "SysState",
     ],
     srcs = [
-        "System.c",
+        "System.cpp",
     ],
     deps = [
         "//modules/calc/include:calc_include",

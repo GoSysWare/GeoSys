@@ -1,6 +1,6 @@
 static void run_TWOSEL(void *p)
 {	
-	fb_t *pb = p;
+	fb_t *pb = (fb_t *)p;
 
 	Int i = pb->d[4].v.i;
 

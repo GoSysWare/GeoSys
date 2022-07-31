@@ -5,9 +5,9 @@
 #include "BinTree.h"
 #include "RBTree.h"
 #include "rtdb.h"
-#ifdef __cplusplus
-extern "C" {
-#endif
+// #ifdef __cplusplus
+// extern "C" {
+// #endif
 
 	typedef struct NameNode{
 		char name[EVNAMESIZE];
@@ -36,7 +36,7 @@ tag_t *sta_findtag(station_t *ps, int id);
 void sta_loadcfg(int id, station_t *ps);
 void sta_savecfg(int id, station_t *ps);
 
-#ifdef __cplusplus
-}
-#endif
+// #ifdef __cplusplus
+// }
+// #endif
 #endif

@@ -30,7 +30,7 @@ cc_library(
         "TOTALIZER",
     ],
     srcs = [
-        "Control.c",
+        "Control.cpp",
     ],
     deps = [
         "//modules/calc/include:calc_include",

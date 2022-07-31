@@ -13,7 +13,7 @@ cc_library(
         "SR",
     ],
     srcs = [
-        "Bistable.c",
+        "Bistable.cpp",
     ],
     deps = [
         "//modules/calc/include:calc_include",

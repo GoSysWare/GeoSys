@@ -94,7 +94,7 @@ def initialize_third_party():
     # glog()
     # gtest()
     # nlohmann_json()
-    # opencv()
+    opencv()
     # poco()
     # proj4()
     # protobuf()

@@ -7,7 +7,7 @@ package(default_visibility = ["//visibility:public"])
 cc_binary(
     name = "calc_core",
     srcs = [
-        "main.c",
+        "main.cpp",
 
     ],
     linkopts = [

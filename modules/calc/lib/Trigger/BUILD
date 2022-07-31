@@ -13,7 +13,7 @@ cc_library(
         "U_TRIG",
     ],
     srcs = [
-        "Trigger.c",
+        "Trigger.cpp",
     ],
     deps = [
         "//modules/calc/include:calc_include",

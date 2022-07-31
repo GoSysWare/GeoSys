@@ -6,9 +6,9 @@
 #include "k_config.h"
 #include "vnet.h"
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+// #ifdef __cplusplus
+// extern "C" {
+// #endif
 
 
 void vtcp_init();
@@ -20,9 +20,9 @@ int vtcp_cltcreate(int port, frecvfrom ondata, char *srvaddr);
 int vtcp_cltsend(int port, int len, char *data);
 void vtcp_cltclose(int port);
 
-#ifdef __cplusplus
-}
-#endif
+// #ifdef __cplusplus
+// }
+// #endif
 #endif
 
 

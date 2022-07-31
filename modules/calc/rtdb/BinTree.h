@@ -12,9 +12,9 @@
 #ifndef __BINTREE_H__
 #define __BINTREE_H__
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+// #ifdef __cplusplus
+// extern "C" {
+// #endif
 
 typedef struct BINTREENODE_st {
     struct BINTREENODE_st *pLeft;
@@ -63,8 +63,8 @@ void BinTree_InOrderTraverse(BINTREE *pTree, VISITFUNC VisitFunc);
 void BinTree_PreOrderTraverse(BINTREE *pTree, VISITFUNC VisitFunc);
 void BinTree_PostOrderTraverse(BINTREE *pTree, VISITFUNC VisitFunc);
 
-#ifdef __cplusplus
-}
-#endif
+// #ifdef __cplusplus
+// }
+// #endif
 
 #endif /* __BINTREE_H__ */

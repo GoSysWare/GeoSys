@@ -26,7 +26,7 @@ cc_library(
         "TAN",
     ],
     srcs = [
-        "Maths.c",
+        "Maths.cpp",
     ],
     deps = [
         "//modules/calc/include:calc_include",
