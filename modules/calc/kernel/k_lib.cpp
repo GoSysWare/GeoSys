@@ -50,7 +50,7 @@ void lib_init()
 	lib_set_table(12, "System", system_first, system_next);
 	lib_set_table(13, "Trigger", trigger_first, trigger_next);
 	lib_set_table(14, "Timer", timer_first, timer_next);
-	lib_set_table(15, "Opencv", opencv_first, opencv_next);
+	lib_set_table(15, "Opencv", open_first, open_next);
 
 	cursor = 0;
 }
@@ -67,7 +67,7 @@ lib_t *lib_next()
 	if(cursor < NLIBCOUNT){
 		return &lib_table[cursor];
 	}else{
-		return 0;	//NULL
+		return ((void*) 0);	//NULL
 	}
 }
 
@@ -77,21 +77,21 @@ fb_t *lib_find(char *libname, char *fcname)
 	fb_t *p_fb;
 	
 	p_lib = lib_first();
-	while(p_lib != 0){
+	while(p_lib != ((void*) 0)){
 		if(strncmp(libname, p_lib->libname, LIBNAMESIZE) == 0){
-			p_fb = (fb_t *)p_lib->first();
-			while(p_fb != 0){
+			p_fb = p_lib->first();
+			while(p_fb != ((void*) 0)){
 				if(strncmp(fcname, p_fb->h.fcname, FCNAMESIZE) == 0){
 					return p_fb;
 				}
-				p_fb = (fb_t *)p_lib->next();
+				p_fb = p_lib->next();
 			}
 
-			return 0;
+			return ((void*) 0);
 		}
 
 		p_lib = lib_next();
 	}
 	
-	return 0;
+	return ((void*) 0);
 }
