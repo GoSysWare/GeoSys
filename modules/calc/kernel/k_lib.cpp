@@ -18,7 +18,7 @@
 #include "modules/calc/include/lib/Trigger.h"
 #include "modules/calc/include/lib/Timer.h"
 
-#define NLIBCOUNT 15
+#define NLIBCOUNT 32
 static int cursor;
 static lib_t lib_table[NLIBCOUNT]; 
 
@@ -50,7 +50,7 @@ void lib_init()
 	lib_set_table(12, "System", system_first, system_next);
 	lib_set_table(13, "Trigger", trigger_first, trigger_next);
 	lib_set_table(14, "Timer", timer_first, timer_next);
-	lib_set_table(15, "Opencv", open_first, open_next);
+    lib_set_table(15, "Opencv", opencv_first, opencv_next);
 
 	cursor = 0;
 }
@@ -67,7 +67,7 @@ lib_t *lib_next()
 	if(cursor < NLIBCOUNT){
 		return &lib_table[cursor];
 	}else{
-		return ((void*) 0);	//NULL
+        return 0;	//NULL
 	}
 }
 
@@ -79,19 +79,19 @@ fb_t *lib_find(char *libname, char *fcname)
 	p_lib = lib_first();
 	while(p_lib != ((void*) 0)){
 		if(strncmp(libname, p_lib->libname, LIBNAMESIZE) == 0){
-			p_fb = p_lib->first();
+            p_fb = (fb_t *)p_lib->first();
 			while(p_fb != ((void*) 0)){
 				if(strncmp(fcname, p_fb->h.fcname, FCNAMESIZE) == 0){
 					return p_fb;
 				}
-				p_fb = p_lib->next();
+                p_fb = (fb_t *)p_lib->next();
 			}
 
-			return ((void*) 0);
+            return 0;
 		}
 
 		p_lib = lib_next();
 	}
 	
-	return ((void*) 0);
+    return 0;
 }
