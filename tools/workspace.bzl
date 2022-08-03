@@ -97,7 +97,7 @@ def initialize_third_party():
     opencv()
     # poco()
     # proj4()
-    # protobuf()
+    protobuf()
     # qt5()
     # sqlite3()
     # tinyxml2()

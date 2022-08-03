@@ -1,0 +1,46 @@
+
+syntax = "proto3";
+
+enum type {
+  T_NONE = 0;
+  T_BOOL = 1;
+  T_INT32 = 2;
+  T_UINT32 = 3;
+  T_INT64 = 4;
+  T_UINT64 = 5;
+  T_FLOAT32 = 6;
+  T_FLOAT64 = 7;
+  T_TIME = 8;
+  T_STRING = 9;
+  T_BYTE = 10;
+  T_IMAGE = 11;
+  T_LIDAR = 12;
+  T_SONAR = 14;
+  T_FILE = 15;
+}
+
+
+message value {
+  type t = 1;
+  oneof var {
+    bool b = 2;
+    int32 i = 3;
+    uint32 ui = 4;
+    int64 l = 5;
+    uint64 ul = 6;
+    float f = 7;
+    double d = 8;
+    uint64 tm = 9;
+    string str = 10;
+    bytes bin = 11;
+    bytes img = 12;
+    bytes lidar = 13;
+    bytes sonar = 14;
+    bytes file = 15;
+  }
+}
+
+message value_t {
+  value v = 1;
+  uint64 tm = 2;
+}
