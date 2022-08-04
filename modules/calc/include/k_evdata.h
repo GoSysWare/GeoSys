@@ -9,8 +9,8 @@
 #include "value.pb.h"
 
 
-typedef shared_ptr<value_t> val_t;
-typedef shared_ptr<value> vav_t;
+typedef std::shared_ptr<value_t> val_t;
+typedef std::shared_ptr<value> var_t;
 
 /* Variable Node */
 typedef struct EVNode{
