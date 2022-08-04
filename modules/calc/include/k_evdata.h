@@ -6,11 +6,11 @@
 
 #include "k_config.h"
 #include "k_datatype.h"
-#include "value.pb.h"
+#include "modules/calc/proto/value.pb.h"
 
 
-typedef std::shared_ptr<value_t> val_t;
-typedef std::shared_ptr<value> var_t;
+typedef std::shared_ptr<value_t> var_t;
+typedef std::shared_ptr<value_tm> vam_t;
 
 /* Variable Node */
 typedef struct EVNode{
@@ -18,15 +18,16 @@ typedef struct EVNode{
 	struct EVNode *p_next;
 	int id;
 	char name[EVNAMESIZE];
-	val_t v;
+	vam_t v;
 } evnode_t;
 
-void type2str(char *ct, int it);
-void str2type(char *ct, int *it);
-void var2str(char *str, const val_t &v, int it);
-void str2var(char *str, val_t *v, int it);
 
-val_t* ev_find(int id);
+void type2str( std::string& str, int it);
+void str2type(const std::string& str, int *it);
+void var2str( std::string & str, const var_t &v);
+void str2var(const std::string & str,const var_t & v);
+
+vam_t* ev_find(int id);
 int ev_add(int id, char *type, char *val, char *name);
 int ev_remove(int id);
 void ev_reset();

@@ -7,14 +7,18 @@
 load("@rules_cc//cc:defs.bzl", "cc_proto_library")
 load("@rules_proto//proto:defs.bzl", "proto_library")
 
+package(default_visibility = ["//visibility:public"])
+
+
+
+cc_proto_library(
+    name = "value_cc_proto",
+    deps = [":value_proto"],
+)
+
 proto_library(
     name = "value_proto",
     srcs = ["value.proto"],
     deps = [
     ],
-)
-
-cc_proto_library(
-    name = "value_cc_proto",
-    deps = [":value_proto"],
 )

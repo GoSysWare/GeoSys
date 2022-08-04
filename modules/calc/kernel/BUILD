@@ -29,3 +29,20 @@ cc_library(
         "//modules/calc/include/lib:lib_include",
     ],
 )
+
+cc_library(
+    name = "evdata",
+    includes = [
+    ],
+    hdrs = [
+
+    ],
+    srcs = [
+        "k_evdata.cpp",
+    ],
+    deps = [
+        "//modules/calc/include:calc_include",
+        "//modules/calc/include/lib:lib_include",
+        "//modules/calc/proto:value_cc_proto",
+    ],
+)

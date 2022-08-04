@@ -39,7 +39,7 @@ typedef struct VNode{
 	int idev;
 	int idfb;
     pin_t *p_pin;//引脚值，参与功能块计算
-    val_t *p_val;//临时值，保存初始值或输出值
+    vam_t *p_val;//临时值，保存初始值或输出值
 	int mark;
 } vnode_t;
 

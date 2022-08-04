@@ -16,19 +16,20 @@ typedef void (*fbrun)(void *);
 #define FBFLAGIO	0x00000001
 #define FBFLAGEXPORT	0x00000002
 
+//FB的头定义
 typedef struct FBHead{
 	char fcname[FCNAMESIZE];	/* function name */
 	unsigned int ni;		/* in count */
 	unsigned int no;		/* out count */
 	unsigned int np;		/* property count */
-        Int flag;			/* export fb */
+    Int flag;			/* export fb */
 	fbrun run;
 } fbhead_t;
 
 typedef struct Pin{
 	char pinname[PINNAMESIZE];
 	Int t;		/* type */
-	val_t v;	/* value */
+	var_t v;	/* value */
 } pin_t;
 
 typedef struct FB{
@@ -39,7 +40,7 @@ typedef struct FB{
 fb_t *fb_new(fb_t *p_source);
 void fb_delete(fb_t *p_fb);
 pin_t *fb_getpin(fb_t *p_fb, int pintype, unsigned int n);
-int fb_setpin(fb_t *p_fb, int pintype, unsigned int n, val_t v);
+int fb_setpin(fb_t *p_fb, int pintype, unsigned int n, var_t v);
 void fb_pins_to_string(fb_t *p_fb, char *str);
 void fb_vars_to_string(fb_t *p_fb, char *str);
 void fb_dump(fb_t *p_fb);

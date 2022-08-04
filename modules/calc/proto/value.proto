@@ -1,7 +1,7 @@
 
 syntax = "proto3";
 
-enum type {
+enum v_type {
   T_NONE = 0;
   T_BOOL = 1;
   T_INT32 = 2;
@@ -12,7 +12,7 @@ enum type {
   T_FLOAT64 = 7;
   T_TIME = 8;
   T_STRING = 9;
-  T_BYTE = 10;
+  T_BYTES = 10;
   T_IMAGE = 11;
   T_LIDAR = 12;
   T_SONAR = 14;
@@ -20,14 +20,14 @@ enum type {
 }
 
 
-message value {
-  type t = 1;
+message value_t {
+  v_type t = 1;
   oneof var {
     bool b = 2;
     int32 i = 3;
     uint32 ui = 4;
-    int64 l = 5;
-    uint64 ul = 6;
+    int64 ll = 5;
+    uint64 ull = 6;
     float f = 7;
     double d = 8;
     uint64 tm = 9;
@@ -40,7 +40,7 @@ message value {
   }
 }
 
-message value_t {
-  value v = 1;
+message value_tm {
+  value_t v = 1;
   uint64 tm = 2;
 }

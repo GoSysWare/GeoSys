@@ -6,322 +6,225 @@
 #include "modules/calc/include/k_evdata.h"
 #include "modules/calc/include/k_compress.h"
 
-static evnode_t vn_head={&vn_head, &vn_head, 0, "",{0,0,0}};
+static evnode_t vn_head={&vn_head, &vn_head, 0, ""};
 static evnode_t *p_vn_select=&vn_head;
 
-void type2str(char *ct, int it)
+
+void type2str( std::string& str, int it)
 {
-	switch(it){
-	case T_NONE:
-		strcpy(ct, "NONE");
-		break;
-	case T_BOOL:
-		strcpy(ct, "BOOL");
-		break;
-	case T_INT:
-		strcpy(ct, "INT");
-		break;
-	case T_REAL:
-		strcpy(ct, "REAL");
-		break;
-	case T_LREAL:
-		strcpy(ct, "LREAL");
-		break;
-	case T_TIME:
-		strcpy(ct, "TIME");
-		break;
-	case T_ANY:
-		strcpy(ct, "ANY");
-		break;
-	case T_CVMAT:
-		strcpy(ct, "CVMAT");
-		break;
-	case T_STRING:
-		strcpy(ct, "STRING");
-		break;
-	default:
-		strcpy(ct, "UNKNOWN");
-	}
+	const google::protobuf::EnumDescriptor * desc = v_type_descriptor();
+	str = desc->FindValueByNumber(it)->name();
 }
 
-void str2type(char *ct, int *it)
+void str2type(const std::string& str, int *it)
 {
-	if(strcmp(ct, "BOOL")==0){
-		*it = T_BOOL;
-	}else if(strcmp(ct, "INT")==0){
-		*it = T_INT;
-	}else if(strcmp(ct, "REAL")==0){
-		*it = T_REAL;
-	}else if(strcmp(ct, "LREAL")==0){
-		*it = T_LREAL;
-	}else if(strcmp(ct, "TIME")==0){
-		*it = T_TIME;
-	}else if(strcmp(ct, "ANY")==0){
-		*it = T_ANY;
-	}else if(strcmp(ct, "CVIMG")==0){
-		*it = T_CVMAT;
-	}else if(strcmp(ct, "STRING")==0){
-		*it = T_STRING;
-	}else{
-		*it = T_NONE;
-	}
+
+
+	const google::protobuf::EnumDescriptor * desc = v_type_descriptor();
+	*it = desc->FindValueByName(str)->number();
 }
 
-void var2str(char *str, const val_t &v, int it)
+void var2str( std::string & str, const var_t &v)
 {
-	switch(it){
-	case T_NONE:
-		*str = 0;
-		break;
-	case T_BOOL:
-		sprintf(str, "%d", v.v.b);
-		break;
-	case T_INT:
-		sprintf(str, "%d", v.v.i);
-		break;
-	case T_REAL:
-		sprintf(str, "%g", v.v.f);
-		break;
-	case T_LREAL:
-		sprintf(str, "%g", v.v.fl);
-		break;
-	case T_TIME:
-		sprintf(str, "%g", v.v.tm);
-		break;
-	case T_ANY:
-		*str = 0;
-		break;
-	case T_CVMAT:
-		sprintf(str, "(%d,%d)", v.v.mat.cols,v.v.mat.rows);
-		break;
-	case T_STRING:
-		sprintf(str, "%s", v.v.str.c_str());
-		break;
-	default:
-		strcat(str, "UNKNOWN");
-	}
+	str = v->SerializeAsString();
 }
-
-void str2var(char *str, val_t *v, int it)
-{
-	v->t = it;
-	switch(it){
-	case T_NONE:
-		break;
-	case T_BOOL:
-		v->v.b = atoi(str);
-		break;
-	case T_INT:
-		v->v.i = atoi(str);
-		break;
-	case T_REAL:
-		v->v.f = (float)atof(str);
-		break;
-	case T_LREAL:
-		v->v.fl = atof(str);
-		break;
-	case T_CVMAT:
-		;
-		break;
-	case T_STRING:
-		new (&v->v.str) String(str);
-	case T_ANY:
-		;
-		break;
-	default:
-		;
-	}
-}
-
-static evnode_t *v_new()
-{
-	evnode_t *p_new;
-	p_new = (evnode_t *)k_malloc(sizeof(evnode_t));
-
-	return p_new;
-}
-
-static void v_delete(evnode_t *p_vn)
-{
-	k_free(p_vn);
-}
-
-static void v_addbefore(evnode_t *p, evnode_t *p_ref)
-{
-	p->p_prev = p_ref->p_prev;
-	p->p_next = p_ref;
-	p_ref->p_prev->p_next = p;
-	p_ref->p_prev = p;
-}
-
-static void v_addafter(evnode_t *p, evnode_t *p_ref)
-{
-	p->p_prev = p_ref;
-	p->p_next = p_ref->p_next;
-	p_ref->p_next->p_prev = p;
-	p_ref->p_next = p;
-}
-
-static void v_remove(evnode_t *p)
-{
-	p->p_prev->p_next = p->p_next;
-	p->p_next->p_prev = p->p_prev;
-}
-
-static int ev_select(int id)
-{
-	evnode_t *p_v;
-	int t;
-
-	if(id == 0){
-		p_vn_select = &vn_head;
-		return -1;
-	}
-
-	if(p_vn_select->id == id){
-		return 0;
-	}
-
-	p_v = vn_head.p_next;
-	while(p_v != &vn_head){
-		t=p_v->id;
-		if(p_v->id == id){
-			p_vn_select=p_v;
-			return 0;
-		}
-		p_v = p_v->p_next;
-	}
-
-	return -1;
-}
-
-val_t *ev_find(int id)
-{
-	if(ev_select(id)==0){
-		return &p_vn_select->v;
-	}else{
-		return 0;
-	}
-}
-
-int ev_add(int id, char *type, char *val, char *name)
-{
-	int it;
-	val_t v;
-	evnode_t *p_vn;
-
-	p_vn = v_new();
-	if(p_vn == 0){
-		return -1;
-	}
 	
-	str2type(type, &it);
-	str2var(val, &v, it);
-    p_vn->id = id;
-	p_vn->v = v;
 
-	strncpy(p_vn->name, name, EVNAMESIZE);
-	v_addbefore(p_vn, &vn_head);
+void str2var(const std::string & str,const var_t & v)
+{
+	v->ParseFromString(str);
+}
+
+
+// static evnode_t *v_new()
+// {
+// 	evnode_t *p_new;
+// 	p_new = (evnode_t *)k_malloc(sizeof(evnode_t));
+
+// 	return p_new;
+// }
+
+// static void v_delete(evnode_t *p_vn)
+// {
+// 	k_free(p_vn);
+// }
+
+// static void v_addbefore(evnode_t *p, evnode_t *p_ref)
+// {
+// 	p->p_prev = p_ref->p_prev;
+// 	p->p_next = p_ref;
+// 	p_ref->p_prev->p_next = p;
+// 	p_ref->p_prev = p;
+// }
+
+// static void v_addafter(evnode_t *p, evnode_t *p_ref)
+// {
+// 	p->p_prev = p_ref;
+// 	p->p_next = p_ref->p_next;
+// 	p_ref->p_next->p_prev = p;
+// 	p_ref->p_next = p;
+// }
+
+// static void v_remove(evnode_t *p)
+// {
+// 	p->p_prev->p_next = p->p_next;
+// 	p->p_next->p_prev = p->p_prev;
+// }
+
+// static int ev_select(int id)
+// {
+// 	evnode_t *p_v;
+// 	int t;
+
+// 	if(id == 0){
+// 		p_vn_select = &vn_head;
+// 		return -1;
+// 	}
+
+// 	if(p_vn_select->id == id){
+// 		return 0;
+// 	}
+
+// 	p_v = vn_head.p_next;
+// 	while(p_v != &vn_head){
+// 		t=p_v->id;
+// 		if(p_v->id == id){
+// 			p_vn_select=p_v;
+// 			return 0;
+// 		}
+// 		p_v = p_v->p_next;
+// 	}
+
+// 	return -1;
+// }
+
+// val_t *ev_find(int id)
+// {
+// 	if(ev_select(id)==0){
+// 		return &p_vn_select->v;
+// 	}else{
+// 		return 0;
+// 	}
+// }
+
+// int ev_add(int id, char *type, char *val, char *name)
+// {
+// 	int it;
+// 	val_t v;
+// 	evnode_t *p_vn;
+
+// 	p_vn = v_new();
+// 	if(p_vn == 0){
+// 		return -1;
+// 	}
 	
-   // tag_ev_add(id, name);//qss for calc
+// 	str2type(type, &it);
+// 	str2var(val, &v, it);
+//     p_vn->id = id;
+// 	p_vn->v = v;
 
-	return 0;
-}
-
-int ev_remove(int id)
-{
-	ev_select(id);
+// 	strncpy(p_vn->name, name, EVNAMESIZE);
+// 	v_addbefore(p_vn, &vn_head);
 	
-	if(p_vn_select == &vn_head){
-		return -1;
-	}
+//    // tag_ev_add(id, name);//qss for calc
 
-	v_remove(p_vn_select);
-	v_delete(p_vn_select);
-	p_vn_select = &vn_head;
+// 	return 0;
+// }
 
-  //  tag_ev_rm(id);//qss for calc
+// int ev_remove(int id)
+// {
+// 	ev_select(id);
+	
+// 	if(p_vn_select == &vn_head){
+// 		return -1;
+// 	}
 
-	return 0;
-}
+// 	v_remove(p_vn_select);
+// 	v_delete(p_vn_select);
+// 	p_vn_select = &vn_head;
 
-void ev_reset()
-{
-	evnode_t *p_vn, *p_del;
+//   //  tag_ev_rm(id);//qss for calc
 
-	p_vn_select=&vn_head;
+// 	return 0;
+// }
 
-	p_vn = vn_head.p_next;
-	while(p_vn != &vn_head){
-		p_del = p_vn;
-		p_vn = p_vn->p_next;
-		v_remove(p_del);
-		v_delete(p_del);
-	}
+// void ev_reset()
+// {
+// 	evnode_t *p_vn, *p_del;
 
-  //  tag_ev_reset();//qss for calc
-}
+// 	p_vn_select=&vn_head;
 
-evnode_t* ev_gethead()
-{
-    return &vn_head;
-}
+// 	p_vn = vn_head.p_next;
+// 	while(p_vn != &vn_head){
+// 		p_del = p_vn;
+// 		p_vn = p_vn->p_next;
+// 		v_remove(p_del);
+// 		v_delete(p_del);
+// 	}
 
-void ev_dump()
-{
-	char type[8], value[32];
-	evnode_t *p_vn;
+//   //  tag_ev_reset();//qss for calc
+// }
 
-	p_vn_select=&vn_head;
+// evnode_t* ev_gethead()
+// {
+//     return &vn_head;
+// }
 
-	p_vn = vn_head.p_next;
-	while(p_vn != &vn_head){
-		type2str(type, p_vn->v.t);
-		var2str(value, p_vn->v, p_vn->v.t);
-		printf("ev:%d - %s,%s,%s\n", p_vn->id, p_vn->name, type, value);
-		p_vn = p_vn->p_next;
-	}
-}
+// void ev_dump()
+// {
+// 	char type[8], value[32];
+// 	evnode_t *p_vn;
 
-int ev_img_size()
-{
-	int s;
-	evnode_t *p_vn;
+// 	p_vn_select=&vn_head;
 
-	s=0;
-	p_vn = vn_head.p_next;
-	while(p_vn != &vn_head){
-		s++;
-		p_vn = p_vn->p_next;
-	}
-	return s;
-}
+// 	p_vn = vn_head.p_next;
+// 	while(p_vn != &vn_head){
+// 		type2str(type, p_vn->v.t);
+// 		var2str(value, p_vn->v, p_vn->v.t);
+// 		printf("ev:%d - %s,%s,%s\n", p_vn->id, p_vn->name, type, value);
+// 		p_vn = p_vn->p_next;
+// 	}
+// }
 
-char *ev_to_img(char *buf)
-{
-	evnode_t *p_vn;
+// int ev_img_size()
+// {
+// 	int s;
+// 	evnode_t *p_vn;
 
-	p_vn = vn_head.p_next;
-	while(p_vn != &vn_head){
-		buf+=cmps_zvar(&p_vn->v.v,p_vn->v.t,buf);
-		p_vn = p_vn->p_next;
-	}
+// 	s=0;
+// 	p_vn = vn_head.p_next;
+// 	while(p_vn != &vn_head){
+// 		s++;
+// 		p_vn = p_vn->p_next;
+// 	}
+// 	return s;
+// }
 
-	return buf;
-}
+// char *ev_to_img(char *buf)
+// {
+// 	evnode_t *p_vn;
 
-char *ev_from_img(char *buf)
-{
-	Int t;
-	evnode_t *p_vn;
+// 	p_vn = vn_head.p_next;
+// 	while(p_vn != &vn_head){
+// 		buf+=cmps_zvar(&p_vn->v.v,p_vn->v.t,buf);
+// 		p_vn = p_vn->p_next;
+// 	}
 
-	p_vn = vn_head.p_next;
-	while(p_vn != &vn_head){
-		buf+=cmps_uzvar(buf,&p_vn->v.v,&t);
-		p_vn = p_vn->p_next;
-	}
-	return buf;
-}
+// 	return buf;
+// }
+
+// char *ev_from_img(char *buf)
+// {
+// 	Int t;
+// 	evnode_t *p_vn;
+
+// 	p_vn = vn_head.p_next;
+// 	while(p_vn != &vn_head){
+// 		buf+=cmps_uzvar(buf,&p_vn->v.v,&t);
+// 		p_vn = p_vn->p_next;
+// 	}
+// 	return buf;
+// }
 
 /*
 static int bool_convert(val_t *t1, const val_t *t2)

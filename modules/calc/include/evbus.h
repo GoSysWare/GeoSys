@@ -15,7 +15,7 @@
 
 typedef struct TagValue{
 	Int id;
-	val_t v;
+	vam_t v;
 }tagvalue_t;
 
 typedef struct EVFrame{

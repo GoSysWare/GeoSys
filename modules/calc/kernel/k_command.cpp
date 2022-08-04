@@ -334,7 +334,7 @@ static int setev(char *line, int *cursor)
 {
 	char word[NWORD];
 	int idev;
-	val_t *p_val;
+	vam_t *p_val;
 
 	get_word(line, word, cursor);
 	idev = atoi(word);
