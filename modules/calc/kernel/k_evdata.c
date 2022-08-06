@@ -30,9 +30,6 @@ void type2str(char *ct, int it)
 	case T_TIME:
 		strcpy(ct, "TIME");
 		break;
-	case T_ANY:
-		strcpy(ct, "ANY");
-		break;
 	default:
 		strcpy(ct, "UNKNOWN");
 	}
@@ -50,8 +47,6 @@ void str2type(char *ct, int *it)
 		*it = T_LREAL;
 	}else if(strcmp(ct, "TIME")==0){
 		*it = T_TIME;
-	}else if(strcmp(ct, "ANY")==0){
-		*it = T_ANY;
 	}else{
 		*it = T_NONE;
 	}
@@ -78,9 +73,6 @@ void var2str(char *str, var_t v, int it)
 	case T_TIME:
 		sprintf(str, "%g", v.tm);
 		break;
-	case T_ANY:
-		*str = 0;
-		break;
 	default:
 		strcat(str, "UNKNOWN");
 	}
@@ -105,9 +97,6 @@ void str2var(char *str, var_t *v, int it)
 		break;
 	case T_TIME:
 		v->fl = atof(str);
-	case T_ANY:
-		;
-		break;
 	default:
 		;
 	}
