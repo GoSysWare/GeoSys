@@ -29,7 +29,7 @@ typedef struct FBHead{
 typedef struct Pin{
 	char pinname[PINNAMESIZE];
 	Int t;		/* type */
-	var_t v;	/* value */
+	vam_t v;	/* value */
 } pin_t;
 
 typedef struct FB{
@@ -40,7 +40,7 @@ typedef struct FB{
 fb_t *fb_new(fb_t *p_source);
 void fb_delete(fb_t *p_fb);
 pin_t *fb_getpin(fb_t *p_fb, int pintype, unsigned int n);
-int fb_setpin(fb_t *p_fb, int pintype, unsigned int n, var_t v);
+int fb_setpin(fb_t *p_fb, int pintype, unsigned int n, va_t v);
 void fb_pins_to_string(fb_t *p_fb, char *str);
 void fb_vars_to_string(fb_t *p_fb, char *str);
 void fb_dump(fb_t *p_fb);
