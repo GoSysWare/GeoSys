@@ -30,7 +30,7 @@ static int parse_line(char *line)
 
 int main(int argc, char *argv[])
 {
-	int len = sizeof(std::make_shared<cv::Mat>());
+	
 	int i;
 	for (i = 1; i < argc; i++) {
 		if (strcmp(argv[i], "-a") == 0) {

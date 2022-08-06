@@ -24,18 +24,18 @@ typedef struct EVNode{
 
 void type2str( std::string& str, int it);
 void str2type(const std::string& str, int *it);
-void var2str( std::string & str, const var_t &v);
-void str2var(const std::string & str,const var_t & v);
+void var2str( std::string & str, const vam_t &v);
+void str2var(const std::string & str,const vam_t & v);
 
 vam_t* ev_find(int id);
-int ev_add(int id, char *type, char *val, char *name);
+int ev_add(int id, const std::string & val, const std::string name);
 int ev_remove(int id);
 void ev_reset();
 void ev_dump();
 evnode_t* ev_gethead();
 int ev_img_size();
-char *ev_to_img(char *buf);
-char *ev_from_img(char *buf);
+// char *ev_to_img(char *buf);
+// char *ev_from_img(char *buf);
 
 // #ifdef __cplusplus
 // }

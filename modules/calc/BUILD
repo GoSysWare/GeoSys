@@ -25,6 +25,24 @@ cc_binary(
 
     ],
 )
+cc_binary(
+    name = "test_calc",
+    srcs = [
+        "test.cpp",
+
+    ],
+    linkopts = [
+        "-lpthread",
+
+    ],
+    linkstatic = False,
+    deps = [
+        "//modules/calc/kernel:evdata",
+        "//modules/calc/include:calc_include",
+        "//modules/calc/include/lib:lib_include",
+
+    ],
+)
 
 
 
