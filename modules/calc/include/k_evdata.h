@@ -22,8 +22,8 @@ typedef struct EVNode{
 
 std::string type2str( v_type it);
 v_type str2type(const std::string& str);
-std::string  var2str(const vam_t &v);
-vam_t str2var(const std::string & str);
+std::string  var2str(const value_tm &v);
+value_tm str2var(const std::string & str);
 void setvar(vam_t vam,value_tm val);
 
 vam_t * ev_find_v(int id);

@@ -282,7 +282,7 @@ static void parse_line(station_t *ps, char *line, int len)
 		strncpy(tag.name,args.v[2].d,EVNAMESIZE);
 		strncpy(tag.desc,args.v[3].d,DESCSIZE);
 		strncpy(tag.eu,args.v[4].d,EUSIZE);
-		str2type(args.v[5].d,&tag.type);
+        tag.type = str2type(args.v[5].d);
 		tag.mask=str2mask(args.v[6].d,MAXARGLENGTH);
 		tag.group=atoi(args.v[7].d);
 		tag.min=(float)atof(args.v[8].d);
@@ -315,7 +315,7 @@ void sta_loadcfg(int id, station_t *ps)
 
 static int make_line(int id_tag,tag_t *tag, char *line)
 {
-	char type[32];
+    std::string type;
 	char mask[32];
 
 	if(!(tag->flag & FG_CONFIG)){
@@ -325,14 +325,15 @@ static int make_line(int id_tag,tag_t *tag, char *line)
 	tag->name[EVNAMESIZE-1]=0;
 	tag->desc[DESCSIZE-1]=0;
 	tag->eu[EUSIZE-1]=0;
-	type2str(type,tag->type);
+
+    type = type2str((v_type)tag->type);
 	mask2str(tag,mask);
 	sprintf(line,"tag,%d,%s,%s,%s,%s,%s,%d,%f,%f,%f,%f,%f,%f\n",
 		id_tag,
 		tag->name,
 		tag->desc,
 		tag->eu,
-		type,
+        type.data(),
 		mask,
 		tag->group,
 		tag->min,

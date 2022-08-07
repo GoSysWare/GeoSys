@@ -51,14 +51,14 @@ int main(int argc, char *argv[])
 	prg_viadd(prg,1,1,1,0);
 	prg_viadd(prg,2,3,2,1);
 
-	prg_voadd(prg,1,4,2,0);
+	prg_voadd(prg,1,3,2,0);
 
 	prg_lkadd(prg,1,1,0,2,0);
 
 	fb_t * p_fb = prg_fbfind(prg, 1);
 
 	vt->set_i(1);
-	
+
     fb_setpin(p_fb, PININPUT, 1, vtm);
 
 
@@ -66,7 +66,8 @@ int main(int argc, char *argv[])
 
 	prg_exec(prg);
 	ev_dump();
-
+	prg_exec(prg);
+	ev_dump();
 	prg_dump(prg);
 
 

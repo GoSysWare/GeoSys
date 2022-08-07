@@ -107,7 +107,7 @@ void DlgPinSet::ok(bool check)
     }
     for(int i=0; i<gMainModel->evList.size(); i++){
         if(gMainModel->evList.at(i).name == textVariable->text()){
-            if(evData.initValue.t == gMainModel->evList.at(i).initValue.t){
+            if(evData.initValue.v().t() == gMainModel->evList.at(i).initValue.v().t()){
                 evData = gMainModel->evList.at(i);
                 accept();
                 return;
@@ -119,21 +119,24 @@ void DlgPinSet::ok(bool check)
     }
     DlgEVData dlgEVData(this);
     evData.name = textVariable->text();
-    switch(evData.initValue.t){
+    switch(evData.initValue.v().t()){
     case T_BOOL:
-        evData.initValue.v.b = 0;
+        evData.initValue.mutable_v()->set_b(0);
         break;
-    case T_INT:
-        evData.initValue.v.i = 0;
+    case T_INT32:
+        evData.initValue.mutable_v()->set_i(0);
+
         break;
-    case T_REAL:
-        evData.initValue.v.f = 0;
+    case T_FLOAT32:
+        evData.initValue.mutable_v()->set_f(0);
+
         break;
-    case T_LREAL:
-        evData.initValue.v.fl = 0;
+    case T_FLOAT64:
+        evData.initValue.mutable_v()->set_d(0);
+
         break;
     case T_TIME:
-        evData.initValue.v.tm = 0;
+        evData.initValue.mutable_v()->set_ull(0);
         break;
     default:
         QMessageBox::critical(this, "Error", "Unknown data type");
@@ -164,7 +167,7 @@ void DlgPinSet::cancel(bool Check)
 void DlgPinSet::tableDoubleClicked(const QModelIndex &index)
 {
     int row = index.row();
-    if(gMainModel->evList.at(row).initValue.t == evData.initValue.t){
+    if(gMainModel->evList.at(row).initValue.v().t() == evData.initValue.v().t()){
         rbVariable->setChecked(true);
         evData = gMainModel->evList.at(row);
         accept();
@@ -176,7 +179,7 @@ void DlgPinSet::tableDoubleClicked(const QModelIndex &index)
 void DlgPinSet::tableClicked(const QModelIndex & index)
 {
     int row = index.row();
-    if(gMainModel->evList.at(row).initValue.t == evData.initValue.t){
+    if(gMainModel->evList.at(row).initValue.v().t() == evData.initValue.v().t()){
         rbVariable->setChecked(true);
         textConst->setEnabled(false);
         textVariable->setEnabled(true);

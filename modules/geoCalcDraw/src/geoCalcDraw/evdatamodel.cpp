@@ -87,13 +87,17 @@ QVariant EVDataModel::data(const QModelIndex &index, int role) const
         }
     } else if (role == Qt::DisplayRole) {
         PLEVData ev = gMainModel->evList.at(index.row());
-        char type[128], value[128];
-        type2str(type, ev.initValue.t);
-        var2str(value, ev.initValue, ev.value.t);
-        QString sType = type;
-        QString sInitValue = value;
-        var2str(value, ev.value, ev.value.t);
-        QString sValue = value;
+        std::string type;
+        std::string value;
+        type = type2str(ev.initValue.v().t());
+        value = var2str(ev.initValue);
+
+        QString sType = QString::fromStdString(type);
+        QString sInitValue = QString::fromStdString(value);
+
+        value = var2str(ev.value);
+
+        QString sValue =  QString::fromStdString(value);
         QString sRef;
         sRef.sprintf("In:%d / Out:%d", ev.refIn, ev.refOut);
         switch(index.column()){

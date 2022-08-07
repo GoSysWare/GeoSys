@@ -13,7 +13,7 @@ package(default_visibility = ["//visibility:public"])
 
 cc_proto_library(
     name = "value_cc_proto",
-    deps = [":value_proto"],
+    deps = [":value_proto"], 
 )
 
 proto_library(

@@ -96,17 +96,17 @@ void DlgEVData::setValue(PLEVData &ev, int m)
 
     textName->setText(ev.name);
     textComment->setText(ev.comment);
-    switch(ev.initValue.t){
+    switch(ev.initValue.v().t()){
     case T_BOOL:
         listType->setCurrentRow(0);
         break;
-    case T_INT:
+    case T_INT32:
         listType->setCurrentRow(1);
         break;
-    case T_REAL:
+    case T_FLOAT32:
         listType->setCurrentRow(2);
         break;
-    case T_LREAL:
+    case T_FLOAT64:
         listType->setCurrentRow(3);
         break;
     case T_TIME:
@@ -115,35 +115,42 @@ void DlgEVData::setValue(PLEVData &ev, int m)
     default:
         QMessageBox::critical(this, "Error", "Unknown data type");
     }
-    char value[128];
-    var2str(value, ev.initValue, ev.initValue.t);
-    textValue->setText(QString(value));
+
+    textValue->setText( QString::fromStdString(var2str(ev.initValue)));
 }
 
 void DlgEVData::getValue(PLEVData &ev)
 {
     ev.name = textName->text();
     ev.comment = textComment->text();
+    const char* value = textValue->text().toStdString().data();
     switch(listType->currentIndex().row()){
     case 0:
-        ev.initValue.t = T_BOOL;
+        ev.initValue.mutable_v()->set_t(T_BOOL);
+        ev.initValue.mutable_v()->set_b(std::atoi(value));
+
         break;
     case 1:
-        ev.initValue.t = T_INT;
+        ev.initValue.mutable_v()->set_t(T_INT32);
+        ev.initValue.mutable_v()->set_i(std::atoi(value));
+
         break;
     case 2:
-        ev.initValue.t = T_REAL;
+        ev.initValue.mutable_v()->set_t(T_FLOAT32);
+        ev.initValue.mutable_v()->set_f((float)std::atof(value));
+
         break;
     case 3:
-        ev.initValue.t = T_LREAL;
+        ev.initValue.mutable_v()->set_t(T_FLOAT64);
+        ev.initValue.mutable_v()->set_d(std::atof(value));
+
         break;
     case 4:
-        ev.initValue.t = T_TIME;
+        ev.initValue.mutable_v()->set_t(T_TIME);
+        ev.initValue.mutable_v()->set_ll(std::atoll(value));
+
         break;
     default:
         ;
     }
-    char value[128];
-    strcpy(value, textValue->text().toStdString().c_str());
-    str2var(value, &ev.initValue, ev.initValue.t);
 }

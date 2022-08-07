@@ -1,11 +1,9 @@
+#include "modules/calc/include/k_functionblock.h"
+#include "modules/calc/include/k_evdata.h"
+#include "modules/calc/include/k_util.h"
 #include <stddef.h>
 #include <stdio.h>
 #include <string.h>
-#include "modules/calc/include/k_evdata.h"
-#include "modules/calc/include/k_functionblock.h"
-#include "modules/calc/include/k_util.h"
-
-
 
 fb_t *fb_new(fb_t *p_source) {
   fb_t *p_dst = 0;
@@ -13,7 +11,7 @@ fb_t *fb_new(fb_t *p_source) {
   if (p_dst) {
     p_dst->h = p_source->h;
     p_dst->d = p_source->d;
-    for(auto && pin : p_dst->d ){
+    for (auto &&pin : p_dst->d) {
       pin.v = std::make_shared<value_tm>();
     }
   }
@@ -21,7 +19,7 @@ fb_t *fb_new(fb_t *p_source) {
 }
 
 void fb_delete(fb_t *p_fb) {
-  for(auto && pin : p_fb->d ){
+  for (auto &&pin : p_fb->d) {
     pin.v.reset();
   }
   delete p_fb;
@@ -81,6 +79,35 @@ int fb_setpin(fb_t *p_fb, int pintype, unsigned int n, value_tm v) {
   p_pin = &p_fb->d[np];
   vam_t tmp = std::make_shared<value_tm>(v);
   p_pin->v = tmp;
+  return 0;
+}
+
+int fb_setpin(fb_t *p_fb, int pintype, unsigned int n, vam_t v) {
+  int np;
+  pin_t *p_pin;
+
+  if (pintype == PININPUT) {
+    if (n >= p_fb->h.ni) {
+      return -1;
+    }
+    np = n;
+  } else if (pintype == PINOUTPUT) {
+    if (n >= p_fb->h.no) {
+      return 0;
+    }
+    np = n + p_fb->h.ni;
+    return -1;
+  } else if (pintype == PINPROPERTY) {
+    if (n >= p_fb->h.np) {
+      return -1;
+    }
+    np = n + p_fb->h.ni + p_fb->h.no;
+  } else {
+    return -1;
+  }
+
+  p_pin = &p_fb->d[np];
+  p_pin->v = v;
   return 0;
 }
 

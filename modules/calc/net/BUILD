@@ -14,7 +14,7 @@ cc_library(
     srcs = [
         "cfgbus.cpp",
         "evbus.cpp",
-        "stbbus.cpp",
+        # "stbbus.cpp",
         "vnet.cpp",
         "vtcp.cpp",
         "vudp.cpp",
@@ -22,6 +22,8 @@ cc_library(
     deps = [
         "//modules/calc/include:calc_include",
         "//modules/calc/include/lib:lib_include",
+        "//modules/calc/proto:value_cc_proto",
+
     ],
 
 )

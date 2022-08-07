@@ -141,8 +141,8 @@ void CadPanel::drawLink(QPainter &painter, PLLink &lk)
     }else{
         painter.setPen(Qt::black);
         if(gTarget->isMonitor()){
-            if((lk.pin->value.t & T_MASK) == T_BOOL){
-                if(lk.pin->value.v.b){
+            if(lk.pin->value.v().t()  == T_BOOL){
+                if(lk.pin->value.v().b()){
                     painter.setPen(Qt::green);
                 }else{
                     painter.setPen(Qt::red);
@@ -230,8 +230,8 @@ void CadPanel::drawFunctionBlock(QPainter &painter, PLFunctionBlock &fb)
         y2 = y1 + 2 * step;
         y = y1 + step;
         if(gTarget->isMonitor()){
-            if((fb.input.at(i).value.t & T_MASK) == T_BOOL){
-                if(fb.input.at(i).value.v.b){
+            if(fb.input.at(i).value.v().t()== T_BOOL){
+                if(fb.input.at(i).value.v().b()){
                     painter.setPen(Qt::green);
                 }else{
                     painter.setPen(Qt::red);
@@ -259,8 +259,8 @@ void CadPanel::drawFunctionBlock(QPainter &painter, PLFunctionBlock &fb)
         y2 = y1 + 2 * step;
         y = y1 + step;
         if(gTarget->isMonitor()){
-            if((fb.output.at(i).value.t & T_MASK) == T_BOOL){
-                if(fb.output.at(i).value.v.b){
+            if(fb.output.at(i).value.v().t() == T_BOOL){
+                if(fb.output.at(i).value.v().b()){
                     painter.setPen(Qt::green);
                 }else{
                     painter.setPen(Qt::red);
@@ -377,7 +377,7 @@ void CadPanel::mousePressEvent(QMouseEvent * event)
         linkSel.idPrg = selCurrent.fb->idPrg;
         linkSel.idFbTgt = selCurrent.fb->id;
         linkSel.pinTgt = selCurrent.value;
-        linkSel.typeTgt = selCurrent.fb->input.at(selCurrent.value).value.t;
+        linkSel.typeTgt = selCurrent.fb->input.at(selCurrent.value).value.v().t();
         pt.x = selCurrent.fb->x;
         pt.y = selCurrent.fb->y + 5 + selCurrent.value * 2;
         linkSel.pts.append(pt);
@@ -391,7 +391,7 @@ void CadPanel::mousePressEvent(QMouseEvent * event)
         linkSel.idPrg = selCurrent.fb->idPrg;
         linkSel.idFbSrc = selCurrent.fb->id;
         linkSel.pinSrc = selCurrent.value;
-        linkSel.typeSrc = selCurrent.fb->output.at(selCurrent.value).value.t;
+        linkSel.typeSrc = selCurrent.fb->output.at(selCurrent.value).value.v().t();
         pt.x = selCurrent.fb->x + selCurrent.fb->w + 4;
         pt.y = selCurrent.fb->y + 5 + selCurrent.value * 2;
         linkSel.pts.append(pt);
@@ -632,16 +632,16 @@ void CadPanel::mouseDoubleClickEvent(QMouseEvent * event)
         if(selCurrent.fb->input.at(selCurrent.value).hasInputLink){
             return;
         }
-        ev.initValue.t = selCurrent.fb->input.at(selCurrent.value).value.t;
+        ev.initValue.mutable_v()->set_t(selCurrent.fb->input.at(selCurrent.value).value.v().t());
         isInput = true;
     }else if(selCurrent.type == PT_OUTPUT){
         if(selCurrent.fb->output.at(selCurrent.value).hasVariable){
             return;
         }
-        ev.initValue.t = selCurrent.fb->output.at(selCurrent.value).value.t;
+        ev.initValue.mutable_v()->set_t(selCurrent.fb->output.at(selCurrent.value).value.v().t());
         isInput = false;
     }
-    ev.initValue.v.b = 0;
+    ev.initValue.mutable_v()->set_b(0);
 
     QString constValue = "0";
     bool isConst = true;
@@ -1010,16 +1010,16 @@ int CadPanel::pinMatch()
 
     if(selTarget.type == PT_OUTPUT){
         if(selCurrent.type == PT_INPUT){
-            t1 = selCurrent.fb->input.at(selCurrent.value).value.t;
-            t2 = selTarget.fb->output.at(selTarget.value).value.t;
+            t1 = selCurrent.fb->input.at(selCurrent.value).value.v().t();
+            t2 = selTarget.fb->output.at(selTarget.value).value.v().t();
             pin = &selCurrent.fb->input[selCurrent.value];
         }else{
             return -1;
         }
     }else if(selTarget.type == PT_INPUT){
         if(selCurrent.type == PT_OUTPUT){
-            t1 = selCurrent.fb->output.at(selCurrent.value).value.t;
-            t2 = selTarget.fb->input.at(selTarget.value).value.t;
+            t1 = selCurrent.fb->output.at(selCurrent.value).value.v().t();
+            t2 = selTarget.fb->input.at(selTarget.value).value.v().t();
             pin = &selTarget.fb->input[selTarget.value];
         }else{
             return -1;

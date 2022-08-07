@@ -16,12 +16,14 @@ cc_binary(
     ],
     linkstatic = False,
     deps = [
+        "//modules/calc/proto:value_cc_proto",
         "//modules/calc/kernel:calc_kernel",
         "//modules/calc/lib:calc_library",
         "//modules/calc/net:calc_net",
-        "//modules/calc/rtdb:calc_rtdb",
+        # "//modules/calc/rtdb:calc_rtdb",
         "//modules/calc/include:calc_include",
         "//modules/calc/include/lib:lib_include",
+        "@com_google_protobuf//:protobuf",
 
     ],
 )

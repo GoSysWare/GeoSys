@@ -225,7 +225,7 @@ static int addev(char *line, int *cursor)
 	char word[NWORD];
 	int id;
 	char type[32];
-	char value[32];
+	char value[128];
 	char name[EVNAMESIZE];
 
 	get_word(line, word, cursor);
@@ -237,7 +237,7 @@ static int addev(char *line, int *cursor)
 	get_word(line, word, cursor);
 	strncpy(name, word, EVNAMESIZE);
 
-	return ev_add(id, type, value, name);
+	return ev_add(id, value, name);
 }
 
 static int rmev(char *line, int *cursor)
@@ -323,9 +323,7 @@ static int showev(char *line, int *cursor)
 		return -1;
 	}
 
-
-	var2str(word,*p_ev,p_ev->t);
-	printf("%s\n", word);
+	std::cout << (*p_ev)->ShortDebugString() << std::endl;
 
 	return 0;
 }
@@ -344,7 +342,7 @@ static int setev(char *line, int *cursor)
 		return -1;
 	}
 	get_word(line, word, cursor);
-	str2var(word,p_val,p_val->t);
+
 
 	return 0;
 }
@@ -354,7 +352,7 @@ static int setpin(char *line, int *cursor)
 	char word[NWORD];
 	int idprg;
 	int idfb, pin;
-	val_t v;
+	value_tm v;
 	fb_t *p_fb;
 
 	get_word(line, word, cursor);
@@ -370,9 +368,10 @@ static int setpin(char *line, int *cursor)
 	get_word(line, word, cursor);
 	pin = atoi(word);	
 	get_word(line, word, cursor);
-	str2var(word,&v,fb_getpin(p_fb, PININPUT, pin)->t);
 
-	return fb_setpin(p_fb, PININPUT, pin, v);
+
+
+	return fb_setpin(p_fb, PININPUT, pin, str2var(word));
 }
 
 static int help()

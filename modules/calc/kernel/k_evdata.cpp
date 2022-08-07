@@ -27,16 +27,16 @@ v_type str2type(const std::string& str)
 
 }
 
-std::string var2str( const vam_t &v)
+std::string var2str( const value_tm &v)
 {
-	return v->SerializeAsString();
+	return v.SerializeAsString();
 }
 	
 
-vam_t str2var(const std::string & str)
+value_tm str2var(const std::string & str)
 {
-	vam_t v(new value_tm);
-	v->ParseFromString(str);
+	value_tm v ;
+	v.ParseFromString(str);
 	return v;
 
 }
@@ -174,7 +174,7 @@ int ev_add(int id, const std::string & str, const std::string & name)
 
     p_vn->id = id;
 	p_vn->name = name;
-	p_vn->v = std::move(str2var(str));
+	p_vn->v = std::make_shared<value_tm>(str2var(str));
 
 	v_addbefore(p_vn, &vn_head);
 	

@@ -8,11 +8,13 @@ class PLPin
 {
 public:
     PLPin();
+    ~PLPin();
+
     PLPin(const PLPin &pin);
     QString getStrValue();
 
     QString name;
-    val_t value;
+    value_tm value;
     bool hasVariable;
     bool hasInputLink;
 };

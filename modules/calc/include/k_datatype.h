@@ -1,7 +1,6 @@
 #ifndef k_datatype_h
 #define k_datatype_h
 
-#include <opencv2/opencv.hpp>
 // #ifdef __cplusplus
 // extern "C" {
 // #endif

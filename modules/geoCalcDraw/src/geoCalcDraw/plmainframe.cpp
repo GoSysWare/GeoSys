@@ -226,12 +226,12 @@ void PLMainFrame::createDockWindows()
     dockEVData->setWidget(panelEVData);
     addDockWidget(Qt::BottomDockWidgetArea, dockEVData);
 
-    panelTarget = new QTreeView;
-    QFont ft("Monospaced", 9);
-    panelTarget->setFont(ft);
-    panelTarget->setModel(&gTarget->modelIO);
-    dockTarget = new QDockWidget(tr("IO Stations"), this);
-    dockTarget->setWidget(panelTarget);
+    // panelTarget = new QTreeView;
+    // QFont ft("Monospaced", 9);
+    // panelTarget->setFont(ft);
+    // panelTarget->setModel(&gTarget->modelIO);
+    // dockTarget = new QDockWidget(tr("IO Stations"), this);
+    // dockTarget->setWidget(panelTarget);
     addDockWidget(Qt::BottomDockWidgetArea, dockTarget);
 }
 

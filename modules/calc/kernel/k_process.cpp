@@ -58,7 +58,7 @@ rwlock_t *k_rwlock_create()
         if(plock->read != NULL){
             plock->rcount = 0;
         }else{
-            free(plock);
+            k_free(plock);
            plock = NULL;
         }
 #elif defined(_LINUX)
@@ -66,7 +66,7 @@ rwlock_t *k_rwlock_create()
         if(res==0){
             plock->rcount = 0;
         }else{
-            free(plock);
+            k_free(plock);
             plock = NULL;
         }
 #endif

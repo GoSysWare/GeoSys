@@ -34,28 +34,28 @@ void PLTarget::timerEvent(QTimerEvent *e)
                     n = 0;
                     // input
                     for(k=0; k<fb->input.size(); k++){
-                        fb->input[k].value = p_fb->d[n].v;
+                        fb->input[k].value = *p_fb->d[n].v;
                         n++;
                     }
                     // output
                     for(k=0; k<fb->output.size(); k++){
-                        fb->output[k].value = p_fb->d[n].v;
+                        fb->output[k].value = *p_fb->d[n].v;
                         n++;
                         //qDebug() << "fb" << fb->id << "pin" << k << "val" << fb->output[k].value.v.i;
                     }
                     // property
                     for(k=0; k<fb->property.size(); k++){
-                        fb->property[k].value = p_fb->d[n].v;
+                        fb->property[k].value = *p_fb->d[n].v;
                         n++;
                     }
                 }
             }
             // load evs value
             PLEVData *ev;
-            val_t *p_ev;
+            value_tm *p_ev;
             for(int i=0; i<gMainModel->evList.size(); i++){
                 ev = &gMainModel->evList[i];
-                p_ev = ev_find(ev->id);
+                p_ev = ev_find_v(ev->id)->get();
                 ev->value = *p_ev;
             }
             gMainFrame->updateCadView();

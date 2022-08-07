@@ -60,12 +60,12 @@ void *prj_main_loop(void *sth) {
       //下面代码根据nicsys2000更改：
 
       k_sleep(INPUTCYCLE);
-      io_input();
+    //   io_input();
       k_rlock(prjlock);
       prj_exec();
       k_runlock(prjlock);
       k_sleep(OUTPUTCYCLE);
-      io_output();
+    //   io_output();
 #else
       if (info.stat == S_PRIMARY) {
         io_input();
@@ -104,7 +104,7 @@ void prj_init(int mode) {
   prj_info_p()->stat = S_UNKNOWN;
   clear_prjinfo();
   k_clk_init();
-  state_init();
+//   state_init();
   prj_run();
 }
 
@@ -321,149 +321,149 @@ fb_t *prj_fbfind(int idprg, int idfb) {
   return prg_fbfind(p_pn_select->p_prg, idfb);
 }
 
-int prj_img_size() {
-  pnode_t *p_pn;
-  enode_t *p_en;
-  fb_t *p_fb;
-  int s;
+// int prj_img_size() {
+//   pnode_t *p_pn;
+//   enode_t *p_en;
+//   fb_t *p_fb;
+//   int s;
 
-  k_rlock(prjlock);
-  s = 0;
-  p_pn = pn_head.p_next;
-  while (p_pn != &pn_head) {
-    p_en = p_pn->p_prg->en_head.p_next;
-    while (p_en != &p_pn->p_prg->en_head) {
-      if (p_en->p_fb != ((void *)0)) {
-        p_fb = p_en->p_fb;
-        s += p_fb->h.ni + p_fb->h.no + p_fb->h.np;
-      }
-      p_en = p_en->p_next;
-    }
-    p_pn = p_pn->p_next;
-  }
-  s += ev_img_size();
+//   k_rlock(prjlock);
+//   s = 0;
+//   p_pn = pn_head.p_next;
+//   while (p_pn != &pn_head) {
+//     p_en = p_pn->p_prg->en_head.p_next;
+//     while (p_en != &p_pn->p_prg->en_head) {
+//       if (p_en->p_fb != ((void *)0)) {
+//         p_fb = p_en->p_fb;
+//         s += p_fb->h.ni + p_fb->h.no + p_fb->h.np;
+//       }
+//       p_en = p_en->p_next;
+//     }
+//     p_pn = p_pn->p_next;
+//   }
+//   s += ev_img_size();
 
-  k_runlock(prjlock);
+//   k_runlock(prjlock);
 
-  // return sizeof(prjimg_t)+sizeof(var_t)*s;
-  return sizeof(var_t) * s;
-}
+//   // return sizeof(prjimg_t)+sizeof(var_t)*s;
+//   return sizeof(var_t) * s;
+// }
 
 int prj_to_img(prjimg_t *pimg) {
-  char *buf;
-  pin_t *ppin;
-  pnode_t *p_pn;
-  enode_t *p_en;
-  fb_t *p_fb;
-  unsigned int i;
-  int s;
+//   char *buf;
+//   pin_t *ppin;
+//   pnode_t *p_pn;
+//   enode_t *p_en;
+//   fb_t *p_fb;
+//   unsigned int i;
+//   int s;
 
-  k_rlock(prjlock);
+//   k_rlock(prjlock);
 
-  memcpy(&pimg->info, &info, sizeof(prjinfo_t));
-  buf = pimg->imgbuf;
+//   memcpy(&pimg->info, &info, sizeof(prjinfo_t));
+//   buf = pimg->imgbuf;
 
-  s = 0;
-  p_pn = pn_head.p_next;
-  while (p_pn != &pn_head) {
-    p_en = p_pn->p_prg->en_head.p_next;
-    while (p_en != &p_pn->p_prg->en_head) {
-      if (p_en->p_fb != ((void *)0)) {
-        p_fb = p_en->p_fb;
-        for (i = 0; i < p_fb->h.ni; i++) {
-          ppin = &p_fb->d[i];
-          buf += cmps_zvar(&ppin->v.v, ppin->t, buf);
-          s++;
-        }
-        for (i = 0; i < p_fb->h.no; i++) {
-          ppin = &p_fb->d[i + p_fb->h.ni];
-          buf += cmps_zvar(&ppin->v.v, ppin->t, buf);
-          s++;
-        }
-        for (i = 0; i < p_fb->h.np; i++) {
-          ppin = &p_fb->d[i + p_fb->h.ni + p_fb->h.no];
-          buf += cmps_zvar(&ppin->v.v, ppin->t, buf);
-          s++;
-        }
-      }
-      p_en = p_en->p_next;
-    }
-    p_pn = p_pn->p_next;
-  }
+//   s = 0;
+//   p_pn = pn_head.p_next;
+//   while (p_pn != &pn_head) {
+//     p_en = p_pn->p_prg->en_head.p_next;
+//     while (p_en != &p_pn->p_prg->en_head) {
+//       if (p_en->p_fb != ((void *)0)) {
+//         p_fb = p_en->p_fb;
+//         for (i = 0; i < p_fb->h.ni; i++) {
+//           ppin = &p_fb->d[i];
+//           buf += cmps_zvar(&ppin->v.v, ppin->t, buf);
+//           s++;
+//         }
+//         for (i = 0; i < p_fb->h.no; i++) {
+//           ppin = &p_fb->d[i + p_fb->h.ni];
+//           buf += cmps_zvar(&ppin->v.v, ppin->t, buf);
+//           s++;
+//         }
+//         for (i = 0; i < p_fb->h.np; i++) {
+//           ppin = &p_fb->d[i + p_fb->h.ni + p_fb->h.no];
+//           buf += cmps_zvar(&ppin->v.v, ppin->t, buf);
+//           s++;
+//         }
+//       }
+//       p_en = p_en->p_next;
+//     }
+//     p_pn = p_pn->p_next;
+//   }
 
-  buf = ev_to_img(buf);
-  buf = io_to_img(buf);
+//   buf = ev_to_img(buf);
+//   buf = io_to_img(buf);
 
-  pimg->bufsize = buf - pimg->imgbuf;
-  info.zimgsize = pimg->bufsize;
-  info.imgsize = s * sizeof(var_t) + sizeof(iostation_t) * IOSTATIONCOUNT;
+//   pimg->bufsize = buf - pimg->imgbuf;
+//   info.zimgsize = pimg->bufsize;
+//   info.imgsize = s * sizeof(var_t) + sizeof(iostation_t) * IOSTATIONCOUNT;
 
-  // printf("imgsize=%d, zimgsize=%d\n", info.imgsize, info.zimgsize);
-  k_runlock(prjlock);
+//   // printf("imgsize=%d, zimgsize=%d\n", info.imgsize, info.zimgsize);
+//   k_runlock(prjlock);
 
   return 0;
 }
 
 static int info_cmp(prjinfo_t *info1, prjinfo_t *info2) {
-  if (strncmp(info1->uuid, info2->uuid, UUIDSIZE) != 0) {
-    return 1;
-  }
-  if (info1->id_cmd != info2->id_cmd) {
-    return 1;
-  }
-  // if(strncmp(info1->name, info2->name, PRJNAMESIZE)!=0){
-  //	return 1;
-  //}
+//   if (strncmp(info1->uuid, info2->uuid, UUIDSIZE) != 0) {
+//     return 1;
+//   }
+//   if (info1->id_cmd != info2->id_cmd) {
+//     return 1;
+//   }
+//   // if(strncmp(info1->name, info2->name, PRJNAMESIZE)!=0){
+//   //	return 1;
+//   //}
 
   return 0;
 }
 
 int prj_from_img(prjimg_t *pimg) {
-  char *buf;
-  pin_t *ppin;
-  Int t;
-  pnode_t *p_pn;
-  enode_t *p_en;
-  fb_t *p_fb;
-  unsigned int i;
+//   char *buf;
+//   pin_t *ppin;
+//   Int t;
+//   pnode_t *p_pn;
+//   enode_t *p_en;
+//   fb_t *p_fb;
+//   unsigned int i;
 
-  if (info_cmp(&info, &pimg->info) != 0) {
-    return 1;
-  }
+//   if (info_cmp(&info, &pimg->info) != 0) {
+//     return 1;
+//   }
 
-  buf = pimg->imgbuf;
-  p_pn = pn_head.p_next;
-  while (p_pn != &pn_head) {
-    p_en = p_pn->p_prg->en_head.p_next;
-    while (p_en != &p_pn->p_prg->en_head) {
-      if (p_en->p_fb != ((void *)0)) {
-        p_fb = p_en->p_fb;
-        for (i = 0; i < p_fb->h.ni; i++) {
-          ppin = &p_fb->d[i];
-          buf += cmps_uzvar(buf, &ppin->v.v, &t);
-        }
-        for (i = 0; i < p_fb->h.no; i++) {
-          ppin = &p_fb->d[i + p_fb->h.ni];
-          buf += cmps_uzvar(buf, &ppin->v.v, &t);
-        }
-        for (i = 0; i < p_fb->h.np; i++) {
-          ppin = &p_fb->d[i + p_fb->h.ni + p_fb->h.no];
-          buf += cmps_uzvar(buf, &ppin->v.v, &t);
-        }
-      }
-      p_en = p_en->p_next;
-    }
-    p_pn = p_pn->p_next;
-  }
+//   buf = pimg->imgbuf;
+//   p_pn = pn_head.p_next;
+//   while (p_pn != &pn_head) {
+//     p_en = p_pn->p_prg->en_head.p_next;
+//     while (p_en != &p_pn->p_prg->en_head) {
+//       if (p_en->p_fb != ((void *)0)) {
+//         p_fb = p_en->p_fb;
+//         for (i = 0; i < p_fb->h.ni; i++) {
+//           ppin = &p_fb->d[i];
+//           buf += cmps_uzvar(buf, &ppin->v.v, &t);
+//         }
+//         for (i = 0; i < p_fb->h.no; i++) {
+//           ppin = &p_fb->d[i + p_fb->h.ni];
+//           buf += cmps_uzvar(buf, &ppin->v.v, &t);
+//         }
+//         for (i = 0; i < p_fb->h.np; i++) {
+//           ppin = &p_fb->d[i + p_fb->h.ni + p_fb->h.no];
+//           buf += cmps_uzvar(buf, &ppin->v.v, &t);
+//         }
+//       }
+//       p_en = p_en->p_next;
+//     }
+//     p_pn = p_pn->p_next;
+//   }
 
-  buf = ev_from_img(buf);
-  buf = io_from_img(buf);
+//   buf = ev_from_img(buf);
+//   buf = io_from_img(buf);
 
-  if (pimg->bufsize != buf - pimg->imgbuf) {
-    return 1;
-    printf("uz form img error!\n");
-    fflush(stdout);
-  }
+//   if (pimg->bufsize != buf - pimg->imgbuf) {
+//     return 1;
+//     printf("uz form img error!\n");
+//     fflush(stdout);
+//   }
 
   // printf("get imgbuf size=%d\n",pimg->bufsize);
   return 0;

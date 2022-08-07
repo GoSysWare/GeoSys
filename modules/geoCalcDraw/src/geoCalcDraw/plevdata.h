@@ -9,6 +9,8 @@ class PLEVData
 public:
     PLEVData();
     PLEVData(const PLEVData &ev);
+    ~PLEVData();
+
     QString getStrValue();
 
     int id;
@@ -17,8 +19,8 @@ public:
     QString comment;
     int refIn;
     int refOut;
-    val_t initValue;
-    val_t value;
+    value_tm initValue;
+    value_tm value;
     bool isSelected;
 };
 

@@ -16,12 +16,12 @@ cc_library(
         "k_compress.cpp",
         "k_evdata.cpp",
         "k_functionblock.cpp",
-        "k_io.cpp",
+        # "k_io.cpp",
         "k_lib.cpp",
         "k_process.cpp",
         "k_program.cpp",
         "k_project.cpp",
-        "k_state.cpp",
+        # "k_state.cpp",
         "k_util.cpp",
     ],
     deps = [
@@ -126,6 +126,23 @@ cc_library(
     ],
     srcs = [
         "k_project.cpp",
+    ],
+    deps = [
+        "//modules/calc/include:calc_include",
+        "//modules/calc/include/lib:lib_include",
+        "//modules/calc/proto:value_cc_proto",
+    ],
+)
+
+cc_library(
+    name = "k_command",
+    includes = [
+    ],
+    hdrs = [
+
+    ],
+    srcs = [
+        "k_command.cpp",
     ],
     deps = [
         "//modules/calc/include:calc_include",

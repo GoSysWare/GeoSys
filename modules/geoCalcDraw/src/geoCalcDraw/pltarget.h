@@ -21,7 +21,7 @@ public:
 
     void timerEvent(QTimerEvent *e);
 
-    PLIOModel modelIO;
+//    PLIOModel modelIO;
 
 private:
     bool bOnline;

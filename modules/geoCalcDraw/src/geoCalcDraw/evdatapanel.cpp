@@ -57,8 +57,8 @@ EVDataPanel::EVDataPanel()
     connect(buttonRemoveData, SIGNAL(clicked(bool)), this, SLOT(removeEVData(bool)));
     connect(tableData, SIGNAL(doubleClicked(const QModelIndex&)), this, SLOT(tableDoubleClicked(const QModelIndex &)));
 
-    evLast.initValue.t = T_BOOL;
-    evLast.initValue.v.b = 0;
+    evLast.initValue.mutable_v()->set_t(T_BOOL);
+    evLast.initValue.mutable_v()->set_b(0);
 }
 
 void EVDataPanel::updateState()

@@ -27,7 +27,7 @@ void PLMainModel::initLibrary()
 
     QStringList list;
     while(lib != NULL){
-        list << lib->libname;
+        list << lib->libname.c_str();
         lib = lib_next();
     }
     modelLibrary.setStringList(list);
@@ -43,7 +43,7 @@ void PLMainModel::updateFuncList(int libIndex)
     QStringList list;
     void *fb = lib->first();
     while(fb != ((void*) 0)){
-        list << ((fb_t*)fb)->h.fcname;
+        list << ((fb_t*)fb)->h.fcname.c_str();
         fb = lib->next();
     }
     modelFunction.setStringList(list);
@@ -246,10 +246,12 @@ void PLMainModel::makeEvNewCmd(PLCommand &cmd, PLEVData &ev, bool newId)
         ev.id = objID;
     }
 
-    char type[128], value[128];
-    type2str(type, ev.initValue.t);
-    var2str(value, ev.initValue, ev.initValue.t);
-    cmd.para.sprintf("%d,%s,%s", ev.id, type, value);
+    std::string type;
+    std::string value;
+    type = type2str(ev.initValue.v().t());
+    value = var2str(ev.initValue);
+
+    cmd.para.asprintf("%d,%s,%s", ev.id, type.c_str(), value.c_str());
     cmd.res = ev.name;
     cmd.res += ",";
     cmd.res += ev.comment;
@@ -261,15 +263,15 @@ void PLMainModel::makeEvSetCmd(PLCommand &cmd, PLEVData &ev)
     cmdID++;
     cmd.id = cmdID;
     cmd.fun = "setev";
-    char value[128];
-    var2str(value, ev.initValue, ev.initValue.t);
-    cmd.para.sprintf("%d,%s", ev.id, value);
+    std::string value;
+    value = var2str(ev.initValue);
+    cmd.para.asprintf("%d %s", ev.id,value.data());
     cmd.res = ev.name;
     cmd.res += ",";
     cmd.res += ev.comment;
     cmd.makeCmdLine();
 
-    QString v = value;
+    QString v = QString::fromStdString(value);
 }
 
 void PLMainModel::makeEvRemoveCmd(PLCommand &cmd, PLEVData &ev)
@@ -277,7 +279,7 @@ void PLMainModel::makeEvRemoveCmd(PLCommand &cmd, PLEVData &ev)
     cmdID++;
     cmd.id = cmdID;
     cmd.fun = "rmev";
-    cmd.para.sprintf("%d", ev.id);
+    cmd.para.asprintf("%d", ev.id);
     cmd.makeCmdLine();
 }
 
@@ -290,7 +292,7 @@ void PLMainModel::makePrgNewCmd(PLCommand &cmd, PLProgram &prg, bool newId)
         objID++;
         prg.id = objID;
     }
-    cmd.para.sprintf("%d", prg.id);
+    cmd.para.asprintf("%d", prg.id);
     cmd.res = prg.name;
     cmd.makeCmdLine();
 }
@@ -300,7 +302,7 @@ void PLMainModel::makePrgRemoveCmd(PLCommand &cmd, PLProgram &prg)
     cmdID++;
     cmd.id = cmdID;
     cmd.fun = "rmprg";
-    cmd.para.sprintf("%d", prg.id);
+    cmd.para.asprintf("%d", prg.id);
     cmd.makeCmdLine();
 }
 
@@ -309,7 +311,7 @@ void PLMainModel::makePrgRenameCmd(PLCommand &cmd, PLProgram &prg)
     cmdID++;
     cmd.id = cmdID;
     cmd.fun = "setprg";
-    cmd.para.sprintf("%d", prg.id);
+    cmd.para.asprintf("%d", prg.id);
     cmd.res = prg.name;
     cmd.makeCmdLine();
 }
@@ -319,7 +321,7 @@ void PLMainModel::makePinSetCmd(PLCommand &cmd, int idPrg, int idFb, int idPin, 
     cmdID++;
     cmd.id = cmdID;
     cmd.fun = "setpin";
-    cmd.para.sprintf("%d,%d,%d,", idPrg, idFb, idPin);
+    cmd.para.asprintf("%d,%d,%d,", idPrg, idFb, idPin);
     cmd.para += val;
     cmd.makeCmdLine();
 }
@@ -328,11 +330,11 @@ void PLMainModel::makeLkCopyCmd(PLCommand &cmd, PLLink &lk)
 {
     cmd.id = -1;
     cmd.fun = "cplk";
-    cmd.para.sprintf("%d,%d,%d,%d,%d,%d", lk.idPrg, lk.id, lk.idFbSrc, lk.pinSrc, lk.idFbTgt, lk.pinTgt);
+    cmd.para.asprintf("%d,%d,%d,%d,%d,%d", lk.idPrg, lk.id, lk.idFbSrc, lk.pinSrc, lk.idFbTgt, lk.pinTgt);
     cmd.res.clear();
     QString sp;
     for(int i=0; i<lk.pts.size(); i++){
-        sp.sprintf("%d/%d,", lk.pts.at(i).x, lk.pts.at(i).y);
+        sp.asprintf("%d/%d,", lk.pts.at(i).x, lk.pts.at(i).y);
         cmd.res += sp;
     }
     cmd.makeCmdLine();
@@ -342,11 +344,11 @@ void PLMainModel::makeFbCopyCmd(PLCommand &cmd, PLFunctionBlock &fb)
 {
     cmd.id = -1;
     cmd.fun = "cpfb";
-    cmd.para.sprintf("%d,%d,", fb.idPrg, fb.id);
+    cmd.para.asprintf("%d,%d,", fb.idPrg, fb.id);
     cmd.para += fb.libName;
     cmd.para += ",";
     cmd.para += fb.funName;
-    cmd.res.sprintf("%d,%d", fb.x, fb.y);
+    cmd.res.asprintf("%d,%d", fb.x, fb.y);
     cmd.makeCmdLine();
 }
 

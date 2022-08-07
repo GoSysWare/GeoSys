@@ -68,9 +68,10 @@ bool PLCommand::dispatch()
         int h, w, wi=0, wo=0;
         // input
         for(i = 0; i < p_fb->h.ni; i++){
-            pin.name = p_fb->d[i].pinname;
-            pin.value.t = p_fb->d[i].t;
-            pin.value = p_fb->d[i].v;
+
+            pin.name = QString::fromStdString(p_fb->d[i].pinname);
+            pin.value.mutable_v()->set_t(p_fb->d[i].t);
+            pin.value = *p_fb->d[i].v;
             fb.input.append(pin);
             if(wi < pin.name.size()){
                 wi = pin.name.size();
@@ -78,9 +79,9 @@ bool PLCommand::dispatch()
         }
         // output
         for(i = 0 + p_fb->h.ni; i < (p_fb->h.no + p_fb->h.ni); i++){
-            pin.name = p_fb->d[i].pinname;
-            pin.value.t = p_fb->d[i].t;
-            pin.value = p_fb->d[i].v;
+            pin.name = QString::fromStdString(p_fb->d[i].pinname);
+            pin.value.mutable_v()->set_t(p_fb->d[i].t);
+            pin.value = *p_fb->d[i].v;
             fb.output.append(pin);
             if(wo < pin.name.size()){
                 wo = pin.name.size();
@@ -88,9 +89,9 @@ bool PLCommand::dispatch()
         }
         // property
         for(i = 0 + p_fb->h.ni + p_fb->h.no; i < (p_fb->h.np + p_fb->h.ni + p_fb->h.no); i++){
-            pin.name = p_fb->d[i].pinname;
-            pin.value.t = p_fb->d[i].t;
-            pin.value = p_fb->d[i].v;
+            pin.name = QString::fromStdString(p_fb->d[i].pinname);
+            pin.value.mutable_v()->set_t(p_fb->d[i].t);
+            pin.value = *p_fb->d[i].v;
             fb.property.append(pin);
         }
         fb.flag = p_fb->h.flag;
@@ -240,10 +241,11 @@ bool PLCommand::dispatch()
         if(fb == NULL){
             return false;
         }
-        char temp[128];
-        strncpy(temp, val.toStdString().c_str(), sizeof(temp)-1);
-        val_t *v = &fb->input[pin].value;
-        str2var(temp, v, v->t);
+        
+        value_tm *v = &fb->input[pin].value;
+        *v = str2var(val.toStdString().c_str());
+
+
     }else if(fun == "setev"){
         QStringList list = para.split(",");
         int id = list.at(0).toInt();
@@ -255,10 +257,10 @@ bool PLCommand::dispatch()
                 break;
             }
         }
-        char temp[128];
-        strncpy(temp, val.toStdString().c_str(), sizeof(temp)-1);
-        val_t *v = &ev->initValue;
-        str2var(temp, v, v->t);
+
+        value_tm *v =  &ev->initValue;
+        *v = str2var(val.toStdString().c_str());
+
         ev->value = ev->initValue;
         list = res.split(",");
         ev->name = list.at(0);
@@ -440,14 +442,14 @@ void PLCommand::setEVData(PLEVData *ev)
     ev->refIn = 0;
     ev->refOut = 0;
 
-    int t;
-    char temp[128];
-    strncpy(temp, type.toStdString().c_str(), sizeof(temp)-1);
-    str2type(temp, &t);
-    val_t v;
-    strncpy(temp, value.toStdString().c_str(), sizeof(temp)-1);
-    str2var(temp, &v, t);
-    ev->initValue.t = t;
+    v_type t;
+
+    t= str2type(type.toStdString());
+
+    value_tm v;
+    v = str2var(value.toStdString());
+
+    ev->initValue.mutable_v()->set_t(t);
     ev->initValue = v;
     ev->value = ev->initValue;
 }

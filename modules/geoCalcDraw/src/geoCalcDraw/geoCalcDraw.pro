@@ -33,22 +33,23 @@ SOURCES += main.cpp \
     dlgsaveproj.cpp \
     dlgobjname.cpp \
     plionode.cpp \
-    pliomodel.cpp \
+#    pliomodel.cpp \
     dlgipaddress.cpp \
+    /home/shuimujie/Works/GeoSys/bazel-bin/modules/calc/proto/value.pb.cc \
     ../../../calc/kernel/k_command.cpp \
     ../../../calc/kernel/k_compress.cpp \
     ../../../calc/kernel/k_evdata.cpp \
     ../../../calc/kernel/k_functionblock.cpp \
-    ../../../calc/kernel/k_io.cpp \
+#    ../../../calc/kernel/k_io.cpp \
     ../../../calc/kernel/k_lib.cpp \
     ../../../calc/kernel/k_process.cpp \
     ../../../calc/kernel/k_program.cpp \
     ../../../calc/kernel/k_project.cpp \
-    ../../../calc/kernel/k_state.cpp \
+#    ../../../calc/kernel/k_state.cpp \
     ../../../calc/kernel/k_util.cpp \
     ../../../calc/net/cfgbus.cpp \
     ../../../calc/net/evbus.cpp \
-    ../../../calc/net/stbbus.cpp \
+#    ../../../calc/net/stbbus.cpp \
     ../../../calc/net/vnet.cpp \
     ../../../calc/net/vtcp.cpp \
     ../../../calc/net/vudp.cpp \
@@ -57,22 +58,22 @@ SOURCES += main.cpp \
     ../../../calc/rtdb/RBTree.cpp \
     ../../../calc/rtdb/rtdb.cpp \
     ../../../calc/rtdb/station.cpp \
-    ../../../calc/lib/Arithmetic/Arithmetic.cpp \
-    ../../../calc/lib/Bistable/Bistable.cpp \
-    ../../../calc/lib/Comm/Comm.cpp \
-    ../../../calc/lib/Comparison/Comparison.cpp \
-    ../../../calc/lib/Control/Control.cpp \
-    ../../../calc/lib/Converter/Converter.cpp \
-    ../../../calc/lib/Counter/Counter.cpp \
-    ../../../calc/lib/Driver/Driver.cpp \
-    ../../../calc/lib/IO/IO.cpp \
-    ../../../calc/lib/Logic/Logic.cpp \
-    ../../../calc/lib/Maths/Maths.cpp \
-    ../../../calc/lib/Opencv/Opencv.cpp \
-    ../../../calc/lib/Selection/Selection.cpp \
-    ../../../calc/lib/System/System.cpp \
-    ../../../calc/lib/Timer/Timer.cpp \
-    ../../../calc/lib/Trigger/Trigger.cpp
+    ../../../calc/lib/Arithmetic/Arithmetic.cpp
+#    ../../../calc/lib/Bistable/Bistable.cpp \
+#    ../../../calc/lib/Comm/Comm.cpp \
+#    ../../../calc/lib/Comparison/Comparison.cpp \
+#    ../../../calc/lib/Control/Control.cpp \
+#    ../../../calc/lib/Converter/Converter.cpp \
+#    ../../../calc/lib/Counter/Counter.cpp \
+#    ../../../calc/lib/Driver/Driver.cpp \
+#    ../../../calc/lib/IO/IO.cpp \
+#    ../../../calc/lib/Logic/Logic.cpp \
+#    ../../../calc/lib/Maths/Maths.cpp \
+#    ../../../calc/lib/Opencv/Opencv.cpp \
+#    ../../../calc/lib/Selection/Selection.cpp \
+#    ../../../calc/lib/System/System.cpp \
+#    ../../../calc/lib/Timer/Timer.cpp \
+#    ../../../calc/lib/Trigger/Trigger.cpp
 HEADERS += plmainframe.h \
     cadpanel.h \
     libpanel.h \
@@ -118,7 +119,10 @@ DEFINES += WIN32_LEAN_AND_MEAN
 #this source files and header files  may be add something by yourself
 INCLUDEPATH += ../../../calc/include \
                 ../../../../ \
-                /usr/include/opencv4
+                /home/shuimujie/Works/GeoSys/bazel-bin \
+                /home/shuimujie/Works/GeoSys/bazel-GeoSys/external/com_google_protobuf/src \
+                /usr/include/opencv4 \
+
 
 #set other lib dir if you need
 QMAKE_LIBDIR +=
@@ -126,8 +130,10 @@ QMAKE_LIBDIR +=
 LIBS += -lopencv_core \
         -lopencv_highgui \
         -lopencv_imgproc \
-        -lopencv_imgcodecs
-
+        -lopencv_imgcodecs \
+        -L/home/shuimujie/Works/GeoSys/bazel-bin/external/com_google_protobuf/ \
+        -lprotobuf \
+        -lprotobuf_lite
 
 include(../../gpostfix.pri)
 

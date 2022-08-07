@@ -5,6 +5,10 @@ PLPin::PLPin()
     hasVariable = false;
     hasInputLink = false;
 }
+PLPin::~PLPin()
+{
+
+}
 
 PLPin::PLPin(const PLPin &pin)
 {
@@ -16,11 +20,5 @@ PLPin::PLPin(const PLPin &pin)
 
 QString PLPin::getStrValue()
 {
-    QString ret;
-    char temp[128];
-
-    var2str(temp, value, value.t);
-    ret.sprintf("%s", temp);
-
-    return ret;
+    return QString::fromStdString(var2str(value));
 }

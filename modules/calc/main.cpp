@@ -5,7 +5,6 @@
 #include "modules/calc/include/vtcp.h"
 #include "modules/calc/include/vudp.h"
 #include "modules/calc/include/cfgbus.h"
-#include "modules/calc/include/stbbus.h"
 
 #include "modules/calc/include/k_lib.h"
 
@@ -52,9 +51,9 @@ int main(int argc, char *argv[])
 	vnet_init();
 	vtcp_init();
 	cfgbus_init(1);
-	stbbus_init();
+	// stbbus_init();
 	vudp_init();
-	io_init();
+	// io_init();
 	lib_init();
 	prj_init(1);
 

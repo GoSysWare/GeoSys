@@ -84,7 +84,7 @@ static void onserver(int income, int len, char *p)
 
 	switch(p_frm->h.function){
 	case FUNCCMD:
-		stbbus_sync_prog(p_frm);
+		// stbbus_sync_prog(p_frm);
 		oncommand(p_frm->h.len,p_frm->d);
 		vtcp_srvsend(CONFIGPORT, income, sizeof(cfghead_t)+frm_answer.h.len, (char *)&frm_answer);
 		break;
@@ -104,7 +104,7 @@ static void onserver(int income, int len, char *p)
 		onrun();
 		vtcp_srvsend(CONFIGPORT, income, sizeof(cfghead_t)+frm_answer.h.len, (char *)&frm_answer);
 		break;
-        case FUNCSTOP:
+    case FUNCSTOP:
 		onstop();
 		vtcp_srvsend(CONFIGPORT, income, sizeof(cfghead_t)+frm_answer.h.len, (char *)&frm_answer);
 		break;
