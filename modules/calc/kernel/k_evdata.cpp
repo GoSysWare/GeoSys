@@ -1,37 +1,102 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <math.h>
+#include <google/protobuf/text_format.h>
+
 #include "modules/calc/include/k_util.h"
 #include "modules/calc/include/k_datatype.h"
 #include "modules/calc/include/k_evdata.h"
 #include "modules/calc/include/k_compress.h"
 
-static evnode_t vn_head={&vn_head, &vn_head, 0, ""};
+
+static evnode_t vn_head={&vn_head, &vn_head, 0, "",nullptr};
 static evnode_t *p_vn_select=&vn_head;
 
 
-void type2str( std::string& str, int it)
+std::string type2str( v_type it)
 {
 	const google::protobuf::EnumDescriptor * desc = v_type_descriptor();
-	str = desc->FindValueByNumber(it)->name();
+	return desc->FindValueByNumber(it)->name();
 }
 
-void str2type(const std::string& str, v_type *it)
+v_type str2type(const std::string& str)
 {
-	v_type_Parse(str,it);
+	v_type it;
+	v_type_Parse(str,&it);
+	return it;
+
 }
 
-void var2str( std::string & str, const vam_t &v)
+std::string var2str( const vam_t &v)
 {
-	str = v->SerializeAsString();
+	return v->SerializeAsString();
 }
 	
 
-void str2var(const std::string & str,const vam_t & v)
+vam_t str2var(const std::string & str)
 {
+	vam_t v(new value_tm);
 	v->ParseFromString(str);
+	return v;
+
 }
 
+void setvar(vam_t vam,value_tm val)
+{
+	if(vam->v().t() != val.v().t()){
+		return ;
+	}
+	value_t * vt = vam->mutable_v();
+	switch (val.v().t())
+	{
+	case T_NONE:
+		break;
+	case T_BOOL:
+		vt->set_b(val.v().b());
+		break;
+	case T_INT32:
+		vt->set_i(val.v().i());
+		break;	
+	case T_UINT32:
+		vt->set_ui(val.v().ui());
+		break;	
+	case T_INT64:
+		vt->set_ll(val.v().ll());
+		break;
+	case T_UINT64:
+		vt->set_ull(val.v().ull());
+		break;	
+	case T_FLOAT32:
+		vt->set_i(val.v().i());
+		break;	
+	case T_FLOAT64:
+		vt->set_d(val.v().d());
+		break;
+	case T_TIME:
+		vt->set_tm(val.v().tm());
+		break;
+	case T_STRING:
+		vt->set_str(val.v().str());
+		break;	
+	case T_BYTES:
+		vt->set_blob(val.v().blob());
+		break;	
+	case T_IMAGE:
+		vt->set_img(val.v().img());
+		break;
+	case T_LIDAR:
+		vt->set_lidar(val.v().lidar());
+		break;
+	case T_SONAR:
+		vt->set_sonar(val.v().sonar());
+		break;
+	case T_FILE:
+		vt->set_file(val.v().file());
+		break;		
+	default:
+		break;
+	}
+}
 
 static evnode_t *v_new()
 {
@@ -90,32 +155,29 @@ static int ev_select(int id)
 	return -1;
 }
 
-vam_t *ev_find(int id)
+vam_t * ev_find_v(int id)
 {
 	if(ev_select(id)==0){
 		return &p_vn_select->v;
-	}else{
-		return 0;
 	}
+	return nullptr;
 }
-int ev_add(int id, const std::string & val, const std::string name)
+
+int ev_add(int id, const std::string & str, const std::string & name)
 {
-	vam_t v(new value_tm);
 	evnode_t *p_vn;
 
 	p_vn = v_new();
 	if(p_vn == 0){
 		return -1;
 	}
-	v->ParseFromString(val);
-    p_vn->id = id;
-	p_vn->v = v;
 
-	strncpy(p_vn->name, name.c_str(), EVNAMESIZE);
+    p_vn->id = id;
+	p_vn->name = name;
+	p_vn->v = std::move(str2var(str));
+
 	v_addbefore(p_vn, &vn_head);
 	
-   // tag_ev_add(id, name);//qss for calc
-
 	return 0;
 }
 
@@ -130,8 +192,6 @@ int ev_remove(int id)
 	v_remove(p_vn_select);
 	v_delete(p_vn_select);
 	p_vn_select = &vn_head;
-
-  //  tag_ev_rm(id);//qss for calc
 
 	return 0;
 }
@@ -167,7 +227,13 @@ void ev_dump()
 
 	p_vn = vn_head.p_next;
 	while(p_vn != &vn_head){
-		printf("ev:%d - %s,%d\n", p_vn->id, p_vn->name, p_vn->v->v().i());
+		std::cout << "ev: " 
+			<< p_vn->id 
+			<<"- " 
+			<<p_vn->name
+			<<": "
+			<< p_vn->v->ShortDebugString()
+			<<std::endl;
 		p_vn = p_vn->p_next;
 	}
 }

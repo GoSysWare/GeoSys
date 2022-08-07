@@ -32,7 +32,7 @@ message value_t {
     double d = 8;
     uint64 tm = 9;
     string str = 10;
-    bytes bin = 11;
+    bytes blob = 11;
     bytes img = 12;
     bytes lidar = 13;
     bytes sonar = 14;

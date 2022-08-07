@@ -314,14 +314,15 @@ static int showev(char *line, int *cursor)
 {
 	char word[NWORD];
 	int idev;
-	val_t *p_ev;
+	vam_t* p_ev;
 
 	get_word(line, word, cursor);
 	idev = atoi(word);
-	p_ev = ev_find(idev);
+	p_ev = ev_find_v(idev);
 	if(p_ev ==  0){
 		return -1;
 	}
+
 
 	var2str(word,*p_ev,p_ev->t);
 	printf("%s\n", word);
@@ -338,7 +339,7 @@ static int setev(char *line, int *cursor)
 
 	get_word(line, word, cursor);
 	idev = atoi(word);
-	p_val = ev_find(idev);
+	p_val = ev_find_v(idev);
 	if(p_val ==  0){
 		return -1;
 	}

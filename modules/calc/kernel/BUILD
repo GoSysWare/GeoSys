@@ -27,11 +27,12 @@ cc_library(
     deps = [
         "//modules/calc/include:calc_include",
         "//modules/calc/include/lib:lib_include",
+        "//modules/calc/proto:value_cc_proto",
     ],
 )
 
 cc_library(
-    name = "evdata",
+    name = "k_evdata",
     includes = [
     ],
     hdrs = [
@@ -46,3 +47,93 @@ cc_library(
         "//modules/calc/proto:value_cc_proto",
     ],
 )
+
+
+cc_library(
+    name = "k_functionblock",
+    includes = [
+    ],
+    hdrs = [
+
+    ],
+    srcs = [
+        "k_functionblock.cpp",
+    ],
+    deps = [
+        "//modules/calc/include:calc_include",
+        "//modules/calc/include/lib:lib_include",
+        "//modules/calc/proto:value_cc_proto",
+        "//modules/calc/kernel:k_evdata",
+
+    ],
+)
+
+cc_library(
+    name = "k_lib",
+    includes = [
+    ],
+    hdrs = [
+
+    ],
+    srcs = [
+        "k_lib.cpp",
+    ],
+    deps = [
+        "//modules/calc/include:calc_include",
+        "//modules/calc/include/lib:lib_include",
+        "//modules/calc/proto:value_cc_proto",
+    ],
+)
+
+cc_library(
+    name = "k_process",
+    includes = [
+    ],
+    hdrs = [
+
+    ],
+    srcs = [
+        "k_process.cpp",
+    ],
+    deps = [
+        "//modules/calc/include:calc_include",
+        "//modules/calc/include/lib:lib_include",
+        "//modules/calc/proto:value_cc_proto",
+    ],
+)
+cc_library(
+    name = "k_program",
+    includes = [
+    ],
+    hdrs = [
+
+    ],
+    srcs = [
+        "k_program.cpp",
+    ],
+    deps = [
+        "//modules/calc/include:calc_include",
+        "//modules/calc/include/lib:lib_include",
+        "//modules/calc/proto:value_cc_proto",
+    ],
+)
+cc_library(
+    name = "k_project",
+    includes = [
+    ],
+    hdrs = [
+
+    ],
+    srcs = [
+        "k_project.cpp",
+    ],
+    deps = [
+        "//modules/calc/include:calc_include",
+        "//modules/calc/include/lib:lib_include",
+        "//modules/calc/proto:value_cc_proto",
+    ],
+)
+
+
+
+

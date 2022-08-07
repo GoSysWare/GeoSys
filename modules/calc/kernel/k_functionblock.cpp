@@ -1,177 +1,150 @@
 #include <stddef.h>
 #include <stdio.h>
 #include <string.h>
-
+#include "modules/calc/include/k_evdata.h"
 #include "modules/calc/include/k_functionblock.h"
 #include "modules/calc/include/k_util.h"
 
-static size_t fb_size(fb_t *p_fb)
-{
-	return sizeof(fb_t) + (p_fb->h.ni + p_fb->h.no + p_fb->h.np) * sizeof(pin_t);
+
+
+fb_t *fb_new(fb_t *p_source) {
+  fb_t *p_dst = 0;
+  p_dst = new fb_t;
+  if (p_dst) {
+    p_dst->h = p_source->h;
+    p_dst->d = p_source->d;
+    for(auto && pin : p_dst->d ){
+      pin.v = std::make_shared<value_tm>();
+    }
+  }
+  return p_dst;
 }
 
-fb_t *fb_new(fb_t *p_source)
-{
-	fb_t *p_fb;
-	size_t size;
-
-	size = fb_size(p_source);
-	p_fb = (fb_t *)k_malloc(size);
-	if(p_fb != 0){
-		memcpy(p_fb, p_source, size);
-	}
-
-	return p_fb;
+void fb_delete(fb_t *p_fb) {
+  for(auto && pin : p_fb->d ){
+    pin.v.reset();
+  }
+  delete p_fb;
 }
 
-void fb_delete(fb_t *p_fb)
-{
-	k_free(p_fb);
+pin_t *fb_getpin(fb_t *p_fb, int pintype, unsigned int n) {
+  int np;
+  pin_t *p_pin;
+
+  if (pintype == PININPUT) {
+    if (n >= p_fb->h.ni) {
+      return 0;
+    }
+    np = n;
+  } else if (pintype == PINOUTPUT) {
+    if (n >= p_fb->h.no) {
+      return 0;
+    }
+    np = n + p_fb->h.ni;
+  } else if (pintype == PINPROPERTY) {
+    if (n >= p_fb->h.np) {
+      return 0;
+    }
+    np = n + p_fb->h.ni + p_fb->h.no;
+  } else {
+    return 0;
+  }
+
+  p_pin = &p_fb->d[np];
+  return p_pin;
 }
 
-/* n��0��ʼ */
-pin_t *fb_getpin(fb_t *p_fb, int pintype, unsigned int n)
-{
-	int np;
-	pin_t *p_pin;
-	
-	if(pintype == PININPUT){
-		if(n >= p_fb->h.ni){
-			return 0;
-		}
-		np = n;
-	}else if(pintype == PINOUTPUT){
-		if(n >= p_fb->h.no){
-			return 0;
-		}
-		np = n + p_fb->h.ni;		
-	}else if(pintype == PINPROPERTY){
-		if(n >= p_fb->h.np){
-			return 0;
-		}
-		np = n + p_fb->h.ni + p_fb->h.no;
-	}else{
-		return 0;
-	}
+int fb_setpin(fb_t *p_fb, int pintype, unsigned int n, value_tm v) {
+  int np;
+  pin_t *p_pin;
 
-	p_pin = p_fb->d + np;
-	return p_pin;
+  if (pintype == PININPUT) {
+    if (n >= p_fb->h.ni) {
+      return -1;
+    }
+    np = n;
+  } else if (pintype == PINOUTPUT) {
+    if (n >= p_fb->h.no) {
+      return 0;
+    }
+    np = n + p_fb->h.ni;
+    return -1;
+  } else if (pintype == PINPROPERTY) {
+    if (n >= p_fb->h.np) {
+      return -1;
+    }
+    np = n + p_fb->h.ni + p_fb->h.no;
+  } else {
+    return -1;
+  }
+
+  p_pin = &p_fb->d[np];
+  vam_t tmp = std::make_shared<value_tm>(v);
+  p_pin->v = tmp;
+  return 0;
 }
 
-int fb_setpin(fb_t *p_fb, int pintype, unsigned int n, val_t v)
-{
-	int np;
-	pin_t *p_pin;
-	
-	if(pintype == PININPUT){
-		if(n >= p_fb->h.ni){
-			return -1;
-		}
-		np = n;
-	}else if(pintype == PINOUTPUT){
-		if(n >= p_fb->h.no){
-			return 0;
-		}
-		np = n + p_fb->h.ni;		
-		return -1;
-	}else if(pintype == PINPROPERTY){
-		if(n >= p_fb->h.np){
-			return -1;
-		}
-		np = n + p_fb->h.ni + p_fb->h.no;
-	}else{
-		return -1;
-	}
+void fb_dump(fb_t *p_fb) {
+  unsigned int i;
+  std::cout << "fc: " << p_fb->h.fcname << std::endl;
+  std::cout << "input: " << std::endl;
+  for (i = 0; i < p_fb->h.ni; i++) {
+    std::cout << "fb: " << p_fb->d[i].pinname << "- " << type2str(p_fb->d[i].t)
+              << ": " << p_fb->d[i].v->ShortDebugString() << std::endl;
+  }
 
-	p_pin = p_fb->d + np;
-	p_pin->v = v;
-	return 0;
+  std::cout << "output: " << std::endl;
+
+  for (i = 0 + p_fb->h.ni; i < (p_fb->h.no + p_fb->h.ni); i++) {
+    std::cout << "fb: " << p_fb->d[i].pinname << "- " << type2str(p_fb->d[i].t)
+              << ": " << p_fb->d[i].v->ShortDebugString() << std::endl;
+  }
+  std::cout << "property: " << std::endl;
+
+  for (i = 0 + p_fb->h.ni + p_fb->h.no;
+       i < (p_fb->h.np + p_fb->h.ni + p_fb->h.no); i++) {
+    std::cout << "fb: " << p_fb->d[i].pinname << "- " << type2str(p_fb->d[i].t)
+              << ": " << p_fb->d[i].v->ShortDebugString() << std::endl;
+  }
 }
 
-void fb_dump(fb_t *p_fb)
-{
-	unsigned int i;
-	char type[8], value[32];
-	printf("fc:%s\n", p_fb->h.fcname);
+std::string fb_pins_to_string(fb_t *p_fb) {
+  unsigned int i;
+  std::string fb_string;
+  /* input */
+  for (i = 0; i < p_fb->h.ni; i++) {
+    fb_string += std::string(p_fb->d[i].pinname) + "/" +
+                 type2str(p_fb->d[i].t) + "/" +
+                 p_fb->d[i].v->ShortDebugString() + ",";
+  }
+  fb_string += ",;";
 
-	printf("input:\n");
-	for(i = 0; i < p_fb->h.ni; i++){
-		type2str(type, p_fb->d[i].t);
-		var2str(value, p_fb->d[i].v, p_fb->d[i].t);
-		printf("  %s, %s, %s.\n", p_fb->d[i].pinname, type, value);
-	}
+  /* output */
+  for (i = 0 + p_fb->h.ni; i < (p_fb->h.no + p_fb->h.ni); i++) {
+    fb_string += std::string(p_fb->d[i].pinname) + "/" +
+                 type2str(p_fb->d[i].t) + "/" +
+                 p_fb->d[i].v->ShortDebugString() + ",";
+  }
+  fb_string += ",;";
 
-	printf("output:\n");
-	for(i = 0 + p_fb->h.ni; i < (p_fb->h.no + p_fb->h.ni); i++){
-		type2str(type, p_fb->d[i].t);
-		var2str(value, p_fb->d[i].v, p_fb->d[i].t);
-		printf("  %s, %s, %s.\n", p_fb->d[i].pinname, type, value);
-	}
-
-	printf("property:\n");
-	for(i = 0 + p_fb->h.ni + p_fb->h.no; i < (p_fb->h.np + p_fb->h.ni + p_fb->h.no); i++){
-		type2str(type, p_fb->d[i].t);
-		var2str(value, p_fb->d[i].v, p_fb->d[i].t);
-		printf("  %s, %s, %s.\n", p_fb->d[i].pinname, type, value);
-	}
+  /* property */
+  for (i = 0 + p_fb->h.ni + p_fb->h.no;
+       i < (p_fb->h.np + p_fb->h.ni + p_fb->h.no); i++) {
+    fb_string += std::string(p_fb->d[i].pinname) + "/" +
+                 type2str(p_fb->d[i].t) + "/" +
+                 p_fb->d[i].v->ShortDebugString() + ",";
+  }
+  fb_string += ";";
+  return fb_string;
 }
 
-void fb_pins_to_string(fb_t *p_fb, char *str)
-{
-	unsigned int i;
-	char type[8], value[32];
+std::string fb_vars_to_string(fb_t *p_fb) {
+  unsigned int i;
 
-	*str=0;
-	/* input */
-	for(i = 0; i < p_fb->h.ni; i++){
-		type2str(type, p_fb->d[i].t);
-		var2str(value, p_fb->d[i].v, p_fb->d[i].t);
-		strcat(str,p_fb->d[i].pinname);
-		strcat(str,"/");
-		strcat(str,type);
-		strcat(str,"/");
-		strcat(str,value);
-		strcat(str,",");
-	}
-	strcat(str,",");
-	strcat(str,";");
-	/* output */
-	for(i = 0 + p_fb->h.ni; i < (p_fb->h.no + p_fb->h.ni); i++){
-		type2str(type, p_fb->d[i].t);
-		var2str(value, p_fb->d[i].v, p_fb->d[i].t);
-		strcat(str,p_fb->d[i].pinname);
-		strcat(str,"/");
-		strcat(str,type);
-		strcat(str,"/");
-		strcat(str,value);
-		strcat(str,",");
-	}	
-	strcat(str,",");
-	strcat(str,";");
-	/* property */
-	for(i = 0 + p_fb->h.ni + p_fb->h.no; i < (p_fb->h.np + p_fb->h.ni + p_fb->h.no); i++){
-		type2str(type, p_fb->d[i].t);
-		var2str(value, p_fb->d[i].v, p_fb->d[i].t);
-		strcat(str,p_fb->d[i].pinname);
-		strcat(str,"/");
-		strcat(str,type);
-		strcat(str,"/");
-		strcat(str,value);
-		strcat(str,",");
-	}
-	strcat(str,",");
-}
-
-void fb_vars_to_string(fb_t *p_fb, char *str)
-{
-	unsigned int i;
-	char value[32];
-
-	*str=0;
-	
-	for(i=0; i < (p_fb->h.np+p_fb->h.ni+p_fb->h.no); i++){
-		var2str(value, p_fb->d[i].v, p_fb->d[i].t);
-		strcat(str,value);
-		strcat(str,",");
-	}
+  std::string var_string;
+  for (i = 0; i < (p_fb->h.np + p_fb->h.ni + p_fb->h.no); i++) {
+    var_string += p_fb->d[i].v->ShortDebugString();
+    var_string += ",";
+  }
+  return var_string;
 }

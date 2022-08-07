@@ -37,7 +37,11 @@ cc_binary(
     ],
     linkstatic = False,
     deps = [
-        "//modules/calc/kernel:evdata",
+        "//modules/calc/kernel:k_lib",
+        "//modules/calc/kernel:k_evdata",
+        "//modules/calc/kernel:k_functionblock",
+        "//modules/calc/kernel:k_program",
+        "//modules/calc/lib/Arithmetic:Arithmetic",
         "//modules/calc/include:calc_include",
         "//modules/calc/include/lib:lib_include",
 

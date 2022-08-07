@@ -8,7 +8,6 @@
 #include "k_datatype.h"
 #include "modules/calc/proto/value.pb.h"
 
-
 typedef std::shared_ptr<value_t> var_t;
 typedef std::shared_ptr<value_tm> vam_t;
 
@@ -17,18 +16,18 @@ typedef struct EVNode{
 	struct EVNode *p_prev;
 	struct EVNode *p_next;
 	int id;
-	char name[EVNAMESIZE];
+	std::string name;
 	vam_t v;
 } evnode_t;
 
+std::string type2str( v_type it);
+v_type str2type(const std::string& str);
+std::string  var2str(const vam_t &v);
+vam_t str2var(const std::string & str);
+void setvar(vam_t vam,value_tm val);
 
-void type2str( std::string& str, int it);
-void str2type(const std::string& str, int *it);
-void var2str( std::string & str, const vam_t &v);
-void str2var(const std::string & str,const vam_t & v);
-
-vam_t* ev_find(int id);
-int ev_add(int id, const std::string & val, const std::string name);
+vam_t * ev_find_v(int id);
+int ev_add(int id, const std::string & val, const std::string &name);
 int ev_remove(int id);
 void ev_reset();
 void ev_dump();

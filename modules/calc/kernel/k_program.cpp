@@ -9,22 +9,24 @@
 
 static enode_t *en_new()
 {
-	return (enode_t *)k_malloc(sizeof(enode_t));
+	return new enode_t ;
 }
 
 static vnode_t *vn_new()
 {
-	return (vnode_t *)k_malloc(sizeof(vnode_t));
+	return  new vnode_t;
 }
 
 static void en_delete(enode_t *p_en)
 {
-	k_free(p_en);
+
+	delete p_en;
+
 }
 
 static void vn_delete(vnode_t *p_vn)
 {
-	k_free(p_vn);
+	delete p_vn;
 }
 
 static void en_addbefore(enode_t *p_en, enode_t *p_ref)
@@ -91,7 +93,7 @@ void prg_exec(prog_t *p_prg)
 	/* ev to fb */
 	p_vn = p_prg->vnin_head.p_next;
 	while(p_vn != &p_prg->vnin_head){
-		memcpy(&p_vn->p_pin->v,&p_vn->p_val->v,sizeof(var_t));
+		p_vn->p_pin->v = *(p_vn->p_val);
 		p_vn = p_vn->p_next;
 	}
 
@@ -101,7 +103,7 @@ void prg_exec(prog_t *p_prg)
 		if(p_en->p_fb != 0){
 			p_en->p_fb->h.run(p_en->p_fb); 
 		}else{
-			memcpy(&p_en->p_vtgt->v, &p_en->p_vsrc->v, sizeof(var_t));
+			p_en->p_vtgt->v = p_en->p_vsrc->v;
 		}
 		p_en = p_en->p_next;
 	}
@@ -109,7 +111,7 @@ void prg_exec(prog_t *p_prg)
 	/* fb to ev */
 	p_vn = p_prg->vnout_head.p_next;
 	while(p_vn != &p_prg->vnout_head){
-		memcpy(&p_vn->p_val->v,&p_vn->p_pin->v,sizeof(var_t));
+		*(p_vn->p_val) = p_vn->p_pin->v;	
 		p_vn = p_vn->p_next;
 	}
 }
@@ -118,7 +120,7 @@ prog_t *prg_new()
 {
 	prog_t *p_new;
 
-	p_new = (prog_t *)k_malloc(sizeof(prog_t));
+	p_new = new prog_t ;
 	if(p_new != 0){
 		p_new->en_head.p_prev = &p_new->en_head;
 		p_new->en_head.p_next = &p_new->en_head;
@@ -168,7 +170,7 @@ void prg_delete(prog_t *p_prg)
 		vn_delete(p_vrm);
 	}
 
-	k_free(p_prg);
+	delete p_prg;
 }
 
 static void prg_setrank(prog_t *p_prg)
@@ -257,16 +259,16 @@ static void prg_markfblink(prog_t *p_prg, enode_t *p_enfb)
 	}
 }
 
-int prg_fbadd(prog_t *p_prg, int id, char *libname, char *fcname, char *fbname)
+int prg_fbadd(prog_t *p_prg, int id, const std::string & libname, const std::string & fcname, const std::string & fbname)
 {
 	fb_t *p_fb;
 	enode_t *p_en;
-
+	//根据库名和功能块名找到功能块
 	p_fb = lib_find(libname, fcname);
 	if(0 == p_fb){
 		return -1;
 	}
-
+	//根据功能块的预定义的生成一个新的功能块
 	p_fb = fb_new(p_fb);
 	if(0 == p_fb){
 		return -1;
@@ -279,7 +281,7 @@ int prg_fbadd(prog_t *p_prg, int id, char *libname, char *fcname, char *fbname)
 	}
 	p_en->id = id;
 	p_en->p_fb = p_fb;
-	strncpy(p_en->fbname, fbname, FBNAMESIZE);
+	p_en->fbname = fbname;
 
 	en_addbefore(p_en, &p_prg->en_head);
 
@@ -387,8 +389,8 @@ int prg_viadd(prog_t *p_prg, int id, int idev, int idfb, int pin)
 	vn.id = id;
 	
 	vn.idev = idev;
-	vn.p_val = ev_find(idev);
-	if(vn.p_val == 0){
+	vn.p_val = ev_find_v(idev);
+	if(vn.p_val == nullptr){
 		return -1;
 	}
 
@@ -406,8 +408,7 @@ int prg_viadd(prog_t *p_prg, int id, int idev, int idfb, int pin)
 	if(p_new == 0){
 		return -1;
 	}
-
-	memcpy(p_new, &vn, sizeof(vnode_t));
+	*p_new = vn;
 
 	vn_addbefore(p_new, &p_prg->vnin_head);
    // tag_in_add(id, idev);//qss for calc
@@ -422,8 +423,8 @@ int prg_voadd(prog_t *p_prg, int id, int idev, int idfb, int pin)
 	vn.id = id;
 	
 	vn.idev = idev;
-	vn.p_val = ev_find(idev);
-	if(vn.p_val == 0){
+	vn.p_val = ev_find_v(idev);
+	if(vn.p_val == nullptr){
 		return -1;
 	}
 
@@ -442,7 +443,7 @@ int prg_voadd(prog_t *p_prg, int id, int idev, int idfb, int pin)
 		return -1;
 	}
 
-	memcpy(p_new, &vn, sizeof(vnode_t));
+	*p_new = vn;
 
 	vn_addbefore(p_new, &p_prg->vnout_head);
  //   tag_out_add(id, idev);//qss for calc
@@ -584,7 +585,7 @@ int prg_lkadd(prog_t *p_prg, int id, int fbsrc, int pinsrc, int fbtgt, int pintg
 	if(p_en == 0){
 		return -1;
 	}
-	memcpy(p_en, &en, sizeof(enode_t));
+	*p_en = en;
 	en_addafter(p_en, p_src);
 
 	prg_setrank(p_prg);
@@ -626,30 +627,46 @@ void prg_dump(prog_t *p_prg)
 {
 	vnode_t *p_vn;
 	enode_t *p_en;
-
-	printf("vi:\n");
+	std::cout << "program:" << std::endl;
+	std::cout << "vi:" << std::endl;
 	p_vn = p_prg->vnin_head.p_next;
 	while(p_vn != &p_prg->vnin_head){
-		printf("  id:%d ev:%d fb:%d pin:%s\n", p_vn->id, p_vn->idev, p_vn->idfb, p_vn->p_pin->pinname);
+		std::cout << "  id: " << p_vn->id 
+				<< ", ev: " << p_vn->idev
+              	<< ", fb: " << p_vn->idfb  
+			  	<< ", pin: " << p_vn->p_pin->pinname
+			  	<< std::endl;
 		p_vn = p_vn->p_next;
 	}
 	
-	printf("en:\n");
+	std::cout << "en:" << std::endl;
 	p_en = p_prg->en_head.p_next;
 	while(p_en != &p_prg->en_head){
 		if(p_en->p_fb != 0){
-			printf("  fb:%d - %s, fc:%s\n", p_en->id, p_en->fbname, p_en->p_fb->h.fcname);
+				std::cout << "  fb: " << p_en->id 
+				<< " - " << p_en->fbname
+              	<< ", fc: " << p_en->p_fb->h.fcname
+			  	<< std::endl;
 		}else{
-			printf("  lk:%d , src.pin:%d.%s tgt.pin:%d.%s\n", 
-				p_en->id, p_en->idsrc, p_en->p_vsrc->pinname, p_en->idtgt, p_en->p_vtgt->pinname);
+				std::cout << "  lk: " << p_en->id
+				<< ", From.pin: " << p_en->idsrc
+              	<< "." << p_en->p_vsrc->pinname
+				<< " --> " 
+				<< " To.pin: " << p_en->idtgt
+              	<< "." << p_en->p_vtgt->pinname			
+			  	<< std::endl;
 		}
 		p_en = p_en->p_next;
 	}
 
-	printf("vo:\n");
+	std::cout << "vo:" << std::endl;
 	p_vn = p_prg->vnout_head.p_next;
 	while(p_vn != &p_prg->vnout_head){
-		printf("  id:%d ev:%d fb.pin:%d.%s\n", p_vn->id, p_vn->idev, p_vn->idfb, p_vn->p_pin->pinname);
+		std::cout << "  id: " << p_vn->id 
+				<< ", ev: " << p_vn->idev
+              	<< ", fb: " << p_vn->idfb  
+			  	<< ", pin: " << p_vn->p_pin->pinname
+			  	<< std::endl;
 		p_vn = p_vn->p_next;
 	}
 }
