@@ -13,6 +13,7 @@ fb_t *fb_new(fb_t *p_source) {
     p_dst->d = p_source->d;
     for (auto &&pin : p_dst->d) {
       pin.v = new vam_t(std::make_shared<value_tm>());
+      (*(pin.v))->mutable_v()->set_t(pin.t);
     }
   }
   return p_dst;

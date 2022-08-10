@@ -50,6 +50,30 @@ cc_binary(
     ],
 )
 
+cc_binary(
+    name = "test_opencv",
+    srcs = [
+        "test_opencv.cpp",
+
+    ],
+    linkopts = [
+        "-lpthread",
+
+    ],
+    linkstatic = False,
+    deps = [
+        "//modules/calc/kernel:k_lib",
+        "//modules/calc/kernel:k_evdata",
+        "//modules/calc/kernel:k_functionblock",
+        "//modules/calc/kernel:k_program",
+        "//modules/calc/lib/Arithmetic:Arithmetic",
+        "//modules/calc/lib/Opencv:Opencv",
+        "//modules/calc/include:calc_include",
+        "//modules/calc/include/lib:lib_include",
+
+    ],
+)
+
 
 
 cpplint()

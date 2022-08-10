@@ -20,7 +20,7 @@ cc_library(
         "k_lib.cpp",
         "k_process.cpp",
         "k_program.cpp",
-        "k_project.cpp",
+        # "k_project.cpp",
         # "k_state.cpp",
         "k_util.cpp",
     ],

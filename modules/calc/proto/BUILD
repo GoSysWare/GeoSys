@@ -22,3 +22,14 @@ proto_library(
     deps = [
     ],
 )
+cc_proto_library(
+    name = "image_cc_proto",
+    deps = [":image_proto"], 
+)
+
+proto_library(
+    name = "image_proto",
+    srcs = ["image.proto"],
+    deps = [
+    ],
+)

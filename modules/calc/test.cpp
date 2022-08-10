@@ -95,6 +95,8 @@ int main(int argc, char *argv[])
 	prg_dump(prg);
 
 	prg_exec(prg);
+	pin_t * pin = fb_getpin(p_fb, PINOUTPUT, 1);
+
 	ev_dump();
 	prg_exec(prg);
 	ev_dump();

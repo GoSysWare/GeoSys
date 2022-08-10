@@ -9,7 +9,9 @@ cc_library(
     includes = [
     ],
     hdrs = [
-        "IMG_OPEN",
+        "IMG_READ",
+        "IMG_WRITE",
+
     ],
     srcs = [
         "Opencv.cpp",
@@ -18,5 +20,8 @@ cc_library(
     deps = [
         "//modules/calc/include:calc_include",
         "//modules/calc/include/lib:lib_include",
+        "//modules/calc/proto:value_cc_proto",
+        "//modules/calc/proto:image_cc_proto",
+        "@opencv"
     ],
 )

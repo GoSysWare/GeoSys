@@ -1,0 +1,28 @@
+static void run_opencv_Read(void *p)
+{	
+	fb_t *pb = (fb_t *)p;
+	vam_t  in = *(pb->d[0].v);
+	vam_t  out = *(pb->d[1].v);
+	cv::Mat m = cv::imread( in->v().str()); 
+	opencv::image serializableMat;
+	
+	//set the trivial fields
+	serializableMat.set_rows(m.rows);
+	serializableMat.set_cols(m.cols);
+	serializableMat.set_elt_type(m.type());
+	serializableMat.set_elt_size((int)m.elemSize());
+ 
+	//set the matrix's raw data
+	size_t dataSize = m.rows * m.cols * m.elemSize();
+	serializableMat.set_mat_data(m.data, dataSize);
+	out->mutable_v()->set_img(serializableMat.SerializeAsString());
+
+}
+
+static fb_t fb_OPENCV_READ = {
+	"OPENCV_READ", 1, 1, 0, 0, run_opencv_Read, 
+	{
+		{"IN", T_STRING, 0},
+		{"OUT", T_IMAGE, 0},
+	}
+};

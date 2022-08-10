@@ -1,0 +1,32 @@
+static void run_opencv_Write(void *p)
+{	
+	fb_t *pb = (fb_t *)p;
+	vam_t  in1 = *(pb->d[0].v);
+	vam_t  in2 = *(pb->d[1].v);
+	cv::Mat m;
+	opencv::image serializableMat;
+	serializableMat.ParseFromString(in1->v().img());
+	m.create(serializableMat.rows(),
+    serializableMat.cols(),
+    serializableMat.elt_type());
+ 
+    size_t dataSize = serializableMat.rows() *  serializableMat.cols() * serializableMat.elt_size();
+ 
+    std::copy(reinterpret_cast<unsigned char *>(
+            const_cast<char *>(serializableMat.mat_data().data())),
+        reinterpret_cast<unsigned char *>(
+            const_cast<char *>(serializableMat.mat_data().data()) + dataSize),
+        m.data);
+
+	cv::imwrite(in2->v().str(), m);
+
+
+}
+
+static fb_t fb_OPENCV_WRITE= {
+	"OPENCV_WRITE", 2, 0, 0, 0, run_opencv_Write, 
+	{
+		{"IN", T_IMAGE, 0},
+		{"IN", T_STRING, 0},
+	}
+};
