@@ -25,6 +25,7 @@ v_type str2type(const std::string& str);
 std::string  var2str(const value_tm &v);
 value_tm str2var(const std::string & str);
 void setvar(vam_t vam,value_tm val);
+bool setvar(vam_t vam,v_type t, value_tm val);
 
 vam_t * ev_find_v(int id);
 int ev_add(int id, const std::string & val, const std::string &name);

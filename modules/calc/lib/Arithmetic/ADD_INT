@@ -1,9 +1,9 @@
 static void run_ADD_INT(void *p)
 {	
 	fb_t *pb = (fb_t *)p;
-	vam_t  out = pb->d[2].v;
-	vam_t  in1 = pb->d[0].v;
-	vam_t  in2 = pb->d[1].v;
+	vam_t  out = *(pb->d[2].v);
+	vam_t  in1 = *(pb->d[0].v);
+	vam_t  in2 = *(pb->d[1].v);
 	out->mutable_v()->set_i(in1->v().i() + in2->v().i());
 	out->mutable_v()->set_t(T_INT32);
 

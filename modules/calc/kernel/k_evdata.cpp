@@ -98,6 +98,65 @@ void setvar(vam_t vam,value_tm val)
 	}
 }
 
+bool setvar(vam_t vam,v_type t, value_tm val)
+{
+	if(t != val.v().t()){
+		return false;
+	}
+	value_t * vt = vam->mutable_v();
+	vt->set_t(val.v().t());
+	switch (t)
+	{
+	case T_NONE:
+		break;
+	case T_BOOL:
+		vt->set_b(val.v().b());
+		break;
+	case T_INT32:
+		vt->set_i(val.v().i());
+		break;	
+	case T_UINT32:
+		vt->set_ui(val.v().ui());
+		break;	
+	case T_INT64:
+		vt->set_ll(val.v().ll());
+		break;
+	case T_UINT64:
+		vt->set_ull(val.v().ull());
+		break;	
+	case T_FLOAT32:
+		vt->set_i(val.v().i());
+		break;	
+	case T_FLOAT64:
+		vt->set_d(val.v().d());
+		break;
+	case T_TIME:
+		vt->set_tm(val.v().tm());
+		break;
+	case T_STRING:
+		vt->set_str(val.v().str());
+		break;	
+	case T_BYTES:
+		vt->set_blob(val.v().blob());
+		break;	
+	case T_IMAGE:
+		vt->set_img(val.v().img());
+		break;
+	case T_LIDAR:
+		vt->set_lidar(val.v().lidar());
+		break;
+	case T_SONAR:
+		vt->set_sonar(val.v().sonar());
+		break;
+	case T_FILE:
+		vt->set_file(val.v().file());
+		break;		
+	default:
+		break;
+	}
+	return true;
+}
+
 static evnode_t *v_new()
 {
 	return new evnode_t;;

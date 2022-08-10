@@ -33,7 +33,7 @@ typedef struct FBHead{
 typedef struct Pin{
 	std::string pinname;
 	v_type t;	/* type */
-	vam_t v;	/* value */
+	vam_t *v;	/* value */
 } pin_t;
 
 typedef struct FB{

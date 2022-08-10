@@ -12,7 +12,7 @@ fb_t *fb_new(fb_t *p_source) {
     p_dst->h = p_source->h;
     p_dst->d = p_source->d;
     for (auto &&pin : p_dst->d) {
-      pin.v = std::make_shared<value_tm>();
+      pin.v = new vam_t(std::make_shared<value_tm>());
     }
   }
   return p_dst;
@@ -20,7 +20,8 @@ fb_t *fb_new(fb_t *p_source) {
 
 void fb_delete(fb_t *p_fb) {
   for (auto &&pin : p_fb->d) {
-    pin.v.reset();
+    pin.v->reset();
+    delete pin.v;
   }
   delete p_fb;
 }
@@ -54,8 +55,6 @@ pin_t *fb_getpin(fb_t *p_fb, int pintype, unsigned int n) {
 
 int fb_setpin(fb_t *p_fb, int pintype, unsigned int n, value_tm v) {
   int np;
-  pin_t *p_pin;
-
   if (pintype == PININPUT) {
     if (n >= p_fb->h.ni) {
       return -1;
@@ -75,16 +74,13 @@ int fb_setpin(fb_t *p_fb, int pintype, unsigned int n, value_tm v) {
   } else {
     return -1;
   }
-
-  p_pin = &p_fb->d[np];
-  vam_t tmp = std::make_shared<value_tm>(v);
-  p_pin->v = tmp;
+  // 对共享指针所指的内容进行值拷贝，计数器不动
+  setvar(*(p_fb->d[np].v),p_fb->d[np].t,v);
   return 0;
 }
 
 int fb_setpin(fb_t *p_fb, int pintype, unsigned int n, vam_t v) {
   int np;
-  pin_t *p_pin;
 
   if (pintype == PININPUT) {
     if (n >= p_fb->h.ni) {
@@ -105,9 +101,12 @@ int fb_setpin(fb_t *p_fb, int pintype, unsigned int n, vam_t v) {
   } else {
     return -1;
   }
-
-  p_pin = &p_fb->d[np];
-  p_pin->v = v;
+  if(p_fb->d[np].v){
+    p_fb->d[np].v->reset();
+  }
+  //此时计数器会+1，指向新值
+  *(p_fb->d[np].v) = v;
+  //等函数执行完 局部变量v的计数器-1,管脚的v计数器依然为1
   return 0;
 }
 
@@ -117,21 +116,21 @@ void fb_dump(fb_t *p_fb) {
   std::cout << "input: " << std::endl;
   for (i = 0; i < p_fb->h.ni; i++) {
     std::cout << "fb: " << p_fb->d[i].pinname << "- " << type2str(p_fb->d[i].t)
-              << ": " << p_fb->d[i].v->ShortDebugString() << std::endl;
+              << ": " << (*(p_fb->d[i].v))->ShortDebugString() << std::endl;
   }
 
   std::cout << "output: " << std::endl;
 
   for (i = 0 + p_fb->h.ni; i < (p_fb->h.no + p_fb->h.ni); i++) {
     std::cout << "fb: " << p_fb->d[i].pinname << "- " << type2str(p_fb->d[i].t)
-              << ": " << p_fb->d[i].v->ShortDebugString() << std::endl;
+              << ": " << (*(p_fb->d[i].v))->ShortDebugString() << std::endl;
   }
   std::cout << "property: " << std::endl;
 
   for (i = 0 + p_fb->h.ni + p_fb->h.no;
        i < (p_fb->h.np + p_fb->h.ni + p_fb->h.no); i++) {
     std::cout << "fb: " << p_fb->d[i].pinname << "- " << type2str(p_fb->d[i].t)
-              << ": " << p_fb->d[i].v->ShortDebugString() << std::endl;
+              << ": " << (*(p_fb->d[i].v))->ShortDebugString() << std::endl;
   }
 }
 
@@ -142,7 +141,7 @@ std::string fb_pins_to_string(fb_t *p_fb) {
   for (i = 0; i < p_fb->h.ni; i++) {
     fb_string += std::string(p_fb->d[i].pinname) + "/" +
                  type2str(p_fb->d[i].t) + "/" +
-                 p_fb->d[i].v->ShortDebugString() + ",";
+                 (*(p_fb->d[i].v))->ShortDebugString() + ",";
   }
   fb_string += ",;";
 
@@ -150,7 +149,7 @@ std::string fb_pins_to_string(fb_t *p_fb) {
   for (i = 0 + p_fb->h.ni; i < (p_fb->h.no + p_fb->h.ni); i++) {
     fb_string += std::string(p_fb->d[i].pinname) + "/" +
                  type2str(p_fb->d[i].t) + "/" +
-                 p_fb->d[i].v->ShortDebugString() + ",";
+                (*(p_fb->d[i].v))->ShortDebugString() + ",";
   }
   fb_string += ",;";
 
@@ -159,7 +158,7 @@ std::string fb_pins_to_string(fb_t *p_fb) {
        i < (p_fb->h.np + p_fb->h.ni + p_fb->h.no); i++) {
     fb_string += std::string(p_fb->d[i].pinname) + "/" +
                  type2str(p_fb->d[i].t) + "/" +
-                 p_fb->d[i].v->ShortDebugString() + ",";
+                 (*(p_fb->d[i].v))->ShortDebugString() + ",";
   }
   fb_string += ";";
   return fb_string;
@@ -170,7 +169,7 @@ std::string fb_vars_to_string(fb_t *p_fb) {
 
   std::string var_string;
   for (i = 0; i < (p_fb->h.np + p_fb->h.ni + p_fb->h.no); i++) {
-    var_string += p_fb->d[i].v->ShortDebugString();
+    var_string += (*(p_fb->d[i].v))->ShortDebugString();
     var_string += ",";
   }
   return var_string;

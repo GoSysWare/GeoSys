@@ -9,11 +9,40 @@
 #include <memory>
 #include <iostream>
 
+static void TestStringCopyCase1() {
+    std::string a = "Hello World";
+    std::string b = a;
+    printf("pointer of a: %p\n", a.c_str());
+    printf("pointer of b: %p\n", b.c_str());
+}
+
+// copy on write
+static void TestStringCopyCase2() {
+    std::string a = "Hello World";
+    std::string b = a;
+	std::string c (a);
+
+    printf("pointer of a: %p\n", a.c_str());
+    printf("pointer of b: %p\n", b.c_str());
+    printf("pointer of c: %p\n", c.c_str());
+
+    b[0] = 'h';
+    // b += "!";
+    printf("pointer of a: %p\n", a.c_str());
+    printf("pointer of b: %p\n", b.c_str());
+    std::cout << a << std::endl;
+    std::cout << b << std::endl;
+}
 
 
 int main(int argc, char *argv[])
 {
 	int size = sizeof(EVNode);
+	int llf = sizeof(std::string);
+	TestStringCopyCase1();
+	TestStringCopyCase2();
+
+
 	lib_init();
 	value_tm vtm;
 
@@ -51,13 +80,14 @@ int main(int argc, char *argv[])
 	prg_viadd(prg,1,1,1,0);
 	prg_viadd(prg,2,3,2,1);
 
-	prg_voadd(prg,1,3,2,0);
+	prg_voadd(prg,1,3,1,0);
+	prg_voadd(prg,1,4,2,0);
 
 	prg_lkadd(prg,1,1,0,2,0);
 
 	fb_t * p_fb = prg_fbfind(prg, 1);
 
-	vt->set_i(1);
+	vt->set_i(10);
 
     fb_setpin(p_fb, PININPUT, 1, vtm);
 
