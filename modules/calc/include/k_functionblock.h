@@ -22,9 +22,6 @@ using fb_function = std::function<void(void*)>;
 //FB的头定义
 typedef struct FBHead{
 	std::string fcname;
-	unsigned int ni;		/* in count */
-	unsigned int no;		/* out count */
-	unsigned int np;		/* property count */
     Int flag;			/* export fb */
 	fb_function run;
 	// fbrun run;
@@ -38,7 +35,10 @@ typedef struct Pin{
 
 typedef struct FB{
 	fbhead_t h;
-	std::vector<pin_t> d;
+	std::vector<pin_t> ins;
+	std::vector<pin_t> outs;
+	std::vector<pin_t> props;
+
 } fb_t;
 
 fb_t *fb_new(fb_t *p_source);

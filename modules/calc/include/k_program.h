@@ -32,25 +32,10 @@ typedef struct ENode{
 	int mark{0};
 } enode_t;
 
-/* VNode map a variable to a fb pin */
-// typedef struct VNode{
-// 	struct VNode *p_prev{0};
-// 	struct VNode *p_next{0};
-// 	int id{0};
-// 	int idev{0};
-// 	int idfb{0};
-//     pin_t *p_pin{0};//引脚值，参与功能块计算
-//     vam_t *p_val{0};//临时值，保存初始值或输出值
-// 	int mark{0};
-// } vnode_t;
 
 typedef struct Program{
 	enode_t en_head;
-	// vnode_t vnin_head;
-	// vnode_t vnout_head;
 	enode_t *p_en_select;
-	// vnode_t *p_vnin_select;
-	// vnode_t *p_vnout_select;
 } prog_t;
 #pragma pack(pop) 
 
@@ -60,10 +45,9 @@ int prg_fbadd(prog_t *p_prg, int id, const std::string & libname, const std::str
 int prg_fbremove(prog_t *p_prg, int id);
 int prg_lkadd(prog_t *p_prg, int id, int fbsrc, int pinsrc, int fbtgt, int pintgt);
 int prg_lkremove(prog_t *p_prg, int id);
-int prg_viadd(prog_t *p_prg, int id, int idev, int idfb, int pin);
-int prg_voadd(prog_t *p_prg, int id, int idev, int idfb, int pin);
-// int prg_viremove(prog_t *p_prg, int id);
-// int prg_voremove(prog_t *p_prg, int id);
+int prg_viadd(prog_t *p_prg, int idev, int idfb, int pin);
+int prg_voadd(prog_t *p_prg, int idev, int idfb, int pin);
+
 void prg_exec(prog_t *p_prg);
 void prg_dump(prog_t *p_prg);
 int prg_checkloop(prog_t *p_prg, int idSrc, int idTgt);

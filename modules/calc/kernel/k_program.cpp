@@ -12,22 +12,12 @@ static enode_t *en_new()
 	return new enode_t ;
 }
 
-// static vnode_t *vn_new()
-// {
-// 	return  new vnode_t;
-// }
-
 static void en_delete(enode_t *p_en)
 {
 
 	delete p_en;
 
 }
-
-// static void vn_delete(vnode_t *p_vn)
-// {
-// 	delete p_vn;
-// }
 
 static void en_addbefore(enode_t *p_en, enode_t *p_ref)
 {
@@ -63,40 +53,10 @@ static void en_moveafter(enode_t *p_en, enode_t *p_ref)
 	en_addafter(p_en, p_ref);
 }
 
-// static void vn_addbefore(vnode_t *p_vn, vnode_t *p_ref)
-// {
-// 	p_vn->p_prev = p_ref->p_prev;
-// 	p_vn->p_next = p_ref;
-// 	p_ref->p_prev->p_next = p_vn;
-// 	p_ref->p_prev = p_vn;
-// }
-
-// static void vn_addafter(enode_t *p_vn, enode_t *p_ref)
-// {
-// 	p_vn->p_prev = p_ref;
-// 	p_vn->p_next = p_ref->p_next;
-// 	p_ref->p_next->p_prev = p_vn;
-// 	p_ref->p_next = p_vn;
-// }
-
-// static void vn_remove(vnode_t *p_vn)
-// {
-// 	p_vn->p_prev->p_next = p_vn->p_next;
-// 	p_vn->p_next->p_prev = p_vn->p_prev;
-// }
-
 void prg_exec(prog_t *p_prg)
 {
-	// vnode_t *p_vn;
 	enode_t *p_en;
 	
-	/* ev to fb */
-	// p_vn = p_prg->vnin_head.p_next;
-	// while(p_vn != &p_prg->vnin_head){
-	// 	p_vn->p_pin->v = *(p_vn->p_val);
-	// 	p_vn = p_vn->p_next;
-	// }
-
 	/* fb to fb */
 	p_en = p_prg->en_head.p_next;
 	while(p_en != &p_prg->en_head){
@@ -108,12 +68,6 @@ void prg_exec(prog_t *p_prg)
 		p_en = p_en->p_next;
 	}
 
-	/* fb to ev */
-// 	p_vn = p_prg->vnout_head.p_next;
-// 	while(p_vn != &p_prg->vnout_head){
-// 		*(p_vn->p_val) = p_vn->p_pin->v;	
-// 		p_vn = p_vn->p_next;
-// 	}
  }
 
 prog_t *prg_new()
@@ -124,13 +78,8 @@ prog_t *prg_new()
 	if(p_new != 0){
 		p_new->en_head.p_prev = &p_new->en_head;
 		p_new->en_head.p_next = &p_new->en_head;
-		// p_new->vnin_head.p_prev = &p_new->vnin_head;
-		// p_new->vnin_head.p_next = &p_new->vnin_head;
-		// p_new->vnout_head.p_prev = &p_new->vnout_head;
-		// p_new->vnout_head.p_next = &p_new->vnout_head;
 		p_new->p_en_select = &p_new->en_head;
-		// p_new->p_vnin_select = &p_new->vnin_head;
-		// p_new->p_vnout_select = &p_new->vnout_head;
+
 	}
 
 	return p_new;
@@ -139,7 +88,6 @@ prog_t *prg_new()
 void prg_delete(prog_t *p_prg)
 {
 	enode_t *p_en, *p_erm;
-	// vnode_t *p_vn, *p_vrm;
 
 	/* clear enode list */
 	p_en = p_prg->en_head.p_next;
@@ -152,24 +100,6 @@ void prg_delete(prog_t *p_prg)
 		en_remove(p_erm);
 		en_delete(p_erm);
 	}	
-
-	/* clear vnode list*/
-	// p_vn = p_prg->vnin_head.p_next;
-	// while(p_vn != &p_prg->vnin_head){
-	// 	p_vrm = p_vn;
-	// 	p_vn = p_vn->p_next;
-    //     vn_remove(p_vrm);
-	// 	vn_delete(p_vrm);
-	// }
-
-	// p_vn = p_prg->vnout_head.p_next;
-	// while(p_vn != &p_prg->vnout_head){
-	// 	p_vrm = p_vn;
-	// 	p_vn = p_vn->p_next;
-	// 	vn_remove(p_vrm);
-	// 	vn_delete(p_vrm);
-	// }
-
 	delete p_prg;
 }
 
@@ -190,25 +120,12 @@ static void prg_setrank(prog_t *p_prg)
 static void prg_clearmark(prog_t *p_prg)
 {
 	enode_t *p_en;
-	// vnode_t *p_vn;
 
 	p_en = p_prg->en_head.p_next;
 	while(p_en != &p_prg->en_head){
 		p_en->mark = 0;
 		p_en = p_en->p_next;
 	}
-
-	// p_vn=p_prg->vnin_head.p_next;
-	// while(p_vn!=&p_prg->vnin_head){
-	// 	p_vn->mark=0;
-	// 	p_vn=p_vn->p_next;
-	// }
-
-	// p_vn=p_prg->vnout_head.p_next;
-	// while(p_vn!=&p_prg->vnout_head){
-	// 	p_vn->mark=0;
-	// 	p_vn=p_vn->p_next;
-	// }
 }
 
 static void prg_markfbchild(prog_t *p_prg, enode_t *p_en)
@@ -228,7 +145,6 @@ static void prg_markfbchild(prog_t *p_prg, enode_t *p_en)
 static void prg_markfblink(prog_t *p_prg, enode_t *p_enfb)
 {
 	enode_t *p_en;
-	// vnode_t *p_vn;
 
 	p_enfb->mark = 1;
 
@@ -241,22 +157,6 @@ static void prg_markfblink(prog_t *p_prg, enode_t *p_enfb)
 		}
 		p_en=p_en->p_next;
 	}
-
-	// p_vn=p_prg->vnin_head.p_next;
-	// while(p_vn!=&p_prg->vnin_head){
-	// 	if(p_vn->idfb==p_enfb->id){
-	// 		p_vn->mark=1;
-	// 	}
-	// 	p_vn=p_vn->p_next;
-	// }
-
-	// p_vn=p_prg->vnout_head.p_next;
-	// while(p_vn!=&p_prg->vnout_head){
-	// 	if(p_vn->idfb==p_enfb->id){
-	// 		p_vn->mark=1;
-	// 	}
-	// 	p_vn=p_vn->p_next;
-	// }
 }
 
 int prg_fbadd(prog_t *p_prg, int id, const std::string & libname, const std::string & fcname, const std::string & fbname)
@@ -330,7 +230,6 @@ fb_t *prg_fbfind(prog_t *p_prg, int id)
 int prg_fbremove(prog_t *p_prg, int id)
 {
 	enode_t *p_en, *p_rm;
-	// vnode_t *p_vn, *p_vrm;
 
 	prg_enselect(p_prg, id);
 	p_en = p_prg->p_en_select;
@@ -355,33 +254,10 @@ int prg_fbremove(prog_t *p_prg, int id)
 			en_delete(p_rm);
 		}
 	}
-
-	// p_prg->p_vnin_select=&p_prg->vnin_head;
-	// p_vn=p_prg->vnin_head.p_next;
-	// while(p_vn!=&p_prg->vnin_head){
-	// 	p_vrm=p_vn;
-	// 	p_vn=p_vn->p_next;
-	// 	if(p_vrm->mark){
-	// 		vn_remove(p_vrm);
-	// 		vn_delete(p_vrm);
-	// 	}
-	// }
-
-	// p_prg->p_vnout_select=&p_prg->vnout_head;
-	// p_vn=p_prg->vnout_head.p_next;
-	// while(p_vn!=&p_prg->vnout_head){
-	// 	p_vrm=p_vn;
-	// 	p_vn=p_vn->p_next;
-	// 	if(p_vrm->mark){
-	// 		vn_remove(p_vrm);
-	// 		vn_delete(p_vrm);
-	// 	}
-	// }
-
 	return 0;
 }
 
-int prg_viadd(prog_t *p_prg, int id, int idev, int idfb, int pin)
+int prg_viadd(prog_t *p_prg,int idev, int idfb, int pin)
 {
 	fb_t *p_fb;
 	pin_t * p_pin;
@@ -404,7 +280,7 @@ int prg_viadd(prog_t *p_prg, int id, int idev, int idfb, int pin)
 	return 0;
 }
 
-int prg_voadd(prog_t *p_prg, int id, int idev, int idfb, int pin)
+int prg_voadd(prog_t *p_prg, int idev, int idfb, int pin)
 {
 	fb_t *p_fb;
 	pin_t * p_pin;
@@ -429,95 +305,6 @@ int prg_voadd(prog_t *p_prg, int id, int idev, int idfb, int pin)
 	
 	return 0;
 }
-
-// static int prg_vninselect(prog_t *p_prg, int id)
-// {
-// 	vnode_t *p_vn;
-
-// 	if(id == 0){
-// 		p_prg->p_vnin_select = &p_prg->vnin_head;
-// 		return -1;
-// 	}
-
-// 	if(p_prg->p_vnin_select->id == id){
-// 		return 0;
-// 	}
-	
-// 	p_vn = p_prg->vnin_head.p_next;
-// 	while(p_vn != &p_prg->vnin_head){
-// 		if(p_vn->id == id){
-// 			p_prg->p_vnin_select = p_vn;
-// 			return 0;
-// 		}
-// 		p_vn = p_vn->p_next;
-// 	}
-
-// 	return -1;
-// }
-
-// static int prg_vnoutselect(prog_t *p_prg, int id)
-// {
-// 	vnode_t *p_vn;
-
-// 	if(id == 0){
-// 		p_prg->p_vnout_select = &p_prg->vnout_head;
-// 		return -1;
-// 	}
-
-// 	if(p_prg->p_vnout_select->id == id){
-// 		return 0;
-// 	}
-	
-// 	p_vn = p_prg->vnout_head.p_next;
-// 	while(p_vn != &p_prg->vnout_head){
-// 		if(p_vn->id == id){
-// 			p_prg->p_vnout_select = p_vn;
-// 			return 0;
-// 		}
-// 		p_vn = p_vn->p_next;
-// 	}
-
-// 	return -1;
-// }
-
-// int prg_viremove(prog_t *p_prg, int id)
-// {
-// 	vnode_t *p_rm;
-
-// 	prg_vninselect(p_prg, id);
-
-// 	if(p_prg->p_vnin_select == &p_prg->vnin_head){
-// 		return -1;
-// 	}
-	
-// 	p_rm = p_prg->p_vnin_select;
-// 	p_prg->p_vnin_select = &p_prg->vnin_head;
-	
-// 	vn_remove(p_rm);
-// 	vn_delete(p_rm);
-//   //  tag_in_rm(id);//qss for calc
-// 	return 0;
-// }
-
-// int prg_voremove(prog_t *p_prg, int id)
-// {
-// 	vnode_t *p_rm;
-
-// 	prg_vnoutselect(p_prg, id);
-
-// 	if(p_prg->p_vnout_select == &p_prg->vnout_head){
-// 		return -1;
-// 	}
-	
-// 	p_rm = p_prg->p_vnout_select;
-// 	p_prg->p_vnout_select = &p_prg->vnout_head;
-	
-// 	vn_remove(p_rm);
-// 	vn_delete(p_rm);
-//   //  tag_out_rm(id);//qss for calc
-// 	return 0;
-// }
-
 int prg_lkadd(prog_t *p_prg, int id, int fbsrc, int pinsrc, int fbtgt, int pintgt)
 {
 	enode_t en, *p_en, *p_mv;
@@ -608,17 +395,7 @@ void prg_dump(prog_t *p_prg)
 	// vnode_t *p_vn;
 	enode_t *p_en;
 	std::cout << "program:" << std::endl;
-	// std::cout << "vi:" << std::endl;
-	// p_vn = p_prg->vnin_head.p_next;
-	// while(p_vn != &p_prg->vnin_head){
-	// 	std::cout << "  id: " << p_vn->id 
-	// 			<< ", ev: " << p_vn->idev
-    //           	<< ", fb: " << p_vn->idfb  
-	// 		  	<< ", pin: " << p_vn->p_pin->pinname
-	// 		  	<< std::endl;
-	// 	p_vn = p_vn->p_next;
-	// }
-	
+
 	std::cout << "en:" << std::endl;
 	p_en = p_prg->en_head.p_next;
 	while(p_en != &p_prg->en_head){
@@ -638,17 +415,6 @@ void prg_dump(prog_t *p_prg)
 		}
 		p_en = p_en->p_next;
 	}
-
-	// std::cout << "vo:" << std::endl;
-	// p_vn = p_prg->vnout_head.p_next;
-	// while(p_vn != &p_prg->vnout_head){
-	// 	std::cout << "  id: " << p_vn->id 
-	// 			<< ", ev: " << p_vn->idev
-    //           	<< ", fb: " << p_vn->idfb  
-	// 		  	<< ", pin: " << p_vn->p_pin->pinname
-	// 		  	<< std::endl;
-	// 	p_vn = p_vn->p_next;
-	// }
 }
 
 int prg_checkloop(prog_t *p_prg, int idSrc, int idTgt)

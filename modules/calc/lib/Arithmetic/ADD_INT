@@ -1,33 +1,28 @@
-static void run_ADD_INT(void *p)
-{
-	// 1 严禁直接操作管脚指针
-	// 2 严禁给管脚指针赋空值 如
-	// pb->d[2].v = nullptr;
-	// 3 严禁给输入管脚赋值
-	// 4 无需设置管脚值类型
-	// 5 注意管脚索引的排序 不要弄错
-	fb_t *pb = (fb_t *)p;
-	vam_t  out = *(pb->d[2].v);
-	vam_t  in1 = *(pb->d[0].v);
-	vam_t  in2 = *(pb->d[1].v);
-	vam_t  test = *(pb->d[3].v);
+static void run_ADD_INT(void *p) {
+  // 1 严禁直接操作管脚指针
+  // 2 严禁给管脚指针赋空值 如
+  // pb->d[2].v = nullptr;
+  // 3 严禁给输入管脚赋值
+  // 4 无需设置管脚值类型
+  // 5 注意管脚索引的排序 不要弄错
+  fb_t *pb = (fb_t *)p;
+  vam_t out = *(pb->outs[1].v);
+  vam_t in1 = *(pb->ins[1].v);
+  vam_t in2 = *(pb->ins[2].v);
 
-	out->mutable_v()->set_i(in1->v().i() + in2->v().i());
-	out->mutable_v()->set_t(T_INT32);
-	test->mutable_v()->set_i(200);
-
-
+  out->mutable_v()->set_i(in1->v().i() + in2->v().i());
+  out->mutable_v()->set_t(T_INT32);
 }
 
 static fb_t fb_ADD_INT = {
-	"ADD_INT",2,2,0,0,run_ADD_INT,
-	{
-		{"IN1",T_INT32,nullptr},
-		{"IN2",T_INT32,nullptr},
-		{"OUT",T_INT32,nullptr},
-		{"TEST",T_INT32,nullptr}
-
+	{"ADD_INT", 0, run_ADD_INT},
+    {
+		{"EN", T_BOOL, nullptr},
+    	{"IN1", T_INT32, nullptr},
+     	{"IN2", T_INT32, nullptr}
+	},
+    {
+		{"STATUS", T_INT32, nullptr},
+	 	{"OUT", T_INT32, nullptr}
 	}
 };
-
-

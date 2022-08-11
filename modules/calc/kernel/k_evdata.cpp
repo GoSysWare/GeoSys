@@ -98,10 +98,10 @@ void setvar(vam_t vam,value_tm val)
 	}
 }
 
-bool setvar(vam_t vam,v_type t, value_tm val)
+int setvar(vam_t vam,v_type t, value_tm val)
 {
 	if(t != val.v().t()){
-		return false;
+		return -1;
 	}
 	value_t * vt = vam->mutable_v();
 	vt->set_t(val.v().t());
@@ -154,7 +154,7 @@ bool setvar(vam_t vam,v_type t, value_tm val)
 	default:
 		break;
 	}
-	return true;
+	return 0;
 }
 
 static evnode_t *v_new()

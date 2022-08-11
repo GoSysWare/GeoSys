@@ -77,19 +77,19 @@ int main(int argc, char *argv[])
 
 	prg_dump(prg);
 
-	prg_viadd(prg,1,1,1,0);
-	prg_viadd(prg,2,3,2,1);
+	prg_viadd(prg,1,1,1);
+	prg_viadd(prg,3,2,2);
 
-	prg_voadd(prg,1,3,1,0);
-	prg_voadd(prg,1,4,2,0);
+	prg_voadd(prg,3,1,1);
+	prg_voadd(prg,4,2,1);
 
-	prg_lkadd(prg,1,1,0,2,0);
+	prg_lkadd(prg,1,1,1,2,1);
 
 	fb_t * p_fb = prg_fbfind(prg, 1);
 
 	vt->set_i(10);
 
-    fb_setpin(p_fb, PININPUT, 1, vtm);
+    fb_setpin(p_fb, PININPUT, 2, vtm);
 
 
 	prg_dump(prg);

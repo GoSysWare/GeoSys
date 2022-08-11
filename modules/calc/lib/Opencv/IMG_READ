@@ -1,8 +1,8 @@
 static void run_opencv_Read(void *p)
 {	
 	fb_t *pb = (fb_t *)p;
-	vam_t  in = *(pb->d[0].v);
-	vam_t  out = *(pb->d[1].v);
+	vam_t  in = *(pb->ins[1].v);
+	vam_t  out = *(pb->outs[1].v);
 	cv::Mat m = cv::imread( in->v().str()); 
 	opencv::image serializableMat;
 	
@@ -20,9 +20,13 @@ static void run_opencv_Read(void *p)
 }
 
 static fb_t fb_OPENCV_READ = {
-	"OPENCV_READ", 1, 1, 0, 0, run_opencv_Read, 
-	{
-		{"IN", T_STRING, 0},
-		{"OUT", T_IMAGE, 0},
+	{"OPENCV_READ", 0, run_opencv_Read},
+    {
+		{"EN", T_BOOL, nullptr},
+    	{"IN", T_STRING, nullptr},
+	},
+    {
+		{"STATUS", T_INT32, nullptr},
+	 	{"OUT", T_IMAGE, nullptr}
 	}
 };
