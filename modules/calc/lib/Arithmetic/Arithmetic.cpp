@@ -45,7 +45,7 @@ static void *fb_table[]={
 	// &fb_MOVE_LREAL,
 	};
 
-static int cursor;
+static size_t cursor;
 
 void *arithmetic_first()
 {

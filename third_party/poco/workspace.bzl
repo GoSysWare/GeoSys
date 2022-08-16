@@ -7,8 +7,13 @@ def clean_dep(dep):
 
 def repo():
     # poco
+    # native.new_local_repository(
+    #     name = "poco",
+    #     build_file = clean_dep("//third_party/poco:poco.BUILD"),
+    #     path = "/opt/homebrew/opt/poco/include",
+    # )
     native.new_local_repository(
         name = "poco",
         build_file = clean_dep("//third_party/poco:poco.BUILD"),
-        path = "/opt/homebrew/opt/poco/include",
+        path = "/usr/include",
     )

@@ -8,7 +8,7 @@ static void *fb_table[]={
 	&fb_SysState,
 	};
 
-static int cursor;
+static size_t cursor;
 
 void *system_first()
 {

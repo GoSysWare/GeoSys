@@ -17,7 +17,7 @@ static void *fb_table[]={
 	&fb_WG_REAL,
 	};
 
-static int cursor;
+static size_t cursor;
 
 void *comm_first()
 {

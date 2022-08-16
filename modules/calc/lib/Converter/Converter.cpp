@@ -57,7 +57,7 @@ static void *fb_table[]={
 	&fb_SCALING,
 	};
 
-static int cursor;
+static size_t cursor;
 
 void *converter_first()
 {

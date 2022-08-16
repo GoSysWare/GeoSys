@@ -13,7 +13,7 @@ cc_library(
         # "//modules/calc/lib/Comparison:Comparison",        
         # "//modules/calc/lib/Control:Control",
         # "//modules/calc/lib/Converter:Converter",
-        # "//modules/calc/lib/Counter:Counter",
+        "//modules/calc/lib/Counter:Counter",
         # "//modules/calc/lib/Driver:Driver",
         # "//modules/calc/lib/IO:IO",  
         # "//modules/calc/lib/Logic:Logic",

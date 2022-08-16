@@ -1,8 +1,8 @@
 static void run_opencv_Write(void *p)
 {	
 	fb_t *pb = (fb_t *)p;
-	vam_t  in1 = *(pb->ins[1].v);
-	vam_t  in2 = *(pb->ins[2].v);
+	vam_t  in1 = pb->ins[1].v;
+	vam_t  in2 = pb->ins[2].v;
 	cv::Mat m;
 	opencv::image serializableMat;
 	serializableMat.ParseFromString(in1->v().img());

@@ -3,6 +3,9 @@
 #include "modules/calc/include/k_program.h"
 #include "modules/calc/include/k_evdata.h"
 
+#include "cyber/timer/timer.h"
+#include "cyber/cyber.h"
+
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -37,6 +40,8 @@ static void TestStringCopyCase2() {
 
 int main(int argc, char *argv[])
 {
+ 	 apollo::cyber::Init(argv[0]);
+
 	int size = sizeof(EVNode);
 	int llf = sizeof(std::string);
 	TestStringCopyCase1();
@@ -62,18 +67,24 @@ int main(int argc, char *argv[])
 	ev_add(3,vtm.SerializeAsString(),"T3");
 	vt->set_i(4);
 	ev_add(4,vtm.SerializeAsString(),"T4");
-
+	vt->set_i(5);
+	ev_add(5,vtm.SerializeAsString(),"T5");
 	ev_dump();
 
 	std::string lib_name = "Arithmetic";
 	std::string fc_name = "ADD_INT";
-	std::string fc_name_1 = "add_1";
-	std::string fc_name_2 = "add_2";
+	std::string fb_name_1 = "add_1";
+	std::string fb_name_2 = "add_2";
 
 	prog_t *prg = prg_new();
 
-	prg_fbadd(prg,1,lib_name,fc_name,fc_name_1);
-	prg_fbadd(prg,2,lib_name,fc_name,fc_name_2);
+	prg_fbadd(prg,1,lib_name,fc_name,fb_name_1);
+	prg_fbadd(prg,2,lib_name,fc_name,fb_name_2);
+	 lib_name = "Counter";
+	 fc_name = "CTUD_INT";
+	 fb_name_1 = "ctud1";
+
+	prg_fbadd(prg,3,lib_name,fc_name,fb_name_1);
 
 	prg_dump(prg);
 
@@ -82,25 +93,42 @@ int main(int argc, char *argv[])
 
 	prg_voadd(prg,3,1,1);
 	prg_voadd(prg,4,2,1);
+	
+	prg_voadd(prg,5,3,3);
 
 	prg_lkadd(prg,1,1,1,2,1);
 
+	// prg_lkadd(prg,2,2,1,3,5);
+
+	//设定第1个add块的2号输入管脚
 	fb_t * p_fb = prg_fbfind(prg, 1);
-
 	vt->set_i(10);
-
     fb_setpin(p_fb, PININPUT, 2, vtm);
 
+	//设定第三个块ctud的5号输入管脚
+ 	p_fb = prg_fbfind(prg, 3);
+	vt->set_i(100);
+    fb_setpin(p_fb, PININPUT, 5, vtm);	
+
+	//设定第三个块ctud的1号输入管脚
+ 	p_fb = prg_fbfind(prg, 3);
+	vt->set_b(true);
+    fb_setpin(p_fb, PININPUT, 1, vtm);	
+
 
 	prg_dump(prg);
 
-	prg_exec(prg);
-	pin_t * pin = fb_getpin(p_fb, PINOUTPUT, 1);
+	uint64_t interval_ = 10;
+  	std::unique_ptr<apollo::cyber::Timer> timer_;
+	auto func = [prg]() { 	
+		prg_exec(prg);
+		ev_dump();
+		};
+	timer_.reset(new apollo::cyber::Timer(interval_, func, false));
+	timer_->Start();
 
-	ev_dump();
-	prg_exec(prg);
-	ev_dump();
-	prg_dump(prg);
+
+  apollo::cyber::WaitForShutdown();
 
 
 	return 0;

@@ -1,8 +1,8 @@
 static void run_opencv_Read(void *p)
 {	
 	fb_t *pb = (fb_t *)p;
-	vam_t  in = *(pb->ins[1].v);
-	vam_t  out = *(pb->outs[1].v);
+	vam_t  in = pb->ins[1].v;
+	vam_t  out = pb->outs[1].v;
 	cv::Mat m = cv::imread( in->v().str()); 
 	opencv::image serializableMat;
 	

@@ -19,7 +19,7 @@ static void *fb_table[]={
 	&fb_S_E_VAL,
 	};
 
-static int cursor;
+static size_t cursor;
 
 void *driver_first()
 {

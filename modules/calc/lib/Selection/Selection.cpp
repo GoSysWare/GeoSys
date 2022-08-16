@@ -12,7 +12,7 @@ static void *fb_table[]={
 	&fb_SIX_SEL_N,
 	};
 
-static int cursor;
+static size_t cursor;
 
 void *selection_first()
 {

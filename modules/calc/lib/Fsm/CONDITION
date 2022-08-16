@@ -1,0 +1,13 @@
+static void run_CONDITON(void *p)
+{	
+
+}
+
+static fb_t fb_CONDITION = {
+	"SR", 2, 1, 0, 0, run_CONDITON, 
+	{	
+		"S", T_BOOL, 0,
+		"R", T_BOOL, 0,
+		"Q", T_BOOL, 0
+	}
+};

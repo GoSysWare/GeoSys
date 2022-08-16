@@ -19,7 +19,7 @@
 #include "modules/calc/include/lib/Timer.h"
 
 #define NLIBCOUNT 32
-static int cursor;
+static size_t cursor;
 static lib_t lib_table[NLIBCOUNT]; 
 
 static void lib_set_table(unsigned int id,  std::string  name, fbget first, fbget next)
@@ -40,7 +40,7 @@ void lib_init()
 	// lib_set_table(3, "Comparison", comparison_first, comparison_next);
 	// lib_set_table(4, "Converter", converter_first, converter_next);
 	// lib_set_table(5, "Control", control_first, control_next);
-	// lib_set_table(6, "Counter", counter_first, counter_next);
+	lib_set_table(6, "Counter", counter_first, counter_next);
 	// lib_set_table(7, "Driver", driver_first, driver_next);
 	// lib_set_table(8, "IO", io_first, io_next);
 	// lib_set_table(9, "Logic", logic_first, logic_next);

@@ -16,7 +16,7 @@ static void *fb_table[]={
 	&fb_TP,
 	};
 
-static int cursor;
+static size_t cursor;
 
 void *timer_first()
 {

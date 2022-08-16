@@ -44,9 +44,13 @@ cc_binary(
         "//modules/calc/kernel:k_functionblock",
         "//modules/calc/kernel:k_program",
         "//modules/calc/lib/Arithmetic:Arithmetic",
+        "//modules/calc/lib/Counter:Counter",
+
         "//modules/calc/lib/Opencv:Opencv",
         "//modules/calc/include:calc_include",
         "//modules/calc/include/lib:lib_include",
+        "//cyber",
+
 
     ],
 )
@@ -68,6 +72,7 @@ cc_binary(
         "//modules/calc/kernel:k_functionblock",
         "//modules/calc/kernel:k_program",
         "//modules/calc/lib/Arithmetic:Arithmetic",
+        "//modules/calc/lib/Counter:Counter",
         "//modules/calc/lib/Opencv:Opencv",
         "//modules/calc/include:calc_include",
         "//modules/calc/include/lib:lib_include",
@@ -75,6 +80,21 @@ cc_binary(
     ],
 )
 
+cc_binary(
+    name = "test_DFS",
+    srcs = [
+        "test_DFS.cpp",
+
+    ],
+    linkopts = [
+        "-lpthread",
+
+    ],
+    linkstatic = False,
+    deps = [
+
+    ],
+)
 
 
 cpplint()

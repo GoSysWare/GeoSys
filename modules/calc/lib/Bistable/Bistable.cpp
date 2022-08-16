@@ -9,7 +9,7 @@ static void *fb_table[]={
 	&fb_SR,
 	};
 
-static int cursor;
+static size_t cursor;
 
 void *bistable_first()
 {

@@ -44,7 +44,7 @@ static void *fb_table[]={
 	&fb_AVE4W,
 	};
 
-static int cursor;
+static size_t cursor;
 
 void *maths_first()
 {

@@ -1,65 +1,71 @@
-static void run_CTUD_INT(void *p)
-{	
-	fb_t *pb = (fb_t *)p;
+static void run_CTUD_INT(void *p) {
+  fb_t *pb = (fb_t *)p;
+  vam_t in1 = pb->ins[1].v;
+  vam_t in2 = pb->ins[2].v;
+  vam_t in3 = pb->ins[3].v;
+  vam_t in4 = pb->ins[4].v;
+  vam_t in5 = pb->ins[5].v;
 
-	if(pb->d[2].v.v.b){
-		pb->d[5].v.v.b = 0;
-		pb->d[6].v.v.b = 0;
-		pb->d[7].v.v.i = 0;
+  vam_t out1 = pb->outs[1].v;
+  vam_t out2 = pb->outs[2].v;
+  vam_t out3 = pb->outs[3].v;
 
-		pb->d[8].v.v.b = 0;	
-		pb->d[9].v.v.b = 0;
-		return;	
-	}
-	
-	if(pb->d[3].v.v.b){
-		pb->d[7].v.v.i = pb->d[4].v.v.i;
-		pb->d[5].v.v.b = 0;
-		pb->d[6].v.v.b = 0;
-			
-		pb->d[8].v.v.b = 0;	
-		pb->d[9].v.v.b = 0;	
-	}
+  vam_t prop1 = pb->props[1].v;
+  vam_t prop2 = pb->props[2].v;
 
-	if(!pb->d[3].v.v.b){
-		if(!pb->d[8].v.v.b && pb->d[0].v.v.b){
-			pb->d[7].v.v.i = pb->d[7].v.v.i + 1;
-		}
 
-		if(!pb->d[9].v.v.b && pb->d[1].v.v.b){
-			pb->d[7].v.v.i = pb->d[7].v.v.i - 1;
-		}
-			
-		pb->d[8].v.v.b = pb->d[0].v.v.b;	
-		pb->d[9].v.v.b = pb->d[1].v.v.b;
-	
-		if(pb->d[7].v.v.i > pb->d[4].v.v.i){
-			pb->d[5].v.v.b = 1;
-			pb->d[6].v.v.b = 0;
-		}else if(pb->d[7].v.v.i < 0){
-			pb->d[5].v.v.b = 0;
-			pb->d[6].v.v.b = 1;
-		}else{
-			pb->d[5].v.v.b = 0;
-			pb->d[6].v.v.b = 0;
-		}	
-	}
+  if (in3->v().b()) {
+    out1->mutable_v()->set_b(false);
+    out2->mutable_v()->set_b(false);
+    out3->mutable_v()->set_i(0);
+    prop1->mutable_v()->set_b(false);
+    prop2->mutable_v()->set_b(false);
+    return;
+  }
+  if (in4->v().b()) {
+    out1->mutable_v()->set_b(false);
+    out2->mutable_v()->set_b(false);
+    out3->mutable_v()->set_i(in5->v().i());
+    prop1->mutable_v()->set_b(false);
+    prop2->mutable_v()->set_b(false);
+  }
+
+  if (!in4->v().b()) {
+    if (!prop1->v().b() && in1->v().b()) {
+      out3->mutable_v()->set_i(out3->v().i() + 1);
+    }
+
+    if (!prop2->v().b() && in2->v().b()) {
+      out3->mutable_v()->set_i(out3->v().i() - 1);
+    }
+    prop1->mutable_v()->set_b(in1->v().b());
+    prop2->mutable_v()->set_b(in2->v().b());
+
+    if (out3->v().i() > in5->v().i()) {
+      out1->mutable_v()->set_i(true);
+      out2->mutable_v()->set_i(false);
+    } else if (out3->v().i() < 0) {
+      out1->mutable_v()->set_i(false);
+      out2->mutable_v()->set_i(true);
+    } else {
+      out1->mutable_v()->set_i(false);
+      out2->mutable_v()->set_i(false);
+    }
+  }
 }
 
 static fb_t fb_CTUD_INT = {
-	"CTUD_INT", 5, 3, 2, 0, run_CTUD_INT, 
-	{	
-		"CTU", T_BOOL, 0,
-		"CTD", T_BOOL, 0,
-		"RST", T_BOOL, 0,
-		"LD", T_BOOL, 0,
-		"PV", T_INT, 0,
-		
-		"QU", T_BOOL, 0,
-		"QD", T_BOOL, 0,
-		"OUT", T_INT, 0,
-
-		"OLD_CTU", T_BOOL, 0,
-		"OLD_CTD", T_BOOL, 0,
-	}	
-};
+    {"CTUD_INT", 0, run_CTUD_INT},
+    {{"EN", T_BOOL, nullptr},   // 0
+     {"CTU", T_BOOL, nullptr},  // 1
+     {"CTD", T_BOOL, nullptr},  // 2
+     {"RST", T_BOOL, nullptr},
+     {"LD", T_BOOL, nullptr},
+     {"PV", T_INT32, nullptr}},
+    {{"STATUS", T_INT32, nullptr},
+     {"QU", T_BOOL, nullptr},
+     {"QD", T_BOOL, nullptr},
+     {"OUT", T_INT32, nullptr}},
+    {{"TEMP", T_INT32, nullptr}, 
+      {"OLD_CTU", T_BOOL, nullptr}, 
+      {"OLD_CTD", T_BOOL, nullptr}}};

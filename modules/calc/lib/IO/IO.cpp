@@ -18,7 +18,7 @@ static void *fb_table[]={
 	&fb_DM4x1,
 	};
 
-static int cursor;
+static size_t cursor;
 
 void *io_first()
 {

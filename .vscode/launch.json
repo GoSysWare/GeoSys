@@ -38,7 +38,16 @@
             "args": [],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
-            "environment": [],
+            "environment": [
+                {
+                    "name": "CYBER_PATH",
+                    "value": "/home/shuimujie/Works/GeoSys/cyber"
+                },
+                {
+                    "name": "GLOG_log_dir",
+                    "value": "/home/shuimujie/Works/logs"
+                } 
+            ],
             "externalConsole": false,
             "MIMode": "gdb",
             "setupCommands": [
@@ -54,6 +63,25 @@
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceFolder}/bazel-bin/modules/calc/test_opencv",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "setupCommands": [
+                {
+                    "description": "为 gdb 启用整齐打印",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ]
+        },
+        {
+            "name": "Test DFS",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/bazel-bin/modules/calc/test_DFS",
             "args": [],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",

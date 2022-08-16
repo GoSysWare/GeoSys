@@ -51,7 +51,7 @@ static void *fb_table[]={
 	&fb_NE_LREAL,
 	};
 
-static int cursor;
+static size_t cursor;
 
 void *comparison_first()
 {

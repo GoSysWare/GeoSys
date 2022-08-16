@@ -275,8 +275,8 @@ int prg_viadd(prog_t *p_prg,int idev, int idfb, int pin)
 	if(p_pin == 0){
 		return -1;
 	}
-	p_pin->v = p_var;
-	
+	p_pin->v = *p_var;
+
 	return 0;
 }
 
@@ -298,10 +298,8 @@ int prg_voadd(prog_t *p_prg, int idev, int idfb, int pin)
 	if(p_pin == 0){
 		return -1;
 	}
-	if(p_pin->v !=0 ){
-		p_pin->v->reset();
-	}
-	p_pin->v = p_var;
+
+	p_pin->v = *p_var;
 	
 	return 0;
 }

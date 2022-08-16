@@ -46,7 +46,7 @@ static void *fb_table[]={
 	&fb_TOTALIZER,
 	};
 
-static int cursor;
+static size_t cursor;
 
 void *control_first()
 {

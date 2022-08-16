@@ -7,7 +7,7 @@ static void *fb_table[]={
 	&fb_CTUD_INT,
 	};
 
-static int cursor;
+static size_t cursor;
 
 void *counter_first()
 {

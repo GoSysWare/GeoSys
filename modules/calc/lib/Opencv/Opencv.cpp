@@ -11,7 +11,7 @@ static void *fb_table[]={
 	&fb_OPENCV_WRITE,
 	};
 
-static int cursor;
+static size_t cursor;
 
 void *opencv_first()
 {

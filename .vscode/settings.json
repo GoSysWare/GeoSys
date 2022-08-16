@@ -115,6 +115,9 @@
         "*.ipp": "cpp",
         "*.inc": "cpp",
         "img_write": "cpp",
-        "img_read": "cpp"
+        "img_read": "cpp",
+        "ctud_int": "cpp",
+        "condition": "cpp",
+        "trans": "cpp"
     }
 }

@@ -24,13 +24,12 @@ typedef struct FBHead{
 	std::string fcname;
     Int flag;			/* export fb */
 	fb_function run;
-	// fbrun run;
 } fbhead_t;
 
 typedef struct Pin{
 	std::string pinname;
 	v_type t;	/* type */
-	vam_t *v;	/* value */
+	vam_t v;	/* value */
 } pin_t;
 
 typedef struct FB{
@@ -38,8 +37,9 @@ typedef struct FB{
 	std::vector<pin_t> ins;
 	std::vector<pin_t> outs;
 	std::vector<pin_t> props;
-
 } fb_t;
+
+
 
 fb_t *fb_new(fb_t *p_source);
 void fb_delete(fb_t *p_fb);

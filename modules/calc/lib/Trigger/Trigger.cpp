@@ -9,7 +9,7 @@ static void *fb_table[]={
 	&fb_D_TRIG,
 	};
 
-static int cursor;
+static size_t cursor;
 
 void *trigger_first()
 {

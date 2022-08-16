@@ -1,0 +1,19 @@
+static void run_FSM_TRANS(void *p) {
+
+  fb_t *pb = (fb_t *)p;
+  vam_t condition = pb->ins[1].v;
+  vam_t from_state = pb->ins[2].v;
+  vam_t to_state = pb->outs[1].v;
+  vam_t action = pb->outs[2].v;
+
+
+
+}
+
+static fb_t fb_TRANS = {{"FSM_TRANS", 0, run_FSM_TRANS},
+                        {{"EN", T_BOOL, nullptr},
+                         {"COND", T_BOOL, nullptr},
+                         {"FROM", T_INT32, nullptr}},
+                        {{"STATUS", T_INT32, nullptr},
+                         {"TO", T_INT32, nullptr},
+                         {"ACT", T_BOOL, nullptr}}};

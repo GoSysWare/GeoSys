@@ -17,7 +17,7 @@ static void *fb_table[]={
 	&fb_XOR,
 	};
 
-static int cursor;
+static size_t cursor;
 
 void *logic_first()
 {
