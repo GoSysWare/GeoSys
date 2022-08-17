@@ -17,5 +17,6 @@ cc_library(
     deps = [
         "//modules/calc/include:calc_include",
         "//modules/calc/include/lib:lib_include",
+        "//modules/calc/proto:value_cc_proto",
     ],
 )

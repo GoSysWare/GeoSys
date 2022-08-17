@@ -12,24 +12,24 @@ static void run_FSM(void *p) {
   {
     if(cur_state->v().i() == targe_state->v().i())
     {
-      to_singal->mutbale_v()->set_b(true);
-      action_singal->mutbale_v()->set_b(true);
+      to_singal->mutable_v()->set_b(true);
+      action_singal->mutable_v()->set_b(true);
     }
     else{
-      to_singal->mutbale_v()->set_b(false);
-      action_singal->mutbale_v()->set_b(false);
+      to_singal->mutable_v()->set_b(false);
+      action_singal->mutable_v()->set_b(false);
     }
   }
   else{
     if(condition->v().b() == false)
     {
-      to_singal->mutbale_v()->set_b(false);
-      action_singal->mutbale_v()->set_b(false);     
+      to_singal->mutable_v()->set_b(false);
+      action_singal->mutable_v()->set_b(false);     
     }
     else{
-      to_singal->mutbale_v()->set_b(true);
-      action_singal->mutbale_v()->set_b(true);
-      cur_state->mutbale_v()->set_i(targe_state->v().i());
+      to_singal->mutable_v()->set_b(true);
+      action_singal->mutable_v()->set_b(true);
+      cur_state->mutable_v()->set_i(targe_state->v().i());
       
     }
   }

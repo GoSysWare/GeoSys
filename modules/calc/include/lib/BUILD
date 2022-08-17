@@ -15,6 +15,7 @@ cc_library(
         "Converter.h",
         "Counter.h",
         "Driver.h",
+        "Fsm.h",
         "IO.h",
         "Logic.h",
         "Maths.h",

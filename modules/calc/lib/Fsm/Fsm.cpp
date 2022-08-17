@@ -9,13 +9,13 @@ static void *fb_table[]={
 
 static size_t cursor;
 
-void *fsmtable_first()
+void *fsm_first()
 {
 	cursor = 0;
 	return fb_table[0];
 }
 
-void *fsmtable_next()
+void *fsm_next()
 {
 	cursor++;
 	if(cursor < sizeof(fb_table) / sizeof(void *)){

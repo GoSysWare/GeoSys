@@ -71,6 +71,10 @@ int main(int argc, char *argv[])
 	ev_add(5,vtm.SerializeAsString(),"T5");
 	ev_dump();
 
+	vt->set_i(2);
+	ev_add(6,vtm.SerializeAsString(),"FSM_STATE");
+	ev_dump();
+
 	std::string lib_name = "Arithmetic";
 	std::string fc_name = "ADD_INT";
 	std::string fb_name_1 = "add_1";
@@ -86,10 +90,39 @@ int main(int argc, char *argv[])
 
 	prg_fbadd(prg,3,lib_name,fc_name,fb_name_1);
 
-	prg_dump(prg);
+	 lib_name = "Fsm";
+	 fc_name = "FSM";
+	 fb_name_1 = "fsm1";
+
+	 prg_fbadd(prg,4,lib_name,fc_name,fb_name_1);
+
+	 lib_name = "Fsm";
+	 fc_name = "FSM";
+	 fb_name_1 = "fsm2";
+
+	 prg_fbadd(prg,5,lib_name,fc_name,fb_name_1);
+	 lib_name = "Fsm";
+	 fc_name = "FSM";
+	 fb_name_1 = "fsm3";
+
+	 prg_fbadd(prg,6,lib_name,fc_name,fb_name_1);
+	 lib_name = "Fsm";
+	 fc_name = "FSM";
+	 fb_name_1 = "fsm4";
+
+	 prg_fbadd(prg,7,lib_name,fc_name,fb_name_1);
+
+	 prg_dump(prg);
 
 	prg_viadd(prg,1,1,1);
 	prg_viadd(prg,3,2,2);
+
+	//id=4 的 fsm1的 pinid =3state绑定 “FSM_STATE”变量 id=6
+	prg_viadd(prg,6,4,3);
+	prg_viadd(prg,6,5,3);
+	prg_viadd(prg,6,6,3);
+	prg_viadd(prg,6,7,3);
+
 
 	prg_voadd(prg,3,1,1);
 	prg_voadd(prg,4,2,1);
@@ -97,6 +130,11 @@ int main(int argc, char *argv[])
 	prg_voadd(prg,5,3,3);
 
 	prg_lkadd(prg,1,1,1,2,1);
+
+	prg_lkadd(prg,2,4,1,5,2);
+	prg_lkadd(prg,3,5,1,6,2);
+	prg_lkadd(prg,4,6,1,7,2);
+
 
 	// prg_lkadd(prg,2,2,1,3,5);
 
@@ -115,6 +153,24 @@ int main(int argc, char *argv[])
 	vt->set_b(true);
     fb_setpin(p_fb, PININPUT, 1, vtm);	
 
+	//fsm1 的状态机状态为 1
+ 	p_fb = prg_fbfind(prg, 4);
+	vt->set_i(1);
+    fb_setpin(p_fb, PININPUT, 4, vtm);	
+
+	//fsm2 的状态机状态为 2
+ 	p_fb = prg_fbfind(prg, 5);
+	vt->set_i(2);
+    fb_setpin(p_fb, PININPUT, 4, vtm);	
+	//fsm3 的状态机状态为 3
+ 	p_fb = prg_fbfind(prg, 6);
+	vt->set_i(3);
+    fb_setpin(p_fb, PININPUT, 4, vtm);
+
+	//fsm4 的状态机状态为 4
+ 	p_fb = prg_fbfind(prg, 6);
+	vt->set_i(1);
+    fb_setpin(p_fb, PININPUT, 4, vtm);
 
 	prg_dump(prg);
 

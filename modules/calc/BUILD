@@ -45,6 +45,7 @@ cc_binary(
         "//modules/calc/kernel:k_program",
         "//modules/calc/lib/Arithmetic:Arithmetic",
         "//modules/calc/lib/Counter:Counter",
+        "//modules/calc/lib/Fsm:Fsm",
 
         "//modules/calc/lib/Opencv:Opencv",
         "//modules/calc/include:calc_include",
