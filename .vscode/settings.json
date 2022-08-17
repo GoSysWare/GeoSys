@@ -118,6 +118,7 @@
         "img_read": "cpp",
         "ctud_int": "cpp",
         "condition": "cpp",
-        "trans": "cpp"
+        "trans": "cpp",
+        "fsm": "cpp"
     }
 }

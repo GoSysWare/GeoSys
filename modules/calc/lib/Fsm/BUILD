@@ -9,12 +9,10 @@ cc_library(
     includes = [
     ],
     hdrs = [
-        "TRANS",
-        "STATE",
-        "CONDITION",
+        "FSM",
     ],
     srcs = [
-        "fsm.cpp",
+        "Fsm.cpp",
     ],
     deps = [
         "//modules/calc/include:calc_include",

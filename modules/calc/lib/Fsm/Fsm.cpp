@@ -1,13 +1,10 @@
 #include <stddef.h>
 #include "modules/calc/include/k_functionblock.h"
 
-#include "STATE"
-#include "TRANS"
-#include "CONDITION"
+#include "FSM"
 
 static void *fb_table[]={
-	&fb_RS,
-	&fb_SR,
+	&fb_FSM,
 	};
 
 static size_t cursor;
