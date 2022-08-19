@@ -3,8 +3,8 @@
  *
 ******************************************************/
 
-#ifndef k_program_h
-#define k_program_h
+#ifndef k_task_h
+#define k_task_h
 // #ifdef __cplusplus
 // extern "C" {
 // #endif
@@ -33,6 +33,10 @@ typedef struct ENode{
 
 
 typedef struct Program{
+	pnode_t * prj;     //属于哪个proj
+	vam_t   input;		// 异步任务/服务的请求参数
+	vam_t   result;		// 异步任务/服务的返回参数
+	int prog_type;     //程序类型  timer task service ...
 	enode_t en_head;
 	enode_t *p_en_select;
 } prog_t;

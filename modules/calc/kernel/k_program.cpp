@@ -173,7 +173,8 @@ int prg_fbadd(prog_t *p_prg, int id, const std::string & libname, const std::str
 	if(0 == p_fb){
 		return -1;
 	}
-
+	// p_fb->h.prj = p_prg->prj;
+	
 	p_en = en_new();
 	if(0 == p_en){
 		fb_delete(p_fb);

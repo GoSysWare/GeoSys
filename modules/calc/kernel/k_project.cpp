@@ -110,7 +110,7 @@ void prj_init(int mode) {
 
 void prj_uninit() { k_rwlock_destory(prjlock); }
 
-int prj_progadd(int id, char *name) {
+int prj_progadd(int id, std::string name) {
   prog_t *p_prg;
   pnode_t *p_pn;
 
@@ -127,7 +127,10 @@ int prj_progadd(int id, char *name) {
 
   p_pn->p_prg = p_prg;
   p_pn->id = id;
-  strncpy(p_pn->name, name, PRGNAMESIZE);
+  p_pn->name = name;
+
+  p_prg->prj = p_pn;
+
   pn_addbefore(p_pn, &pn_head);
 
   return 0;
@@ -157,6 +160,29 @@ static int prj_progselect(int id) {
   return -1;
 }
 
+static int prj_progselect(string prog_name) {
+  pnode_t *p_pn;
+
+  if (id == 0) {
+    p_pn_select = &pn_head;
+    return -1;
+  }
+
+  if (p_pn_select->id == id) {
+    return 0;
+  }
+
+  p_pn = pn_head.p_next;
+  while (p_pn != &pn_head) {
+    if (p_pn->name == prog_name) {
+      p_pn_select = p_pn;
+      return 0;
+    }
+    p_pn = p_pn->p_next;
+  }
+
+  return -1;
+}
 int prj_progremove(int id) {
   prj_progselect(id);
 
@@ -221,6 +247,7 @@ int prj_fbadd(int idprg, int id, char *libname, char *fcname, char *fbname) {
     return -1;
   }
 
+  
   return prg_fbadd(p_pn_select->p_prg, id, libname, fcname, fbname);
 }
 
@@ -319,6 +346,20 @@ fb_t *prj_fbfind(int idprg, int idfb) {
   }
 
   return prg_fbfind(p_pn_select->p_prg, idfb);
+}
+prog_t *prj_progfind(int idprg)
+{
+    if (prj_progselect(idprg) != 0) {
+    return 0;
+  }
+  return p_pn_select->p_prg;
+}
+prog_t *prj_progfind(std::string prog_name)
+{
+  if (prj_progselect(prog_name) != 0) {
+    return 0;
+  }
+  return p_pn_select->p_prg;
 }
 
 // int prj_img_size() {

@@ -30,7 +30,7 @@ typedef struct PNode{
     struct PNode *p_prev;
     struct PNode *p_next;
     int id;
-    char name[PRGNAMESIZE];
+    std::string  name;
     prog_t *p_prg;
 }pnode_t;
 
@@ -64,6 +64,8 @@ int prj_prgdump(int idprg);
 int prj_fbdump(int idprg, int idfb);
 
 fb_t *prj_fbfind(int idprg, int idfb);
+prog_t *prj_progfind(int idprg);
+prog_t *prj_progfind(std::string prog_name);
 
 int prj_img_size();
 int prj_to_img(prjimg_t *img);

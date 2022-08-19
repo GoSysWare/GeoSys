@@ -119,6 +119,19 @@
         "ctud_int": "cpp",
         "condition": "cpp",
         "trans": "cpp",
-        "fsm": "cpp"
+        "fsm": "cpp",
+        "task": "cpp",
+        "charconv": "cpp",
+        "csetjmp": "cpp",
+        "cuchar": "cpp",
+        "forward_list": "cpp",
+        "netfwd": "cpp",
+        "hash_map": "cpp",
+        "hash_set": "cpp",
+        "rope": "cpp",
+        "slist": "cpp",
+        "scoped_allocator": "cpp",
+        "valarray": "cpp",
+        "variant": "cpp"
     }
 }

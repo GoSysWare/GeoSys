@@ -55,7 +55,7 @@ static void run_CTUD_INT(void *p) {
 }
 
 static fb_t fb_CTUD_INT = {
-    {"CTUD_INT", 0, run_CTUD_INT},
+    {"CTUD_INT", 0,run_CTUD_INT},
     {{"EN", T_BOOL, nullptr},   // 0
      {"CTU", T_BOOL, nullptr},  // 1
      {"CTD", T_BOOL, nullptr},  // 2

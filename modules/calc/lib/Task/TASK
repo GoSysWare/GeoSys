@@ -1,0 +1,42 @@
+static void run_TASK(void *p) {
+
+  fb_t *pb = (fb_t *)p;
+  vam_t  fire = pb->ins[1].v;
+  vam_t task_name = pb->ins[2].v;
+  vam_t timeout = pb->ins[3].v;
+  vam_t param_req = pb->ins[4].v;
+  vam_t next_task = pb->outs[1].v;
+  vam_t param_rsp = pb->outs[2].v;
+
+  pnode_t * proj = pb->h.prj;
+
+  prog_t * prog = prj_progfind(task_name->v().str());
+  if(prog)
+  {
+    auto result = apollo::cyber::Async(prog_exec, prog);
+    std::future_status status = result.wait_for(std::chrono::microseconds(timeout->v().i()));//设置等待3s,根据设置等待时间与子线程执行消耗时间得到返回值。决定程序在当前行阻塞时间。
+    if (status == std::future_status::timeout)//子线程还没执行完
+    {
+
+    }
+    else if (status == std::future_status::ready)//子线程已执行完
+    {
+      //cout << result.get() << endl;
+    }
+	
+
+  }
+
+  return;
+}
+
+static fb_t fb_TASK = {{"TASK", 0, run_TASK},
+                        {{"EN", T_BOOL, nullptr},
+                         {"FIRE", T_BOOL, nullptr},
+                         {"NAME", T_STRING, nullptr},
+                         {"TIMEOUT", T_TIME, nullptr},
+                         {"REQ", T_INT32, nullptr}},
+                        {{"STATUS", T_INT32, nullptr},
+                         {"NEXT", T_BOOL, nullptr},
+                         {"RSP", T_INT32, nullptr},
+                         }};
