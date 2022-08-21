@@ -111,7 +111,7 @@ static int send_img()
 {
 	prjimg_t *pimg=(prjimg_t*)stbfrm_send.d;
 	prj_to_img(pimg);
-	stbfrm_send.h.len=sizeof(prjimg_t)+pimg->bufsize;
+	stbfrm_send.h.len=offsetof(prjimg_t,imgbuf)+pimg->bufsize;
 	stbfrm_send.h.function=FUNCSTBIMG;
 	stbfrm_send.h.magic=STBMAGIC;
 	return stbbus_cltsend(&stbfrm_send);

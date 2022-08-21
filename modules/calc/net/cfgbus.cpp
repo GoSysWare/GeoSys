@@ -29,7 +29,7 @@ static void onimg()
 	prjimg_t *pimg=(prjimg_t*)frm_answer.d;
 
 	prj_to_img(pimg);
-	frm_answer.h.len=sizeof(prjimg_t)+pimg->bufsize;
+	frm_answer.h.len= offsetof(prjimg_t,imgbuf)+pimg->bufsize;
 }
 
 static void onprjinfo()
