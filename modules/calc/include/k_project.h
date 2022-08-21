@@ -42,7 +42,7 @@ void prj_stop();
 void prj_init(int server);
 void prj_uninit();
 void prj_reset();
-int prj_progadd(int id, char *name);
+int prj_progadd(int id, std::string name);
 int prj_progremove(int id);
 void prj_exec();
 prjinfo_t *prj_info();
@@ -52,10 +52,9 @@ int prj_fbadd(int idprg, int id, char *libname, char *fcname, char *fbname);
 int prj_fbremove(int idprg, int id);
 int prj_lkadd(int idprg, int id, int fbsrc, int pinsrc, int fbtgt, int pintgt);
 int prj_lkremove(int idprg, int id);
-int prj_viadd(int idprg, int id, int idev, int idfb, int pin);
-int prj_voadd(int idprg, int id, int idev, int idfb, int pin);
-int prj_viremove(int idprg, int id);
-int prj_voremove(int idprg, int id);
+
+int prj_viadd(int idprg, int idev, int idfb, int pin);
+int prj_voadd(int idprg, int idev, int idfb, int pin);
 int prj_checkloop(int idprg, int idsrc, int idtgt);
 
 pnode_t* prj_gethead();

@@ -156,6 +156,7 @@ static void* recv_thread(void *p)
     }
 
     buffer=(char*)k_malloc(TCPBUFSIZE);
+    memset(buffer,0,TCPBUFSIZE);
     while(1){
         //ret = recv(para.s, buffer, TCPBUFSIZE, 0);
         ret = recv_packet(para.s, buffer);
@@ -205,7 +206,7 @@ static void* monitor_thread(void *p)
                 if(ports[i].sp[j].flag > OUTDATE)
                 {
                     //qss:
-                   // printf("monitor close port[%d].sp[%d].ssc = %d.\n", i, j, ports[i].sp[j].ssc);
+                   printf("monitor close port[%d].sp[%d].ssc = %d.\n", i, j, ports[i].sp[j].ssc);
                     vnet_closesocket(ports[i].sp[j].ssc);
                 }
                 else if(ports[i].sp[j].flag >= 0)
@@ -259,7 +260,7 @@ static void* listen_thread(void *p)
             //continue;
             break;
         }else{
-            //printf("accept success: ssl=%d.\n",ports[port].ssl);
+            printf("accept success: ssl=%d.\n",ports[port].ssl);
         }
 
         issc=get_srvsocket(port);
@@ -290,7 +291,7 @@ void vtcp_init()
 
     ports_monitor = 1;
 
-    k_thread_start(monitor_thread,NULL);
+    // k_thread_start(monitor_thread,NULL);
 
     printf("monitor_thread start.\n");
 

@@ -57,8 +57,8 @@ EVDataPanel::EVDataPanel()
     connect(buttonRemoveData, SIGNAL(clicked(bool)), this, SLOT(removeEVData(bool)));
     connect(tableData, SIGNAL(doubleClicked(const QModelIndex&)), this, SLOT(tableDoubleClicked(const QModelIndex &)));
 
-    evLast.initValue.mutable_v()->set_t(T_BOOL);
-    evLast.initValue.mutable_v()->set_b(0);
+    evLast.initValue.mutable_v()->set_t(T_INT32);
+    evLast.initValue.mutable_v()->set_i(0);
 }
 
 void EVDataPanel::updateState()
@@ -96,7 +96,7 @@ void EVDataPanel::addEVData(bool check)
     PLCommand cmd;
     gMainModel->makeEvNewCmd(cmd, evLast);
     if(!gMainModel->exeCommand(cmd)){
-        QMessageBox::critical(this, "Error", cmd.cmdLine);
+         QMessageBox::critical(this, "Error", cmd.cmdLine);
         gMainModel->modelEVData.endReset();
         return;
     }
@@ -126,7 +126,7 @@ void EVDataPanel::editEVData(bool check)
     PLCommand cmd;
     gMainModel->makeEvSetCmd(cmd, evLast);
     if(!gMainModel->exeCommand(cmd)){
-        QMessageBox::critical(this, "Error", cmd.cmdLine);
+         QMessageBox::critical(this, "Error", cmd.cmdLine);
         gMainModel->modelEVData.endReset();
         return;
     }
@@ -163,7 +163,7 @@ void EVDataPanel::removeEVData(bool check)
             gMainModel->makeEvRemoveCmd(cmd, gMainModel->evList[i]);
             //qDebug() << cmd.cmdLine;
             if(!gMainModel->exeCommand(cmd)){
-                QMessageBox::critical(this, "Error", cmd.cmdLine);
+                 QMessageBox::critical(this, "Error", cmd.cmdLine);
                 gMainModel->modelEVData.endReset();
                 return;
             }

@@ -77,7 +77,7 @@ void ProgPanel::addProgram(bool check)
     prg.name = dlgAddProg.prgName;
     gMainModel->makePrgNewCmd(cmd, prg);
     if(!gMainModel->exeCommand(cmd)){
-        QMessageBox::critical(this, "Error", cmd.cmdLine);
+         QMessageBox::critical(this, "Error", cmd.cmdLine);
         return;
     }
 
@@ -106,7 +106,7 @@ void ProgPanel::removeProgram(bool check)
     PLCommand cmd;
     gMainModel->makePrgRemoveCmd(cmd, *prg);
     if(!gMainModel->exeCommand(cmd)){
-        QMessageBox::critical(this, "Error", cmd.cmdLine);
+         QMessageBox::critical(this, "Error", cmd.cmdLine);
         return;
     }
     gMainModel->prgCurrent = NULL;
@@ -137,7 +137,7 @@ void ProgPanel::renameProgram(bool check)
     prg.name = dlgAddProg.prgName;
     gMainModel->makePrgRenameCmd(cmd, prg);
     if(!gMainModel->exeCommand(cmd)){
-        QMessageBox::critical(this, "Error", cmd.cmdLine);
+         QMessageBox::critical(this, "Error", cmd.cmdLine);
         return;
     }
 

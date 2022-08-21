@@ -86,7 +86,7 @@ bool PLMainModel::exeCommand(PLCommand &cmd)
     }
 
     char cline[1024];
-    strncpy(cline, cmd.cmdLine.toStdString().c_str(), sizeof(cline)-1);
+    strncpy(cline, cmd.cmdLine.toLatin1().data(), sizeof(cline)-1);
     //qDebug() << cmd.cmdLine;
     cmd_dispatch(cline);
 
@@ -110,12 +110,12 @@ void PLMainModel::makeLkNewCmd(PLCommand &cmd, PLLink &lk, bool newId)
         objID++;
         lk.id = objID;
     }
-    cmd.para.sprintf("%d,%d,%d,%d,%d,%d", lk.idPrg, lk.id, lk.idFbSrc, lk.pinSrc, lk.idFbTgt, lk.pinTgt);
+    cmd.para = QString::asprintf("%d,%d,%d,%d,%d,%d", lk.idPrg, lk.id, lk.idFbSrc, lk.pinSrc, lk.idFbTgt, lk.pinTgt);
     lk.removeDualPoints();
     cmd.res.clear();
     QString sp;
     for(int i=0; i<lk.pts.size(); i++){
-        sp.sprintf("%d/%d,", lk.pts.at(i).x, lk.pts.at(i).y);
+        sp= QString::asprintf("%d/%d,", lk.pts.at(i).x, lk.pts.at(i).y);
         cmd.res += sp;
     }
     cmd.makeCmdLine();
@@ -126,7 +126,7 @@ void PLMainModel::makeLkRemoveCmd(PLCommand &cmd, PLLink &lk)
     cmdID++;
     cmd.id = cmdID;
     cmd.fun = "rmlk";
-    cmd.para.sprintf("%d,%d", lk.idPrg, lk.id);
+    cmd.para= QString::asprintf("%d,%d", lk.idPrg, lk.id);
     cmd.makeCmdLine();
 }
 
@@ -135,12 +135,12 @@ void PLMainModel::makeLkMoveCmd(PLCommand &cmd, PLLink &lk)
     cmdID++;
     cmd.id = cmdID;
     cmd.fun = "mvlk";
-    cmd.para.sprintf("%d,%d", lk.idPrg, lk.id);
+    cmd.para = QString::asprintf("%d,%d", lk.idPrg, lk.id);
     lk.removeDualPoints();
     cmd.res = "";
     QString sp;
     for(int i=0; i<lk.pts.size(); i++){
-        sp.sprintf("%d/%d,", lk.pts.at(i).x, lk.pts.at(i).y);
+        sp= QString::asprintf("%d/%d,", lk.pts.at(i).x, lk.pts.at(i).y);
         cmd.res += sp;
     }
     cmd.makeCmdLine();
@@ -155,15 +155,15 @@ void PLMainModel::makeFbNewCmd(PLCommand &cmd, PLFunctionBlock &fb, bool newId, 
         objID++;
         fb.id = objID;
     }
-    cmd.para.sprintf("%d,%d,", fb.idPrg, fb.id);
+    cmd.para = QString::asprintf("%d,%d,", fb.idPrg, fb.id);
     cmd.para += fb.libName;
     cmd.para += ",";
     cmd.para += fb.funName;
     if(newName){
-        fb.blkName.sprintf("fb%d", fb.id);
+        fb.blkName = QString::asprintf("fb%d", fb.id);
     }
     QString r;
-    r.sprintf("%d,%d", fb.x, fb.y);
+    r = QString::asprintf("%d,%d", fb.x, fb.y);
     cmd.res = fb.blkName;
     cmd.res += ",";
     cmd.res += r;
@@ -175,7 +175,7 @@ void PLMainModel::makeFbRemoveCmd(PLCommand &cmd, PLFunctionBlock &fb)
     cmdID++;
     cmd.id = cmdID;
     cmd.fun = "rmfb";
-    cmd.para.sprintf("%d,%d", fb.idPrg, fb.id);
+    cmd.para = QString::asprintf("%d,%d", fb.idPrg, fb.id);
     cmd.makeCmdLine();
 }
 
@@ -184,9 +184,9 @@ void PLMainModel::makeFbMoveCmd(PLCommand &cmd, PLFunctionBlock &fb)
     cmdID++;
     cmd.id = cmdID;
     cmd.fun = "mvfb";
-    cmd.para.sprintf("%d,%d", fb.idPrg, fb.id);
+    cmd.para = QString::asprintf("%d,%d", fb.idPrg, fb.id);
     QString sxy;
-    sxy.sprintf(",%d,%d", fb.x, fb.y);
+    sxy = QString::asprintf(",%d,%d", fb.x, fb.y);
     cmd.res = fb.blkName;
     cmd.res += sxy;
     cmd.makeCmdLine();
@@ -201,7 +201,7 @@ void PLMainModel::makeViNewCmd(PLCommand &cmd, PLVLink &vlk,  bool newId)
         objID++;
         vlk.id = objID;
     }
-    cmd.para.sprintf("%d,%d,%d,%d,%d",vlk.idPrg, vlk.id, vlk.idEv, vlk.idFb, vlk.idPin);
+    cmd.para =  QString::asprintf("%d,%d,%d,%d,%d",vlk.idPrg, vlk.id, vlk.idEv, vlk.idFb, vlk.idPin);
     cmd.makeCmdLine();
 }
 
@@ -210,7 +210,7 @@ void PLMainModel::makeViRemoveCmd(PLCommand &cmd, PLVLink &vlk)
     cmdID++;
     cmd.id = cmdID;
     cmd.fun = "rmvi";
-    cmd.para.sprintf("%d,%d", vlk.idPrg, vlk.id);
+    cmd.para= QString::asprintf("%d,%d", vlk.idPrg, vlk.id);
     cmd.makeCmdLine();
 }
 
@@ -223,7 +223,7 @@ void PLMainModel::makeVoNewCmd(PLCommand &cmd, PLVLink &vlk, bool newId)
         objID++;
         vlk.id = objID;
     }
-    cmd.para.sprintf("%d,%d,%d,%d,%d",vlk.idPrg, vlk.id, vlk.idEv, vlk.idFb, vlk.idPin);
+    cmd.para = QString::asprintf("%d,%d,%d,%d,%d",vlk.idPrg, vlk.id, vlk.idEv, vlk.idFb, vlk.idPin);
     cmd.makeCmdLine();
 }
 
@@ -232,7 +232,7 @@ void PLMainModel::makeVoRemoveCmd(PLCommand &cmd, PLVLink &vlk)
     cmdID++;
     cmd.id = cmdID;
     cmd.fun = "rmvo";
-    cmd.para.sprintf("%d,%d", vlk.idPrg, vlk.id);
+    cmd.para= QString::asprintf("%d,%d", vlk.idPrg, vlk.id);
     cmd.makeCmdLine();
 }
 
@@ -248,10 +248,11 @@ void PLMainModel::makeEvNewCmd(PLCommand &cmd, PLEVData &ev, bool newId)
 
     std::string type;
     std::string value;
+    std::string id;
+    id = std::to_string(ev.id);
     type = type2str(ev.initValue.v().t());
     value = var2str(ev.initValue);
-
-    cmd.para.asprintf("%d,%s,%s", ev.id, type.c_str(), value.c_str());
+    cmd.para  = QString::fromLatin1((id+ "," + type + "," + value).c_str());
     cmd.res = ev.name;
     cmd.res += ",";
     cmd.res += ev.comment;
@@ -264,14 +265,16 @@ void PLMainModel::makeEvSetCmd(PLCommand &cmd, PLEVData &ev)
     cmd.id = cmdID;
     cmd.fun = "setev";
     std::string value;
-    value = var2str(ev.initValue);
-    cmd.para.asprintf("%d %s", ev.id,value.data());
+    std::string id;
+
+    value =  var2str(ev.initValue);
+    id = std::to_string(ev.id);
+    cmd.para  =  QString::fromLatin1((id + "," + value).c_str());
     cmd.res = ev.name;
     cmd.res += ",";
     cmd.res += ev.comment;
     cmd.makeCmdLine();
 
-    QString v = QString::fromStdString(value);
 }
 
 void PLMainModel::makeEvRemoveCmd(PLCommand &cmd, PLEVData &ev)
@@ -279,7 +282,7 @@ void PLMainModel::makeEvRemoveCmd(PLCommand &cmd, PLEVData &ev)
     cmdID++;
     cmd.id = cmdID;
     cmd.fun = "rmev";
-    cmd.para.asprintf("%d", ev.id);
+    cmd.para = QString::asprintf("%d", ev.id);
     cmd.makeCmdLine();
 }
 
@@ -292,7 +295,7 @@ void PLMainModel::makePrgNewCmd(PLCommand &cmd, PLProgram &prg, bool newId)
         objID++;
         prg.id = objID;
     }
-    cmd.para.asprintf("%d", prg.id);
+    cmd.para= QString::asprintf("%d", prg.id);
     cmd.res = prg.name;
     cmd.makeCmdLine();
 }
@@ -302,7 +305,7 @@ void PLMainModel::makePrgRemoveCmd(PLCommand &cmd, PLProgram &prg)
     cmdID++;
     cmd.id = cmdID;
     cmd.fun = "rmprg";
-    cmd.para.asprintf("%d", prg.id);
+    cmd.para = QString::asprintf("%d", prg.id);
     cmd.makeCmdLine();
 }
 
@@ -311,7 +314,7 @@ void PLMainModel::makePrgRenameCmd(PLCommand &cmd, PLProgram &prg)
     cmdID++;
     cmd.id = cmdID;
     cmd.fun = "setprg";
-    cmd.para.asprintf("%d", prg.id);
+    cmd.para = QString::asprintf("%d", prg.id);
     cmd.res = prg.name;
     cmd.makeCmdLine();
 }
@@ -321,8 +324,8 @@ void PLMainModel::makePinSetCmd(PLCommand &cmd, int idPrg, int idFb, int idPin, 
     cmdID++;
     cmd.id = cmdID;
     cmd.fun = "setpin";
-    cmd.para.asprintf("%d,%d,%d,", idPrg, idFb, idPin);
-    cmd.para += val;
+    cmd.para = QString::asprintf("%d,%d,%d", idPrg, idFb, idPin) + "," + val;
+//    cmd.para += val;
     cmd.makeCmdLine();
 }
 
@@ -330,11 +333,11 @@ void PLMainModel::makeLkCopyCmd(PLCommand &cmd, PLLink &lk)
 {
     cmd.id = -1;
     cmd.fun = "cplk";
-    cmd.para.asprintf("%d,%d,%d,%d,%d,%d", lk.idPrg, lk.id, lk.idFbSrc, lk.pinSrc, lk.idFbTgt, lk.pinTgt);
+    cmd.para = QString::asprintf("%d,%d,%d,%d,%d,%d", lk.idPrg, lk.id, lk.idFbSrc, lk.pinSrc, lk.idFbTgt, lk.pinTgt).toLocal8Bit();
     cmd.res.clear();
     QString sp;
     for(int i=0; i<lk.pts.size(); i++){
-        sp.asprintf("%d/%d,", lk.pts.at(i).x, lk.pts.at(i).y);
+        sp = QString::asprintf("%d/%d,", lk.pts.at(i).x, lk.pts.at(i).y);
         cmd.res += sp;
     }
     cmd.makeCmdLine();
@@ -344,11 +347,11 @@ void PLMainModel::makeFbCopyCmd(PLCommand &cmd, PLFunctionBlock &fb)
 {
     cmd.id = -1;
     cmd.fun = "cpfb";
-    cmd.para.asprintf("%d,%d,", fb.idPrg, fb.id);
+    cmd.para = QString::asprintf("%d,%d,", fb.idPrg, fb.id).toLocal8Bit();
     cmd.para += fb.libName;
     cmd.para += ",";
     cmd.para += fb.funName;
-    cmd.res.asprintf("%d,%d", fb.x, fb.y);
+    cmd.res = QString::asprintf("%d,%d", fb.x, fb.y);
     cmd.makeCmdLine();
 }
 
@@ -766,8 +769,7 @@ bool PLMainModel::extractObjsId(int &idObj, QList<PLProgram> &prgs, QList<PLEVDa
             //prg or fb may be deleted!
             setpins.removeAt(i);
         }else{
-            cmd->para.sprintf("%d,%d,%d,", idPrg, idFb, pin);
-            cmd->para += value;
+            cmd->para = QString::asprintf("%d,%d,%d,%s", idPrg, idFb, pin,value.toLatin1().data());
             cmd->makeCmdLine();
         }
     }

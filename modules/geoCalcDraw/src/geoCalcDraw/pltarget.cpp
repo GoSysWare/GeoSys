@@ -10,14 +10,14 @@ static char cmdsbuf[MAXFRMDATASIZE];
 //定时器中刷新各个引脚和变量的值，并更新画面
 void PLTarget::timerEvent(QTimerEvent *e)
 {
-    if(0 == cfgbus_send(FUNCPRJINFO, 0, NULL)){
-        prjinfo_t *pinfo = cfgbus_prjinfo();
-        idCmdTarget = pinfo->id_cmd;
-        uuidTarget = pinfo->uuid;
-        //qDebug() << uuidTarget << idCmdTarget;
-    }else{
-        online(false, NULL);
-    }
+     if(0 == cfgbus_send(FUNCPRJINFO, 0, NULL)){
+         prjinfo_t *pinfo = cfgbus_prjinfo();
+         idCmdTarget = pinfo->id_cmd;
+         uuidTarget = pinfo->uuid;
+         //qDebug() << uuidTarget << idCmdTarget;
+     }else{
+         online(false, NULL);
+     }
 
     if(bMonitor){        
         if(0 == cfgbus_send(FUNCIMG, 0, NULL)){
@@ -34,18 +34,18 @@ void PLTarget::timerEvent(QTimerEvent *e)
                     n = 0;
                     // input
                     for(k=0; k<fb->input.size(); k++){
-                        fb->input[k].value = *p_fb->d[n].v;
+                        fb->input[k].value = *(p_fb->ins[n].v);
                         n++;
                     }
                     // output
                     for(k=0; k<fb->output.size(); k++){
-                        fb->output[k].value = *p_fb->d[n].v;
+                        fb->output[k].value = *(p_fb->outs[n].v);
                         n++;
                         //qDebug() << "fb" << fb->id << "pin" << k << "val" << fb->output[k].value.v.i;
                     }
                     // property
                     for(k=0; k<fb->property.size(); k++){
-                        fb->property[k].value = *p_fb->d[n].v;
+                        fb->property[k].value = *(p_fb->props[n].v);
                         n++;
                     }
                 }
@@ -125,17 +125,17 @@ bool PLTarget::sync()
         return false;
     }
 
-    QString bigCmd;
+    QByteArray bigCmd;
     for(int i=0; i<gMainModel->cmdList.size(); i++){
         if(gMainModel->cmdList.at(i).id > idCmdTarget){
-            bigCmd += gMainModel->cmdList.at(i).cmdLine;
-            bigCmd += "\n";
+            bigCmd += QByteArray::number(gMainModel->cmdList.at(i).cmdLine.toLatin1().length());
+            bigCmd += gMainModel->cmdList.at(i).cmdLine.toLatin1();
         }
     }
-    if(bigCmd.size() >= sizeof(cmdsbuf)){
+    if(bigCmd.length() >= sizeof(cmdsbuf)){
         return false;
     }
-    strncpy(cmdsbuf, bigCmd.toStdString().c_str(), sizeof(cmdsbuf)-1);
+    strncpy(cmdsbuf, bigCmd.data(), sizeof(cmdsbuf)-1);
     cmdsbuf[sizeof(cmdsbuf)-1] = 0;
 
     stop();
@@ -184,20 +184,25 @@ bool PLTarget::download()
 
     gMainModel->project.renewUuid();
     char cline[1024];
-    strncpy(cline, gMainModel->project.getProjCmdLine().toStdString().c_str(), sizeof(cline)-1);
+    strncpy(cline, gMainModel->project.getProjCmdLine().toLatin1().data(), sizeof(cline)-1);
     cmd_dispatch(cline);
 
-    QString bigCmd = gMainModel->project.getProjCmdLine();
-    bigCmd += "\n";
+
+    QByteArray bigCmd;
+    QBuffer buff_io(&bigCmd);
+    buff_io.open(QFile::WriteOnly| QFile::Truncate);
+    QDataStream out(&buff_io);
+    out.setByteOrder(QDataStream::LittleEndian);
+    out << gMainModel->project.getProjCmdLine().toLatin1();
     for(int i=0; i<gMainModel->cmdList.size(); i++){
-        bigCmd += gMainModel->cmdList.at(i).cmdLine;
-        bigCmd += "\n";
+        out << gMainModel->cmdList.at(i).cmdLine.toLatin1();
     }
-    if(bigCmd.size() >= sizeof(cmdsbuf)){
+    buff_io.close();
+
+    if(bigCmd.length() >= sizeof(cmdsbuf)){
         return false;
     }
-    //qDebug() << bigCmd;
-    strncpy(cmdsbuf, bigCmd.toStdString().c_str(), sizeof(cmdsbuf)-1);
+    memcpy(cmdsbuf, bigCmd.data(), std::min((int)sizeof(cmdsbuf),bigCmd.length()));
     cmdsbuf[sizeof(cmdsbuf)-1] = 0;
     stop();
 
@@ -212,7 +217,7 @@ bool PLTarget::download()
         return false;
     }
 
-    if(0 == cfgbus_send(FUNCCMD, strlen(cmdsbuf)+1, cmdsbuf)){
+    if(0 == cfgbus_send(FUNCCMD, std::min((int)sizeof(cmdsbuf),bigCmd.length()), cmdsbuf)){
         cfgbus_send(FUNCRUN, 0, NULL);
         start();
         return true;

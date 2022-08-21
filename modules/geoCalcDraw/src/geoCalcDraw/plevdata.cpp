@@ -2,6 +2,8 @@
 
 PLEVData::PLEVData()
 {
+   initValue.mutable_v()->set_t(v_type::T_NONE);
+   value.mutable_v()->set_t(v_type::T_NONE);
 
 }
 
@@ -24,5 +26,5 @@ PLEVData::~PLEVData()
 
 QString PLEVData::getStrValue()
 {
-    return QString::fromStdString(var2str(value));
+    return QString::fromStdString(value.ShortDebugString());
 }

@@ -510,7 +510,7 @@ void CadPanel::mouseReleaseEvent(QMouseEvent * event)
         if(linkTracker.id != 0){
             gMainModel->makeLkMoveCmd(cmd, linkTracker);
             if(!gMainModel->exeCommand(cmd)){
-                QMessageBox::critical(this, "Error", cmd.cmdLine);
+                 QMessageBox::critical(this, "Error", cmd.cmdLine);
             }
         }
         break;
@@ -532,7 +532,7 @@ void CadPanel::mouseReleaseEvent(QMouseEvent * event)
             }else{
                 gMainModel->makeLkNewCmd(cmd, linkSel);
                 if(!gMainModel->exeCommand(cmd)){
-                    QMessageBox::critical(this, "Error", cmd.cmdLine);
+                     QMessageBox::critical(this, "Error", cmd.cmdLine);
                 }
             }
         }
@@ -556,7 +556,7 @@ void CadPanel::mouseReleaseEvent(QMouseEvent * event)
             }else{
                 gMainModel->makeLkNewCmd(cmd, linkSel);
                 if(!gMainModel->exeCommand(cmd)){
-                    QMessageBox::critical(this, "Error", cmd.cmdLine);
+                     QMessageBox::critical(this, "Error", cmd.cmdLine);
                 }
             }
         }
@@ -610,7 +610,7 @@ void CadPanel::mouseDoubleClickEvent(QMouseEvent * event)
             PLCommand cmd;
             gMainModel->makeFbMoveCmd(cmd, fbMove);
             if(!gMainModel->exeCommand(cmd)){
-                QMessageBox::critical(this, "Error", cmd.cmdLine);
+                 QMessageBox::critical(this, "Error", cmd.cmdLine);
                 return;
             }
             update();
@@ -641,7 +641,6 @@ void CadPanel::mouseDoubleClickEvent(QMouseEvent * event)
         ev.initValue.mutable_v()->set_t(selCurrent.fb->output.at(selCurrent.value).value.v().t());
         isInput = false;
     }
-    ev.initValue.mutable_v()->set_b(0);
 
     QString constValue = "0";
     bool isConst = true;
@@ -659,7 +658,9 @@ void CadPanel::mouseDoubleClickEvent(QMouseEvent * event)
     vlk.idPin = selCurrent.value;
     vlk.idEv = ev.id;
     if(isConst){
-        gMainModel->makePinSetCmd(cmd, gMainModel->prgCurrent->id, selCurrent.fb->id, selCurrent.value, constValue);
+        value_tm val;
+        val =setvar(selCurrent.fb->input[selCurrent.value].type,constValue.toStdString());
+        gMainModel->makePinSetCmd(cmd, gMainModel->prgCurrent->id, selCurrent.fb->id, selCurrent.value, QString::fromLatin1(var2str(val).data()));
         if(!gMainModel->exeCommand(cmd)){
             QMessageBox::critical(this, "Error", cmd.cmdLine);
             return;
@@ -1384,7 +1385,7 @@ bool CadPanel::hasSelectedFb()
     return false;
 }
 
-void CadPanel::getCopyCommands(QString &cpCmds)
+void CadPanel::getCopyCommands(QByteArray &cpCmds)
 {
     if(gMainModel->prgCurrent == NULL){
         return;
@@ -1414,25 +1415,21 @@ void CadPanel::getCopyCommands(QString &cpCmds)
     int idObj = 1;
     PLMainModel::extractObjsId(idObj, fbs, lks);
 
-    bool bFirst = true;
     PLCommand cmd;
-
+    QBuffer buff_io;
+    buff_io.open(QFile::WriteOnly| QFile::Truncate);
+    QDataStream in(&buff_io);
     for(i=0; i<fbs.size(); i++){
         gMainModel->makeFbCopyCmd(cmd, fbs[i]);
-        if(bFirst){
-            bFirst = false;
-        }else{
-            cpCmds += "\n";
-        }
-        cpCmds += cmd.cmdLine;
+        in << cmd.cmdLine.toLatin1();
     }
 
     for(i=0; i<lks.size(); i++){
         gMainModel->makeLkCopyCmd(cmd, lks[i]);
-        cpCmds += "\n";
-        cpCmds += cmd.cmdLine;
-        //qDebug()<<"link:"<<cmd.cmdLine;
+        in << cmd.cmdLine.toLatin1();
     }
+    cpCmds = buff_io.buffer();
+    buff_io.close();
 }
 
 
@@ -1475,21 +1472,26 @@ static int getObjFromCpCmd(QString &cmdLine, PLFunctionBlock &fb, PLLink &lk)
     return 0;
 }
 
-void CadPanel::exeCopyCommands(QString &cpCmds)
+void CadPanel::exeCopyCommands(QByteArray &cpCmds)
 {
     if(cpCmds.isEmpty()){
         return;
     }
 
-    QStringList cmdList = cpCmds.split("\n");
     QList<PLFunctionBlock> fbList;
     QList<PLLink> lkList;
     PLFunctionBlock fb;
     PLLink lk;
     int i, t;
     int idBase = gMainModel->objID;
-    for(i=0; i<cmdList.size(); i++){
-        t = getObjFromCpCmd(cmdList[i], fb, lk);
+    QBuffer buff_io(&cpCmds);
+    buff_io.open(QFile::ReadOnly);
+    QDataStream in(&buff_io);
+    while(!in.atEnd()){
+        QByteArray meta_cmd;
+        in >>meta_cmd;
+        QString cmd = QString::fromLatin1(meta_cmd);
+        t = getObjFromCpCmd(cmd, fb, lk);
         if(t == 1){
             fb.idPrg = gMainModel->prgCurrent->id;
             fb.id += idBase;
@@ -1503,13 +1505,13 @@ void CadPanel::exeCopyCommands(QString &cpCmds)
         }
     }
 
+    buff_io.close();
     clearAllSelected();
-
     PLCommand cmd;
     for(i=0; i<fbList.size(); i++){
         gMainModel->makeFbNewCmd(cmd, fbList[i], false);
         if(!gMainModel->exeCommand(cmd)){
-            QMessageBox::critical(this, "Error", cmd.cmdLine);
+           QMessageBox::critical(this, "Error", cmd.cmdLine);
             return;
         }
     }

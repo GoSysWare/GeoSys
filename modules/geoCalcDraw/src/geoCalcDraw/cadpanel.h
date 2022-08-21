@@ -24,8 +24,8 @@ public:
     void removeAllSelected();
     bool hasSelectedObj();
     bool hasSelectedFb();
-    void getCopyCommands(QString &cpCmds);
-    void exeCopyCommands(QString &cpCmds);
+    void getCopyCommands(QByteArray &cpCmds);
+    void exeCopyCommands(QByteArray &cpCmds);
 
 protected:
     void paintEvent(QPaintEvent *);

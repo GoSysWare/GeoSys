@@ -232,7 +232,7 @@ void PLMainFrame::createDockWindows()
     // panelTarget->setModel(&gTarget->modelIO);
     // dockTarget = new QDockWidget(tr("IO Stations"), this);
     // dockTarget->setWidget(panelTarget);
-    addDockWidget(Qt::BottomDockWidgetArea, dockTarget);
+    // addDockWidget(Qt::BottomDockWidgetArea, dockTarget);
 }
 
 void PLMainFrame::prjNew()
@@ -267,19 +267,22 @@ void PLMainFrame::openProject(QString fileName)
     gMainModel->clear();
 
     QFile file(fileName);
-    file.open(QFile::ReadOnly | QFile::Text);
-    QTextStream in(&file);
+    file.open(QFile::ReadOnly);
+    QDataStream in(&file);
 
     gMainModel->modelEVData.beginReset();
+
     while(!in.atEnd()){
-        QString line = in.readLine();
-        PLCommand cmd(line);
+        QByteArray line;
+        in >>line;
+        PLCommand cmd(QString::fromLatin1(line));
         if(!gMainModel->exeCommand(cmd)){
             QMessageBox::critical(this, tr("Error"), cmd.cmdLine);
             gMainModel->modelEVData.endReset();
             return;
         }
     }
+
     file.close();
 
     gMainModel->modelEVData.endReset();
@@ -341,12 +344,12 @@ void PLMainFrame::prjSave()
     gMainModel->removeDualCommands(gMainModel->cmdList, false);
 
     QFile file(gMainModel->project.fileName);
-    file.open(QFile::WriteOnly| QFile::Text);
-    QTextStream out(&file);
+    file.open(QFile::WriteOnly| QFile::Truncate);
+    QDataStream out(&file);
 
-    out << gMainModel->project.getProjCmdLine() << "\n";
+    out << gMainModel->project.getProjCmdLine().toLatin1();
     for(int i=0; i<gMainModel->cmdList.size(); i++){
-        out << gMainModel->cmdList.at(i).cmdLine << "\n";
+        out << gMainModel->cmdList.at(i).cmdLine.toLatin1();
     }
     file.close();
 
@@ -371,22 +374,20 @@ void PLMainFrame::prjSaveAs(bool holdUuid)
         gMainModel->extract();
         prj_reset();
         char cline[1024];
-        strncpy(cline, gMainModel->project.getProjCmdLine().toStdString().c_str(), sizeof(cline)-1);
+        strncpy(cline, gMainModel->project.getProjCmdLine().toLatin1().data(), sizeof(cline)-1);
         cmd_dispatch(cline);
         for(i=0; i<gMainModel->cmdList.size(); i++){
-            strncpy(cline, gMainModel->cmdList.at(i).cmdLine.toStdString().c_str(), sizeof(cline)-1);
+            strncpy(cline, gMainModel->cmdList.at(i).cmdLine.toLatin1().data(), sizeof(cline)-1);
             cmd_dispatch(cline);
         }
     }
 
     QFile file(dlgSaveProj.fileName);
-    file.open(QFile::WriteOnly| QFile::Text);
+    file.open(QFile::WriteOnly| QFile::Truncate);
     QTextStream out(&file);
-
-    out << gMainModel->project.getProjCmdLine() << "\n";
-    for(i=0; i<gMainModel->cmdList.size(); i++){
-        out << gMainModel->cmdList.at(i).cmdLine << "\n";
-        //qDebug() << gMainModel->cmdList.at(i).cmdLine;
+    out << gMainModel->project.getProjCmdLine().toLatin1();
+    for(int i=0; i<gMainModel->cmdList.size(); i++){
+        out << gMainModel->cmdList.at(i).cmdLine.toLatin1();
     }
     file.close();
 
@@ -431,7 +432,7 @@ void PLMainFrame::editCopy()
         return;
     }
 
-    QString cpCmds;
+    QByteArray cpCmds;
     panelProgCad->getCopyCommands(cpCmds);
     //qDebug()<<cpCmds;
     //if(cpCmds.isEmpty()){
@@ -440,7 +441,7 @@ void PLMainFrame::editCopy()
 
     QMimeData *mimeData = new QMimeData;
     mimeData->setData("PL-copyobjs", QByteArray());
-    mimeData->setText(cpCmds);
+    mimeData->setData("cmd-copyobjs",cpCmds);
 
     QClipboard *clipboard = QApplication::clipboard();
     clipboard->setMimeData(mimeData);
@@ -457,7 +458,10 @@ void PLMainFrame::editPaste()
     if(!mimeData->hasFormat("PL-copyobjs")){
         return;
     }
-    QString cpCmds = clipboard->mimeData()->text();
+    if(!mimeData->hasFormat("cmd-copyobjs")){
+        return;
+    }
+    QByteArray cpCmds = clipboard->mimeData()->data("cmd-copyobjs");
     panelProgCad->exeCopyCommands(cpCmds);
 }
 
@@ -560,9 +564,10 @@ void PLMainFrame::tgtUpload()
     }
 
     QFile file(fileName);
-    file.open(QFile::WriteOnly| QFile::Text);
-    QTextStream out(&file);
-    out << cmds;
+    file.open(QFile::WriteOnly| QFile::Truncate);
+    QDataStream out(&file);
+
+    out << cmds.toLatin1();
     file.close();
 }
 

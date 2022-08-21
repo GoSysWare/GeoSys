@@ -12,6 +12,7 @@ PLPin::~PLPin()
 
 PLPin::PLPin(const PLPin &pin)
 {
+    type = pin.type;
     name = pin.name;
     value = pin.value;
     hasVariable = false;
@@ -20,5 +21,5 @@ PLPin::PLPin(const PLPin &pin)
 
 QString PLPin::getStrValue()
 {
-    return QString::fromStdString(var2str(value));
+    return QString::fromStdString(value.ShortDebugString());
 }

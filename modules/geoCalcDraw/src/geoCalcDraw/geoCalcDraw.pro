@@ -58,14 +58,16 @@ SOURCES += main.cpp \
     ../../../calc/rtdb/RBTree.cpp \
     ../../../calc/rtdb/rtdb.cpp \
     ../../../calc/rtdb/station.cpp \
-    ../../../calc/lib/Arithmetic/Arithmetic.cpp
+    ../../../calc/lib/Arithmetic/Arithmetic.cpp \
 #    ../../../calc/lib/Bistable/Bistable.cpp \
 #    ../../../calc/lib/Comm/Comm.cpp \
 #    ../../../calc/lib/Comparison/Comparison.cpp \
 #    ../../../calc/lib/Control/Control.cpp \
 #    ../../../calc/lib/Converter/Converter.cpp \
-#    ../../../calc/lib/Counter/Counter.cpp \
+    ../../../calc/lib/Counter/Counter.cpp \
 #    ../../../calc/lib/Driver/Driver.cpp \
+    ../../../calc/lib/Fsm/Fsm.cpp
+
 #    ../../../calc/lib/IO/IO.cpp \
 #    ../../../calc/lib/Logic/Logic.cpp \
 #    ../../../calc/lib/Maths/Maths.cpp \

@@ -77,9 +77,9 @@ QVariant EVDataModel::data(const QModelIndex &index, int role) const
         case 2:
             return int(Qt::AlignLeft | Qt::AlignVCenter);
         case 3:
-            return int(Qt::AlignRight | Qt::AlignVCenter);
+            return int(Qt::AlignLeft | Qt::AlignVCenter);
         case 4:
-            return int(Qt::AlignRight | Qt::AlignVCenter);
+            return int(Qt::AlignLeft | Qt::AlignVCenter);
         case 5:
             return int(Qt::AlignLeft | Qt::AlignVCenter);
         default:
@@ -89,17 +89,14 @@ QVariant EVDataModel::data(const QModelIndex &index, int role) const
         PLEVData ev = gMainModel->evList.at(index.row());
         std::string type;
         std::string value;
-        type = type2str(ev.initValue.v().t());
-        value = var2str(ev.initValue);
-
+        type = v_type_Name(ev.initValue.v().t());
+        value = ev.initValue.ShortDebugString();
         QString sType = QString::fromStdString(type);
         QString sInitValue = QString::fromStdString(value);
-
-        value = var2str(ev.value);
-
+        value = ev.value.ShortDebugString();
         QString sValue =  QString::fromStdString(value);
         QString sRef;
-        sRef.sprintf("In:%d / Out:%d", ev.refIn, ev.refOut);
+        sRef= QString::asprintf("In:%d / Out:%d", ev.refIn, ev.refOut);
         switch(index.column()){
         case 0:
             return ev.name;

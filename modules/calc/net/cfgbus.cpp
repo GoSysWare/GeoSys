@@ -16,8 +16,6 @@ static rwlock_t *cfglock;
 
 static void oncommand(int len, char *p)
 {
-	//printf("oncmds:%s\n", p);
-	*(p+len-1)=0;
 	if(cmds_dispatch(p)!=0){
 		frm_answer.h.function |= FUNCFAIL;
 	}else{

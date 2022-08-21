@@ -15,8 +15,8 @@ enum v_type {
   T_BYTES = 10 ;
   T_IMAGE = 11 ;
   T_LIDAR = 12 ;
-  T_SONAR = 14 ;
-  T_FILE = 15 ;
+  T_SONAR = 13 ;
+  T_FILE = 14 ;
 }
 
 message value_t {

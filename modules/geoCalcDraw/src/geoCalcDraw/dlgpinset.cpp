@@ -125,7 +125,6 @@ void DlgPinSet::ok(bool check)
         break;
     case T_INT32:
         evData.initValue.mutable_v()->set_i(0);
-
         break;
     case T_FLOAT32:
         evData.initValue.mutable_v()->set_f(0);
@@ -151,7 +150,7 @@ void DlgPinSet::ok(bool check)
     PLCommand cmd;
     gMainModel->makeEvNewCmd(cmd, evData);
     if(!gMainModel->exeCommand(cmd)){
-        QMessageBox::critical(this, "Error", cmd.cmdLine);
+         QMessageBox::critical(this, "Error", cmd.cmdLine);
         gMainModel->modelEVData.endReset();
         return;
     }

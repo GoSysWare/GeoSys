@@ -102,10 +102,10 @@ QVariant PLIOModel::data(const QModelIndex &index, int role) const
     if(index.column() == 0){
         switch (node->type) {
         case PLIONode::Station:
-            str.sprintf("Station %2d", node->idStation);
+            str = QString::asprintf("Station %2d", node->idStation);
             break;
         case PLIONode::Module:
-            str.sprintf("Module %2d", node->idModule);
+            str= QString::asprintf("Module %2d", node->idModule);
             break;
         default:
             str = "Unknown";
@@ -147,7 +147,7 @@ QVariant PLIOModel::data(const QModelIndex &index, int role) const
             return QVariant();
         }
         for(i=0; i<IODATASIZE; i++){
-            str1.sprintf("%02X", (unsigned char)cellIn->data[i]);
+            str1 = QString::asprintf("%02X", (unsigned char)cellIn->data[i]);
             str += str1;
             if(i%2 && i!=(IODATASIZE-1)){
                 str += " ";
@@ -162,7 +162,7 @@ QVariant PLIOModel::data(const QModelIndex &index, int role) const
             return QVariant();
         }
         for(i=0; i<IODATASIZE; i++){
-            str1.sprintf("%02X", (unsigned char)cellOut->data[i]);
+            str1 = QString::asprintf("%02X", (unsigned char)cellOut->data[i]);
             str += str1;
             if(i%2 && i!=(IODATASIZE-1)){
                 str += " ";

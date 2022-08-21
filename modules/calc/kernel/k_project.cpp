@@ -22,7 +22,7 @@ prjinfo_t *prj_info() { return &info; }
 
 prjinfo_t *prj_info_p() { return &info_p; }
 
-static pnode_t *pn_new() { return (pnode_t *)k_malloc(sizeof(pnode_t)); }
+static pnode_t *pn_new() { return new pnode_t; }
 
 static void pn_delete(pnode_t *p) { delete p; }
 
@@ -57,12 +57,12 @@ void *prj_main_loop(void *sth) {
     if (is_run) {
       // printf("prj lock\n");
 #ifdef SIMULATOR
-      //下面代码根据nicsys2000更改：
 
       k_sleep(INPUTCYCLE);
     //   io_input();
       k_rlock(prjlock);
       prj_exec();
+      ev_dump();
       k_runlock(prjlock);
       k_sleep(OUTPUTCYCLE);
     //   io_output();
@@ -129,8 +129,6 @@ int prj_progadd(int id, std::string name) {
   p_pn->id = id;
   p_pn->name = name;
 
-  p_prg->prj = p_pn;
-
   pn_addbefore(p_pn, &pn_head);
 
   return 0;
@@ -160,15 +158,15 @@ static int prj_progselect(int id) {
   return -1;
 }
 
-static int prj_progselect(string prog_name) {
+static int prj_progselect(std::string prog_name) {
   pnode_t *p_pn;
 
-  if (id == 0) {
+  if (prog_name == "") {
     p_pn_select = &pn_head;
     return -1;
   }
 
-  if (p_pn_select->id == id) {
+  if (p_pn_select->name == prog_name) {
     return 0;
   }
 
@@ -217,7 +215,7 @@ void prj_dump() {
   printf("prj: uuid:%s\ncmd:%d\nstat:%d\n", info.uuid, info.id_cmd, info.stat);
   p_pn = pn_head.p_next;
   while (p_pn != &pn_head) {
-    printf("prg:%d - %s\n", p_pn->id, p_pn->name);
+    printf("prg:%d - %s\n", p_pn->id, p_pn->name.c_str());
     p_pn = p_pn->p_next;
   }
 }
@@ -275,36 +273,20 @@ int prj_lkremove(int idprg, int id) {
   return prg_lkremove(p_pn_select->p_prg, id);
 }
 
-int prj_viadd(int idprg, int id, int idev, int idfb, int pin) {
+int prj_viadd(int idprg, int idev, int idfb, int pin) {
   if (prj_progselect(idprg) != 0) {
     return -1;
   }
 
-  return prg_viadd(p_pn_select->p_prg, id, idev, idfb, pin);
+  return prg_viadd(p_pn_select->p_prg,  idev, idfb, pin);
 }
 
-int prj_voadd(int idprg, int id, int idev, int idfb, int pin) {
+int prj_voadd(int idprg, int idev, int idfb, int pin) {
   if (prj_progselect(idprg) != 0) {
     return -1;
   }
 
-  return prg_voadd(p_pn_select->p_prg, id, idev, idfb, pin);
-}
-
-int prj_viremove(int idprg, int id) {
-  if (prj_progselect(idprg) != 0) {
-    return -1;
-  }
-
-  return prg_viremove(p_pn_select->p_prg, id);
-}
-
-int prj_voremove(int idprg, int id) {
-  if (prj_progselect(idprg) != 0) {
-    return -1;
-  }
-
-  return prg_voremove(p_pn_select->p_prg, id);
+  return prg_voadd(p_pn_select->p_prg, idev, idfb, pin);
 }
 
 int prj_checkloop(int idprg, int idsrc, int idtgt) {
@@ -391,67 +373,77 @@ prog_t *prj_progfind(std::string prog_name)
 // }
 
 int prj_to_img(prjimg_t *pimg) {
-//   char *buf;
-//   pin_t *ppin;
-//   pnode_t *p_pn;
-//   enode_t *p_en;
-//   fb_t *p_fb;
-//   unsigned int i;
-//   int s;
+  char *buf;
+  pin_t *ppin;
+  pnode_t *p_pn;
+  enode_t *p_en;
+  fb_t *p_fb;
+  unsigned int i;
+  int s;
+  int v_len;
 
-//   k_rlock(prjlock);
+  k_rlock(prjlock);
 
-//   memcpy(&pimg->info, &info, sizeof(prjinfo_t));
-//   buf = pimg->imgbuf;
+  memcpy(&pimg->info, &info, sizeof(prjinfo_t));
+  buf = pimg->imgbuf;
 
-//   s = 0;
-//   p_pn = pn_head.p_next;
-//   while (p_pn != &pn_head) {
-//     p_en = p_pn->p_prg->en_head.p_next;
-//     while (p_en != &p_pn->p_prg->en_head) {
-//       if (p_en->p_fb != ((void *)0)) {
-//         p_fb = p_en->p_fb;
-//         for (i = 0; i < p_fb->h.ni; i++) {
-//           ppin = &p_fb->d[i];
-//           buf += cmps_zvar(&ppin->v.v, ppin->t, buf);
-//           s++;
-//         }
-//         for (i = 0; i < p_fb->h.no; i++) {
-//           ppin = &p_fb->d[i + p_fb->h.ni];
-//           buf += cmps_zvar(&ppin->v.v, ppin->t, buf);
-//           s++;
-//         }
-//         for (i = 0; i < p_fb->h.np; i++) {
-//           ppin = &p_fb->d[i + p_fb->h.ni + p_fb->h.no];
-//           buf += cmps_zvar(&ppin->v.v, ppin->t, buf);
-//           s++;
-//         }
-//       }
-//       p_en = p_en->p_next;
-//     }
-//     p_pn = p_pn->p_next;
-//   }
+  s = 0;
+  p_pn = pn_head.p_next;
+  while (p_pn != &pn_head) {
+    p_en = p_pn->p_prg->en_head.p_next;
+    while (p_en != &p_pn->p_prg->en_head) {
+      if (p_en->p_fb != ((void *)0)) {
+        p_fb = p_en->p_fb;
+        for (i = 0; i < p_fb->ins.size(); i++) {
+          v_len = p_fb->ins[i].v->ByteSize();
+          memcmp(buf,&v_len,sizeof(int));
+          buf += sizeof(int);
+          p_fb->ins[i].v->SerializeToArray(buf,v_len);
+          buf +=  v_len;
+          s++;
+        }
+        for (i = 0; i < p_fb->outs.size(); i++) {
+          v_len = p_fb->outs[i].v->ByteSize();
+          memcmp(buf,&v_len,sizeof(int));
+          buf += sizeof(int);
+          p_fb->outs[i].v->SerializeToArray(buf,v_len);
+          buf +=  v_len;
+          s++;
+        }
+       for (i = 0; i < p_fb->props.size(); i++) {
+          v_len = p_fb->props[i].v->ByteSize();
+          memcmp(buf,&v_len,sizeof(int));
+          buf += sizeof(int);
+          p_fb->props[i].v->SerializeToArray(buf,v_len);
+          buf +=  v_len;
+          s++;
+        }
+      }
+      p_en = p_en->p_next;
+    }
+    p_pn = p_pn->p_next;
+  }
 
-//   buf = ev_to_img(buf);
-//   buf = io_to_img(buf);
+  buf = ev_to_img(buf);
+  // buf = io_to_img(buf);
 
-//   pimg->bufsize = buf - pimg->imgbuf;
-//   info.zimgsize = pimg->bufsize;
-//   info.imgsize = s * sizeof(var_t) + sizeof(iostation_t) * IOSTATIONCOUNT;
+  pimg->bufsize = buf - pimg->imgbuf;
+  info.zimgsize = pimg->bufsize;
+  // info.imgsize = s * sizeof(var_t) + sizeof(iostation_t) * IOSTATIONCOUNT;
 
-//   // printf("imgsize=%d, zimgsize=%d\n", info.imgsize, info.zimgsize);
-//   k_runlock(prjlock);
+  // printf("imgsize=%d, zimgsize=%d\n", info.imgsize, info.zimgsize);
+  k_runlock(prjlock);
 
   return 0;
 }
 
 static int info_cmp(prjinfo_t *info1, prjinfo_t *info2) {
-//   if (strncmp(info1->uuid, info2->uuid, UUIDSIZE) != 0) {
-//     return 1;
-//   }
-//   if (info1->id_cmd != info2->id_cmd) {
-//     return 1;
-//   }
+  if (strncmp(info1->uuid, info2->uuid, UUIDSIZE) != 0) {
+    return 1;
+  }
+  if (info1->id_cmd != info2->id_cmd) {
+    return 1;
+  }
 //   // if(strncmp(info1->name, info2->name, PRJNAMESIZE)!=0){
 //   //	return 1;
 //   //}
@@ -460,52 +452,59 @@ static int info_cmp(prjinfo_t *info1, prjinfo_t *info2) {
 }
 
 int prj_from_img(prjimg_t *pimg) {
-//   char *buf;
-//   pin_t *ppin;
-//   Int t;
-//   pnode_t *p_pn;
-//   enode_t *p_en;
-//   fb_t *p_fb;
-//   unsigned int i;
+  char *buf;
+  pin_t *ppin;
+  Int t;
+  pnode_t *p_pn;
+  enode_t *p_en;
+  fb_t *p_fb;
+  unsigned int i;
+  int v_len;
 
-//   if (info_cmp(&info, &pimg->info) != 0) {
-//     return 1;
-//   }
+  if (info_cmp(&info, &pimg->info) != 0) {
+    return 1;
+  }
 
-//   buf = pimg->imgbuf;
-//   p_pn = pn_head.p_next;
-//   while (p_pn != &pn_head) {
-//     p_en = p_pn->p_prg->en_head.p_next;
-//     while (p_en != &p_pn->p_prg->en_head) {
-//       if (p_en->p_fb != ((void *)0)) {
-//         p_fb = p_en->p_fb;
-//         for (i = 0; i < p_fb->h.ni; i++) {
-//           ppin = &p_fb->d[i];
-//           buf += cmps_uzvar(buf, &ppin->v.v, &t);
-//         }
-//         for (i = 0; i < p_fb->h.no; i++) {
-//           ppin = &p_fb->d[i + p_fb->h.ni];
-//           buf += cmps_uzvar(buf, &ppin->v.v, &t);
-//         }
-//         for (i = 0; i < p_fb->h.np; i++) {
-//           ppin = &p_fb->d[i + p_fb->h.ni + p_fb->h.no];
-//           buf += cmps_uzvar(buf, &ppin->v.v, &t);
-//         }
-//       }
-//       p_en = p_en->p_next;
-//     }
-//     p_pn = p_pn->p_next;
-//   }
+  buf = pimg->imgbuf;
+  p_pn = pn_head.p_next;
+  while (p_pn != &pn_head) {
+    p_en = p_pn->p_prg->en_head.p_next;
+    while (p_en != &p_pn->p_prg->en_head) {
+      if (p_en->p_fb != ((void *)0)) {
+        p_fb = p_en->p_fb;
+        for (i = 0; i < p_fb->ins.size(); i++) {
+          v_len = *(int*)buf;
+          buf += sizeof(int);
+          p_fb->ins[i].v->ParseFromArray(buf,v_len);
+          buf +=  v_len;
+        }        
+      for (i = 0; i < p_fb->outs.size(); i++) {
+          v_len = *(int*)buf;
+          buf += sizeof(int);
+          p_fb->outs[i].v->ParseFromArray(buf,v_len);
+          buf +=  v_len;
+        }  
+        for (i = 0; i < p_fb->props.size(); i++) {
+          v_len = *(int*)buf;
+          buf += sizeof(int);
+          p_fb->props[i].v->ParseFromArray(buf,v_len);
+          buf +=  v_len;
+        }  
+      }
+      p_en = p_en->p_next;
+    }
+    p_pn = p_pn->p_next;
+  }
 
-//   buf = ev_from_img(buf);
+  buf = ev_from_img(buf);
 //   buf = io_from_img(buf);
 
-//   if (pimg->bufsize != buf - pimg->imgbuf) {
-//     return 1;
-//     printf("uz form img error!\n");
-//     fflush(stdout);
-//   }
+  if (pimg->bufsize != buf - pimg->imgbuf) {
+    return 1;
+    printf("uz form img error!\n");
+    fflush(stdout);
+  }
 
-  // printf("get imgbuf size=%d\n",pimg->bufsize);
+  printf("get imgbuf size=%d\n",pimg->bufsize);
   return 0;
 }

@@ -15,8 +15,7 @@ static evnode_t *p_vn_select=&vn_head;
 
 std::string type2str( v_type it)
 {
-	const google::protobuf::EnumDescriptor * desc = v_type_descriptor();
-	return desc->FindValueByNumber(it)->name();
+	return v_type_Name(it);
 }
 
 v_type str2type(const std::string& str)
@@ -39,63 +38,6 @@ value_tm str2var(const std::string & str)
 	v.ParseFromString(str);
 	return v;
 
-}
-
-void setvar(vam_t vam,value_tm val)
-{
-	if(vam->v().t() != val.v().t()){
-		return ;
-	}
-	value_t * vt = vam->mutable_v();
-	switch (val.v().t())
-	{
-	case T_NONE:
-		break;
-	case T_BOOL:
-		vt->set_b(val.v().b());
-		break;
-	case T_INT32:
-		vt->set_i(val.v().i());
-		break;	
-	case T_UINT32:
-		vt->set_ui(val.v().ui());
-		break;	
-	case T_INT64:
-		vt->set_ll(val.v().ll());
-		break;
-	case T_UINT64:
-		vt->set_ull(val.v().ull());
-		break;	
-	case T_FLOAT32:
-		vt->set_i(val.v().i());
-		break;	
-	case T_FLOAT64:
-		vt->set_d(val.v().d());
-		break;
-	case T_TIME:
-		vt->set_tm(val.v().tm());
-		break;
-	case T_STRING:
-		vt->set_str(val.v().str());
-		break;	
-	case T_BYTES:
-		vt->set_blob(val.v().blob());
-		break;	
-	case T_IMAGE:
-		vt->set_img(val.v().img());
-		break;
-	case T_LIDAR:
-		vt->set_lidar(val.v().lidar());
-		break;
-	case T_SONAR:
-		vt->set_sonar(val.v().sonar());
-		break;
-	case T_FILE:
-		vt->set_file(val.v().file());
-		break;		
-	default:
-		break;
-	}
 }
 
 int setvar(vam_t vam,v_type t, value_tm val)
@@ -155,6 +97,59 @@ int setvar(vam_t vam,v_type t, value_tm val)
 		break;
 	}
 	return 0;
+}
+
+ value_tm setvar(v_type t, std::string value)
+{
+    value_tm vam;
+	vam.mutable_v()->set_t(t);
+    switch(t){
+    case v_type::T_BOOL:
+        vam.mutable_v()->set_b(value == "false" ||  value == "0"? false:true);
+        break;
+    case v_type::T_INT32:
+        vam.mutable_v()->set_i(std::stoi(value));
+        break;
+    case v_type::T_UINT32:
+        vam.mutable_v()->set_ui((uint32_t)std::stoul(value));
+        break;
+    case v_type::T_INT64:
+        vam.mutable_v()->set_ll(std::stoll(value));
+        break;
+    case v_type::T_UINT64:
+        vam.mutable_v()->set_ull((uint32_t)std::stoull(value));
+        break;
+    case v_type::T_FLOAT32:
+        vam.mutable_v()->set_f((float)std::stof(value));
+        break;
+    case v_type::T_FLOAT64:
+        vam.mutable_v()->set_d(std::stof(value));
+        break;
+    case v_type::T_TIME:
+        vam.mutable_v()->set_tm(std::stoull(value));
+        break;
+    case v_type::T_STRING:
+        vam.mutable_v()->set_str(value);
+        break;
+    case v_type::T_BYTES:
+        vam.mutable_v()->set_blob(value);
+        break;
+    case v_type::T_IMAGE:
+        vam.mutable_v()->set_img(value);
+        break;
+    case v_type::T_LIDAR:
+        vam.mutable_v()->set_lidar(value);
+        break;
+    case v_type::T_SONAR:
+        vam.mutable_v()->set_sonar(value);
+        break;
+    case v_type::T_FILE:
+        vam.mutable_v()->set_file(value);
+        break;
+    default:
+        ;
+    }
+    return vam;
 }
 
 static evnode_t *v_new()
@@ -311,31 +306,38 @@ int ev_img_size()
 	return s;
 }
 
-// char *ev_to_img(char *buf)
-// {
-// 	evnode_t *p_vn;
+char *ev_to_img(char *buf)
+{
+	evnode_t *p_vn;
+	int v_len;
 
-// 	p_vn = vn_head.p_next;
-// 	while(p_vn != &vn_head){
-// 		buf+=cmps_zvar(&p_vn->v.v,p_vn->v.t,buf);
-// 		p_vn = p_vn->p_next;
-// 	}
+	p_vn = vn_head.p_next;
+	while(p_vn != &vn_head){
+	    memcmp(buf,&v_len,sizeof(int));
+        buf += sizeof(int);	
+		p_vn->v->SerializeToArray(buf,p_vn->v->ByteSize());
+        buf +=  p_vn->v->ByteSize();
+		p_vn = p_vn->p_next;
+	}
 
-// 	return buf;
-// }
+	return buf;
+}
 
-// char *ev_from_img(char *buf)
-// {
-// 	Int t;
-// 	evnode_t *p_vn;
-
-// 	p_vn = vn_head.p_next;
-// 	while(p_vn != &vn_head){
-// 		buf+=cmps_uzvar(buf,&p_vn->v.v,&t);
-// 		p_vn = p_vn->p_next;
-// 	}
-// 	return buf;
-// }
+char *ev_from_img(char *buf)
+{
+	Int t;
+	evnode_t *p_vn;
+	int v_len;
+	p_vn = vn_head.p_next;
+	while(p_vn != &vn_head){
+        v_len = *(int*)buf;
+        buf += sizeof(int);
+		p_vn->v->ParseFromArray(buf,v_len);
+        buf +=  v_len;
+		p_vn = p_vn->p_next;
+	}
+	return buf;
+}
 
 /*
 static int bool_convert(val_t *t1, const val_t *t2)

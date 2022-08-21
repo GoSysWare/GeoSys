@@ -22,10 +22,12 @@ typedef struct EVNode{
 
 std::string type2str( v_type it);
 v_type str2type(const std::string& str);
+//这个是proto的二进制string
 std::string  var2str(const value_tm &v);
 value_tm str2var(const std::string & str);
-void setvar(vam_t vam,value_tm val);
-int setvar(vam_t vam,v_type t, value_tm val);
+
+//这个是明文可读的string
+value_tm setvar(v_type t, std::string value);
 
 vam_t * ev_find_v(int id);
 int ev_add(int id, const std::string & val, const std::string &name);
@@ -34,8 +36,8 @@ void ev_reset();
 void ev_dump();
 evnode_t* ev_gethead();
 int ev_img_size();
-// char *ev_to_img(char *buf);
-// char *ev_from_img(char *buf);
+char *ev_to_img(char *buf);
+char *ev_from_img(char *buf);
 
 // #ifdef __cplusplus
 // }

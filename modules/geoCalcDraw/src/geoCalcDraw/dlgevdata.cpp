@@ -14,11 +14,20 @@ DlgEVData::DlgEVData(QWidget *parent, Qt::WindowFlags f)
     textName = new QLineEdit;
     textName->setMaxLength(32);
     listType = new QListWidget;
-    listType->addItem(tr("BOOL"));
-    listType->addItem(tr("INT"));
-    listType->addItem(tr("REAL"));
-    listType->addItem(tr("LREAL"));
-    listType->addItem(tr("TIME"));
+    listType->addItem(QString::fromStdString(v_type_Name(v_type::T_BOOL)));
+    listType->addItem(QString::fromStdString(v_type_Name(v_type::T_INT32)));
+    listType->addItem(QString::fromStdString(v_type_Name(v_type::T_UINT32)));
+    listType->addItem(QString::fromStdString(v_type_Name(v_type::T_INT64)));
+    listType->addItem(QString::fromStdString(v_type_Name(v_type::T_UINT64)));
+    listType->addItem(QString::fromStdString(v_type_Name(v_type::T_FLOAT32)));
+    listType->addItem(QString::fromStdString(v_type_Name(v_type::T_FLOAT64)));
+    listType->addItem(QString::fromStdString(v_type_Name(v_type::T_TIME)));
+    listType->addItem(QString::fromStdString(v_type_Name(v_type::T_STRING)));
+    listType->addItem(QString::fromStdString(v_type_Name(v_type::T_BYTES)));
+    listType->addItem(QString::fromStdString(v_type_Name(v_type::T_IMAGE)));
+    listType->addItem(QString::fromStdString(v_type_Name(v_type::T_LIDAR)));
+    listType->addItem(QString::fromStdString(v_type_Name(v_type::T_SONAR)));
+    listType->addItem(QString::fromStdString(v_type_Name(v_type::T_FILE)));
     listType->setMaximumHeight(120);
     listType->setBatchSize(5);
     textValue = new QLineEdit;
@@ -96,59 +105,132 @@ void DlgEVData::setValue(PLEVData &ev, int m)
 
     textName->setText(ev.name);
     textComment->setText(ev.comment);
+    std::string value;
     switch(ev.initValue.v().t()){
-    case T_BOOL:
+    case v_type::T_BOOL:
         listType->setCurrentRow(0);
+        value = ev.initValue.v().b()?"true":"false";
         break;
-    case T_INT32:
+    case v_type::T_INT32:
         listType->setCurrentRow(1);
+        value = std::to_string(ev.initValue.v().i());
         break;
-    case T_FLOAT32:
+    case v_type::T_UINT32:
         listType->setCurrentRow(2);
+        value = std::to_string(ev.initValue.v().ui());
         break;
-    case T_FLOAT64:
+    case v_type::T_INT64:
         listType->setCurrentRow(3);
+        value = std::to_string(ev.initValue.v().ll());
         break;
-    case T_TIME:
+    case v_type::T_UINT64:
         listType->setCurrentRow(4);
+        value = std::to_string(ev.initValue.v().ull());
+        break;
+    case v_type::T_FLOAT32:
+        listType->setCurrentRow(5);
+        value = std::to_string(ev.initValue.v().f());
+        break;
+    case v_type::T_FLOAT64:
+        listType->setCurrentRow(6);
+        value = std::to_string(ev.initValue.v().d());
+        break;
+    case v_type::T_TIME:
+        listType->setCurrentRow(7);
+        value = std::to_string(ev.initValue.v().tm());
+        break;
+    case v_type::T_STRING:
+        listType->setCurrentRow(8);
+        value = ev.initValue.v().str();
+        break;
+    case v_type::T_BYTES:
+        listType->setCurrentRow(9);
+        value = ev.initValue.v().blob();
+        break;
+    case v_type::T_IMAGE:
+        listType->setCurrentRow(10);
+        value = ev.initValue.v().img();
+        break;
+    case v_type::T_LIDAR:
+        listType->setCurrentRow(11);
+        value = ev.initValue.v().lidar();
+        break;
+    case v_type::T_SONAR:
+        listType->setCurrentRow(12);
+        value = ev.initValue.v().sonar();
+        break;
+    case v_type::T_FILE:
+        listType->setCurrentRow(13);
+        value = ev.initValue.v().file();
         break;
     default:
         QMessageBox::critical(this, "Error", "Unknown data type");
     }
+    textValue->setText( QString::fromStdString(value));
 
-    textValue->setText( QString::fromStdString(var2str(ev.initValue)));
 }
 
 void DlgEVData::getValue(PLEVData &ev)
 {
     ev.name = textName->text();
     ev.comment = textComment->text();
-    const char* value = textValue->text().toStdString().data();
+    const std::string value = textValue->text().toStdString();
     switch(listType->currentIndex().row()){
     case 0:
-        ev.initValue.mutable_v()->set_t(T_BOOL);
-        ev.initValue.mutable_v()->set_b(std::atoi(value));
-
+        ev.initValue.mutable_v()->set_t(v_type::T_BOOL);
+        ev.initValue.mutable_v()->set_b(value == "false" || value == "0"? false:true);
         break;
     case 1:
-        ev.initValue.mutable_v()->set_t(T_INT32);
-        ev.initValue.mutable_v()->set_i(std::atoi(value));
-
+        ev.initValue.mutable_v()->set_t(v_type::T_INT32);
+        ev.initValue.mutable_v()->set_i(std::stoi(value));
         break;
     case 2:
-        ev.initValue.mutable_v()->set_t(T_FLOAT32);
-        ev.initValue.mutable_v()->set_f((float)std::atof(value));
-
+        ev.initValue.mutable_v()->set_t(v_type::T_UINT32);
+        ev.initValue.mutable_v()->set_ui((uint32_t)std::stoul(value));
         break;
     case 3:
-        ev.initValue.mutable_v()->set_t(T_FLOAT64);
-        ev.initValue.mutable_v()->set_d(std::atof(value));
-
+        ev.initValue.mutable_v()->set_t(v_type::T_INT64);
+        ev.initValue.mutable_v()->set_ll(std::stoll(value));
         break;
     case 4:
-        ev.initValue.mutable_v()->set_t(T_TIME);
-        ev.initValue.mutable_v()->set_ll(std::atoll(value));
-
+        ev.initValue.mutable_v()->set_t(v_type::T_UINT64);
+        ev.initValue.mutable_v()->set_ull((uint32_t)std::stoull(value));
+        break;
+    case 5:
+        ev.initValue.mutable_v()->set_t(v_type::T_FLOAT32);
+        ev.initValue.mutable_v()->set_f((float)std::stof(value));
+        break;
+    case 6:
+        ev.initValue.mutable_v()->set_t(v_type::T_FLOAT64);
+        ev.initValue.mutable_v()->set_d(std::stof(value));
+        break;
+    case 7:
+        ev.initValue.mutable_v()->set_t(v_type::T_TIME);
+        ev.initValue.mutable_v()->set_tm(std::stoull(value));
+        break;
+    case 8:
+        ev.initValue.mutable_v()->set_t(v_type::T_STRING);
+        ev.initValue.mutable_v()->set_str(value);
+        break;
+    case 9:
+        ev.initValue.mutable_v()->set_t(v_type::T_BYTES);
+        ev.initValue.mutable_v()->set_blob(value);
+        break;
+    case 10:
+        ev.initValue.mutable_v()->set_t(v_type::T_IMAGE);
+        ev.initValue.mutable_v()->set_img(value);
+        break;
+    case 11:
+        ev.initValue.mutable_v()->set_t(v_type::T_LIDAR);
+        ev.initValue.mutable_v()->set_lidar(value);
+        break;
+    case 12:
+        ev.initValue.mutable_v()->set_t(v_type::T_SONAR);
+        ev.initValue.mutable_v()->set_sonar(value);
+        break;
+    case 13:
+        ev.initValue.mutable_v()->set_t(v_type::T_FILE);
+        ev.initValue.mutable_v()->set_file(value);
         break;
     default:
         ;

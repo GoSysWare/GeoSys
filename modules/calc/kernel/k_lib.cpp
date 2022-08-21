@@ -50,7 +50,7 @@ void lib_init()
 	// lib_set_table(12, "System", system_first, system_next);
 	// lib_set_table(13, "Trigger", trigger_first, trigger_next);
 	// lib_set_table(14, "Timer", timer_first, timer_next);
-    lib_set_table(15, "Opencv", opencv_first, opencv_next);
+   // lib_set_table(15, "Opencv", opencv_first, opencv_next);
     lib_set_table(16, "Fsm", fsm_first, fsm_next);
 
 	cursor = 0;

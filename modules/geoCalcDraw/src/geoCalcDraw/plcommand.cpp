@@ -22,17 +22,13 @@ PLCommand::PLCommand(QString line)
 
 void PLCommand::makeCmdLine()
 {
-    cmdLine.sprintf("%d", id);
+    cmdLine = QString::asprintf("%d", id);
     cmdLine += ";";
     cmdLine += fun;
     cmdLine += ";";
     cmdLine += para;
     cmdLine += ";";
-    //if(res.isEmpty()){
-    //    cmdLine += ",";
-    //}else{
-        cmdLine += res;
-    //}
+    cmdLine += res;
 }
 
 bool PLCommand::dispatch()
@@ -67,38 +63,36 @@ bool PLCommand::dispatch()
         PLPin pin;
         int h, w, wi=0, wo=0;
         // input
-        for(i = 0; i < p_fb->h.ni; i++){
-
-            pin.name = QString::fromStdString(p_fb->d[i].pinname);
-            pin.value.mutable_v()->set_t(p_fb->d[i].t);
-            pin.value = *p_fb->d[i].v;
+        for(i = 0; i < p_fb->ins.size(); i++){
+            pin.type = p_fb->ins[i].t;
+            pin.name = QString::fromStdString( p_fb->ins[i].pinname);
+            pin.value =  *(p_fb->ins[i].v);
             fb.input.append(pin);
             if(wi < pin.name.size()){
                 wi = pin.name.size();
             }
         }
         // output
-        for(i = 0 + p_fb->h.ni; i < (p_fb->h.no + p_fb->h.ni); i++){
-            pin.name = QString::fromStdString(p_fb->d[i].pinname);
-            pin.value.mutable_v()->set_t(p_fb->d[i].t);
-            pin.value = *p_fb->d[i].v;
+        for(i = 0; i < p_fb->outs.size(); i++){
+            pin.name = QString::fromStdString( p_fb->outs[i].pinname);
+            pin.value =  *(p_fb->outs[i].v);
             fb.output.append(pin);
             if(wo < pin.name.size()){
                 wo = pin.name.size();
             }
         }
+
         // property
-        for(i = 0 + p_fb->h.ni + p_fb->h.no; i < (p_fb->h.np + p_fb->h.ni + p_fb->h.no); i++){
-            pin.name = QString::fromStdString(p_fb->d[i].pinname);
-            pin.value.mutable_v()->set_t(p_fb->d[i].t);
-            pin.value = *p_fb->d[i].v;
+        for(i = 0; i < p_fb->props.size(); i++){
+            pin.name = QString::fromStdString( p_fb->props[i].pinname);
+            pin.value =  *(p_fb->props[i].v);
             fb.property.append(pin);
         }
+
         fb.flag = p_fb->h.flag;
-        h = p_fb->h.ni;
-        if(h < p_fb->h.no){
-            h = p_fb->h.no;
-        }
+
+        h = std::max(p_fb->ins.size(),p_fb->outs.size());
+
         w = fb.funName.size() + 1;
         if(w < (wi + wo + 2)){
             w = wi + wo + 2;
@@ -241,9 +235,9 @@ bool PLCommand::dispatch()
         if(fb == NULL){
             return false;
         }
-        
+
         value_tm *v = &fb->input[pin].value;
-        *v = str2var(val.toStdString().c_str());
+        *v = str2var(std::string(val.toLatin1()));
 
 
     }else if(fun == "setev"){
@@ -257,10 +251,7 @@ bool PLCommand::dispatch()
                 break;
             }
         }
-
-        value_tm *v =  &ev->initValue;
-        *v = str2var(val.toStdString().c_str());
-
+        ev->initValue  = str2var(std::string(val.toLatin1()));
         ev->value = ev->initValue;
         list = res.split(",");
         ev->name = list.at(0);
@@ -444,12 +435,11 @@ void PLCommand::setEVData(PLEVData *ev)
 
     v_type t;
 
-    t= str2type(type.toStdString());
+    t= str2type(std::string(type.toLatin1()));
 
     value_tm v;
-    v = str2var(value.toStdString());
+    v = str2var(std::string(value.toLatin1()));
 
-    ev->initValue.mutable_v()->set_t(t);
     ev->initValue = v;
     ev->value = ev->initValue;
 }

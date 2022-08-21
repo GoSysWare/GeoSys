@@ -15,6 +15,7 @@ public:
 
     QString name;
     value_tm value;
+    v_type   type;
     bool hasVariable;
     bool hasInputLink;
 };

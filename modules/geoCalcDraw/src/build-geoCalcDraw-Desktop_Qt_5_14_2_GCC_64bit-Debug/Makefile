@@ -98,7 +98,9 @@ SOURCES       = ../geoCalcDraw/main.cpp \
 		../../../calc/rtdb/RBTree.cpp \
 		../../../calc/rtdb/rtdb.cpp \
 		../../../calc/rtdb/station.cpp \
-		../../../calc/lib/Arithmetic/Arithmetic.cpp ../../res/qrc_resource.cpp \
+		../../../calc/lib/Arithmetic/Arithmetic.cpp \
+		../../../calc/lib/Counter/Counter.cpp \
+		../../../calc/lib/Fsm/Fsm.cpp ../../res/qrc_resource.cpp \
 		../../res/qrc_images.cpp \
 		../../temp/Compile/nicCalcDraw/Debug/moc_plmainframe.cpp \
 		../../temp/Compile/nicCalcDraw/Debug/moc_libpanel.cpp \
@@ -157,6 +159,8 @@ OBJECTS       = ../../temp/Compile/nicCalcDraw/Debug/main.o \
 		../../temp/Compile/nicCalcDraw/Debug/rtdb.o \
 		../../temp/Compile/nicCalcDraw/Debug/station.o \
 		../../temp/Compile/nicCalcDraw/Debug/Arithmetic.o \
+		../../temp/Compile/nicCalcDraw/Debug/Counter.o \
+		../../temp/Compile/nicCalcDraw/Debug/Fsm.o \
 		../../temp/Compile/nicCalcDraw/Debug/qrc_resource.o \
 		../../temp/Compile/nicCalcDraw/Debug/qrc_images.o \
 		../../temp/Compile/nicCalcDraw/Debug/moc_plmainframe.o \
@@ -562,7 +566,9 @@ DIST          = ../geoCalcDraw/images_win7/about.png \
 		../../../calc/rtdb/RBTree.cpp \
 		../../../calc/rtdb/rtdb.cpp \
 		../../../calc/rtdb/station.cpp \
-		../../../calc/lib/Arithmetic/Arithmetic.cpp
+		../../../calc/lib/Arithmetic/Arithmetic.cpp \
+		../../../calc/lib/Counter/Counter.cpp \
+		../../../calc/lib/Fsm/Fsm.cpp
 QMAKE_TARGET  = nicCalcDraw
 DESTDIR       = ../../bin/Debug/
 TARGET        = ../../bin/Debug/nicCalcDraw
@@ -957,7 +963,7 @@ distdir: FORCE
 	$(COPY_FILE) --parents ../geoCalcDraw/resource.qrc ../geoCalcDraw/images.qrc $(DISTDIR)/
 	$(COPY_FILE) --parents /opt/Qt5.14.2/5.14.2/gcc_64/mkspecs/features/data/dummy.cpp $(DISTDIR)/
 	$(COPY_FILE) --parents ../geoCalcDraw/plmainframe.h ../geoCalcDraw/cadpanel.h ../geoCalcDraw/libpanel.h ../geoCalcDraw/progpanel.h ../geoCalcDraw/plmainmodel.h ../geoCalcDraw/gdefine.h ../geoCalcDraw/plfunctionblock.h ../geoCalcDraw/plpin.h ../geoCalcDraw/plpoint.h ../geoCalcDraw/pllink.h ../geoCalcDraw/plvlink.h ../geoCalcDraw/plevdata.h ../geoCalcDraw/plprogram.h ../geoCalcDraw/plcommand.h ../geoCalcDraw/pltarget.h ../geoCalcDraw/plselobject.h ../geoCalcDraw/dlgaddprog.h ../geoCalcDraw/plproject.h ../geoCalcDraw/evdatapanel.h ../geoCalcDraw/evdatamodel.h ../geoCalcDraw/dlgevdata.h ../geoCalcDraw/dlgpinset.h ../geoCalcDraw/dlgsaveproj.h ../geoCalcDraw/dlgobjname.h ../geoCalcDraw/plionode.h ../geoCalcDraw/pliomodel.h ../geoCalcDraw/dlgipaddress.h ../../../calc/rtdb/BinTree.h ../../../calc/rtdb/CapiGlobal.h ../../../calc/rtdb/helper.h ../../../calc/rtdb/RBTree.h ../../../calc/rtdb/rtdb.h ../../../calc/rtdb/station.h $(DISTDIR)/
-	$(COPY_FILE) --parents ../geoCalcDraw/main.cpp ../geoCalcDraw/plmainframe.cpp ../geoCalcDraw/cadpanel.cpp ../geoCalcDraw/libpanel.cpp ../geoCalcDraw/progpanel.cpp ../geoCalcDraw/plmainmodel.cpp ../geoCalcDraw/plfunctionblock.cpp ../geoCalcDraw/plpin.cpp ../geoCalcDraw/plpoint.cpp ../geoCalcDraw/pllink.cpp ../geoCalcDraw/plvlink.cpp ../geoCalcDraw/plevdata.cpp ../geoCalcDraw/plprogram.cpp ../geoCalcDraw/plcommand.cpp ../geoCalcDraw/pltarget.cpp ../geoCalcDraw/plselobject.cpp ../geoCalcDraw/dlgaddprog.cpp ../geoCalcDraw/plproject.cpp ../geoCalcDraw/evdatapanel.cpp ../geoCalcDraw/evdatamodel.cpp ../geoCalcDraw/dlgevdata.cpp ../geoCalcDraw/dlgpinset.cpp ../geoCalcDraw/dlgsaveproj.cpp ../geoCalcDraw/dlgobjname.cpp ../geoCalcDraw/plionode.cpp ../geoCalcDraw/dlgipaddress.cpp ../../../../bazel-bin/modules/calc/proto/value.pb.cc ../../../calc/kernel/k_command.cpp ../../../calc/kernel/k_compress.cpp ../../../calc/kernel/k_evdata.cpp ../../../calc/kernel/k_functionblock.cpp ../../../calc/kernel/k_lib.cpp ../../../calc/kernel/k_process.cpp ../../../calc/kernel/k_program.cpp ../../../calc/kernel/k_project.cpp ../../../calc/kernel/k_util.cpp ../../../calc/net/cfgbus.cpp ../../../calc/net/evbus.cpp ../../../calc/net/vnet.cpp ../../../calc/net/vtcp.cpp ../../../calc/net/vudp.cpp ../../../calc/rtdb/BinTree.cpp ../../../calc/rtdb/helper.cpp ../../../calc/rtdb/RBTree.cpp ../../../calc/rtdb/rtdb.cpp ../../../calc/rtdb/station.cpp ../../../calc/lib/Arithmetic/Arithmetic.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents ../geoCalcDraw/main.cpp ../geoCalcDraw/plmainframe.cpp ../geoCalcDraw/cadpanel.cpp ../geoCalcDraw/libpanel.cpp ../geoCalcDraw/progpanel.cpp ../geoCalcDraw/plmainmodel.cpp ../geoCalcDraw/plfunctionblock.cpp ../geoCalcDraw/plpin.cpp ../geoCalcDraw/plpoint.cpp ../geoCalcDraw/pllink.cpp ../geoCalcDraw/plvlink.cpp ../geoCalcDraw/plevdata.cpp ../geoCalcDraw/plprogram.cpp ../geoCalcDraw/plcommand.cpp ../geoCalcDraw/pltarget.cpp ../geoCalcDraw/plselobject.cpp ../geoCalcDraw/dlgaddprog.cpp ../geoCalcDraw/plproject.cpp ../geoCalcDraw/evdatapanel.cpp ../geoCalcDraw/evdatamodel.cpp ../geoCalcDraw/dlgevdata.cpp ../geoCalcDraw/dlgpinset.cpp ../geoCalcDraw/dlgsaveproj.cpp ../geoCalcDraw/dlgobjname.cpp ../geoCalcDraw/plionode.cpp ../geoCalcDraw/dlgipaddress.cpp ../../../../bazel-bin/modules/calc/proto/value.pb.cc ../../../calc/kernel/k_command.cpp ../../../calc/kernel/k_compress.cpp ../../../calc/kernel/k_evdata.cpp ../../../calc/kernel/k_functionblock.cpp ../../../calc/kernel/k_lib.cpp ../../../calc/kernel/k_process.cpp ../../../calc/kernel/k_program.cpp ../../../calc/kernel/k_project.cpp ../../../calc/kernel/k_util.cpp ../../../calc/net/cfgbus.cpp ../../../calc/net/evbus.cpp ../../../calc/net/vnet.cpp ../../../calc/net/vtcp.cpp ../../../calc/net/vudp.cpp ../../../calc/rtdb/BinTree.cpp ../../../calc/rtdb/helper.cpp ../../../calc/rtdb/RBTree.cpp ../../../calc/rtdb/rtdb.cpp ../../../calc/rtdb/station.cpp ../../../calc/lib/Arithmetic/Arithmetic.cpp ../../../calc/lib/Counter/Counter.cpp ../../../calc/lib/Fsm/Fsm.cpp $(DISTDIR)/
 
 
 clean: compiler_clean 
@@ -9999,6 +10005,7 @@ compiler_clean: compiler_rcc_clean compiler_moc_predefs_clean compiler_moc_heade
 		../../../calc/include/lib/Control.h \
 		../../../calc/include/lib/Counter.h \
 		../../../calc/include/lib/Driver.h \
+		../../../calc/include/lib/Fsm.h \
 		../../../calc/include/lib/IO.h \
 		../../../calc/include/lib/Logic.h \
 		../../../calc/include/lib/Maths.h \
@@ -10441,6 +10448,108 @@ compiler_clean: compiler_rcc_clean compiler_moc_predefs_clean compiler_moc_heade
 		../../../../bazel-GeoSys/external/com_google_protobuf/src/google/protobuf/extension_set.h \
 		../../../calc/lib/Arithmetic/ADD_INT
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../../temp/Compile/nicCalcDraw/Debug/Arithmetic.o ../../../calc/lib/Arithmetic/Arithmetic.cpp
+
+../../temp/Compile/nicCalcDraw/Debug/Counter.o: ../../../calc/lib/Counter/Counter.cpp ../../../calc/include/k_functionblock.h \
+		../../../calc/include/k_config.h \
+		../../../calc/include/k_datatype.h \
+		../../../calc/include/k_evdata.h \
+		../../../../bazel-bin/modules/calc/proto/value.pb.h \
+		../../../../bazel-GeoSys/external/com_google_protobuf/src/google/protobuf/port_def.inc \
+		../../../../bazel-GeoSys/external/com_google_protobuf/src/google/protobuf/port_undef.inc \
+		../../../../bazel-GeoSys/external/com_google_protobuf/src/google/protobuf/io/coded_stream.h \
+		../../../../bazel-GeoSys/external/com_google_protobuf/src/google/protobuf/stubs/common.h \
+		../../../../bazel-GeoSys/external/com_google_protobuf/src/google/protobuf/stubs/macros.h \
+		../../../../bazel-GeoSys/external/com_google_protobuf/src/google/protobuf/stubs/port.h \
+		../../../../bazel-GeoSys/external/com_google_protobuf/src/google/protobuf/stubs/platform_macros.h \
+		../../../../bazel-GeoSys/external/com_google_protobuf/src/google/protobuf/stubs/stringpiece.h \
+		../../../../bazel-GeoSys/external/com_google_protobuf/src/google/protobuf/stubs/hash.h \
+		../../../../bazel-GeoSys/external/com_google_protobuf/src/google/protobuf/stubs/logging.h \
+		../../../../bazel-GeoSys/external/com_google_protobuf/src/google/protobuf/stubs/strutil.h \
+		../../../../bazel-GeoSys/external/com_google_protobuf/src/google/protobuf/port.h \
+		../../../../bazel-GeoSys/external/com_google_protobuf/src/google/protobuf/arena.h \
+		../../../../bazel-GeoSys/external/com_google_protobuf/src/google/protobuf/arena_impl.h \
+		../../../../bazel-GeoSys/external/com_google_protobuf/src/google/protobuf/arenastring.h \
+		../../../../bazel-GeoSys/external/com_google_protobuf/src/google/protobuf/generated_message_table_driven.h \
+		../../../../bazel-GeoSys/external/com_google_protobuf/src/google/protobuf/map.h \
+		../../../../bazel-GeoSys/external/com_google_protobuf/src/google/protobuf/generated_enum_util.h \
+		../../../../bazel-GeoSys/external/com_google_protobuf/src/google/protobuf/message_lite.h \
+		../../../../bazel-GeoSys/external/com_google_protobuf/src/google/protobuf/metadata_lite.h \
+		../../../../bazel-GeoSys/external/com_google_protobuf/src/google/protobuf/stubs/once.h \
+		../../../../bazel-GeoSys/external/com_google_protobuf/src/google/protobuf/map_type_handler.h \
+		../../../../bazel-GeoSys/external/com_google_protobuf/src/google/protobuf/parse_context.h \
+		../../../../bazel-GeoSys/external/com_google_protobuf/src/google/protobuf/io/zero_copy_stream.h \
+		../../../../bazel-GeoSys/external/com_google_protobuf/src/google/protobuf/implicit_weak_message.h \
+		../../../../bazel-GeoSys/external/com_google_protobuf/src/google/protobuf/repeated_field.h \
+		../../../../bazel-GeoSys/external/com_google_protobuf/src/google/protobuf/stubs/casts.h \
+		../../../../bazel-GeoSys/external/com_google_protobuf/src/google/protobuf/wire_format_lite.h \
+		../../../../bazel-GeoSys/external/com_google_protobuf/src/google/protobuf/map_entry_lite.h \
+		../../../../bazel-GeoSys/external/com_google_protobuf/src/google/protobuf/generated_message_util.h \
+		../../../../bazel-GeoSys/external/com_google_protobuf/src/google/protobuf/any.h \
+		../../../../bazel-GeoSys/external/com_google_protobuf/src/google/protobuf/has_bits.h \
+		../../../../bazel-GeoSys/external/com_google_protobuf/src/google/protobuf/map_field_lite.h \
+		../../../../bazel-GeoSys/external/com_google_protobuf/src/google/protobuf/generated_message_reflection.h \
+		../../../../bazel-GeoSys/external/com_google_protobuf/src/google/protobuf/descriptor.h \
+		../../../../bazel-GeoSys/external/com_google_protobuf/src/google/protobuf/stubs/mutex.h \
+		../../../../bazel-GeoSys/external/com_google_protobuf/src/google/protobuf/generated_enum_reflection.h \
+		../../../../bazel-GeoSys/external/com_google_protobuf/src/google/protobuf/unknown_field_set.h \
+		../../../../bazel-GeoSys/external/com_google_protobuf/src/google/protobuf/io/zero_copy_stream_impl_lite.h \
+		../../../../bazel-GeoSys/external/com_google_protobuf/src/google/protobuf/stubs/callback.h \
+		../../../../bazel-GeoSys/external/com_google_protobuf/src/google/protobuf/stubs/stl_util.h \
+		../../../../bazel-GeoSys/external/com_google_protobuf/src/google/protobuf/message.h \
+		../../../../bazel-GeoSys/external/com_google_protobuf/src/google/protobuf/extension_set.h \
+		../../../calc/lib/Counter/CTUD_INT
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../../temp/Compile/nicCalcDraw/Debug/Counter.o ../../../calc/lib/Counter/Counter.cpp
+
+../../temp/Compile/nicCalcDraw/Debug/Fsm.o: ../../../calc/lib/Fsm/Fsm.cpp ../../../calc/include/k_functionblock.h \
+		../../../calc/include/k_config.h \
+		../../../calc/include/k_datatype.h \
+		../../../calc/include/k_evdata.h \
+		../../../../bazel-bin/modules/calc/proto/value.pb.h \
+		../../../../bazel-GeoSys/external/com_google_protobuf/src/google/protobuf/port_def.inc \
+		../../../../bazel-GeoSys/external/com_google_protobuf/src/google/protobuf/port_undef.inc \
+		../../../../bazel-GeoSys/external/com_google_protobuf/src/google/protobuf/io/coded_stream.h \
+		../../../../bazel-GeoSys/external/com_google_protobuf/src/google/protobuf/stubs/common.h \
+		../../../../bazel-GeoSys/external/com_google_protobuf/src/google/protobuf/stubs/macros.h \
+		../../../../bazel-GeoSys/external/com_google_protobuf/src/google/protobuf/stubs/port.h \
+		../../../../bazel-GeoSys/external/com_google_protobuf/src/google/protobuf/stubs/platform_macros.h \
+		../../../../bazel-GeoSys/external/com_google_protobuf/src/google/protobuf/stubs/stringpiece.h \
+		../../../../bazel-GeoSys/external/com_google_protobuf/src/google/protobuf/stubs/hash.h \
+		../../../../bazel-GeoSys/external/com_google_protobuf/src/google/protobuf/stubs/logging.h \
+		../../../../bazel-GeoSys/external/com_google_protobuf/src/google/protobuf/stubs/strutil.h \
+		../../../../bazel-GeoSys/external/com_google_protobuf/src/google/protobuf/port.h \
+		../../../../bazel-GeoSys/external/com_google_protobuf/src/google/protobuf/arena.h \
+		../../../../bazel-GeoSys/external/com_google_protobuf/src/google/protobuf/arena_impl.h \
+		../../../../bazel-GeoSys/external/com_google_protobuf/src/google/protobuf/arenastring.h \
+		../../../../bazel-GeoSys/external/com_google_protobuf/src/google/protobuf/generated_message_table_driven.h \
+		../../../../bazel-GeoSys/external/com_google_protobuf/src/google/protobuf/map.h \
+		../../../../bazel-GeoSys/external/com_google_protobuf/src/google/protobuf/generated_enum_util.h \
+		../../../../bazel-GeoSys/external/com_google_protobuf/src/google/protobuf/message_lite.h \
+		../../../../bazel-GeoSys/external/com_google_protobuf/src/google/protobuf/metadata_lite.h \
+		../../../../bazel-GeoSys/external/com_google_protobuf/src/google/protobuf/stubs/once.h \
+		../../../../bazel-GeoSys/external/com_google_protobuf/src/google/protobuf/map_type_handler.h \
+		../../../../bazel-GeoSys/external/com_google_protobuf/src/google/protobuf/parse_context.h \
+		../../../../bazel-GeoSys/external/com_google_protobuf/src/google/protobuf/io/zero_copy_stream.h \
+		../../../../bazel-GeoSys/external/com_google_protobuf/src/google/protobuf/implicit_weak_message.h \
+		../../../../bazel-GeoSys/external/com_google_protobuf/src/google/protobuf/repeated_field.h \
+		../../../../bazel-GeoSys/external/com_google_protobuf/src/google/protobuf/stubs/casts.h \
+		../../../../bazel-GeoSys/external/com_google_protobuf/src/google/protobuf/wire_format_lite.h \
+		../../../../bazel-GeoSys/external/com_google_protobuf/src/google/protobuf/map_entry_lite.h \
+		../../../../bazel-GeoSys/external/com_google_protobuf/src/google/protobuf/generated_message_util.h \
+		../../../../bazel-GeoSys/external/com_google_protobuf/src/google/protobuf/any.h \
+		../../../../bazel-GeoSys/external/com_google_protobuf/src/google/protobuf/has_bits.h \
+		../../../../bazel-GeoSys/external/com_google_protobuf/src/google/protobuf/map_field_lite.h \
+		../../../../bazel-GeoSys/external/com_google_protobuf/src/google/protobuf/generated_message_reflection.h \
+		../../../../bazel-GeoSys/external/com_google_protobuf/src/google/protobuf/descriptor.h \
+		../../../../bazel-GeoSys/external/com_google_protobuf/src/google/protobuf/stubs/mutex.h \
+		../../../../bazel-GeoSys/external/com_google_protobuf/src/google/protobuf/generated_enum_reflection.h \
+		../../../../bazel-GeoSys/external/com_google_protobuf/src/google/protobuf/unknown_field_set.h \
+		../../../../bazel-GeoSys/external/com_google_protobuf/src/google/protobuf/io/zero_copy_stream_impl_lite.h \
+		../../../../bazel-GeoSys/external/com_google_protobuf/src/google/protobuf/stubs/callback.h \
+		../../../../bazel-GeoSys/external/com_google_protobuf/src/google/protobuf/stubs/stl_util.h \
+		../../../../bazel-GeoSys/external/com_google_protobuf/src/google/protobuf/message.h \
+		../../../../bazel-GeoSys/external/com_google_protobuf/src/google/protobuf/extension_set.h \
+		../../../calc/lib/Fsm/FSM
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../../temp/Compile/nicCalcDraw/Debug/Fsm.o ../../../calc/lib/Fsm/Fsm.cpp
 
 ../../temp/Compile/nicCalcDraw/Debug/qrc_resource.o: ../../res/qrc_resource.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../../temp/Compile/nicCalcDraw/Debug/qrc_resource.o ../../res/qrc_resource.cpp
