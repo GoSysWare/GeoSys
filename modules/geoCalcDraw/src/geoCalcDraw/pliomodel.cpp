@@ -93,8 +93,8 @@ QVariant PLIOModel::data(const QModelIndex &index, int role) const
 
     iocell_t *cellIn, *cellOut;
     if(node->idStation >=0 && node->idModule >=0){
-        cellIn = io_getcellin(node->idStation, node->idModule);
-        cellOut = io_getcellout(node->idStation, node->idModule);
+//        cellIn = io_getcellin(node->idStation, node->idModule);
+//        cellOut = io_getcellout(node->idStation, node->idModule);
     }
     QString str, str1;
     char temp[128];

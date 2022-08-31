@@ -51,7 +51,7 @@ int main(int argc, char *argv[])
 	vnet_init();
 	vtcp_init();
 	cfgbus_init(1);
-	// stbbus_init();
+	// // stbbus_init();
 	vudp_init();
 	// io_init();
 	lib_init();

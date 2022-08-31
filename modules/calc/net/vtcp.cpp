@@ -291,7 +291,7 @@ void vtcp_init()
 
     ports_monitor = 1;
 
-    // k_thread_start(monitor_thread,NULL);
+    k_thread_start(monitor_thread,NULL);
 
     printf("monitor_thread start.\n");
 

@@ -1,6 +1,7 @@
 #include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string>
 
 #include "modules/calc/include/k_compress.h"
 #include "modules/calc/include/k_process.h"
@@ -477,6 +478,7 @@ int prj_from_img(prjimg_t *pimg) {
           buf += sizeof(int);
           p_fb->ins[i].v->ParseFromArray(buf,v_len);
           buf +=  v_len;
+          
         }        
       for (i = 0; i < p_fb->outs.size(); i++) {
           v_len = *(int*)buf;

@@ -226,13 +226,13 @@ void PLMainFrame::createDockWindows()
     dockEVData->setWidget(panelEVData);
     addDockWidget(Qt::BottomDockWidgetArea, dockEVData);
 
-    // panelTarget = new QTreeView;
-    // QFont ft("Monospaced", 9);
-    // panelTarget->setFont(ft);
-    // panelTarget->setModel(&gTarget->modelIO);
-    // dockTarget = new QDockWidget(tr("IO Stations"), this);
-    // dockTarget->setWidget(panelTarget);
-    // addDockWidget(Qt::BottomDockWidgetArea, dockTarget);
+//     panelTarget = new QTreeView;
+//     QFont ft("Monospaced", 9);
+//     panelTarget->setFont(ft);
+//     panelTarget->setModel(&gTarget->modelIO);
+//     dockTarget = new QDockWidget(tr("IO Stations"), this);
+//     dockTarget->setWidget(panelTarget);
+//     addDockWidget(Qt::BottomDockWidgetArea, dockTarget);
 }
 
 void PLMainFrame::prjNew()
@@ -578,7 +578,7 @@ void PLMainFrame::showProj()
 
 void PLMainFrame::showTarget()
 {
-    dockTarget->show();
+//    dockTarget->show();
 }
 
 void PLMainFrame::showVariable()
@@ -658,11 +658,11 @@ void PLMainFrame::updateActionState()
     }else{
         actShowVariable->setEnabled(true);
     }
-    if(dockTarget->isVisible()){
-        actShowTarget->setEnabled(false);
-    }else{
-        actShowTarget->setEnabled(true);
-    }
+//    if(dockTarget->isVisible()){
+//        actShowTarget->setEnabled(false);
+//    }else{
+//        actShowTarget->setEnabled(true);
+//    }
 
     if(gTarget->isMonitor()){
         actEditSelectAll->setEnabled(false);

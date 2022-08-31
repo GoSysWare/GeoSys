@@ -39,8 +39,9 @@ void k_thread_start(run_proc proc, void *cookie)
 	_beginthread(proc,0,cookie);
 #elif defined(_LINUX)
 	static pthread_t idThread;
-	pthread_create(&idThread, NULL, proc, cookie);
+	pthread_create(&idThread,NULL, proc, cookie);
 	pthread_detach(idThread);
+
 #endif
 }
 

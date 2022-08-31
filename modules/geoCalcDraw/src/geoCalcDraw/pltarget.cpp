@@ -31,22 +31,18 @@ void PLTarget::timerEvent(QTimerEvent *e)
                 for(j=0; j<prg->fbs.size(); j++){
                     fb = &prg->fbs[j];
                     p_fb = prj_fbfind(fb->idPrg, fb->id);
-                    n = 0;
                     // input
                     for(k=0; k<fb->input.size(); k++){
-                        fb->input[k].value = *(p_fb->ins[n].v);
-                        n++;
+                        fb->input[k].value = *(p_fb->ins[k].v);
                     }
                     // output
                     for(k=0; k<fb->output.size(); k++){
-                        fb->output[k].value = *(p_fb->outs[n].v);
-                        n++;
-                        //qDebug() << "fb" << fb->id << "pin" << k << "val" << fb->output[k].value.v.i;
+                        fb->output[k].value = *(p_fb->outs[k].v);
+                        qDebug() << "fb" << fb->id << "pin" << k << "val" << fb->output[k].value.v().i();
                     }
                     // property
                     for(k=0; k<fb->property.size(); k++){
-                        fb->property[k].value = *(p_fb->props[n].v);
-                        n++;
+                        fb->property[k].value = *(p_fb->props[k].v);
                     }
                 }
             }

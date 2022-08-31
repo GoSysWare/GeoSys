@@ -33,7 +33,7 @@ SOURCES += main.cpp \
     dlgsaveproj.cpp \
     dlgobjname.cpp \
     plionode.cpp \
-#    pliomodel.cpp \
+    pliomodel.cpp \
     dlgipaddress.cpp \
     /home/shuimujie/Works/GeoSys/bazel-bin/modules/calc/proto/value.pb.cc \
     ../../../calc/kernel/k_command.cpp \
