@@ -397,7 +397,7 @@ int prj_to_img(prjimg_t *pimg) {
         p_fb = p_en->p_fb;
         for (i = 0; i < p_fb->ins.size(); i++) {
           v_len = p_fb->ins[i].v->ByteSize();
-          memcmp(buf,&v_len,sizeof(int));
+          memcpy(buf,&v_len,sizeof(int));
           buf += sizeof(int);
           p_fb->ins[i].v->SerializeToArray(buf,v_len);
           buf +=  v_len;
@@ -405,7 +405,7 @@ int prj_to_img(prjimg_t *pimg) {
         }
         for (i = 0; i < p_fb->outs.size(); i++) {
           v_len = p_fb->outs[i].v->ByteSize();
-          memcmp(buf,&v_len,sizeof(int));
+          memcpy(buf,&v_len,sizeof(int));
           buf += sizeof(int);
           p_fb->outs[i].v->SerializeToArray(buf,v_len);
           buf +=  v_len;
@@ -413,7 +413,7 @@ int prj_to_img(prjimg_t *pimg) {
         }
        for (i = 0; i < p_fb->props.size(); i++) {
           v_len = p_fb->props[i].v->ByteSize();
-          memcmp(buf,&v_len,sizeof(int));
+          memcpy(buf,&v_len,sizeof(int));
           buf += sizeof(int);
           p_fb->props[i].v->SerializeToArray(buf,v_len);
           buf +=  v_len;

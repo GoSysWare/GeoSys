@@ -31,16 +31,22 @@ static void run_CTUD_INT(void *p) {
   }
 
   if (!in4->v().b()) {
-    if (!prop1->v().b() && in1->v().b()) {
+    // if (!prop1->v().b() && in1->v().b()) {
+    //   out3->mutable_v()->set_i(out3->v().i() + 1);
+    // }
+
+    // if (!prop2->v().b() && in2->v().b()) {
+    //   out3->mutable_v()->set_i(out3->v().i() - 1);
+    // }
+    // prop1->mutable_v()->set_b(in1->v().b());
+    // prop2->mutable_v()->set_b(in2->v().b());
+    if ( in1->v().b()) {
       out3->mutable_v()->set_i(out3->v().i() + 1);
     }
 
-    if (!prop2->v().b() && in2->v().b()) {
+    if (in2->v().b()) {
       out3->mutable_v()->set_i(out3->v().i() - 1);
     }
-    prop1->mutable_v()->set_b(in1->v().b());
-    prop2->mutable_v()->set_b(in2->v().b());
-
     if (out3->v().i() > in5->v().i()) {
       out1->mutable_v()->set_i(true);
       out2->mutable_v()->set_i(false);
