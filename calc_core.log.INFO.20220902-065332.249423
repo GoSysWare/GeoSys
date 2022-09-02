@@ -1,0 +1,9 @@
+Log file created at: 2022/09/02 06:53:32
+Running on machine: ubuntu-20
+Log line format: [IWEF]mmdd hh:mm:ss.uuuuuu threadid file:line] msg
+I0902 06:53:32.252252 249423 global_data.cc:154] host ip: 10.211.55.3
+W0902 06:53:32.252475 249423 environment.h:33] Environment variable [CYBER_PATH] not set, fallback to 
+E0902 06:53:32.252552 249423 file.cc:73] Failed to open file /apollo/cyber/conf/cyber.pb.conf in text mode.
+E0902 06:53:32.253250 249423 file.cc:99] Failed to open file /apollo/cyber/conf/cyber.pb.conf in binary mode.
+E0902 06:53:32.253405 249423 global_data.cc:160] read cyber default conf failed!
+F0902 06:53:32.253475 249423 global_data.cc:56] Check failed: InitConfig() 

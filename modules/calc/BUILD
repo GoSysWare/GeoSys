@@ -7,7 +7,7 @@ package(default_visibility = ["//visibility:public"])
 cc_binary(
     name = "calc_core",
     srcs = [
-        "main.cpp",
+        "calc_cyber.cpp",
 
     ],
     linkopts = [
@@ -23,10 +23,12 @@ cc_binary(
         # "//modules/calc/rtdb:calc_rtdb",
         "//modules/calc/include:calc_include",
         "//modules/calc/include/lib:lib_include",
-        "@com_google_protobuf//:protobuf",
+        "//cyber",
 
     ],
 )
+
+
 cc_binary(
     name = "test_calc",
     srcs = [

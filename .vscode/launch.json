@@ -19,8 +19,16 @@
             "args": [],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
-            "environment": [],
-            "externalConsole": false,
+            "environment": [
+                {
+                    "name": "CYBER_PATH",
+                    "value": "/home/shuimujie/Works/GeoSys/cyber"
+                },
+                {
+                    "name": "GLOG_log_dir",
+                    "value": "/home/shuimujie/Works/logs"
+                } 
+            ],            "externalConsole": false,
             "MIMode": "gdb",
             "setupCommands": [
                 {
