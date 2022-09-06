@@ -1,0 +1,135 @@
+
+syntax = "proto3";
+import "modules/calc/proto/value.proto";
+
+// package Cmd;
+
+enum EditType {
+  ADD = 0;  // 增加
+  RM = 1;   // 删除
+  SET = 2;  // 设置/修改
+  SHOW = 4; // 可视化输出
+}
+enum EditElement {
+  PROJ = 0;
+  TASK = 1;
+  EV = 2;
+  IO = 3;
+  FB = 4;
+  LK = 5;
+  PIN = 6;
+}
+enum TaskType {
+  UNKNOWN = 0;
+  ASYNC = 1;    // 异步任务
+  PERIODIC = 2; // 周期任务
+  SERVICE = 3;  // 服务
+  TIMER = 4;    // 定时器
+  FSM = 5;      // 状态机
+  ACTION = 6;   // action
+}
+enum RunType {
+  ONLINE = 0;
+  OFFLINE = 1;
+  RUN = 2;
+  STOP = 3;
+  RESET = 4;
+  SYNC = 5;
+  DOWNLOAD = 6;
+  UPLOAD = 7;
+}
+
+message Result {
+  int32 result_code = 1;
+  string result_msg = 2;
+}
+
+message EditProjReq { EditType type = 1; }
+message EditProjRsp { Result result = 1; }
+message EditTaskReq {
+  EditType edit_type = 1;
+  TaskType task_type = 2;
+  uint32 task_id = 3;
+  string task_name = 4;
+  uint32 period = 5;
+  repeated string topics = 6;
+}
+message EditTaskRsp {
+  Result result = 1;
+  uint32 task_id = 2;
+  string task_name = 3;
+}
+
+message EditFBReq {
+  EditType edit_type = 1;
+  uint32 task_id = 2;
+  uint32 task_name = 3;
+  uint32 fb_id = 4;
+  string flib_name = 5;
+  string fc_name = 6;
+  string fb_name = 7;
+}
+message EditFBRsp {
+  Result result = 1;
+  uint32 fb_id = 2;
+  string fb_name = 3;
+}
+
+message EditPinReq {
+  EditType edit_type = 1;
+  uint32 fb_id = 2;
+  string fb_name = 3;
+  uint32 pin_index = 4;
+  string pin_name = 5;
+  value_tm pin_val = 6;
+}
+message EditPinRsp {
+  Result result = 1;
+  uint32 fb_id = 2;
+  string fb_name = 3;
+  uint32 pin_index = 4;
+  string pin_name = 5;
+}
+message EditEVReq {
+  EditType edit_type = 1;
+  uint32 ev_id = 2;
+  string ev_name = 3;
+  value_tm val = 4;
+}
+message EditEVRsp {
+  Result result = 1;
+  uint32 ev_id = 2;
+  string ev_name = 3;
+}
+message EditLinkReq {
+  EditType edit_type = 1;
+  uint32 task_id = 2;
+  string task_name = 3;
+  uint32 lk_id = 4;
+  string lk_name = 5;
+  uint32 src_fb_id = 6;
+  string src_fb_name = 7;
+  string src_pin_index = 8;
+  uint32 target_fb_id = 9;
+  string target_fb_name = 10;
+  string target_pin_index = 11;
+}
+message EditLinkRsp {
+  Result result = 1;
+  uint32 lk_id = 2;
+  string lk_name = 3;
+}
+
+message EditInfo {
+  uint32 id = 1;
+  EditElement element = 2;
+  oneof info {
+    EditProjReq proj = 3;
+    EditTaskReq task = 4;
+    EditFBReq fb = 5;
+    EditPinReq pin = 6;
+    EditEVReq ev = 7;
+    EditLinkReq lk = 8;
+  }
+}
+message EditInfos { repeated EditInfo infos = 1; }

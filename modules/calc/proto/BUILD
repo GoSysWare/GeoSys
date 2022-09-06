@@ -10,7 +10,18 @@ load("@rules_proto//proto:defs.bzl", "proto_library")
 package(default_visibility = ["//visibility:public"])
 
 
+cc_proto_library(
+    name = "cmd_cc_proto",
+    deps = [":cmd_proto"], 
+)
 
+proto_library(
+    name = "cmd_proto",
+    srcs = ["cmd.proto"],
+    deps = [
+        ":value_proto",
+    ],
+)
 cc_proto_library(
     name = "value_cc_proto",
     deps = [":value_proto"], 
