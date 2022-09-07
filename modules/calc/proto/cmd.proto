@@ -2,17 +2,17 @@
 syntax = "proto3";
 import "modules/calc/proto/value.proto";
 
-// package Cmd;
+package Cmd;
 
 enum EditType {
   ADD = 0;  // 增加
   RM = 1;   // 删除
   SET = 2;  // 设置/修改
-  SHOW = 4; // 可视化输出
+  SHOW = 3; // 可视化输出
 }
 enum EditElement {
   PROJ = 0;
-  Mod  = 1;
+  MOD  = 1;
   TASK = 2;
   EV = 3;
   IO = 4;
@@ -21,13 +21,12 @@ enum EditElement {
   PIN = 7;
 }
 enum TaskType {
-  UNKNOWN = 0;
+  PERIODIC = 0; // 周期任务
   ASYNC = 1;    // 异步任务
-  PERIODIC = 2; // 周期任务
-  SERVICE = 3;  // 服务
-  TIMER = 4;    // 定时器
-  FSM = 5;      // 状态机
-  ACTION = 6;   // action
+  SERVICE = 2;  // 服务
+  TIMER = 3;    // 定时器
+  FSM = 4;      // 状态机
+  ACTION = 5;   // action
 }
 enum RunType {
   ONLINE = 0;
@@ -46,7 +45,7 @@ message Result {
 }
 
 message EditProjReq { 
-    EditType type = 1;
+    EditType edit_type = 1;
     uint32 proj_id = 2;
     string proj_name = 3;   
 }
@@ -56,11 +55,12 @@ message EditProjRsp {
     string proj_name = 3;
 }
 message EditModuleReq { 
-    EditType type = 1; 
+    EditType edit_type = 1; 
     uint32 proj_id = 2;
     string proj_name = 3;      
     uint32 mod_id = 4;
     string mod_name = 5;
+    string uuid = 6;
 }
 message EditModuleRsp { 
     Result result = 1; 

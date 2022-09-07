@@ -39,6 +39,33 @@
             ]
         },
         {
+            "name": "Test Engine",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/bazel-bin/modules/calc/robot_engine",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [
+                {
+                    "name": "CYBER_PATH",
+                    "value": "/home/shuimujie/Works/GeoSys/cyber"
+                },
+                {
+                    "name": "GLOG_log_dir",
+                    "value": "/home/shuimujie/Works/logs"
+                } 
+            ],            "externalConsole": false,
+            "MIMode": "gdb",
+            "setupCommands": [
+                {
+                    "description": "为 gdb 启用整齐打印",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ]
+        },
+        {
             "name": "Test V",
             "type": "cppdbg",
             "request": "launch",
