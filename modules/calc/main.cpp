@@ -1,85 +1,41 @@
 #include "modules/calc/include/k_project.h"
 #include "modules/calc/include/k_command.h"
 #include "modules/calc/include/k_process.h"
-#include "modules/calc/include/vnet.h"
-#include "modules/calc/include/vtcp.h"
-#include "modules/calc/include/vudp.h"
-#include "modules/calc/include/cfgbus.h"
-
 #include "modules/calc/include/k_lib.h"
 
-#include <stdlib.h>
-#include <stdio.h>
+
+#include "cyber/cyber.h"
+#include "cyber/timer/timer.h"
+
+#include <iostream>
 #include <memory>
+#include <stdio.h>
+#include <stdlib.h>
 
-
-static char line[80];
-static int parse_line(char *line)
-{
-	char line1[80];
-	if (strcmp(line, "quit") == 0) {
-		return 0;
-	}
-
-	sprintf(line1, "0;%s", line);
-	cmd_dispatch(line1);
-	return 1;
-}
 
 
 int main(int argc, char *argv[])
 {
+ apollo::cyber::Init(argv[0]);
+  // create talker node
+  auto engine_node = apollo::cyber::CreateNode("robot_engine");
+
+  // create talker
+  auto talker = talker_node->CreateWriter<Chatter>("channel/chatter");
+
+  lib_init();
+  prj_init(1);
+
+  uint64_t interval_ = 1000;
+  std::unique_ptr<apollo::cyber::Timer> timer_;
+  auto func = []() {
+    prj_exec();
+    ev_dump();
+  };
+  timer_.reset(new apollo::cyber::Timer(interval_, func, false));
+  timer_->Start();
+
+  apollo::cyber::WaitForShutdown();	
 	
-	int i;
-	for (i = 1; i < argc; i++) {
-		if (strcmp(argv[i], "-a") == 0) {
-			prj_info()->id_stb = 0xa;
-		}
-		else if (strcmp(argv[i], "-b") == 0) {
-			prj_info()->id_stb = 0xb;
-		}
-		else {
-			prj_info()->id_stb = 0xc;
-		}
-		if (strcmp(argv[i], "-dn") == 0) {
-			vnet_init();
-			vnet_dump_ifs();
-			return 0;
-		}
-	}
-
-	vnet_init();
-	vtcp_init();
-	cfgbus_init(1);
-	// // stbbus_init();
-	vudp_init();
-	// io_init();
-	lib_init();
-	prj_init(1);
-
-	//if (-1 != cmds_load(cmdsbuf, sizeof(cmdsbuf) - 1)) {
-		//cmds_dispatch(cmdsbuf);
-	//}
-	//else {
-		//cmds_dispatch("0;setprj;{00000000-0000-0000-0000-00000000};");
-	//}
-	//String cmdLine="0;dumpimg;,;,";
-	///cmd_dispatch(":0;dumpimg;,;,");
-	//        while(1){
-	//	k_sleep(1000);
-	//}
-	printf("prj_main_loop start.\n");
-
-	k_thread_start(prj_main_loop, 0);
-
-	//do {
-	//	printf("-");
-	//	gets(line);
-	//} while (parse_line(line));
-
-	while (!getchar())
-	{
-		k_sleep(3000);
-	}
-	//prj_main_loop();
+	
 }

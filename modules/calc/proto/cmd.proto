@@ -12,12 +12,13 @@ enum EditType {
 }
 enum EditElement {
   PROJ = 0;
-  TASK = 1;
-  EV = 2;
-  IO = 3;
-  FB = 4;
-  LK = 5;
-  PIN = 6;
+  Mod  = 1;
+  TASK = 2;
+  EV = 3;
+  IO = 4;
+  FB = 5;
+  LK = 6;
+  PIN = 7;
 }
 enum TaskType {
   UNKNOWN = 0;
@@ -44,20 +45,46 @@ message Result {
   string result_msg = 2;
 }
 
-message EditProjReq { EditType type = 1; }
-message EditProjRsp { Result result = 1; }
+message EditProjReq { 
+    EditType type = 1;
+    uint32 proj_id = 2;
+    string proj_name = 3;   
+}
+message EditProjRsp { 
+    Result result = 1;
+    uint32 proj_id = 2;
+    string proj_name = 3;
+}
+message EditModuleReq { 
+    EditType type = 1; 
+    uint32 proj_id = 2;
+    string proj_name = 3;      
+    uint32 mod_id = 4;
+    string mod_name = 5;
+}
+message EditModuleRsp { 
+    Result result = 1; 
+    uint32 proj_id = 2;
+    string proj_name = 3;      
+    uint32 mod_id = 4;
+    string mod_name = 5;
+}
 message EditTaskReq {
   EditType edit_type = 1;
   TaskType task_type = 2;
-  uint32 task_id = 3;
-  string task_name = 4;
-  uint32 period = 5;
-  repeated string topics = 6;
+  uint32 mod_id = 3;
+  string mod_name = 4;  
+  uint32 task_id = 5;
+  string task_name = 6;
+  uint32 period = 7;
+  repeated string topics = 8;
 }
 message EditTaskRsp {
   Result result = 1;
-  uint32 task_id = 2;
-  string task_name = 3;
+  uint32 mod_id = 2;
+  string mod_name = 3; 
+  uint32 task_id = 4;
+  string task_name = 5;
 }
 
 message EditFBReq {
@@ -125,11 +152,12 @@ message EditInfo {
   EditElement element = 2;
   oneof info {
     EditProjReq proj = 3;
-    EditTaskReq task = 4;
-    EditFBReq fb = 5;
-    EditPinReq pin = 6;
-    EditEVReq ev = 7;
-    EditLinkReq lk = 8;
+    EditModuleReq mod = 4;
+    EditTaskReq task = 5;
+    EditFBReq fb = 6;
+    EditPinReq pin = 7;
+    EditEVReq ev = 8;
+    EditLinkReq lk = 9;
   }
 }
 message EditInfos { repeated EditInfo infos = 1; }

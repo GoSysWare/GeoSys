@@ -22,4 +22,5 @@ static fb_t fb_ADD_INT = {
     {{"EN", T_BOOL, nullptr},
      {"IN1", T_INT32, nullptr},
      {"IN2", T_INT32, nullptr}},
-    {{"STATUS", T_INT32, nullptr}, {"OUT", T_INT32, nullptr}}};
+    {{"STATUS", T_INT32, nullptr}, 
+    {"OUT", T_INT32, nullptr}}};
