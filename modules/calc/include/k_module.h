@@ -8,15 +8,6 @@
 #include "k_program.h"
 #include "k_io.h"
 
-typedef struct ModInfo{
-	std::string uuid;
-	int id_cmd;
-	int id_stb;
-	int stat;
-	int peerlife;
-	int imgsize;
-	int zimgsize;
-}modinfo_t;
 
 
 typedef struct MNode{
@@ -35,6 +26,12 @@ typedef struct MNode{
 typedef struct Module{
 	mnode_t mn_head;
 	mnode_t *p_mn_select;
+	mnode_t *p_mn_task;
+	mnode_t *p_mn_service;
+	mnode_t *p_mn_period;
+	mnode_t *p_mn_action;
+	mnode_t *p_mn_fsm;
+	mnode_t *p_mn_timer;
 }mod_t;
 
 void *mod_main_loop(void* sth);
@@ -51,8 +48,7 @@ void mod_delete(mod_t *p_mod);
 int mod_prgadd(mod_t *p_mod,int id, std::string name);
 int mod_prgremove(mod_t *p_mod,int id);
 void mod_exec(mod_t *p_mod);
-modinfo_t *mod_info(mod_t *p_mod);
-modinfo_t *mod_info_p(mod_t *p_mod);
+
 
 int mod_fbadd(mod_t *p_mod,int idprg, int id, char *libname, char *fcname, char *fbname);
 int mod_fbremove(mod_t *p_mod,int idprg, int id);

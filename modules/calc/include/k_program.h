@@ -31,6 +31,7 @@ typedef struct ENode{
 	int mark{0};
 } enode_t;
 
+// prg的动态运行信息
 typedef struct ProgramInfo{
 	int status;
 	u_int64_t begin_time;
