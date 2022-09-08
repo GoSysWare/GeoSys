@@ -42,8 +42,8 @@ void prj_init(int server);
 void prj_uninit();
 void prj_reset();
 
-int prj_modadd(int idmod, std::string name);
-int prj_modremove(int mod);
+int prj_modadd(int idmod, std::string name,std::string desc);
+int prj_modremove(int idmod);
 
 int prj_prgadd(int idmod,int idprg, std::string name);
 int prj_prgremove(int idmod,int idprg);
