@@ -9,6 +9,8 @@
 #include "modules/calc/include/k_state.h"
 #include "modules/calc/include/k_util.h"
 
+#include "modules/calc/proto/cmd.pb.h"
+
 static mnode_t *mn_new() { return new mnode_t; }
 
 static void mn_delete(mnode_t *p) { delete p; }
@@ -35,8 +37,31 @@ static void mn_remove(mnode_t *p)
   p->p_next->p_prev = p->p_prev;
 }
 
-void mod_run(mod_t *p_mod) {}
-void mod_stop(mod_t *p_mod) {}
+void mod_stop(mod_t *p_mod) {
+    mnode_t *p_mn;
+
+  p_mn = p_mod->mn_head.p_next;
+  while (p_mn != &p_mod->mn_head)
+  {
+    if(p_mn->type == Cmd::TaskType::PERIODIC)
+    {
+        p_mn->timer.Stop();
+
+    } else if (p_mn->type == Cmd::TaskType::SERVICE)
+    {
+
+      /* code */
+    } else if (p_mn->type == Cmd::TaskType::FSM)
+    {
+        p_mn->timer.Stop();     
+
+    } else if (p_mn->type == Cmd::TaskType::ACTION)
+    {
+      /* code */
+    }    
+    p_mn = p_mn->p_next;
+  }
+}
 void mod_init(mod_t *p_mod) {}
 void mod_uninit(mod_t *p_mod) {}
 
@@ -199,28 +224,7 @@ int mod_prgadd(mod_t *p_mod, int id, std::string name)
   return 0;
 }
 
-// 根据现有的prg新建
-int mod_prgnew(mod_t *p_mod, int id, std::string name,std::string creator)
-{
-  mod_prgselect(p_mod, id);
 
-  if (p_mod->p_mn_select == &p_mod->mn_head)
-  {
-    return -1;
-  }
-
-  prg_new(p_mod->p_mn_select->p_prg);
-
-  mn_remove(p_mod->p_mn_select);
-  mn_delete(p_mod->p_mn_select);
-
-  p_mod->p_mn_select = &p_mod->mn_head;
-
-  return 0;
-  mn_addbefore(p_pn, &p_mod->mn_head);
-
-  return 0;
-}
 
 int mod_prgremove(mod_t *p_mod, int id)
 {
@@ -240,14 +244,40 @@ int mod_prgremove(mod_t *p_mod, int id)
   return 0;
 }
 
-void mod_exec(mod_t *p_mod)
+void mod_exec(mod_t *p_mod,,std::share_ptr<apollo::cyber::Node> node)
 {
   mnode_t *p_mn;
 
   p_mn = p_mod->mn_head.p_next;
   while (p_mn != &p_mod->mn_head)
   {
-    prg_exec(p_mn->p_prg);
+    if(p_mn->type == Cmd::TaskType::PERIODIC)
+    {
+        apollo::cyber::TimerOption opt;
+        opt.oneshot = false;
+        opt.callback = [p_mn]() { prg_exec(p_mn->p_prg); };
+        opt.period = p_mn->interval;
+        p_mn->timer.SetTimerOption(opt);
+        p_mn->timer.Start();
+
+    } else if (p_mn->type == Cmd::TaskType::SERVICE)
+    {
+      node->CreateService<>
+
+      /* code */
+    } else if (p_mn->type == Cmd::TaskType::FSM)
+    {
+        apollo::cyber::TimerOption opt;
+        opt.oneshot = false;
+        opt.callback = [p_mn]() { prg_exec(p_mn->p_prg); };
+        opt.period = p_mn->interval;
+        p_mn->timer.SetTimerOption(opt);
+        p_mn->timer.Start();     
+
+    } else if (p_mn->type == Cmd::TaskType::ACTION)
+    {
+      /* code */
+    }    
     p_mn = p_mn->p_next;
   }
 }

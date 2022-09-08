@@ -203,6 +203,8 @@ int prj_modadd(int id, std::string name, std::string desc)
   p_pn->id = id;
   p_pn->name = name;
   p_pn->desc = desc;
+
+  p_pn->cyber_node = apollo::cyber::CreateNode(p_pn->name);
   pn_addbefore(p_pn, &pn_head);
 
   return 0;

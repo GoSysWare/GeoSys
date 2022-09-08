@@ -7,7 +7,7 @@
 #include "k_config.h"
 #include "k_program.h"
 #include "k_io.h"
-
+#include "cyber/timer/timer.h"
 
 
 typedef struct MNode{
@@ -18,7 +18,8 @@ typedef struct MNode{
     int type;
     bool enable;
     std::string creator;
-    uint64_t period;
+	apollo::cyber::Timer timer;
+    int interval;
     std::vector<std::string> topic;
     proginfo_t info;
     prog_t *p_prg;
@@ -54,7 +55,7 @@ void mod_delete(mod_t *p_mod);
 
 int mod_prgadd(mod_t *p_mod,int id, std::string name);
 int mod_prgremove(mod_t *p_mod,int id);
-void mod_exec(mod_t *p_mod);
+void mod_exec(mod_t *p_mod,std::share_ptr<apollo::cyber::Node> node);
 
 
 int mod_fbadd(mod_t *p_mod,int idprg, int id, char *libname, char *fcname, char *fbname);
