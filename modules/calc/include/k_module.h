@@ -25,6 +25,12 @@ typedef struct MNode{
 
 typedef struct Module{
 	mnode_t mn_head;
+	mnode_t mn_task_head;
+	mnode_t mn_serivce_head;
+	mnode_t mn_period_head;
+	mnode_t mn_action_head;
+	mnode_t mn_fsm_head;
+	mnode_t mn_timer_head;
 	mnode_t *p_mn_select;
 	mnode_t *p_mn_task;
 	mnode_t *p_mn_service;

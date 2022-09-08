@@ -65,6 +65,30 @@ mod_t *mod_new()
     p_new->mn_head.p_prev = &p_new->mn_head;
     p_new->mn_head.p_next = &p_new->mn_head;
     p_new->p_mn_select = &p_new->mn_head;
+
+    p_new->mn_task_head.p_prev = &p_new->mn_task_head;
+    p_new->mn_task_head.p_next = &p_new->mn_task_head;
+    p_new->p_mn_task = &p_new->mn_task_head;  
+
+    p_new->mn_serivce_head.p_prev = &p_new->mn_serivce_head;
+    p_new->mn_serivce_head.p_next = &p_new->mn_serivce_head;
+    p_new->p_mn_service = &p_new->mn_serivce_head;  
+
+    p_new->mn_period_head.p_prev = &p_new->mn_period_head;
+    p_new->mn_period_head.p_next = &p_new->mn_period_head;
+    p_new->p_mn_period = &p_new->mn_period_head;  
+  
+    p_new->mn_action_head.p_prev = &p_new->mn_action_head;
+    p_new->mn_action_head.p_next = &p_new->mn_action_head;
+    p_new->p_mn_action = &p_new->mn_action_head;  
+
+    p_new->mn_fsm_head.p_prev = &p_new->mn_fsm_head;
+    p_new->mn_fsm_head.p_next = &p_new->mn_fsm_head;
+    p_new->p_mn_fsm = &p_new->mn_fsm_head;  
+
+    p_new->mn_timer_head.p_prev = &p_new->mn_timer_head;
+    p_new->mn_timer_head.p_next = &p_new->mn_timer_head;
+    p_new->p_mn_timer = &p_new->mn_timer_head;  
   }
 
   return p_new;
