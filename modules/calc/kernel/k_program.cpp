@@ -55,8 +55,8 @@ static void en_moveafter(enode_t *p_en, enode_t *p_ref)
 
 void prg_exec(prog_t *p_prg)
 {
+	std::lock_guard<std::mutex> lock(p_prg->mtx);
 	enode_t *p_en;
-	
 	/* fb to fb */
 	p_en = p_prg->en_head.p_next;
 	while(p_en != &p_prg->en_head){
@@ -86,7 +86,7 @@ prog_t *prg_new()
 
 prog_t * prg_new(prog_t *p_source) {
   prog_t  *p_dst = 0;
-  enode_t *p_en, *p_erm;
+  enode_t *p_en, *p_erm,*p_new;
 
   p_dst = prg_new();
   if (p_dst) {
@@ -95,6 +95,9 @@ prog_t * prg_new(prog_t *p_source) {
 	while(p_en != &p_source->en_head){
 		p_erm = p_en;
 		p_en = p_en->p_next;
+		p_new = en_new();
+		p_new ->
+
 		if(p_erm->p_fb != 0){
 			fb_delete(p_erm->p_fb);
 		}
