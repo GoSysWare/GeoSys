@@ -5,6 +5,7 @@
 #include "k_config.h"
 #include "k_module.h"
 #include "k_io.h"
+#include "cyber/cyber.h"
 
 typedef struct PrjInfo{
 	std::string uuid;
@@ -30,6 +31,7 @@ typedef struct PNode{
     std::string  name;
 	std::string  desc;
 	bool enable;
+	std::unique_ptr<apollo::cyber::Node> cyber_node;
     mod_t *p_mod;
 }pnode_t;
 
