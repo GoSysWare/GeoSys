@@ -84,6 +84,27 @@ prog_t *prg_new()
 	return p_new;
 }
 
+prog_t * prg_new(prog_t *p_source) {
+  prog_t  *p_dst = 0;
+  enode_t *p_en, *p_erm;
+
+  p_dst = prg_new();
+  if (p_dst) {
+	/* clear enode list */
+	p_en = p_source->en_head.p_next;
+	while(p_en != &p_source->en_head){
+		p_erm = p_en;
+		p_en = p_en->p_next;
+		if(p_erm->p_fb != 0){
+			fb_delete(p_erm->p_fb);
+		}
+		en_remove(p_erm);
+		en_delete(p_erm);
+	}	
+  }
+  return p_dst;
+}
+
 void prg_delete(prog_t *p_prg)
 {
 	enode_t *p_en, *p_erm;

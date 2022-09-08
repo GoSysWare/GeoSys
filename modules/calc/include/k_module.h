@@ -17,6 +17,7 @@ typedef struct MNode{
     std::string  name;
     int type;
     bool enable;
+    std::string creator;
     uint64_t period;
     std::vector<std::string> topic;
     proginfo_t info;

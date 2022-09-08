@@ -55,6 +55,66 @@ void mod_reset(mod_t *p_mod)
   }
   ev_reset();
 }
+
+
+static int mod_prgselect(mod_t *p_mod, int id)
+{
+  mnode_t *p_mn;
+
+  if (id == 0)
+  {
+    p_mod->p_mn_select = &p_mod->mn_head;
+    return -1;
+  }
+
+  if (p_mod->p_mn_select->id == id)
+  {
+    return 0;
+  }
+
+  p_mn = p_mod->mn_head.p_next;
+  while (p_mn != &p_mod->mn_head)
+  {
+    if (p_mn->id == id)
+    {
+      p_mod->p_mn_select = p_mn;
+      return 0;
+    }
+    p_mn = p_mn->p_next;
+  }
+
+  return -1;
+}
+
+static int mod_prgselect(mod_t *p_mod, std::string prog_name)
+{
+  mnode_t *p_mn;
+
+  if (prog_name.size() == 0)
+  {
+    p_mod->p_mn_select = &p_mod->mn_head;
+    return -1;
+  }
+
+  if (p_mod->p_mn_select->name == prog_name)
+  {
+    return 0;
+  }
+
+  p_mn = p_mod->mn_head.p_next;
+  while (p_mn != &p_mod->mn_head)
+  {
+    if (p_mn->name == prog_name)
+    {
+      p_mod->p_mn_select = p_mn;
+      return 0;
+    }
+    p_mn = p_mn->p_next;
+  }
+
+  return -1;
+}
+
 mod_t *mod_new()
 {
   mod_t *p_new;
@@ -139,63 +199,29 @@ int mod_prgadd(mod_t *p_mod, int id, std::string name)
   return 0;
 }
 
-static int mod_prgselect(mod_t *p_mod, int id)
+// 根据现有的prg新建
+int mod_prgnew(mod_t *p_mod, int id, std::string name,std::string creator)
 {
-  mnode_t *p_mn;
+  mod_prgselect(p_mod, id);
 
-  if (id == 0)
+  if (p_mod->p_mn_select == &p_mod->mn_head)
   {
-    p_mod->p_mn_select = &p_mod->mn_head;
     return -1;
   }
 
-  if (p_mod->p_mn_select->id == id)
-  {
-    return 0;
-  }
+  prg_new(p_mod->p_mn_select->p_prg);
 
-  p_mn = p_mod->mn_head.p_next;
-  while (p_mn != &p_mod->mn_head)
-  {
-    if (p_mn->id == id)
-    {
-      p_mod->p_mn_select = p_mn;
-      return 0;
-    }
-    p_mn = p_mn->p_next;
-  }
+  mn_remove(p_mod->p_mn_select);
+  mn_delete(p_mod->p_mn_select);
 
-  return -1;
+  p_mod->p_mn_select = &p_mod->mn_head;
+
+  return 0;
+  mn_addbefore(p_pn, &p_mod->mn_head);
+
+  return 0;
 }
 
-static int mod_prgselect(mod_t *p_mod, std::string prog_name)
-{
-  mnode_t *p_mn;
-
-  if (prog_name.size() == 0)
-  {
-    p_mod->p_mn_select = &p_mod->mn_head;
-    return -1;
-  }
-
-  if (p_mod->p_mn_select->name == prog_name)
-  {
-    return 0;
-  }
-
-  p_mn = p_mod->mn_head.p_next;
-  while (p_mn != &p_mod->mn_head)
-  {
-    if (p_mn->name == prog_name)
-    {
-      p_mod->p_mn_select = p_mn;
-      return 0;
-    }
-    p_mn = p_mn->p_next;
-  }
-
-  return -1;
-}
 int mod_prgremove(mod_t *p_mod, int id)
 {
   mod_prgselect(p_mod, id);
