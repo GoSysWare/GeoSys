@@ -79,7 +79,6 @@ prog_t *prg_new()
 		p_new->en_head.p_prev = &p_new->en_head;
 		p_new->en_head.p_next = &p_new->en_head;
 		p_new->p_en_select = &p_new->en_head;
-
 	}
 
 	return p_new;

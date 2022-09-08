@@ -20,6 +20,7 @@ cc_library(
         "k_lib.h",
         "k_process.h",
         "k_program.h",
+        "k_module.h",
         "k_project.h",
         "k_state.h",
         "k_util.h",

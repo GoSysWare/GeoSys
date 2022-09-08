@@ -118,6 +118,22 @@ cc_library(
     ],
 )
 cc_library(
+    name = "k_module",
+    includes = [
+    ],
+    hdrs = [
+
+    ],
+    srcs = [
+        "k_module.cpp",
+    ],
+    deps = [
+        "//modules/calc/include:calc_include",
+        "//modules/calc/include/lib:lib_include",
+        "//modules/calc/proto:value_cc_proto",
+    ],
+)
+cc_library(
     name = "k_project",
     includes = [
     ],

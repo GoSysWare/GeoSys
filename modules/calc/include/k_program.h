@@ -31,6 +31,12 @@ typedef struct ENode{
 	int mark{0};
 } enode_t;
 
+typedef struct ProgramInfo{
+	int status;
+	u_int64_t begin_time;
+	u_int64_t last_time;
+} proginfo_t;
+
 
 typedef struct Program{
 	enode_t en_head;
