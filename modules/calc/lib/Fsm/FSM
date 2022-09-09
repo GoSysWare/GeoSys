@@ -5,8 +5,8 @@ static void run_FSM(void *p) {
   vam_t from_singal = pb->ins[2].v;
   vam_t cur_state = pb->ins[3].v;
   vam_t targe_state = pb->ins[4].v;
-  vam_t to_singal = pb->outs[1].v;
-  vam_t action_singal = pb->outs[2].v;
+  vam_t &to_singal = pb->outs[1].v;
+  vam_t &action_singal = pb->outs[2].v;
 
   if(from_singal->v().b() == false)
   {

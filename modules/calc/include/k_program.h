@@ -42,6 +42,8 @@ typedef struct ProgramInfo{
 typedef struct Program{
 	enode_t en_head;
 	enode_t *p_en_select;
+	vam_t request;
+	vam_t response;
 	std::mutex mtx;
 } prog_t;
 

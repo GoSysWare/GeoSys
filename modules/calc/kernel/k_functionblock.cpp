@@ -166,7 +166,6 @@ int fb_setpin(fb_t *p_fb, int pintype, unsigned int n, vam_t v) {
   }
 
   p_pin->v = v;
-  //等函数执行完 局部变量v的计数器-1,管脚的v计数器依然为1
   return 0;
 }
 

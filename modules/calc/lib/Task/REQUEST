@@ -1,0 +1,91 @@
+static void run_REQUEST(void *p) {
+
+  fb_t *pb = (fb_t *)p; 
+  //这个pin被系统内置为resquest
+  vam_t  prg_request = pb->ins[1].v;
+  vam_t  &request_bool = pb->outs[1].v;
+  vam_t  &request_i32 = pb->outs[2].v;
+  vam_t  &request_u32 = pb->outs[3].v;
+  vam_t  &request_i64 = pb->outs[4].v;
+  vam_t  &request_ui64 = pb->outs[5].v;
+  vam_t  &request_float = pb->outs[6].v;
+  vam_t  &request_double = pb->outs[7].v;
+  vam_t  &request_time = pb->outs[8].v;
+  vam_t  &request_str = pb->outs[9].v;
+  vam_t  &request_bytes = pb->outs[10].v;
+  vam_t  &request_img = pb->outs[11].v;
+  vam_t  &request_lidar = pb->outs[12].v;
+  vam_t  &request_sonar = pb->outs[13].v;
+  vam_t  &request_file = pb->outs[14].v;
+
+
+    //根据request的类型触发对应的pin 复现用户数据
+    switch(prg_request->mutable_v()->t()){
+    case v_type::T_BOOL:
+        request_bool = prg_request;
+        break;
+    case v_type::T_INT32:
+        request_i32 = prg_request;
+        break;
+    case v_type::T_UINT32:
+        request_u32 = prg_request;
+        break;
+    case v_type::T_INT64:
+        request_i64 = prg_request;
+        break;
+    case v_type::T_UINT64:
+        request_u64 = prg_request;
+        break;
+    case v_type::T_FLOAT32:
+        request_float = prg_request;
+        break;
+    case v_type::T_FLOAT64:
+        request_double = prg_request;
+        break;
+    case v_type::T_TIME:
+        request_time = prg_request;
+        break;
+    case v_type::T_STRING:
+        request_str = prg_request;
+        break;
+    case v_type::T_BYTES:
+        request_bytes= prg_request;
+        break;
+    case v_type::T_IMAGE:
+        request_img = prg_request;
+        break;
+    case v_type::T_LIDAR:
+        request_lidar = prg_request;
+        break;
+    case v_type::T_SONAR:
+        request_sonar = prg_request;
+        break;
+    case v_type::T_FILE:
+        request_file = prg_request;
+        break;
+    default:
+        ;
+    }  
+
+  return;
+}
+
+static fb_t fb_REQUEST = {{"REQUEST", 0, run_REQUEST},
+                        {{"EN", T_BOOL, nullptr}，
+                        {"REQUEST", T_NONE, nullptr}},
+                        {{"STATUS", T_INT32, nullptr},
+                         {"REQUEST_BOOL", T_BOOL, nullptr},
+                         {"REQUEST_INT32", T_INT32, nullptr},
+                         {"REQUEST_UINT32", T_UINT32, nullptr},
+                         {"REQUEST_T_INT64", T_INT64, nullptr},
+                         {"REQUEST_T_UINT64", T_UINT64, nullptr},
+                         {"REQUEST_FLOAT32", T_FLOAT32, nullptr},
+                         {"REQUEST_FLOAT64", T_FLOAT64, nullptr},
+                         {"REQUEST_TIME", T_TIME, nullptr},
+                         {"REQUEST_STRING", T_STRING, nullptr},
+                         {"REQUEST_BYTES", T_BYTES, nullptr},
+                         {"REQUEST_IMAGE", T_IMAGE, nullptr},
+                         {"REQUEST_LIDAR", T_LIDAR, nullptr},
+                         {"REQUEST_SONAR", T_SONAR, nullptr},
+                         {"REQUEST_FILE", T_FILE, nullptr}
+                         }};

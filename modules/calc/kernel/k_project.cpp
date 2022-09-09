@@ -55,50 +55,6 @@ static void clear_prjinfo()
   info.id_cmd = 0;
 }
 
-void *prj_main_loop(void *sth)
-{
-  while (1)
-  {
-    if (is_run)
-    {
-      // printf("prj lock\n");
-#ifdef SIMULATOR
-
-      k_sleep(INPUTCYCLE);
-      //   io_input();
-      k_rlock(prjlock);
-      prj_exec();
-      ev_dump();
-      k_runlock(prjlock);
-      k_sleep(OUTPUTCYCLE);
-      //   io_output();
-#else
-      if (info.stat == S_PRIMARY)
-      {
-        io_input();
-        k_rlock(prjlock);
-        prj_exec();
-        k_runlock(prjlock);
-      }
-      else
-      {
-        k_sleep(EMPTYCYClE);
-      }
-
-      state_check();
-      if (info.stat == S_PRIMARY)
-      {
-        io_output();
-      }
-#endif
-      // printf("prj unlock\n");
-    }
-    else
-    {
-      k_sleep(10);
-    }
-  }
-}
 
 void prj_run() { is_run = 1; }
 

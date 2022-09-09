@@ -18,6 +18,7 @@
 #include "modules/calc/include/lib/System.h"
 #include "modules/calc/include/lib/Trigger.h"
 #include "modules/calc/include/lib/Timer.h"
+#include "modules/calc/include/lib/Task.h"
 
 #define NLIBCOUNT 32
 static size_t cursor;
@@ -52,6 +53,7 @@ void lib_init()
 	// lib_set_table(14, "Timer", timer_first, timer_next);
    // lib_set_table(15, "Opencv", opencv_first, opencv_next);
     lib_set_table(16, "Fsm", fsm_first, fsm_next);
+	lib_set_table(17, "Task", task_first, task_next);
 
 	cursor = 0;
 }

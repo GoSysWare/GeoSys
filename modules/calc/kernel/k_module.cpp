@@ -207,6 +207,7 @@ int mod_prgadd(mod_t *p_mod, int id, std::string name, int type) {
   p_pn->p_prg = p_prg;
   p_pn->id = id;
   p_pn->name = name;
+  p_pn->type = type;
 
   mn_addbefore(p_pn, &p_mod->mn_head);
 
@@ -238,20 +239,24 @@ void mod_exec(mod_t *p_mod, std::shared_ptr<apollo::cyber::Node> node) {
       apollo::cyber::TimerOption opt;
       opt.oneshot = false;
       opt.callback = [p_mn]() { prg_exec(p_mn->p_prg); };
-      opt.period = p_mn->interval;
-      p_mn->timer.SetTimerOption(opt);
-      p_mn->timer.Start();
+      opt.period = ((period_node_t *)p_mn)->interval;
+      ((period_node_t *)p_mn)->timer.SetTimerOption(opt);
+      ((period_node_t *)p_mn)->timer.Start();
     } else if (p_mn->type == Cmd::TaskType::SERVICE) {
-      //服务是长驻的，但输入输出在此模式下如何表达呢
-      auto f = [p_mn](vam_t request, vam_t response) { prg_exec(p_mn->p_prg); };
-      auto service_ = node->CreateService<vam_t, vam_t>(p_mn->name, f);
+     
+      auto f = [p_mn]( const vam_t &request, vam_t &response) { 
+        p_mn->p_prg->request = request;
+        p_mn->p_prg->response = response;
+        prg_exec(p_mn->p_prg); 
+        };
+      auto service_ = node->CreateService<value_tm, value_tm>(p_mn->name, f);
     } else if (p_mn->type == Cmd::TaskType::FSM) {
       apollo::cyber::TimerOption opt;
       opt.oneshot = false;
       opt.callback = [p_mn]() { prg_exec(p_mn->p_prg); };
-      opt.period = p_mn->interval;
-      p_mn->timer.SetTimerOption(opt);
-      p_mn->timer.Start();
+      opt.period = ((fsm_node_t *)p_mn)->interval;
+      ((fsm_node_t *)p_mn)->timer.SetTimerOption(opt);
+      ((fsm_node_t *)p_mn)->timer.Start();
     } else if (p_mn->type == Cmd::TaskType::ACTION) {
     }
     p_mn = p_mn->p_next;

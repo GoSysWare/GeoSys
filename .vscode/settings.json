@@ -143,6 +143,8 @@
         "semaphore": "cpp",
         "span": "cpp",
         "stop_token": "cpp",
-        "syncstream": "cpp"
+        "syncstream": "cpp",
+        "request": "cpp",
+        "response": "cpp"
     }
 }

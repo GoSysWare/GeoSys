@@ -5,11 +5,14 @@ package(default_visibility = ["//visibility:public"])
 
 
 cc_library(
-    name = "Fsm",
+    name = "Task",
     includes = [
     ],
     hdrs = [
-        "FSM",
+        "TASK",
+        "REQUEST",
+        "RESPONSE",
+
     ],
     srcs = [
         "Fsm.cpp",

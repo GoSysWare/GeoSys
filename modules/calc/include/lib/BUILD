@@ -23,6 +23,7 @@ cc_library(
         "Selection.h",
         "System.h",
         "Timer.h",
+        "Task.h",
         "Trigger.h",
     ],
 )
