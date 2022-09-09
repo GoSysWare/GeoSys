@@ -64,7 +64,6 @@ cc_library(
         "//modules/calc/include/lib:lib_include",
         "//modules/calc/proto:value_cc_proto",
         "//modules/calc/kernel:k_evdata",
-
     ],
 )
 
@@ -131,6 +130,9 @@ cc_library(
         "//modules/calc/include:calc_include",
         "//modules/calc/include/lib:lib_include",
         "//modules/calc/proto:value_cc_proto",
+        "//modules/calc/proto:cmd_cc_proto",
+        "//cyber"
+
     ],
 )
 cc_library(

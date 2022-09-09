@@ -31,6 +31,7 @@ cc_library(
     ],
       deps = [
         "@opencv",
+        "//cyber"
 
     ],  
 )

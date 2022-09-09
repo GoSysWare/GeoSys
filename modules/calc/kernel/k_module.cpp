@@ -4,74 +4,83 @@
 #include <string>
 
 #include "modules/calc/include/k_compress.h"
-#include "modules/calc/include/k_process.h"
 #include "modules/calc/include/k_module.h"
+#include "modules/calc/include/k_process.h"
 #include "modules/calc/include/k_state.h"
 #include "modules/calc/include/k_util.h"
 
 #include "modules/calc/proto/cmd.pb.h"
 
-static mnode_t *mn_new() { return new mnode_t; }
-
+static mnode_t *mn_new(int type) {
+  if (type == Cmd::TaskType::PERIODIC) {
+    return new period_node_t;
+  } else if (type == Cmd::TaskType::SERVICE) {
+    return new service_node_t;
+  } else if (type == Cmd::TaskType::FSM) {
+    return new fsm_node_t;
+  } else if (type == Cmd::TaskType::ACTION) {
+    return new action_node_t;
+  } else if (type == Cmd::TaskType::ASYNC) {
+    return new task_node_t;
+  } else if (type == Cmd::TaskType::TIMER) {
+    return new timer_node_t;
+  } else {
+    return 0;
+  }
+}
 static void mn_delete(mnode_t *p) { delete p; }
 
-static void mn_addbefore(mnode_t *p, mnode_t *p_ref)
-{
+static void mn_addbefore(mnode_t *p, mnode_t *p_ref) {
   p->p_prev = p_ref->p_prev;
   p->p_next = p_ref;
   p_ref->p_prev->p_next = p;
   p_ref->p_prev = p;
 }
 
-static void mn_addafter(mnode_t *p, mnode_t *p_ref)
-{
+static void mn_addafter(mnode_t *p, mnode_t *p_ref) {
   p->p_prev = p_ref;
   p->p_next = p_ref->p_next;
   p_ref->p_next->p_prev = p;
   p_ref->p_next = p;
 }
 
-static void mn_remove(mnode_t *p)
-{
+static void mn_remove(mnode_t *p) {
   p->p_prev->p_next = p->p_next;
   p->p_next->p_prev = p->p_prev;
 }
 
 void mod_stop(mod_t *p_mod) {
-    mnode_t *p_mn;
+  mnode_t *p_mn;
 
   p_mn = p_mod->mn_head.p_next;
-  while (p_mn != &p_mod->mn_head)
-  {
-    if(p_mn->type == Cmd::TaskType::PERIODIC)
-    {
-        p_mn->timer.Stop();
+  while (p_mn != &p_mod->mn_head) {
+    // if(p_mn->type == Cmd::TaskType::PERIODIC)
+    // {
+    //     p_mn->timer.Stop();
 
-    } else if (p_mn->type == Cmd::TaskType::SERVICE)
-    {
+    // } else if (p_mn->type == Cmd::TaskType::SERVICE)
+    // {
 
-      /* code */
-    } else if (p_mn->type == Cmd::TaskType::FSM)
-    {
-        p_mn->timer.Stop();     
+    //   /* code */
+    // } else if (p_mn->type == Cmd::TaskType::FSM)
+    // {
+    //     p_mn->timer.Stop();
 
-    } else if (p_mn->type == Cmd::TaskType::ACTION)
-    {
-      /* code */
-    }    
+    // } else if (p_mn->type == Cmd::TaskType::ACTION)
+    // {
+    //   /* code */
+    // }
     p_mn = p_mn->p_next;
   }
 }
 void mod_init(mod_t *p_mod) {}
 void mod_uninit(mod_t *p_mod) {}
 
-void mod_reset(mod_t *p_mod)
-{
+void mod_reset(mod_t *p_mod) {
   mnode_t *p_mn, *p_del;
   p_mod->p_mn_select = &p_mod->mn_head;
   p_mn = p_mod->mn_head.p_next;
-  while (p_mn != &p_mod->mn_head)
-  {
+  while (p_mn != &p_mod->mn_head) {
     p_del = p_mn;
     p_mn = p_mn->p_next;
     mn_remove(p_del);
@@ -81,27 +90,20 @@ void mod_reset(mod_t *p_mod)
   ev_reset();
 }
 
-
-static int mod_prgselect(mod_t *p_mod, int id)
-{
+static int mod_prgselect(mod_t *p_mod, int id) {
   mnode_t *p_mn;
-
-  if (id == 0)
-  {
+  if (id == 0) {
     p_mod->p_mn_select = &p_mod->mn_head;
     return -1;
   }
 
-  if (p_mod->p_mn_select->id == id)
-  {
+  if (p_mod->p_mn_select->id == id) {
     return 0;
   }
 
   p_mn = p_mod->mn_head.p_next;
-  while (p_mn != &p_mod->mn_head)
-  {
-    if (p_mn->id == id)
-    {
+  while (p_mn != &p_mod->mn_head) {
+    if (p_mn->id == id) {
       p_mod->p_mn_select = p_mn;
       return 0;
     }
@@ -111,26 +113,21 @@ static int mod_prgselect(mod_t *p_mod, int id)
   return -1;
 }
 
-static int mod_prgselect(mod_t *p_mod, std::string prog_name)
-{
+static int mod_prgselect(mod_t *p_mod, std::string prog_name) {
   mnode_t *p_mn;
 
-  if (prog_name.size() == 0)
-  {
+  if (prog_name.size() == 0) {
     p_mod->p_mn_select = &p_mod->mn_head;
     return -1;
   }
 
-  if (p_mod->p_mn_select->name == prog_name)
-  {
+  if (p_mod->p_mn_select->name == prog_name) {
     return 0;
   }
 
   p_mn = p_mod->mn_head.p_next;
-  while (p_mn != &p_mod->mn_head)
-  {
-    if (p_mn->name == prog_name)
-    {
+  while (p_mn != &p_mod->mn_head) {
+    if (p_mn->name == prog_name) {
       p_mod->p_mn_select = p_mn;
       return 0;
     }
@@ -140,57 +137,52 @@ static int mod_prgselect(mod_t *p_mod, std::string prog_name)
   return -1;
 }
 
-mod_t *mod_new()
-{
+mod_t *mod_new() {
   mod_t *p_new;
 
   p_new = new mod_t;
-  if (p_new != 0)
-  {
+  if (p_new != 0) {
     p_new->mn_head.p_prev = &p_new->mn_head;
     p_new->mn_head.p_next = &p_new->mn_head;
     p_new->p_mn_select = &p_new->mn_head;
 
     p_new->mn_task_head.p_prev = &p_new->mn_task_head;
     p_new->mn_task_head.p_next = &p_new->mn_task_head;
-    p_new->p_mn_task = &p_new->mn_task_head;  
+    p_new->p_mn_task = &p_new->mn_task_head;
 
     p_new->mn_serivce_head.p_prev = &p_new->mn_serivce_head;
     p_new->mn_serivce_head.p_next = &p_new->mn_serivce_head;
-    p_new->p_mn_service = &p_new->mn_serivce_head;  
+    p_new->p_mn_service = &p_new->mn_serivce_head;
 
     p_new->mn_period_head.p_prev = &p_new->mn_period_head;
     p_new->mn_period_head.p_next = &p_new->mn_period_head;
-    p_new->p_mn_period = &p_new->mn_period_head;  
-  
+    p_new->p_mn_period = &p_new->mn_period_head;
+
     p_new->mn_action_head.p_prev = &p_new->mn_action_head;
     p_new->mn_action_head.p_next = &p_new->mn_action_head;
-    p_new->p_mn_action = &p_new->mn_action_head;  
+    p_new->p_mn_action = &p_new->mn_action_head;
 
     p_new->mn_fsm_head.p_prev = &p_new->mn_fsm_head;
     p_new->mn_fsm_head.p_next = &p_new->mn_fsm_head;
-    p_new->p_mn_fsm = &p_new->mn_fsm_head;  
+    p_new->p_mn_fsm = &p_new->mn_fsm_head;
 
     p_new->mn_timer_head.p_prev = &p_new->mn_timer_head;
     p_new->mn_timer_head.p_next = &p_new->mn_timer_head;
-    p_new->p_mn_timer = &p_new->mn_timer_head;  
+    p_new->p_mn_timer = &p_new->mn_timer_head;
   }
 
   return p_new;
 }
 
-void mod_delete(mod_t *p_mod)
-{
+void mod_delete(mod_t *p_mod) {
   mnode_t *p_mn, *p_erm;
 
   /* clear enode list */
   p_mn = p_mod->mn_head.p_next;
-  while (p_mn != &p_mod->mn_head)
-  {
+  while (p_mn != &p_mod->mn_head) {
     p_erm = p_mn;
     p_mn = p_mn->p_next;
-    if (p_erm->p_prg != 0)
-    {
+    if (p_erm->p_prg != 0) {
       prg_delete(p_erm->p_prg);
     }
     mn_remove(p_erm);
@@ -198,19 +190,16 @@ void mod_delete(mod_t *p_mod)
   }
   delete p_mod;
 }
-int mod_prgadd(mod_t *p_mod, int id, std::string name)
-{
+int mod_prgadd(mod_t *p_mod, int id, std::string name, int type) {
   prog_t *p_prg;
   mnode_t *p_pn;
 
   p_prg = prg_new();
-  if (p_prg == ((void *)0))
-  {
+  if (p_prg == ((void *)0)) {
     return -1;
   }
-  p_pn = mn_new();
-  if (p_pn == ((void *)0))
-  {
+  p_pn = mn_new(type);
+  if (p_pn == ((void *)0)) {
     prg_delete(p_prg);
     return -1;
   }
@@ -224,14 +213,10 @@ int mod_prgadd(mod_t *p_mod, int id, std::string name)
   return 0;
 }
 
-
-
-int mod_prgremove(mod_t *p_mod, int id)
-{
+int mod_prgremove(mod_t *p_mod, int id) {
   mod_prgselect(p_mod, id);
 
-  if (p_mod->p_mn_select == &p_mod->mn_head)
-  {
+  if (p_mod->p_mn_select == &p_mod->mn_head) {
     return -1;
   }
 
@@ -244,110 +229,87 @@ int mod_prgremove(mod_t *p_mod, int id)
   return 0;
 }
 
-void mod_exec(mod_t *p_mod,,std::share_ptr<apollo::cyber::Node> node)
-{
+void mod_exec(mod_t *p_mod, std::shared_ptr<apollo::cyber::Node> node) {
   mnode_t *p_mn;
 
   p_mn = p_mod->mn_head.p_next;
-  while (p_mn != &p_mod->mn_head)
-  {
-    if(p_mn->type == Cmd::TaskType::PERIODIC)
-    {
-        apollo::cyber::TimerOption opt;
-        opt.oneshot = false;
-        opt.callback = [p_mn]() { prg_exec(p_mn->p_prg); };
-        opt.period = p_mn->interval;
-        p_mn->timer.SetTimerOption(opt);
-        p_mn->timer.Start();
-
-    } else if (p_mn->type == Cmd::TaskType::SERVICE)
-    {
-      node->CreateService<>
-
-      /* code */
-    } else if (p_mn->type == Cmd::TaskType::FSM)
-    {
-        apollo::cyber::TimerOption opt;
-        opt.oneshot = false;
-        opt.callback = [p_mn]() { prg_exec(p_mn->p_prg); };
-        opt.period = p_mn->interval;
-        p_mn->timer.SetTimerOption(opt);
-        p_mn->timer.Start();     
-
-    } else if (p_mn->type == Cmd::TaskType::ACTION)
-    {
-      /* code */
-    }    
+  while (p_mn != &p_mod->mn_head) {
+    if (p_mn->type == Cmd::TaskType::PERIODIC) {
+      apollo::cyber::TimerOption opt;
+      opt.oneshot = false;
+      opt.callback = [p_mn]() { prg_exec(p_mn->p_prg); };
+      opt.period = p_mn->interval;
+      p_mn->timer.SetTimerOption(opt);
+      p_mn->timer.Start();
+    } else if (p_mn->type == Cmd::TaskType::SERVICE) {
+      //服务是长驻的，但输入输出在此模式下如何表达呢
+      auto f = [p_mn](vam_t request, vam_t response) { prg_exec(p_mn->p_prg); };
+      auto service_ = node->CreateService<vam_t, vam_t>(p_mn->name, f);
+    } else if (p_mn->type == Cmd::TaskType::FSM) {
+      apollo::cyber::TimerOption opt;
+      opt.oneshot = false;
+      opt.callback = [p_mn]() { prg_exec(p_mn->p_prg); };
+      opt.period = p_mn->interval;
+      p_mn->timer.SetTimerOption(opt);
+      p_mn->timer.Start();
+    } else if (p_mn->type == Cmd::TaskType::ACTION) {
+    }
     p_mn = p_mn->p_next;
   }
 }
 
-void mod_dump(mod_t *p_mod)
-{
+void mod_dump(mod_t *p_mod) {
   mnode_t *p_mn;
   p_mn = p_mod->mn_head.p_next;
-  while (p_mn != &p_mod->mn_head)
-  {
+  while (p_mn != &p_mod->mn_head) {
     printf("prg:%d - %s\n", p_mn->id, p_mn->name.c_str());
     p_mn = p_mn->p_next;
   }
 }
 
-
-
-int mod_fbadd(mod_t *p_mod, int idprg, int id, char *libname, char *fcname, char *fbname)
-{
-  if (mod_prgselect(p_mod, idprg) != 0)
-  {
+int mod_fbadd(mod_t *p_mod, int idprg, int id, char *libname, char *fcname,
+              char *fbname) {
+  if (mod_prgselect(p_mod, idprg) != 0) {
     return -1;
   }
   return prg_fbadd(p_mod->p_mn_select->p_prg, id, libname, fcname, fbname);
 }
 
-int mod_fbremove(mod_t *p_mod, int idprg, int id)
-{
-  if (mod_prgselect(p_mod, idprg) != 0)
-  {
+int mod_fbremove(mod_t *p_mod, int idprg, int id) {
+  if (mod_prgselect(p_mod, idprg) != 0) {
     return -1;
   }
 
   return prg_fbremove(p_mod->p_mn_select->p_prg, id);
 }
 
-int mod_lkadd(mod_t *p_mod, int idprg, int id, int fbsrc, int pinsrc, int fbtgt, int pintgt)
-{
-  if (mod_prgselect(p_mod, idprg) != 0)
-  {
+int mod_lkadd(mod_t *p_mod, int idprg, int id, int fbsrc, int pinsrc, int fbtgt,
+              int pintgt) {
+  if (mod_prgselect(p_mod, idprg) != 0) {
     return -1;
   }
 
   return prg_lkadd(p_mod->p_mn_select->p_prg, id, fbsrc, pinsrc, fbtgt, pintgt);
 }
 
-int mod_lkremove(mod_t *p_mod, int idprg, int id)
-{
-  if (mod_prgselect(p_mod, idprg) != 0)
-  {
+int mod_lkremove(mod_t *p_mod, int idprg, int id) {
+  if (mod_prgselect(p_mod, idprg) != 0) {
     return -1;
   }
 
   return prg_lkremove(p_mod->p_mn_select->p_prg, id);
 }
 
-int mod_checkloop(mod_t *p_mod, int idprg, int idsrc, int idtgt)
-{
-  if (mod_prgselect(p_mod, idprg) != 0)
-  {
+int mod_checkloop(mod_t *p_mod, int idprg, int idsrc, int idtgt) {
+  if (mod_prgselect(p_mod, idprg) != 0) {
     return -1;
   }
 
   return prg_checkloop(p_mod->p_mn_select->p_prg, idsrc, idtgt);
 }
 
-int mod_prgdump(mod_t *p_mod, int idprg)
-{
-  if (mod_prgselect(p_mod, idprg) != 0)
-  {
+int mod_prgdump(mod_t *p_mod, int idprg) {
+  if (mod_prgselect(p_mod, idprg) != 0) {
     return -1;
   }
 
@@ -355,18 +317,15 @@ int mod_prgdump(mod_t *p_mod, int idprg)
   return 0;
 }
 
-int mod_fbdump(mod_t *p_mod, int idprg, int idfb)
-{
+int mod_fbdump(mod_t *p_mod, int idprg, int idfb) {
   fb_t *p_fb;
 
-  if (mod_prgselect(p_mod, idprg) != 0)
-  {
+  if (mod_prgselect(p_mod, idprg) != 0) {
     return -1;
   }
 
   p_fb = prg_fbfind(p_mod->p_mn_select->p_prg, idfb);
-  if (p_fb == ((void *)0))
-  {
+  if (p_fb == ((void *)0)) {
     return -1;
   }
 
@@ -374,27 +333,21 @@ int mod_fbdump(mod_t *p_mod, int idprg, int idfb)
   return 0;
 }
 
-fb_t *mod_fbfind(mod_t *p_mod, int idprg, int idfb)
-{
-  if (mod_prgselect(p_mod, idprg) != 0)
-  {
+fb_t *mod_fbfind(mod_t *p_mod, int idprg, int idfb) {
+  if (mod_prgselect(p_mod, idprg) != 0) {
     return 0;
   }
 
   return prg_fbfind(p_mod->p_mn_select->p_prg, idfb);
 }
-prog_t *mod_prgfind(mod_t *p_mod, int idprg)
-{
-  if (mod_prgselect(p_mod, idprg) != 0)
-  {
+prog_t *mod_prgfind(mod_t *p_mod, int idprg) {
+  if (mod_prgselect(p_mod, idprg) != 0) {
     return 0;
   }
   return p_mod->p_mn_select->p_prg;
 }
-prog_t *mod_prgfind(mod_t *p_mod, std::string prog_name)
-{
-  if (mod_prgselect(p_mod, prog_name) != 0)
-  {
+prog_t *mod_prgfind(mod_t *p_mod, std::string prog_name) {
+  if (mod_prgselect(p_mod, prog_name) != 0) {
     return 0;
   }
   return p_mod->p_mn_select->p_prg;
@@ -457,7 +410,8 @@ prog_t *mod_prgfind(mod_t *p_mod, std::string prog_name)
 
 //   pimg->bufsize = buf - pimg->imgbuf;
 //   info.zimgsize = pimg->bufsize;
-//   // info.imgsize = s * sizeof(var_t) + sizeof(iostation_t) * IOSTATIONCOUNT;
+//   // info.imgsize = s * sizeof(var_t) + sizeof(iostation_t) *
+//   IOSTATIONCOUNT;
 
 //   // printf("imgsize=%d, zimgsize=%d\n", info.imgsize, info.zimgsize);
 //   k_runlock(prjlock);
