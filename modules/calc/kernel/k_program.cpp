@@ -41,7 +41,6 @@ static void en_moveafter(enode_t *p_en, enode_t *p_ref) {
 }
 
 void prg_exec(prog_t *p_prg) {
-  std::lock_guard<std::mutex> lock(p_prg->mtx);
   enode_t *p_en;
   /* fb to fb */
   p_en = p_prg->en_head.p_next;
@@ -162,13 +161,7 @@ int prg_fbadd(prog_t *p_prg, int id, const std::string &libname,
   p_en->p_fb = p_fb;
   p_en->fbname = fbname;
 
-  //如果添加的是参数模块，需内置给fb的pin绑定参数
-  if (libname == "Task" && fcname == "REQUEST") {
-    fb_setpin(p_fb, PININPUT, 1, p_prg->request);
-  }
-  if (libname == "Task" && fcname == "RESPONSE") {
-    fb_setpin(p_fb, PINOUTPUT, 1, p_prg->response);
-  }
+ 
   en_addbefore(p_en, &p_prg->en_head);
 
   return 0;
@@ -198,6 +191,32 @@ static int prg_enselect(prog_t *p_prg, int id) {
   return -1;
 }
 
+
+static int prg_enselect_by_lib(prog_t *p_prg, std::string libname,std::string fcname) {
+  enode_t *p_en;
+
+  if (libname.length() == 0 || fcname.length() == 0) {
+    p_prg->p_en_select = &p_prg->en_head;
+    return -1;
+  }
+
+  if (p_prg->p_en_select->p_fb) {
+    if(p_prg->p_en_select->p_fb->h.libname == libname && p_prg->p_en_select->p_fb->h.fcname == fcname) 
+    return 0;
+  }
+
+  p_en = p_prg->en_head.p_next;
+  while (p_en != &p_prg->en_head) {
+    if (p_en->p_fb) {
+      if(p_en->p_fb->h.libname == libname && p_en->p_fb->h.fcname == fcname) 
+      p_prg->p_en_select = p_en;
+      return 0;
+    }
+    p_en = p_en->p_next;
+  }
+  return -1;
+}
+
 fb_t *prg_fbfind(prog_t *p_prg, int id) {
   enode_t *p_en;
 
@@ -210,7 +229,15 @@ fb_t *prg_fbfind(prog_t *p_prg, int id) {
 
   return p_en->p_fb;
 }
-
+fb_t *prg_fbfind_by_lib(prog_t *p_prg, std::string libname,std::string fcname) {
+  enode_t *p_en;
+  prg_enselect_by_lib(p_prg, libname,fcname);
+  p_en = p_prg->p_en_select;
+  if (p_en == &p_prg->en_head) {
+    return 0;
+  }
+  return p_en->p_fb;
+}
 int prg_fbremove(prog_t *p_prg, int id) {
   enode_t *p_en, *p_rm;
 
