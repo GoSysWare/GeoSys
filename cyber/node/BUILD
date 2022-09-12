@@ -47,6 +47,8 @@ cc_library(
         "//cyber/common:global_data",
         "//cyber/service",
         "//cyber/service:client",
+        "//cyber/task:async_task",
+        "//cyber/task:async_task_client",
         "//cyber/service_discovery:topology_manager",
     ],
 )

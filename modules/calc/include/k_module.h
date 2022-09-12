@@ -116,6 +116,7 @@ int mod_prgdump(mod_t *p_mod,int idprg);
 int mod_fbdump(mod_t *p_mod,int idprg, int idfb);
 
 fb_t *mod_fbfind(mod_t *p_mod,int idprg, int idfb);
+
 prog_t *mod_prgfind(mod_t *p_mod,int idprg);
 prog_t *mod_prgfind(mod_t *p_mod,std::string prog_name);
 

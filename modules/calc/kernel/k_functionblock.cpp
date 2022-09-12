@@ -5,55 +5,72 @@
 #include <stdio.h>
 #include <string.h>
 
-static void init_pin_value(pin_t * pin)
-{
-  pin->v = std::make_shared<value_tm>();
+static void fb_init_pin(pin_t *pin) {
+  pin->v.reset( new value_tm );
+  pin->v->set_tm(0);
   pin->v->mutable_v()->set_t(pin->t);
-  value_t * vt = pin->v->mutable_v();
-	switch (pin->t)
-	{
-	case T_NONE:
-		break;
-	case T_BOOL:
-		vt->set_b(false);
-		break;
-	case T_INT32:
-		vt->set_i(0);
-		break;	
-	case T_UINT32:
-		vt->set_ui(0);
-		break;	
-	case T_INT64:
-		vt->set_ll(0);
-		break;
-	case T_UINT64:
-		vt->set_ull(0);
-		break;	
-	case T_FLOAT32:
-		vt->set_i(0.0);
-		break;	
-	case T_FLOAT64:
-		vt->set_d(0.0);
-		break;
-	case T_TIME:
-		vt->set_tm(0);
-		break;
-	case T_STRING:
-		break;	
-	case T_BYTES:
-		break;	
-	case T_IMAGE:
-		break;
-	case T_LIDAR:
-		break;
-	case T_SONAR:
-		break;
-	case T_FILE:
-		break;		
-	default:
-		break;
-	}
-
+  value_t *vt = pin->v->mutable_v();
+  switch (pin->t) {
+  case T_NONE:
+    break;
+  case T_BOOL:
+    vt->set_b(false);
+    break;
+  case T_INT32:
+    vt->set_i(0);
+    break;
+  case T_UINT32:
+    vt->set_ui(0);
+    break;
+  case T_INT64:
+    vt->set_ll(0);
+    break;
+  case T_UINT64:
+    vt->set_ull(0);
+    break;
+  case T_FLOAT32:
+    vt->set_i(0.0);
+    break;
+  case T_FLOAT64:
+    vt->set_d(0.0);
+    break;
+  case T_TIME:
+    vt->set_tm(0);
+    break;
+  case T_STRING:
+    vt->set_str("");
+    break;
+  case T_BYTES:
+    vt->set_blob("");
+    break;
+  case T_IMAGE:
+    vt->set_img("");
+    break;
+  case T_LIDAR:
+    vt->set_lidar("");
+    break;
+  case T_SONAR:
+    vt->set_sonar("");
+    break;
+  case T_FILE:
+    vt->set_file("");
+    break;
+  default:
+    break;
+  }
+}
+void fb_reset(fb_t *p_fb) {
+  if (p_fb) {
+    for (auto &pin : p_fb->ins) {
+      fb_init_pin(&pin);
+    }
+    for (auto &pin : p_fb->outs) {
+      fb_init_pin(&pin);
+    }
+    for (auto &pin : p_fb->props) {
+      fb_init_pin(&pin);
+    }
+  }
 }
 
 fb_t *fb_new(fb_t *p_source) {
@@ -63,17 +80,15 @@ fb_t *fb_new(fb_t *p_source) {
     p_dst->h = p_source->h;
     p_dst->ins = p_source->ins;
     for (auto &&pin : p_dst->ins) {
-     init_pin_value(&pin);      
+      fb_init_pin(&pin);
     }
     p_dst->outs = p_source->outs;
     for (auto &&pin : p_dst->outs) {
-     init_pin_value(&pin);      
-
+      fb_init_pin(&pin);
     }
     p_dst->props = p_source->props;
     for (auto &&pin : p_dst->props) {
-     init_pin_value(&pin);      
-
+      fb_init_pin(&pin);
     }
   }
   return p_dst;

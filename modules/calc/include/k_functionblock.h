@@ -21,6 +21,7 @@ using fb_function = std::function<void(void*)>;
 
 //FB的头定义
 typedef struct FBHead{
+	std::string libname;
 	std::string fcname;
     Int flag;			/* export fb */
 	fb_function run;
@@ -40,7 +41,7 @@ typedef struct FB{
 } fb_t;
 
 
-
+void fb_reset(fb_t *p_fb);
 fb_t *fb_new(fb_t *p_source);
 void fb_delete(fb_t *p_fb);
 pin_t *fb_getpin(fb_t *p_fb, int pintype, unsigned int n);

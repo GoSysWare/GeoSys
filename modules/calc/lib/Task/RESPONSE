@@ -7,7 +7,7 @@ static void run_RESPONSE(void *p) {
   vam_t  response_i32 = pb->ins[2].v;
   vam_t  response_u32 = pb->ins[3].v;
   vam_t  response_i64 = pb->ins[4].v;
-  vam_t  response_ui64 = pb->ins[5].v;
+  vam_t  response_u64 = pb->ins[5].v;
   vam_t  response_float = pb->ins[6].v;
   vam_t  response_double = pb->ins[7].v;
   vam_t  response_time = pb->ins[8].v;
@@ -70,8 +70,8 @@ static void run_RESPONSE(void *p) {
   return;
 }
 
-static fb_t fb_RESPONSE = {{"RESPONSE", 0, run_RESPONSE},
-                        {{"EN", T_BOOL, nullptr}，
+static fb_t fb_RESPONSE = {{"Task","RESPONSE", 0, run_RESPONSE},
+                        {{"EN", T_BOOL, nullptr},
                          {"RESPONSE_BOOL", T_BOOL, nullptr},
                          {"RESPONSE_INT32", T_INT32, nullptr},
                          {"RESPONSE_UINT32", T_UINT32, nullptr},

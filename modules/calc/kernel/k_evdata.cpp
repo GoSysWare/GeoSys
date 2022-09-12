@@ -313,11 +313,11 @@ char *ev_to_img(char *buf)
 
 	p_vn = vn_head.p_next;
 	while(p_vn != &vn_head){
-		v_len = p_vn->v->ByteSize();
+		v_len = p_vn->v->ByteSizeLong();
 	    memcpy(buf,&v_len,sizeof(int));
         buf += sizeof(int);	
 		p_vn->v->SerializeToArray(buf,v_len);
-        buf +=  p_vn->v->ByteSize();
+        buf +=  p_vn->v->ByteSizeLong();
 		p_vn = p_vn->p_next;
 	}
 

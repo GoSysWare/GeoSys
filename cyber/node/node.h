@@ -150,6 +150,35 @@ class Node {
   auto CreateClient(const std::string& service_name)
       -> std::shared_ptr<Client<Request, Response>>;
 
+
+  /**
+   * @brief Create a AsyncTask object with specific `task_name`
+   *
+   * @tparam Request Message Type of the Request
+   * @tparam Response Message Type of the Response
+   * @param task_name specific task name to a serve
+   * @param task_callback invoked when a task is called
+   * @return std::shared_ptr<AsyncTask<Request, Response>> result `AsyncTask`
+   */
+  template <typename Request, typename Response>
+  auto CreateAsyncTask(const std::string& task_name,
+                     const typename AsyncTask<Request, Response>::TaskCallback&
+                         task_callback)
+      -> std::shared_ptr<AsyncTask<Request, Response>>;
+
+  /**
+   * @brief Create a Client object to request AsyncTask with `task_name`
+   *
+   * @tparam Request Message Type of the Request
+   * @tparam Response Message Type of the Response
+   * @param service_name specific task name to a Service
+   * @return std::shared_ptr<AsyncTaskClient<Request, Response>> result `AsyncTaskClient`
+   */
+  template <typename Request, typename Response>
+  auto CreateAsyncTaskClient(const std::string& task_name)
+      -> std::shared_ptr<AsyncTaskClient<Request, Response>>;
+
+
   /**
    * @brief Observe all readers' data
    */
@@ -265,6 +294,22 @@ auto Node::CreateClient(const std::string& service_name)
     -> std::shared_ptr<Client<Request, Response>> {
   return node_service_impl_->template CreateClient<Request, Response>(
       service_name);
+}
+
+template <typename Request, typename Response>
+auto Node::CreateAsyncTask(
+    const std::string& task_name,
+    const typename AsyncTask<Request, Response>::TaskCallback&
+        task_callback) -> std::shared_ptr<AsyncTask<Request, Response>> {
+  return node_service_impl_->template CreateAsyncTask<Request, Response>(
+      task_name, task_callback);
+}
+
+template <typename Request, typename Response>
+auto Node::CreateAsyncTaskClient(const std::string& task_name)
+    -> std::shared_ptr<AsyncTaskClient<Request, Response>> {
+  return node_service_impl_->template CreateAsyncTaskClient<Request, Response>(
+      task_name);
 }
 
 template <typename MessageT>

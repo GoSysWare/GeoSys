@@ -96,6 +96,8 @@ cc_library(
         "//cyber/service_discovery:topology_manager",
         "//cyber/sysmo",
         "//cyber/task",
+        "//cyber/task:async_task",
+        "//cyber/task:async_task_client",
         "//cyber/time",
         "//cyber/time:duration",
         "//cyber/time:rate",

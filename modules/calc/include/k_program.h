@@ -61,7 +61,7 @@ void prg_dump(prog_t *p_prg);
 int prg_checkloop(prog_t *p_prg, int idSrc, int idTgt);
 
 fb_t *prg_fbfind(prog_t *p_prg, int id);
-
+fb_t *prg_fbfind_by_lib(prog_t *p_prg, std::string libname,std::string fcname);
 // #ifdef __cplusplus
 // }
 // #endif

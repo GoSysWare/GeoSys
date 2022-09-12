@@ -242,13 +242,22 @@ void mod_exec(mod_t *p_mod, std::shared_ptr<apollo::cyber::Node> node) {
       opt.period = ((period_node_t *)p_mn)->interval;
       ((period_node_t *)p_mn)->timer.SetTimerOption(opt);
       ((period_node_t *)p_mn)->timer.Start();
-    } else if (p_mn->type == Cmd::TaskType::SERVICE) {
-     
+    } else if (p_mn->type == Cmd::TaskType::SERVICE) {  
       auto f = [p_mn]( const vam_t &request, vam_t &response) { 
-        p_mn->p_prg->request = request;
-        p_mn->p_prg->response = response;
+        fb_t * pqfb, *ppfb; 
+        pqfb = prg_fbfind_by_lib(p_mn->p_prg,"Task","REQUEST");
+        if(pqfb){
+            fb_reset(pqfb);
+            fb_setpin(pqfb, PININPUT, 1, request);
+        }
+        ppfb = prg_fbfind_by_lib(p_mn->p_prg,"Task","RESPONSE");
+        if(ppfb){
+            fb_reset(pqfb);
+            fb_setpin(ppfb, PINOUTPUT, 1, response);
+        }
         prg_exec(p_mn->p_prg); 
-        };
+
+      };
       auto service_ = node->CreateService<value_tm, value_tm>(p_mn->name, f);
     } else if (p_mn->type == Cmd::TaskType::FSM) {
       apollo::cyber::TimerOption opt;
@@ -258,6 +267,26 @@ void mod_exec(mod_t *p_mod, std::shared_ptr<apollo::cyber::Node> node) {
       ((fsm_node_t *)p_mn)->timer.SetTimerOption(opt);
       ((fsm_node_t *)p_mn)->timer.Start();
     } else if (p_mn->type == Cmd::TaskType::ACTION) {
+
+    }
+     else if (p_mn->type == Cmd::TaskType::ASYNC) {
+      
+      auto f = [p_mn]( const vam_t &request, vam_t &response) { 
+        fb_t * pqfb, *ppfb; 
+        pqfb = prg_fbfind_by_lib(p_mn->p_prg,"Task","REQUEST");
+        if(pqfb){
+            fb_reset(pqfb);
+            fb_setpin(pqfb, PININPUT, 1, request);
+        }
+        ppfb = prg_fbfind_by_lib(p_mn->p_prg,"Task","RESPONSE");
+        if(ppfb){
+            fb_reset(pqfb);
+            fb_setpin(ppfb, PINOUTPUT, 1, response);
+        }
+        prg_exec(p_mn->p_prg); 
+
+      };
+      auto service_ = node->CreateAsyncTask<value_tm, value_tm>(p_mn->name, f);  
     }
     p_mn = p_mn->p_next;
   }
