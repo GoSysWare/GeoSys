@@ -138,7 +138,7 @@ bool AsyncTask<Request, Response>::Init() {
       transport::QosProfileConf::QOS_PROFILE_SERVICES_DEFAULT);
   auto transport = transport::Transport::Instance();
   response_transmitter_ =
-      transport->CreateTransmitter<Response>(role, proto::OptionalMode::RTPS);
+      transport->CreateTransmitter<Response>(role, proto::OptionalMode::INTRA);
   if (response_transmitter_ == nullptr) {
     AERROR << " Create response pub failed.";
     return false;

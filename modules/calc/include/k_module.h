@@ -39,11 +39,11 @@ typedef struct MNode{
 
 
 typedef struct MTaskNode:MNode{
-    std::string creator;
+    std::string client;
 }task_node_t;
 
 typedef struct MPeriodNode:MNode{
-    std::string creator;
+    std::string client;
 	int interval;
 	apollo::cyber::Timer timer;
 }period_node_t;
@@ -54,17 +54,19 @@ typedef struct MServiceNode:MNode{
 }service_node_t;
 
 typedef struct MActionNode:MNode{
+    std::string client;
     vam_t  requese;
+    vam_t  respone;
 }action_node_t;
 
 typedef struct MFsmNode:MNode{
-    std::string creator;
+    std::string client;
 	int interval;
 	apollo::cyber::Timer timer;
 }fsm_node_t;
 
 typedef struct MTimerNode:MNode{
-    std::string creator;
+    std::string client;
 	int interval;
 	apollo::cyber::Timer timer;
 }timer_node_t;

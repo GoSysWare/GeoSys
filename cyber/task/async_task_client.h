@@ -189,7 +189,7 @@ bool AsyncTaskClient<Request, Response>::Init() {
       transport::QosProfileConf::QOS_PROFILE_SERVICES_DEFAULT);
   auto transport = transport::Transport::Instance();
   request_transmitter_ =
-      transport->CreateTransmitter<Request>(role, proto::OptionalMode::RTPS);
+      transport->CreateTransmitter<Request>(role, proto::OptionalMode::INTRA);
   if (request_transmitter_ == nullptr) {
     AERROR << "Create request pub failed.";
     return false;
