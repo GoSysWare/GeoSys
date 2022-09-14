@@ -10,6 +10,8 @@
 
 // typedef void (*fbrun)(void *);
 
+#define PIN_NO_LINK 0
+#define PIN_IS_LINK 1
 
 #define PININPUT 1
 #define PINOUTPUT 2
@@ -17,18 +19,25 @@
 #define FBFLAGIO	0x00000001
 #define FBFLAGEXPORT	0x00000002
 
+typedef struct  PinFlag
+{
+	int32_t signal:1;
+	int32_t reserve:31;
+}pin_flag;
+
 using fb_function = std::function<void(void*)>;
 
 //FB的头定义
 typedef struct FBHead{
 	std::string libname;
 	std::string fcname;
-    Int flag;			/* export fb */
+    int flag;			/* export fb */
 	fb_function run;
 } fbhead_t;
 
 typedef struct Pin{
 	std::string pinname;
+	int s;		/* signal */
 	v_type t;	/* type */
 	vam_t v;	/* value */
 } pin_t;

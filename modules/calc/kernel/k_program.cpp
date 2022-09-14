@@ -358,6 +358,10 @@ int prg_lkadd(prog_t *p_prg, int id, int fbsrc, int pinsrc, int fbtgt,
     return -1;
   }
   *p_en = en;
+
+  p_en->p_vsrc->s  = PIN_IS_LINK;
+  p_en->p_vtgt->s  = PIN_IS_LINK;
+
   en_addafter(p_en, p_src);
 
   prg_setrank(p_prg);

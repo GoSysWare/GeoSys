@@ -5,64 +5,65 @@
 #include <stdio.h>
 #include <string.h>
 
-// static void fb_init_pin(pin_t *pin) {
-//   pin->v.reset( new value_tm );
-//   pin->v->set_tm(0);
-//   pin->v->mutable_v()->set_t(pin->t);
-//   value_t *vt = pin->v->mutable_v();
-//   switch (pin->t) {
-//   case T_NONE:
-//     break;
-//   case T_BOOL:
-//     vt->set_b(false);
-//     break;
-//   case T_INT32:
-//     vt->set_i(0);
-//     break;
-//   case T_UINT32:
-//     vt->set_ui(0);
-//     break;
-//   case T_INT64:
-//     vt->set_ll(0);
-//     break;
-//   case T_UINT64:
-//     vt->set_ull(0);
-//     break;
-//   case T_FLOAT32:
-//     vt->set_i(0.0);
-//     break;
-//   case T_FLOAT64:
-//     vt->set_d(0.0);
-//     break;
-//   case T_TIME:
-//     vt->set_tm(0);
-//     break;
-//   case T_STRING:
-//     vt->set_str("");
-//     break;
-//   case T_BYTES:
-//     vt->set_blob("");
-//     break;
-//   case T_IMAGE:
-//     vt->set_img("");
-//     break;
-//   case T_LIDAR:
-//     vt->set_lidar("");
-//     break;
-//   case T_SONAR:
-//     vt->set_sonar("");
-//     break;
-//   case T_FILE:
-//     vt->set_file("");
-//     break;
-//   default:
-//     break;
-//   }
-// }
 static void fb_init_pin(pin_t *pin) {
-  if(pin->v != nullptr) 
-    pin->v.reset(); 
+  pin->s = PIN_NO_LINK;
+  pin->v.reset( new value_tm );
+  pin->v->set_tm(0);
+  pin->v->mutable_v()->set_t(pin->t);
+  value_t *vt = pin->v->mutable_v();
+  switch (pin->t) {
+  case T_NONE:
+    break;
+  case T_BOOL:
+    vt->set_b(false);
+    break;
+  case T_INT32:
+    vt->set_i(0);
+    break;
+  case T_UINT32:
+    vt->set_ui(0);
+    break;
+  case T_INT64:
+    vt->set_ll(0);
+    break;
+  case T_UINT64:
+    vt->set_ull(0);
+    break;
+  case T_FLOAT32:
+    vt->set_i(0.0);
+    break;
+  case T_FLOAT64:
+    vt->set_d(0.0);
+    break;
+  case T_TIME:
+    vt->set_tm(0);
+    break;
+  case T_STRING:
+    vt->set_str("");
+    break;
+  case T_BYTES:
+    vt->set_blob("");
+    break;
+  case T_IMAGE:
+    vt->set_img("");
+    break;
+  case T_LIDAR:
+    vt->set_lidar("");
+    break;
+  case T_SONAR:
+    vt->set_sonar("");
+    break;
+  case T_FILE:
+    vt->set_file("");
+    break;
+  default:
+    break;
+  }
 }
+// static void fb_init_pin(pin_t *pin) {
+//   if(pin->v != nullptr) 
+//     pin->v.reset(); 
+// }
 void fb_reset(fb_t *p_fb) {
   if (p_fb) {
     for (auto &pin : p_fb->ins) {
@@ -157,6 +158,7 @@ int fb_setpin(fb_t *p_fb, int pintype, unsigned int n, value_tm v) {
   } else {
     return -1;
   }
+  p_pin->s = PIN_IS_LINK;
   p_pin->v = std::make_shared<value_tm>(v);
   return 0;
 }
@@ -183,7 +185,7 @@ int fb_setpin(fb_t *p_fb, int pintype, unsigned int n, vam_t v) {
   } else {
     return -1;
   }
-
+  p_pin->s = PIN_IS_LINK;
   p_pin->v = v;
   return 0;
 }
