@@ -39,6 +39,15 @@ std::unique_ptr<Node> CreateNode(const std::string& node_name,
   }
   return std::unique_ptr<Node>(new Node(node_name, name_space));
 }
+std::shared_ptr<Node> g_node = nullptr;
+std::shared_ptr<Node> GlobalNode(){
 
+  if(g_node == nullptr)
+  {
+    g_node = std::move(CreateNode("global_node",""));
+  }
+  return g_node;
+      
+}
 }  // namespace cyber
 }  // namespace apollo

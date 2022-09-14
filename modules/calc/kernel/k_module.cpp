@@ -286,7 +286,7 @@ void mod_exec(mod_t *p_mod, std::shared_ptr<apollo::cyber::Node> node) {
         prg_exec(p_mn->p_prg); 
 
       };
-      auto service_ = node->CreateAsyncTask<value_tm, value_tm>(p_mn->name, f);  
+      auto task_ = apollo::cyber::GlobalNode()->CreateAsyncTask<value_tm, value_tm>(p_mn->name, f);  
     }
     p_mn = p_mn->p_next;
   }
