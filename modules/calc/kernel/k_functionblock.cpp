@@ -173,10 +173,9 @@ int fb_setpin(fb_t *p_fb, int pintype, unsigned int n, vam_t v) {
 
   } else if (pintype == PINOUTPUT) {
     if (n >= p_fb->outs.size()) {
-      return 0;
+      return -1;
     }
     p_pin = &p_fb->outs[n];
-    return -1;
   } else if (pintype == PINPROPERTY) {
     if (n >= p_fb->props.size()) {
       return -1;

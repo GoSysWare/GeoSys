@@ -161,7 +161,6 @@ int prg_fbadd(prog_t *p_prg, int id, const std::string &libname,
   p_en->p_fb = p_fb;
   p_en->fbname = fbname;
 
- 
   en_addbefore(p_en, &p_prg->en_head);
 
   return 0;
@@ -191,8 +190,8 @@ static int prg_enselect(prog_t *p_prg, int id) {
   return -1;
 }
 
-
-static int prg_enselect_by_lib(prog_t *p_prg, std::string libname,std::string fcname) {
+static int prg_enselect_by_lib(prog_t *p_prg, std::string libname,
+                               std::string fcname) {
   enode_t *p_en;
 
   if (libname.length() == 0 || fcname.length() == 0) {
@@ -201,16 +200,18 @@ static int prg_enselect_by_lib(prog_t *p_prg, std::string libname,std::string fc
   }
 
   if (p_prg->p_en_select->p_fb) {
-    if(p_prg->p_en_select->p_fb->h.libname == libname && p_prg->p_en_select->p_fb->h.fcname == fcname) 
-    return 0;
+    if (p_prg->p_en_select->p_fb->h.libname == libname &&
+        p_prg->p_en_select->p_fb->h.fcname == fcname)
+      return 0;
   }
 
   p_en = p_prg->en_head.p_next;
   while (p_en != &p_prg->en_head) {
     if (p_en->p_fb) {
-      if(p_en->p_fb->h.libname == libname && p_en->p_fb->h.fcname == fcname) 
-      p_prg->p_en_select = p_en;
-      return 0;
+      if (p_en->p_fb->h.libname == libname && p_en->p_fb->h.fcname == fcname) {
+        p_prg->p_en_select = p_en;
+        return 0;
+      }
     }
     p_en = p_en->p_next;
   }
@@ -229,9 +230,10 @@ fb_t *prg_fbfind(prog_t *p_prg, int id) {
 
   return p_en->p_fb;
 }
-fb_t *prg_fbfind_by_lib(prog_t *p_prg, std::string libname,std::string fcname) {
+fb_t *prg_fbfind_by_lib(prog_t *p_prg, std::string libname,
+                        std::string fcname) {
   enode_t *p_en;
-  prg_enselect_by_lib(p_prg, libname,fcname);
+  prg_enselect_by_lib(p_prg, libname, fcname);
   p_en = p_prg->p_en_select;
   if (p_en == &p_prg->en_head) {
     return 0;
@@ -359,8 +361,8 @@ int prg_lkadd(prog_t *p_prg, int id, int fbsrc, int pinsrc, int fbtgt,
   }
   *p_en = en;
 
-  p_en->p_vsrc->s  = PIN_IS_LINK;
-  p_en->p_vtgt->s  = PIN_IS_LINK;
+  p_en->p_vsrc->s = PIN_IS_LINK;
+  p_en->p_vtgt->s = PIN_IS_LINK;
 
   en_addafter(p_en, p_src);
 

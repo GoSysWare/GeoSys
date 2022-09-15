@@ -1,36 +1,83 @@
 static void run_RESPONSE(void *p) {
 
-  fb_t *pb = (fb_t *)p; 
+  fb_t *pb = (fb_t *)p;
   //这个pin被系统内置为resquest
-  vam_t  &prg_response = pb->outs[1].v;
+  vam_t &prg_response = pb->outs[1].v;
 
   if (pb) {
     for (auto &pin : pb->ins) {
-        if(pin.s = (int)PIN_IS_LINK){
-            prg_response = pin.v;
+      if (pin.s == PIN_IS_LINK) {
+        // response是引用,只能是值拷贝
+        prg_response->mutable_v()->set_t(pin.v->v().t());
+
+        switch (pin.v->v().t()) {
+        case v_type::T_BOOL:
+          prg_response->mutable_v()->set_b(pin.v->v().b());
+          break;
+        case v_type::T_INT32:
+          prg_response->mutable_v()->set_i(pin.v->v().i());
+          break;
+        case v_type::T_UINT32:
+          prg_response->mutable_v()->set_ui(pin.v->v().ui());
+          break;
+        case v_type::T_INT64:
+          prg_response->mutable_v()->set_ll(pin.v->v().ll());
+          break;
+        case v_type::T_UINT64:
+          prg_response->mutable_v()->set_ull(pin.v->v().ull());
+          break;
+        case v_type::T_FLOAT32:
+          prg_response->mutable_v()->set_f(pin.v->v().f());
+          break;
+        case v_type::T_FLOAT64:
+          prg_response->mutable_v()->set_d(pin.v->v().d());
+          break;
+        case v_type::T_TIME:
+          prg_response->mutable_v()->set_tm(pin.v->v().tm());
+          break;
+        case v_type::T_STRING:
+          prg_response->mutable_v()->set_str(pin.v->v().str());
+          break;
+        case v_type::T_BYTES:
+          prg_response->mutable_v()->set_blob(pin.v->v().blob());
+          break;
+        case v_type::T_IMAGE:
+          prg_response->mutable_v()->set_img(pin.v->v().img());
+          break;
+        case v_type::T_LIDAR:
+          prg_response->mutable_v()->set_lidar(pin.v->v().lidar());
+          break;
+        case v_type::T_SONAR:
+          prg_response->mutable_v()->set_sonar(pin.v->v().sonar());
+          break;
+        case v_type::T_FILE:
+          prg_response->mutable_v()->set_file(pin.v->v().file());
+          break;
+        default:;
         }
+        return;
+      }
     }
   }
-
   return;
 }
 
-static fb_t fb_RESPONSE = {{"Task","RESPONSE", 0, run_RESPONSE},
-                        {{"EN",PIN_NO_LINK, T_BOOL, nullptr},
-                         {"RESPONSE_BOOL", PIN_NO_LINK,T_BOOL, nullptr},
-                         {"RESPONSE_INT32",PIN_NO_LINK, T_INT32, nullptr},
-                         {"RESPONSE_UINT32",PIN_NO_LINK, T_UINT32, nullptr},
-                         {"RESPONSE_T_INT64",PIN_NO_LINK, T_INT64, nullptr},
-                         {"RESPONSE_T_UINT64",PIN_NO_LINK, T_UINT64, nullptr},
-                         {"RESPONSE_FLOAT32", PIN_NO_LINK,T_FLOAT32, nullptr},
-                         {"RESPONSE_FLOAT64",PIN_NO_LINK,T_FLOAT64, nullptr},
-                         {"RESPONSE_TIME", PIN_NO_LINK,T_TIME, nullptr},
-                         {"RESPONSE_STRING", PIN_NO_LINK,T_STRING, nullptr},
-                         {"RESPONSE_BYTES",PIN_NO_LINK, T_BYTES, nullptr},
-                         {"RESPONSE_IMAGE", PIN_NO_LINK,T_IMAGE, nullptr},
-                         {"RESPONSE_LIDAR", PIN_NO_LINK,T_LIDAR, nullptr},
-                         {"RESPONSE_SONAR",PIN_NO_LINK, T_SONAR, nullptr},
-                         {"RESPONSE_FILE", PIN_NO_LINK,T_FILE, nullptr}
-                         },
-                         {{"STATUS", PIN_NO_LINK,T_INT32, nullptr},
-                         {"RESPONSE", PIN_NO_LINK,T_NONE, nullptr}}};
+static fb_t fb_RESPONSE = {
+    {"Task", "RESPONSE", 0, run_RESPONSE},
+    {{"EN", PIN_NO_LINK, T_BOOL, nullptr},
+     {"RESPONSE_BOOL", PIN_NO_LINK, T_BOOL, nullptr},
+     {"RESPONSE_INT32", PIN_NO_LINK, T_INT32, nullptr},
+     {"RESPONSE_UINT32", PIN_NO_LINK, T_UINT32, nullptr},
+     {"RESPONSE_T_INT64", PIN_NO_LINK, T_INT64, nullptr},
+     {"RESPONSE_T_UINT64", PIN_NO_LINK, T_UINT64, nullptr},
+     {"RESPONSE_FLOAT32", PIN_NO_LINK, T_FLOAT32, nullptr},
+     {"RESPONSE_FLOAT64", PIN_NO_LINK, T_FLOAT64, nullptr},
+     {"RESPONSE_TIME", PIN_NO_LINK, T_TIME, nullptr},
+     {"RESPONSE_STRING", PIN_NO_LINK, T_STRING, nullptr},
+     {"RESPONSE_BYTES", PIN_NO_LINK, T_BYTES, nullptr},
+     {"RESPONSE_IMAGE", PIN_NO_LINK, T_IMAGE, nullptr},
+     {"RESPONSE_LIDAR", PIN_NO_LINK, T_LIDAR, nullptr},
+     {"RESPONSE_SONAR", PIN_NO_LINK, T_SONAR, nullptr},
+     {"RESPONSE_FILE", PIN_NO_LINK, T_FILE, nullptr}},
+    {{"STATUS", PIN_NO_LINK, T_INT32, nullptr},
+     {"RESPONSE", PIN_NO_LINK, T_NONE, nullptr}}};

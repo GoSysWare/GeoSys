@@ -281,12 +281,12 @@ void mod_exec(mod_t *p_mod, std::shared_ptr<apollo::cyber::Node> node) {
         fb_t * pqfb, *ppfb; 
         pqfb = prg_fbfind_by_lib(p_mn->p_prg,"Task","REQUEST");
         if(pqfb){
-            fb_reset(pqfb);
+            // fb_reset(pqfb);
             fb_setpin(pqfb, PININPUT, 1, request);
         }
         ppfb = prg_fbfind_by_lib(p_mn->p_prg,"Task","RESPONSE");
         if(ppfb){
-            fb_reset(pqfb);
+            // fb_reset(ppfb);
             fb_setpin(ppfb, PINOUTPUT, 1, response);
         }
         prg_exec(p_mn->p_prg); 

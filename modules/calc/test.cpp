@@ -45,6 +45,11 @@ int main(int argc, char *argv[])
 
 	vt->set_i(2);
 	ev_add(6,vtm.SerializeAsString(),"FSM_STATE");
+
+	vt->set_i(7);
+	ev_add(7,vtm.SerializeAsString(),"T7");
+	vt->set_i(8);
+	ev_add(8,vtm.SerializeAsString(),"T8");
 	ev_dump();
 
 
@@ -119,13 +124,52 @@ int main(int argc, char *argv[])
 	prg_voadd(prg,4,2,1);
 	//T5 连接 ctud 的 输出pin
 	prg_voadd(prg,5,3,3);
+	//T8 连接 task 的 输出response
+	prg_voadd(prg,8,4,2);	
+
 	//add1 的输出连接add2 的输入
 	prg_lkadd(prg,1,1,1,2,1);
 
 	//add1 的输出连接add2 的输入
 	prg_lkadd(prg,2,2,1,4,4);
 
+	//ctud 的输出连接task的req
+	prg_lkadd(prg,3,3,3,4,4);
+
 	prg_dump(prg);
+
+
+	//添加task的fb
+	 lib_name = "Task";
+	 fc_name = "REQUEST";
+	 fb_name_1 = "task_1_req";
+
+	prg_fbadd(prg2,6,lib_name,fc_name,fb_name_1);	
+	 lib_name = "Task";
+	 fc_name = "RESPONSE";
+	 fb_name_1 = "task_1_rsp";
+	prg_fbadd(prg2,7,lib_name,fc_name,fb_name_1);
+
+	 lib_name = "Arithmetic";
+	 fc_name = "ADD_INT";
+	fb_name_1 = "add_1";	
+	prg_fbadd(prg2,8,lib_name,fc_name,fb_name_1);
+
+
+ 	p_fb = prg_fbfind(prg2, 8);
+	//设定第四个块task的3号输入管脚
+	vt->set_i(3);
+    fb_setpin(p_fb, PININPUT, 2, vtm);
+
+	//add1 的输出连接add2 的输入
+	prg_lkadd(prg2,4,6,2,8,1);
+
+	//T7 连接 add 的 输出pin
+	prg_voadd(prg2,7,8,1);
+
+	//add1 的输出连接add2 的输入
+	prg_lkadd(prg2,5,8,1,7,2);
+
 
 	mod_exec(mod,node);
 

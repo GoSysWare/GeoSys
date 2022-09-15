@@ -12,7 +12,10 @@ static void run_ADD_INT(void *p) {
   vam_t &out = pb->outs[1].v;
   vam_t in1 = pb->ins[1].v;
   vam_t in2 = pb->ins[2].v;
-
+  int v1 = in1->v().i();
+  int v2 = in2->v().i();
+ 
+  int sum = v1 + v2;
   out->mutable_v()->set_i(in1->v().i() + in2->v().i());
   out->mutable_v()->set_t(T_INT32);
 }
