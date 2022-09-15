@@ -40,11 +40,12 @@ typedef struct MNode{
 
 typedef struct MTaskNode:MNode{
     std::string client;
+	std::shared_ptr<apollo::cyber::AsyncTask<value_tm, value_tm>> task_server;
 }task_node_t;
 
 typedef struct MPeriodNode:MNode{
     std::string client;
-	int interval;
+	int interval{1000};
 	apollo::cyber::Timer timer;
 }period_node_t;
 
@@ -101,7 +102,7 @@ void mod_reset(mod_t *p_mod);
 mod_t *mod_new();
 void mod_delete(mod_t *p_mod);
 
-int mod_prgadd(mod_t *p_mod,int id, std::string name);
+int mod_prgadd(mod_t *p_mod,int id, std::string name, int type);
 int mod_prgremove(mod_t *p_mod,int id);
 void mod_exec(mod_t *p_mod,std::shared_ptr<apollo::cyber::Node> node);
 

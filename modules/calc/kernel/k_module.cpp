@@ -236,12 +236,18 @@ void mod_exec(mod_t *p_mod, std::shared_ptr<apollo::cyber::Node> node) {
   p_mn = p_mod->mn_head.p_next;
   while (p_mn != &p_mod->mn_head) {
     if (p_mn->type == Cmd::TaskType::PERIODIC) {
+
       apollo::cyber::TimerOption opt;
       opt.oneshot = false;
-      opt.callback = [p_mn]() { prg_exec(p_mn->p_prg); };
+      opt.callback = [p_mn]() { 
+      
+        prg_exec(p_mn->p_prg);
+        ev_dump();
+      };
       opt.period = ((period_node_t *)p_mn)->interval;
       ((period_node_t *)p_mn)->timer.SetTimerOption(opt);
       ((period_node_t *)p_mn)->timer.Start();
+
     } else if (p_mn->type == Cmd::TaskType::SERVICE) {  
       auto f = [p_mn]( const vam_t &request, vam_t &response) { 
         fb_t * pqfb, *ppfb; 
@@ -286,7 +292,7 @@ void mod_exec(mod_t *p_mod, std::shared_ptr<apollo::cyber::Node> node) {
         prg_exec(p_mn->p_prg); 
 
       };
-      auto task_ = apollo::cyber::GlobalNode()->CreateAsyncTask<value_tm, value_tm>(p_mn->name, f);  
+      ((task_node_t *)p_mn)->task_server = apollo::cyber::GlobalNode()->CreateAsyncTask<value_tm, value_tm>(p_mn->name, f);  
     }
     p_mn = p_mn->p_next;
   }

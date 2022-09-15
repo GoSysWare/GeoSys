@@ -36,12 +36,12 @@ static void run_FSM(void *p) {
   return;
 }
 
-static fb_t fb_FSM = {{"FSM", 0,run_FSM},
-                        {{"EN", T_BOOL, nullptr},
-                         {"COND", T_BOOL, nullptr},
-                         {"FROM", T_BOOL, nullptr},
-                         {"STATE", T_INT32, nullptr},
-                         {"SET", T_INT32, nullptr}},
-                        {{"STATUS", T_INT32, nullptr},
-                         {"TO", T_BOOL, nullptr},
-                         {"ACTION", T_BOOL, nullptr}}};
+static fb_t fb_FSM = {{"Fsm","FSM", 0,run_FSM},
+                        {{"EN",PIN_NO_LINK, T_BOOL, nullptr},
+                         {"COND", PIN_NO_LINK,T_BOOL, nullptr},
+                         {"FROM", PIN_NO_LINK,T_BOOL, nullptr},
+                         {"STATE", PIN_NO_LINK,T_INT32, nullptr},
+                         {"SET", PIN_NO_LINK,T_INT32, nullptr}},
+                        {{"STATUS", PIN_NO_LINK,T_INT32, nullptr},
+                         {"TO", PIN_NO_LINK,T_BOOL, nullptr},
+                         {"ACTION", PIN_NO_LINK,T_BOOL, nullptr}}};

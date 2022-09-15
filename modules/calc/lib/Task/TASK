@@ -7,7 +7,8 @@ static void run_TASK(void *p) {
   vam_t param_req = pb->ins[4].v;
   vam_t next_task = pb->outs[1].v;
   vam_t param_rsp = pb->outs[2].v;
-
+  auto client = apollo::cyber::GlobalNode()->CreateAsyncTaskClient<value_tm, value_tm>(task_name->v().str());  
+  param_rsp = client->SendRequest(param_req,std::chrono::seconds(timeout->v().tm()));
   return;
 }
 

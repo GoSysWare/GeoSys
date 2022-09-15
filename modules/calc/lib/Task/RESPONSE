@@ -6,7 +6,7 @@ static void run_RESPONSE(void *p) {
 
   if (pb) {
     for (auto &pin : pb->ins) {
-        if(pin.s = PIN_IS_LINK){
+        if(pin.s = (int)PIN_IS_LINK){
             prg_response = pin.v;
         }
     }

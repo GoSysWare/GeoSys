@@ -15,7 +15,7 @@
             "name": "Test Calc",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/bazel-bin/modules/calc/calc_core",
+            "program": "${workspaceFolder}/bazel-bin/modules/calc/test_calc",
             "args": [],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",

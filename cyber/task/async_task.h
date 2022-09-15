@@ -158,7 +158,7 @@ bool AsyncTask<Request, Response>::Init() {
         };
         Async(std::move(task));
       },
-      proto::OptionalMode::RTPS);
+      proto::OptionalMode::INTRA);
   inited_ = true;
   if (request_receiver_ == nullptr) {
     AERROR << " Create request sub failed." << request_channel_;

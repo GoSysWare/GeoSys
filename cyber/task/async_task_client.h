@@ -197,7 +197,7 @@ bool AsyncTaskClient<Request, Response>::Init() {
   writer_id_ = request_transmitter_->id();
 
   response_callback_ =
-      std::bind(&Client<Request, Response>::HandleResponse, this,
+      std::bind(&AsyncTaskClient<Request, Response>::HandleResponse, this,
                 std::placeholders::_1, std::placeholders::_2);
 
   role.set_channel_name(response_channel_);
@@ -212,7 +212,7 @@ bool AsyncTaskClient<Request, Response>::Init() {
         (void)reader_attr;
         response_callback_(response, message_info);
       },
-      proto::OptionalMode::RTPS);
+      proto::OptionalMode::INTRA);
   if (response_receiver_ == nullptr) {
     AERROR << "Create response sub failed.";
     request_transmitter_.reset();

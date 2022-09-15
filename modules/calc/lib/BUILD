@@ -16,11 +16,12 @@ cc_library(
         "//modules/calc/lib/Counter:Counter",
         # "//modules/calc/lib/Driver:Driver",
         "//modules/calc/lib/Fsm:Fsm",
+        "//modules/calc/lib/Task:Task",
 
         # "//modules/calc/lib/IO:IO",  
         # "//modules/calc/lib/Logic:Logic",
         # "//modules/calc/lib/Maths:Maths",
-        "//modules/calc/lib/Opencv:Opencv",
+        # "//modules/calc/lib/Opencv:Opencv",
         # "//modules/calc/lib/Selection:Selection",
         # "//modules/calc/lib/System:System",  
         # "//modules/calc/lib/Timer:Timer",
