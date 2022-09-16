@@ -125,7 +125,7 @@ int main(int argc, char *argv[])
 	//T5 连接 ctud 的 输出pin
 	prg_voadd(prg,5,3,3);
 	//T8 连接 task 的 输出response
-	prg_voadd(prg,8,4,2);	
+	prg_voadd(prg,8,4,3);	
 
 	//add1 的输出连接add2 的输入
 	prg_lkadd(prg,1,1,1,2,1);

@@ -157,6 +157,7 @@ int prg_fbadd(prog_t *p_prg, int id, const std::string &libname,
     fb_delete(p_fb);
     return -1;
   }
+  p_fb->h.fbname = fbname;
   p_en->id = id;
   p_en->p_fb = p_fb;
   p_en->fbname = fbname;

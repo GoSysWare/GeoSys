@@ -79,6 +79,7 @@ cc_binary(
         "//modules/calc/include/lib:lib_include",
         "//modules/calc/proto:value_cc_proto",
         "//modules/calc/proto:cmd_cc_proto",
+        "//modules/calc/proto:task_def_cc_proto",
         "//cyber",
 
 

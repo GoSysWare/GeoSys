@@ -239,8 +239,7 @@ void mod_exec(mod_t *p_mod, std::shared_ptr<apollo::cyber::Node> node) {
 
       apollo::cyber::TimerOption opt;
       opt.oneshot = false;
-      opt.callback = [p_mn]() { 
-      
+      opt.callback = [p_mn]() {
         prg_exec(p_mn->p_prg);
         ev_dump();
       };
@@ -248,21 +247,20 @@ void mod_exec(mod_t *p_mod, std::shared_ptr<apollo::cyber::Node> node) {
       ((period_node_t *)p_mn)->timer.SetTimerOption(opt);
       ((period_node_t *)p_mn)->timer.Start();
 
-    } else if (p_mn->type == Cmd::TaskType::SERVICE) {  
-      auto f = [p_mn]( const vam_t &request, vam_t &response) { 
-        fb_t * pqfb, *ppfb; 
-        pqfb = prg_fbfind_by_lib(p_mn->p_prg,"Task","REQUEST");
-        if(pqfb){
-            fb_reset(pqfb);
-            fb_setpin(pqfb, PININPUT, 1, request);
+    } else if (p_mn->type == Cmd::TaskType::SERVICE) {
+      auto f = [p_mn](const vam_t &request, vam_t &response) {
+        fb_t *pqfb, *ppfb;
+        pqfb = prg_fbfind_by_lib(p_mn->p_prg, "Task", "REQUEST");
+        if (pqfb) {
+          fb_reset(pqfb);
+          fb_setpin(pqfb, PININPUT, 1, request);
         }
-        ppfb = prg_fbfind_by_lib(p_mn->p_prg,"Task","RESPONSE");
-        if(ppfb){
-            fb_reset(pqfb);
-            fb_setpin(ppfb, PINOUTPUT, 1, response);
+        ppfb = prg_fbfind_by_lib(p_mn->p_prg, "Task", "RESPONSE");
+        if (ppfb) {
+          fb_reset(pqfb);
+          fb_setpin(ppfb, PINOUTPUT, 1, response);
         }
-        prg_exec(p_mn->p_prg); 
-
+        prg_exec(p_mn->p_prg);
       };
       auto service_ = node->CreateService<value_tm, value_tm>(p_mn->name, f);
     } else if (p_mn->type == Cmd::TaskType::FSM) {
@@ -274,25 +272,30 @@ void mod_exec(mod_t *p_mod, std::shared_ptr<apollo::cyber::Node> node) {
       ((fsm_node_t *)p_mn)->timer.Start();
     } else if (p_mn->type == Cmd::TaskType::ACTION) {
 
-    }
-     else if (p_mn->type == Cmd::TaskType::ASYNC) {
-      
-      auto f = [p_mn]( const vam_t &request, vam_t &response) { 
-        fb_t * pqfb, *ppfb; 
-        pqfb = prg_fbfind_by_lib(p_mn->p_prg,"Task","REQUEST");
-        if(pqfb){
-            // fb_reset(pqfb);
-            fb_setpin(pqfb, PININPUT, 1, request);
-        }
-        ppfb = prg_fbfind_by_lib(p_mn->p_prg,"Task","RESPONSE");
-        if(ppfb){
-            // fb_reset(ppfb);
-            fb_setpin(ppfb, PINOUTPUT, 1, response);
-        }
-        prg_exec(p_mn->p_prg); 
+    } else if (p_mn->type == Cmd::TaskType::ASYNC) {
 
+      auto f = [p_mn](const std::shared_ptr<TaskReqParam> &request,
+                      std::shared_ptr<TaskRspParam> &response) {
+        fb_t *pqfb, *ppfb;
+        pqfb = prg_fbfind_by_lib(p_mn->p_prg, "Task", "REQUEST");
+        if (pqfb) {
+          fb_setpin(pqfb, PININPUT, 1, request->param());
+        }
+        ((task_node_t *)p_mn)->client = request->client();
+        prg_exec(p_mn->p_prg);
+
+        ppfb = prg_fbfind_by_lib(p_mn->p_prg, "Task", "RESPONSE");
+        if (ppfb) {
+          pin_t *pin = fb_getpin(ppfb, PINOUTPUT, 1);
+          if (pin) {
+            response->mutable_param()->CopyFrom(*(pin->v));
+          }
+          response->set_timestamp(apollo::cyber::Time::Now().ToNanosecond());
+        }
       };
-      ((task_node_t *)p_mn)->task_server = apollo::cyber::GlobalNode()->CreateAsyncTask<value_tm, value_tm>(p_mn->name, f);  
+      ((task_node_t *)p_mn)->task_server =
+          apollo::cyber::GlobalNode()
+              ->CreateAsyncTask<TaskReqParam, TaskRspParam>(p_mn->name, f);
     }
     p_mn = p_mn->p_next;
   }

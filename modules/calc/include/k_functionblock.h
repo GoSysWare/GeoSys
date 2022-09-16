@@ -29,8 +29,9 @@ using fb_function = std::function<void(void*)>;
 
 //FB的头定义
 typedef struct FBHead{
-	std::string libname;
+	std::string libname; 
 	std::string fcname;
+	std::string fbname;
     int flag;			/* export fb */
 	fb_function run;
 } fbhead_t;

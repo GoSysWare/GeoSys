@@ -1,0 +1,16 @@
+
+syntax = "proto3";
+import "modules/calc/proto/value.proto";
+
+
+
+message TaskReqParam{
+    string client = 1;
+    value_tm param = 2;
+    uint64 timestamp = 3;
+}
+message TaskRspParam{
+    value_tm param = 1;
+    uint64 timestamp = 2;
+}
+

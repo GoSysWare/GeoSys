@@ -8,6 +8,7 @@
 #include "k_program.h"
 #include "k_io.h"
 #include "cyber/cyber.h"
+#include "modules/calc/proto/task_def.pb.h"
 
 
 typedef struct MNode{
@@ -40,12 +41,12 @@ typedef struct MNode{
 
 typedef struct MTaskNode:MNode{
     std::string client;
-	std::shared_ptr<apollo::cyber::AsyncTask<value_tm, value_tm>> task_server;
+	std::shared_ptr<apollo::cyber::AsyncTask<TaskReqParam, TaskRspParam>> task_server;
 }task_node_t;
 
 typedef struct MPeriodNode:MNode{
     std::string client;
-	int interval{1000};
+	int interval{50};
 	apollo::cyber::Timer timer;
 }period_node_t;
 

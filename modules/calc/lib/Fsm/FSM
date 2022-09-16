@@ -36,7 +36,7 @@ static void run_FSM(void *p) {
   return;
 }
 
-static fb_t fb_FSM = {{"Fsm","FSM", 0,run_FSM},
+static fb_t fb_FSM = {{"Fsm","FSM", "",0,run_FSM},
                         {{"EN",PIN_NO_LINK, T_BOOL, nullptr},
                          {"COND", PIN_NO_LINK,T_BOOL, nullptr},
                          {"FROM", PIN_NO_LINK,T_BOOL, nullptr},

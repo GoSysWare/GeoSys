@@ -11,6 +11,20 @@ package(default_visibility = ["//visibility:public"])
 
 
 cc_proto_library(
+    name = "task_def_cc_proto",
+    deps = [":task_def_proto"], 
+)
+
+proto_library(
+    name = "task_def_proto",
+    srcs = ["task_def.proto"],
+    deps = [
+        ":value_proto",
+    ],
+)
+
+
+cc_proto_library(
     name = "cmd_cc_proto",
     deps = [":cmd_proto"], 
 )
@@ -22,6 +36,7 @@ proto_library(
         ":value_proto",
     ],
 )
+
 cc_proto_library(
     name = "value_cc_proto",
     deps = [":value_proto"], 
@@ -33,6 +48,7 @@ proto_library(
     deps = [
     ],
 )
+
 cc_proto_library(
     name = "image_cc_proto",
     deps = [":image_proto"], 

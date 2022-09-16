@@ -6,62 +6,25 @@ static void run_TASK(void *p) {
   vam_t timeout = pb->ins[3].v;
   vam_t param_req = pb->ins[4].v;
   vam_t &next_task = pb->outs[1].v;
-  vam_t &param_rsp = pb->outs[2].v;
+  vam_t &req_time = pb->outs[2].v;
+  vam_t &param_rsp = pb->outs[3].v;
   auto client =
-      apollo::cyber::GlobalNode()->CreateAsyncTaskClient<value_tm, value_tm>(
+      apollo::cyber::GlobalNode()->CreateAsyncTaskClient<TaskReqParam, TaskRspParam>(
           task_name->v().str());
-  auto response =
-      client->SendRequest(param_req, std::chrono::seconds(timeout->v().tm()));
-  param_rsp->mutable_v()->set_t(response->v().t());
-  switch (response->v().t()) {
-  case v_type::T_BOOL:
-    param_rsp->mutable_v()->set_b(response->v().b());
-    break;
-  case v_type::T_INT32:
-    param_rsp->mutable_v()->set_i(response->v().i());
-    break;
-  case v_type::T_UINT32:
-    param_rsp->mutable_v()->set_ui(response->v().ui());
-    break;
-  case v_type::T_INT64:
-    param_rsp->mutable_v()->set_ll(response->v().ll());
-    break;
-  case v_type::T_UINT64:
-    param_rsp->mutable_v()->set_ull(response->v().ull());
-    break;
-  case v_type::T_FLOAT32:
-    param_rsp->mutable_v()->set_f(response->v().f());
-    break;
-  case v_type::T_FLOAT64:
-    param_rsp->mutable_v()->set_d(response->v().d());
-    break;
-  case v_type::T_TIME:
-    param_rsp->mutable_v()->set_tm(response->v().tm());
-    break;
-  case v_type::T_STRING:
-    param_rsp->mutable_v()->set_str(response->v().str());
-    break;
-  case v_type::T_BYTES:
-    param_rsp->mutable_v()->set_blob(response->v().blob());
-    break;
-  case v_type::T_IMAGE:
-    param_rsp->mutable_v()->set_img(response->v().img());
-    break;
-  case v_type::T_LIDAR:
-    param_rsp->mutable_v()->set_lidar(response->v().lidar());
-    break;
-  case v_type::T_SONAR:
-    param_rsp->mutable_v()->set_sonar(response->v().sonar());
-    break;
-  case v_type::T_FILE:
-    param_rsp->mutable_v()->set_file(response->v().file());
-    break;
-  default:;
-  }
+ 
+  std::shared_ptr<TaskReqParam> request = std::make_shared<TaskReqParam>();
+  request->mutable_param()->CopyFrom(*param_req);
+  request->set_client(pb->h.fbname);
+
+  auto response =  client->SendRequest(request, std::chrono::seconds(timeout->v().tm()));
+  if(response == nullptr) return;
+
+  param_rsp->CopyFrom(response->param());
+
   return;
 }
 
-static fb_t fb_TASK = {{"Task", "TASK", 0, run_TASK},
+static fb_t fb_TASK = {{"Task", "TASK", "",0, run_TASK},
                        {{"EN", PIN_NO_LINK, T_BOOL, nullptr},
                         {"FIRE", PIN_NO_LINK, T_BOOL, nullptr},
                         {"NAME", PIN_NO_LINK, T_STRING, nullptr},
@@ -70,5 +33,8 @@ static fb_t fb_TASK = {{"Task", "TASK", 0, run_TASK},
                        {
                            {"STATUS", PIN_NO_LINK, T_INT32, nullptr},
                            {"NEXT", PIN_NO_LINK, T_BOOL, nullptr},
+                           {"REQ_TIME", PIN_NO_LINK, T_TIME, nullptr},
                            {"RSP", PIN_NO_LINK, T_INT32, nullptr},
+                           {"RSP_TIME", PIN_NO_LINK, T_TIME, nullptr}
+
                        }};

@@ -21,5 +21,7 @@ cc_library(
         "//modules/calc/include:calc_include",
         "//modules/calc/include/lib:lib_include",
         "//modules/calc/proto:value_cc_proto",
+        "//modules/calc/proto:task_def_cc_proto",
+
     ],
 )
