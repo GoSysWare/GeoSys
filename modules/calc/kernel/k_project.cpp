@@ -237,7 +237,7 @@ void prj_reset()
 
 }
 
-int prj_fbadd(int idmod, int idprg, int id, char *libname, char *fcname, char *fbname)
+int prj_fbadd(int idmod, int idprg, int id, std::string libname, std::string fcname, std::string fbname)
 {
   if (prj_modselect(idmod) != 0)
   {
@@ -371,7 +371,7 @@ mod_t *prj_modfind(std::string mod_name)
 
 // int prj_to_img(prjimg_t *pimg)
 // {
-//   char *buf;
+//   std::string buf;
 //   pin_t *ppin;
 //   pnode_t *p_pn;
 //   enode_t *p_en;
@@ -460,7 +460,7 @@ mod_t *prj_modfind(std::string mod_name)
 
 // int prj_from_img(prjimg_t *pimg)
 // {
-//   char *buf;
+//   std::string buf;
 //   pin_t *ppin;
 //   Int t;
 //   pnode_t *p_pn;
