@@ -107,7 +107,7 @@ int mod_prgremove(mod_t *p_mod,int id);
 void mod_exec(mod_t *p_mod,std::unique_ptr<apollo::cyber::Node> &node);
 
 
-int mod_fbadd(mod_t *p_mod,int idprg, int id, char *libname, char *fcname, char *fbname);
+int mod_fbadd(mod_t *p_mod,int idprg, int id, std::string libname, std::string fcname, std::string fbname);
 int mod_fbremove(mod_t *p_mod,int idprg, int id);
 int mod_lkadd(mod_t *p_mod,int idprg, int id, int fbsrc, int pinsrc, int fbtgt, int pintgt);
 int mod_lkremove(mod_t *p_mod,int idprg, int id);

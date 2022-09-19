@@ -55,7 +55,7 @@ void prj_exec();
 prjinfo_t *prj_info();
 prjinfo_t *prj_info_p();
 
-int prj_fbadd(int idmod,int idprg, int id, char *libname, char *fcname, char *fbname);
+int prj_fbadd(int idmod,int idprg, int id, std::string libname, std::string fcname, std::string fbname);
 int prj_fbremove(int idmod,int idprg, int id);
 int prj_lkadd(int idmod,int idprg, int id, int fbsrc, int pinsrc, int fbtgt, int pintgt);
 int prj_lkremove(int idmod,int idprg, int id);
