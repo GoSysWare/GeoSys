@@ -17,6 +17,7 @@ typedef struct MNode{
     int id;
     std::string  name;
     int type;
+	std::string desc;
     bool enable;
     proginfo_t info;
     prog_t *p_prg;
@@ -96,16 +97,14 @@ void *mod_main_loop(void* sth);
 
 void mod_run(mod_t *p_mod);
 void mod_stop(mod_t *p_mod);
-void mod_init(mod_t *p_mod);
-void mod_uninit(mod_t *p_mod);
 void mod_reset(mod_t *p_mod);
 
 mod_t *mod_new();
 void mod_delete(mod_t *p_mod);
 
-int mod_prgadd(mod_t *p_mod,int id, std::string name, int type);
+int mod_prgadd(mod_t *p_mod,int id, std::string name, std::string desc,int type);
 int mod_prgremove(mod_t *p_mod,int id);
-void mod_exec(mod_t *p_mod,std::shared_ptr<apollo::cyber::Node> node);
+void mod_exec(mod_t *p_mod,std::unique_ptr<apollo::cyber::Node> &node);
 
 
 int mod_fbadd(mod_t *p_mod,int idprg, int id, char *libname, char *fcname, char *fbname);

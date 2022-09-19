@@ -28,6 +28,7 @@ static mnode_t *mn_new(int type) {
     return 0;
   }
 }
+
 static void mn_delete(mnode_t *p) { delete p; }
 
 static void mn_addbefore(mnode_t *p, mnode_t *p_ref) {
@@ -49,46 +50,28 @@ static void mn_remove(mnode_t *p) {
   p->p_next->p_prev = p->p_prev;
 }
 
-void mod_stop(mod_t *p_mod) {
-  mnode_t *p_mn;
+static void mod_init(mnode_t *p_mnode, int id, std::string name, int type,
+                     std::string desc, int interval) {
 
-  p_mn = p_mod->mn_head.p_next;
-  while (p_mn != &p_mod->mn_head) {
-    // if(p_mn->type == Cmd::TaskType::PERIODIC)
-    // {
-    //     p_mn->timer.Stop();
-
-    // } else if (p_mn->type == Cmd::TaskType::SERVICE)
-    // {
-
-    //   /* code */
-    // } else if (p_mn->type == Cmd::TaskType::FSM)
-    // {
-    //     p_mn->timer.Stop();
-
-    // } else if (p_mn->type == Cmd::TaskType::ACTION)
-    // {
-    //   /* code */
-    // }
-    p_mn = p_mn->p_next;
+  if (type == Cmd::TaskType::PERIODIC) {
+    ((period_node_t *)p_mnode)->interval = interval;
+  } else if (type == Cmd::TaskType::SERVICE) {
+  } else if (type == Cmd::TaskType::FSM) {
+    ((fsm_node_t *)p_mnode)->interval = interval;
+  } else if (type == Cmd::TaskType::ACTION) {
+  } else if (type == Cmd::TaskType::ASYNC) {
+  } else if (type == Cmd::TaskType::TIMER) {
+    ((timer_node_t *)p_mnode)->interval = interval;
+  } else {
+    return;
   }
+  p_mnode->id = id;
+  p_mnode->name = name;
+  p_mnode->type = type;
+  p_mnode->desc = desc;
+  p_mnode->enable = true;
 }
-void mod_init(mod_t *p_mod) {}
-void mod_uninit(mod_t *p_mod) {}
-
-void mod_reset(mod_t *p_mod) {
-  mnode_t *p_mn, *p_del;
-  p_mod->p_mn_select = &p_mod->mn_head;
-  p_mn = p_mod->mn_head.p_next;
-  while (p_mn != &p_mod->mn_head) {
-    p_del = p_mn;
-    p_mn = p_mn->p_next;
-    mn_remove(p_del);
-    prg_delete(p_del->p_prg);
-    mn_delete(p_del);
-  }
-  ev_reset();
-}
+static void mod_uninit(mnode_t *p_mnode) {}
 
 static int mod_prgselect(mod_t *p_mod, int id) {
   mnode_t *p_mn;
@@ -135,6 +118,40 @@ static int mod_prgselect(mod_t *p_mod, std::string prog_name) {
   }
 
   return -1;
+}
+
+void mod_run(mod_t *p_mod) {}
+
+void mod_stop(mod_t *p_mod) {
+  mnode_t *p_mn;
+  p_mn = p_mod->mn_head.p_next;
+  while (p_mn != &p_mod->mn_head) {
+    if (p_mn->type == Cmd::TaskType::PERIODIC) {
+      ((period_node_t *)p_mn)->timer.Stop();
+    } else if (p_mn->type == Cmd::TaskType::SERVICE) {
+      /* code */
+    } else if (p_mn->type == Cmd::TaskType::FSM) {
+      ((fsm_node_t *)p_mn)->timer.Stop();
+    } else if (p_mn->type == Cmd::TaskType::ACTION) {
+      /* code */
+    }else if (p_mn->type == Cmd::TaskType::TIMER) {
+      /* code */
+    }
+    p_mn = p_mn->p_next;
+  }
+}
+void mod_reset(mod_t *p_mod) {
+  mnode_t *p_mn, *p_del;
+  p_mod->p_mn_select = &p_mod->mn_head;
+  p_mn = p_mod->mn_head.p_next;
+  while (p_mn != &p_mod->mn_head) {
+    p_del = p_mn;
+    p_mn = p_mn->p_next;
+    mn_remove(p_del);
+    prg_delete(p_del->p_prg);
+    mn_delete(p_del);
+  }
+  ev_reset();
 }
 
 mod_t *mod_new() {
@@ -190,7 +207,8 @@ void mod_delete(mod_t *p_mod) {
   }
   delete p_mod;
 }
-int mod_prgadd(mod_t *p_mod, int id, std::string name, int type) {
+int mod_prgadd(mod_t *p_mod, int id, std::string name, int type,
+               std::string desc, int interval) {
   prog_t *p_prg;
   mnode_t *p_pn;
 
@@ -205,9 +223,8 @@ int mod_prgadd(mod_t *p_mod, int id, std::string name, int type) {
   }
 
   p_pn->p_prg = p_prg;
-  p_pn->id = id;
-  p_pn->name = name;
-  p_pn->type = type;
+
+  mod_init(p_pn, id, name, type, desc, interval);
 
   mn_addbefore(p_pn, &p_mod->mn_head);
 
@@ -230,11 +247,15 @@ int mod_prgremove(mod_t *p_mod, int id) {
   return 0;
 }
 
-void mod_exec(mod_t *p_mod, std::shared_ptr<apollo::cyber::Node> node) {
+void mod_exec(mod_t *p_mod, std::unique_ptr<apollo::cyber::Node> &node) {
   mnode_t *p_mn;
 
   p_mn = p_mod->mn_head.p_next;
   while (p_mn != &p_mod->mn_head) {
+
+    if (p_mn->enable)
+      continue;
+
     if (p_mn->type == Cmd::TaskType::PERIODIC) {
 
       apollo::cyber::TimerOption opt;
@@ -252,12 +273,10 @@ void mod_exec(mod_t *p_mod, std::shared_ptr<apollo::cyber::Node> node) {
         fb_t *pqfb, *ppfb;
         pqfb = prg_fbfind_by_lib(p_mn->p_prg, "Task", "REQUEST");
         if (pqfb) {
-          fb_reset(pqfb);
           fb_setpin(pqfb, PININPUT, 1, request);
         }
         ppfb = prg_fbfind_by_lib(p_mn->p_prg, "Task", "RESPONSE");
         if (ppfb) {
-          fb_reset(pqfb);
           fb_setpin(ppfb, PINOUTPUT, 1, response);
         }
         prg_exec(p_mn->p_prg);

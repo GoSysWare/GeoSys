@@ -31,12 +31,12 @@ typedef struct PNode{
     std::string  name;
 	std::string  desc;
 	bool enable;
+	std::string  uuid;
 	std::unique_ptr<apollo::cyber::Node> cyber_node;
     mod_t *p_mod;
 }pnode_t;
 
 
-void *prj_main_loop(void* sth);
 
 void prj_run();
 void prj_stop();
@@ -51,6 +51,7 @@ int prj_prgadd(int idmod,int idprg, std::string name);
 int prj_prgremove(int idmod,int idprg);
 
 void prj_exec();
+
 prjinfo_t *prj_info();
 prjinfo_t *prj_info_p();
 

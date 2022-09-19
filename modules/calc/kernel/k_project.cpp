@@ -15,7 +15,6 @@ static pnode_t pn_head = {&pn_head, &pn_head, 0, "","",true, 0};
 static pnode_t *p_pn_select = &pn_head;
 
 static int is_run;
-static rwlock_t *prjlock = 0;
 
 pnode_t *prj_gethead() { return &pn_head; }
 
@@ -51,34 +50,25 @@ static void pn_remove(pnode_t *p)
 
 static void clear_prjinfo()
 {
-  info.uuid = "{00000000-0000-0000-0000-00000000}";
-  info.id_cmd = 0;
+
 }
 
 
-void prj_run() { is_run = 1; }
+void prj_run() {  }
 
 void prj_stop()
 {
-  // printf("begin lock\n");
-  k_wlock(prjlock);
-  // printf("end lock\n");
   is_run = 0;
-  k_wunlock(prjlock);
 }
 
 void prj_init(int mode)
 {
-  prjlock = k_rwlock_create();
-  prj_info()->stat = S_UNKNOWN;
-  prj_info_p()->stat = S_UNKNOWN;
+
   clear_prjinfo();
-  k_clk_init();
-  //   state_init();
   prj_run();
 }
 
-void prj_uninit() { k_rwlock_destory(prjlock); }
+void prj_uninit() { }
 
 static int prj_modselect(int id)
 {
@@ -105,7 +95,6 @@ static int prj_modselect(int id)
     }
     p_pn = p_pn->p_next;
   }
-
   return -1;
 }
 static int prj_modselect(std::string name)
@@ -159,8 +148,8 @@ int prj_modadd(int id, std::string name, std::string desc)
   p_pn->id = id;
   p_pn->name = name;
   p_pn->desc = desc;
-
-  p_pn->cyber_node = apollo::cyber::CreateNode(p_pn->name);
+  p_pn->enable = true;
+  p_pn->cyber_node = std::move(apollo::cyber::CreateNode(p_pn->name));
   pn_addbefore(p_pn, &pn_head);
 
   return 0;
@@ -182,14 +171,14 @@ int prj_modremove(int idmod)
 
   return 0;
 }
-int prj_prgadd(int idmod, int idprg, std::string name)
+int prj_prgadd(int idmod, int idprg, std::string name,int type,std::string desc, int period)
 {
   prj_modselect(idmod);
   if (p_pn_select == &pn_head)
   {
     return -1;
   }
-  return mod_prgadd(p_pn_select->p_mod, idprg, name);
+  return mod_prgadd(p_pn_select->p_mod, idprg, name,desc,period);
 }
 int prj_prgremove(int idmod, int idprg)
 {
@@ -207,7 +196,10 @@ void prj_exec()
   p_pn = pn_head.p_next;
   while (p_pn != &pn_head)
   {
-    mod_exec(p_pn->p_mod);
+    if(p_pn->enable)
+    {
+     mod_exec(p_pn->p_mod,p_pn->cyber_node);
+    }
     p_pn = p_pn->p_next;
   }
 }
@@ -229,7 +221,6 @@ void prj_reset()
 {
   pnode_t *p_pn, *p_del;
 
-  k_wlock(prjlock);
 
   p_pn_select = &pn_head;
   p_pn = pn_head.p_next;
@@ -244,7 +235,6 @@ void prj_reset()
   ev_reset();
   clear_prjinfo();
 
-  k_wunlock(prjlock);
 }
 
 int prj_fbadd(int idmod, int idprg, int id, char *libname, char *fcname, char *fbname)
