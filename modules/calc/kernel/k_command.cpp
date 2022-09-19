@@ -2,51 +2,11 @@
 #include "modules/calc/include/k_evdata.h"
 #include "modules/calc/include/k_lib.h"
 #include "modules/calc/include/k_project.h"
+#include "modules/calc/proto/cmd.pb.h"
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#define NWORD 1024
-#define NLINE 1024
-static int get_word(char *line, char *word, int *cursor) {
-  char *pl, *pw;
-  int i;
-
-  pw = word;
-  pl = line + *cursor;
-  while ((*pl == ' ' || *pl == '\t' || *pl == ';' || *pl == ',') && *pl != 0) {
-    pl++;
-    *cursor += 1;
-  }
-
-  i = 0;
-  while (
-      (*pl != '\0' && *pl != ' ' && *pl != '\t' && *pl != ';' && *pl != ',') &&
-      *pl != 0 && i < NWORD - 1) {
-    *pw = *pl;
-    pw++;
-    pl++;
-    *cursor += 1;
-    i++;
-  }
-
-  *pw = 0;
-  return i;
-}
-static int get_line(char *buf, char *line, int *cursor) {
-  char *pb;
-  int len;
-  pb = buf + *cursor;
-  //此处为低字节
-  memcpy((char*)&len,pb,sizeof(int));
-  if(len == 0){
-  return 0;
-  }
-  *cursor += sizeof(int);
-  pb += sizeof(int);
-  memcpy(line, pb, std::min(len, NLINE));
-  *cursor += len;
-  return len + 4;
-}
 
 static int addprg(char *line, int *cursor) {
   char word[NWORD];
@@ -415,128 +375,137 @@ static int dumpimg() {
   return 0;
 }
 
-int cmd_dispatch(char *line) {
-  int cursor;
-  char word[NWORD];
-  int idcmd;
-  prjinfo_t *info;
+int cmd_dispatch(Cmd::EditInfo edit_info) {
 
-  cursor = 0;
-  get_word(line, word, &cursor);
-  idcmd = atoi(word);
-  info = prj_info();
-  if (info->id_cmd < idcmd) {
-    info->id_cmd = idcmd;
-  }
+  if (edit_info.element() == Cmd::EditElement::PROJ) {
+    if (edit_info.mutable_proj()->edit_type() == Cmd::EditType::ADD) {
 
-  get_word(line, word, &cursor);
+    } else if (edit_info.mutable_proj()->edit_type() == Cmd::EditType::RM) {
 
-#ifdef _WIN32
-  if (stricmp(word, "addprg") == 0) {
-    return addprg(line, &cursor);
-  } else if (stricmp(word, "rmprg") == 0) {
-    return rmprg(line, &cursor);
-  } else if (stricmp(word, "addev") == 0) {
-    return addev(line, &cursor);
-  } else if (stricmp(word, "rmev") == 0) {
-    return rmev(line, &cursor);
-  } else if (stricmp(word, "addfb") == 0) {
-    return addfb(line, &cursor);
-  } else if (stricmp(word, "rmfb") == 0) {
-    return rmfb(line, &cursor);
-  } else if (stricmp(word, "addlk") == 0) {
-    return addlk(line, &cursor);
-  } else if (stricmp(word, "rmlk") == 0) {
-    return rmlk(line, &cursor);
-  } else if (stricmp(word, "addvi") == 0) {
-    return addvi(line, &cursor);
-  } else if (stricmp(word, "rmvi") == 0) {
-    return rmvi(line, &cursor);
-  } else if (stricmp(word, "addvo") == 0) {
-    return addvo(line, &cursor);
-  } else if (stricmp(word, "rmvo") == 0) {
-    return rmvo(line, &cursor);
-  } else if (stricmp(word, "setpin") == 0) {
-    return setpin(line, &cursor);
-  } else if (stricmp(word, "setev") == 0) {
-    return setev(line, &cursor);
-  } else if (stricmp(word, "showprj") == 0) {
-    return showprj();
-  } else if (stricmp(word, "showlib") == 0) {
-    return showlib();
-  } else if (stricmp(word, "showev") == 0) {
-    return showevlist();
-  } else if (stricmp(word, "showprg") == 0) {
-    return showprg(line, &cursor);
-  } else if (stricmp(word, "showfb") == 0) {
-    return showfb(line, &cursor);
-  } else if (stricmp(word, "run") == 0) {
-    return run();
-  } else if (stricmp(word, "stop") == 0) {
-    return stop();
-  } else if (stricmp(word, "help") == 0) {
-    return help();
-  } else if (stricmp(word, "setprj") == 0) {
-    return setprj(line, &cursor);
-  } else if (stricmp(word, "dumpimg") == 0) {
-    return dumpimg();
+    } else if (edit_info.mutable_proj()->edit_type() == Cmd::EditType::SET) {
+
+    } else if (edit_info.mutable_proj()->edit_type() == Cmd::EditType::SHOW) {
+
+    } else {
+    }
+
+  } else if (edit_info.element() == Cmd::EditElement::MOD) {
+    if (edit_info.mutable_mod()->edit_type() == Cmd::EditType::ADD) {
+      prj_modadd(edit_info.mutable_mod()->mod_id(),
+                 edit_info.mutable_mod()->mod_name(),
+                 edit_info.mutable_mod()->mod_desc());
+
+    } else if (edit_info.mutable_mod()->edit_type() == Cmd::EditType::RM) {
+      prj_modremove(edit_info.mutable_mod()->mod_id());
+
+    } else if (edit_info.mutable_mod()->edit_type() == Cmd::EditType::SET) {
+
+    } else if (edit_info.mutable_mod()->edit_type() == Cmd::EditType::SHOW) {
+
+    } else {
+    }
+  } else if (edit_info.element() == Cmd::EditElement::TASK) {
+    if (edit_info.mutable_task()->edit_type() == Cmd::EditType::ADD) {
+
+      prj_prgadd(edit_info.mutable_task()->mod_id(),
+                 edit_info.mutable_task()->task_id(),
+                 edit_info.mutable_task()->task_name(),
+                 edit_info.mutable_task()->task_type(),
+                 edit_info.mutable_task()->task_desc(),
+                 edit_info.mutable_task()->interval());
+
+    } else if (edit_info.mutable_task()->edit_type() == Cmd::EditType::RM) {
+      prj_prgremove(edit_info.mutable_task()->mod_id(),
+                    edit_info.mutable_task()->task_id());
+    } else if (edit_info.mutable_task()->edit_type() == Cmd::EditType::SET) {
+
+    } else if (edit_info.mutable_task()->edit_type() == Cmd::EditType::SHOW) {
+
+    } else {
+    }
+  } else if (edit_info.element() == Cmd::EditElement::EV) {
+    if (edit_info.mutable_ev()->edit_type() == Cmd::EditType::ADD) {
+      ev_add(edit_info.mutable_ev()->ev_id(), edit_info.mutable_ev()->ev_name(),
+             edit_info.mutable_ev()->val());
+
+    } else if (edit_info.mutable_ev()->edit_type() == Cmd::EditType::RM) {
+      ev_remove(edit_info.mutable_ev()->ev_id());
+
+    } else if (edit_info.mutable_ev()->edit_type() == Cmd::EditType::SET) {
+
+    } else if (edit_info.mutable_ev()->edit_type() == Cmd::EditType::SHOW) {
+
+    } else {
+    }
+  } else if (edit_info.element() == Cmd::EditElement::IO) {
+    if (edit_info.mutable_io()->edit_type() == Cmd::EditType::ADD) {
+
+    } else if (edit_info.mutable_io()->edit_type() == Cmd::EditType::RM) {
+
+    } else if (edit_info.mutable_io()->edit_type() == Cmd::EditType::SET) {
+
+    } else if (edit_info.mutable_io()->edit_type() == Cmd::EditType::SHOW) {
+
+    } else {
+    }
+  } else if (edit_info.element() == Cmd::EditElement::FB) {
+    if (edit_info.mutable_fb()->edit_type() == Cmd::EditType::ADD) {
+      prj_fbadd(
+          edit_info.mutable_fb()->mod_id(), edit_info.mutable_fb()->task_id(),
+          edit_info.mutable_fb()->fb_id(), edit_info.mutable_fb()->flib_name(),
+          edit_info.mutable_fb()->fc_name(), edit_info.mutable_fb()->fb_name());
+
+    } else if (edit_info.mutable_fb()->edit_type() == Cmd::EditType::RM) {
+      prj_fbremove(edit_info.mutable_fb()->mod_id(),
+                   edit_info.mutable_fb()->task_id(),
+                   edit_info.mutable_fb()->fb_id());
+    } else if (edit_info.mutable_fb()->edit_type() == Cmd::EditType::SET) {
+
+    } else if (edit_info.mutable_fb()->edit_type() == Cmd::EditType::SHOW) {
+
+    } else {
+    }
+  } else if (edit_info.element() == Cmd::EditElement::LK) {
+    if (edit_info.mutable_lk()->edit_type() == Cmd::EditType::ADD) {
+      prj_lkadd(
+          edit_info.mutable_lk()->mod_id(), edit_info.mutable_lk()->task_id(),
+          edit_info.mutable_lk()->lk_id(), edit_info.mutable_lk()->src_fb_id(),
+          edit_info.mutable_lk()->src_pin_index(),
+          edit_info.mutable_lk()->target_fb_id(),
+          edit_info.mutable_lk()->target_pin_index());
+    } else if (edit_info.mutable_lk()->edit_type() == Cmd::EditType::RM) {
+
+    } else if (edit_info.mutable_lk()->edit_type() == Cmd::EditType::SET) {
+
+    } else if (edit_info.mutable_lk()->edit_type() == Cmd::EditType::SHOW) {
+
+    } else {
+    }
+  } else if (edit_info.element() == Cmd::EditElement::PIN) {
+    if (edit_info.mutable_pin()->edit_type() == Cmd::EditType::ADD) {
+
+    } else if (edit_info.mutable_pin()->edit_type() == Cmd::EditType::RM) {
+
+    } else if (edit_info.mutable_pin()->edit_type() == Cmd::EditType::SET) {
+
+      fb_t *p_fb;
+      p_fb = prj_fbfind(edit_info.mutable_pin()->mod_id(),
+                        edit_info.mutable_pin()->task_id(),
+                        edit_info.mutable_pin()->fb_id());
+
+      fb_setpin(p_fb, PININPUT, edit_info.mutable_pin()->pin_index(),
+                edit_info.mutable_pin()->pin_val())
+
+    } else if (edit_info.mutable_pin()->edit_type() == Cmd::EditType::SHOW) {
+
+    } else {
+    }
   }
-#elif defined(_LINUX)
-  if (strcasecmp(word, "addprg") == 0) {
-    return addprg(line, &cursor);
-  } else if (strcasecmp(word, "rmprg") == 0) {
-    return rmprg(line, &cursor);
-  } else if (strcasecmp(word, "addev") == 0) {
-    return addev(line, &cursor);
-  } else if (strcasecmp(word, "rmev") == 0) {
-    return rmev(line, &cursor);
-  } else if (strcasecmp(word, "addfb") == 0) {
-    return addfb(line, &cursor);
-  } else if (strcasecmp(word, "rmfb") == 0) {
-    return rmfb(line, &cursor);
-  } else if (strcasecmp(word, "addlk") == 0) {
-    return addlk(line, &cursor);
-  } else if (strcasecmp(word, "rmlk") == 0) {
-    return rmlk(line, &cursor);
-  } else if (strcasecmp(word, "addvi") == 0) {
-    return addvi(line, &cursor);
-  } else if (strcasecmp(word, "rmvi") == 0) {
-    return rmvi(line, &cursor);
-  } else if (strcasecmp(word, "addvo") == 0) {
-    return addvo(line, &cursor);
-  } else if (strcasecmp(word, "rmvo") == 0) {
-    return rmvo(line, &cursor);
-  } else if (strcasecmp(word, "setpin") == 0) {
-    return setpin(line, &cursor);
-  } else if (strcasecmp(word, "setev") == 0) {
-    return setev(line, &cursor);
-  } else if (strcasecmp(word, "showprj") == 0) {
-    return showprj();
-  } else if (strcasecmp(word, "showlib") == 0) {
-    return showlib();
-  } else if (strcasecmp(word, "showev") == 0) {
-    return showevlist();
-  } else if (strcasecmp(word, "showprg") == 0) {
-    return showprg(line, &cursor);
-  } else if (strcasecmp(word, "showfb") == 0) {
-    return showfb(line, &cursor);
-  } else if (strcasecmp(word, "run") == 0) {
-    return run();
-  } else if (strcasecmp(word, "stop") == 0) {
-    return stop();
-  } else if (strcasecmp(word, "help") == 0) {
-    return help();
-  } else if (strcasecmp(word, "setprj") == 0) {
-    return setprj(line, &cursor);
-  } else if (strcasecmp(word, "dumpimg") == 0) {
-    return dumpimg();
-  }
-#endif
 
   return 0;
 }
 
-int cmds_dispatch(char *buf) {
+int cmds_dispatch(Cmd::EditInfos edit_infos) {
   int cursor;
   char line[NLINE];
   int len;

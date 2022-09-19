@@ -234,7 +234,23 @@ int ev_add(int id, const std::string & str, const std::string & name)
 	
 	return 0;
 }
+int ev_add(int id, const std::string & name, const value_tm & val)
+{
+	evnode_t *p_vn;
 
+	p_vn = v_new();
+	if(p_vn == 0){
+		return -1;
+	}
+
+    p_vn->id = id;
+	p_vn->name = name;
+	p_vn->v = std::make_shared<value_tm>(val);
+
+	v_addbefore(p_vn, &vn_head);
+	
+	return 0;
+}
 int ev_remove(int id)
 {
 	ev_select(id);

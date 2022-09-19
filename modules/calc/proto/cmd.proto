@@ -47,7 +47,8 @@ message Result {
 message EditProjReq { 
     EditType edit_type = 1;
     uint32 proj_id = 2;
-    string proj_name = 3;   
+    string proj_name = 3;
+    string proj_desc = 4;   
 }
 message EditProjRsp { 
     Result result = 1;
@@ -60,7 +61,9 @@ message EditModuleReq {
     string proj_name = 3;      
     uint32 mod_id = 4;
     string mod_name = 5;
-    string uuid = 6;
+    string mode_desc = 6;   
+    string uuid = 7;
+
 }
 message EditModuleRsp { 
     Result result = 1; 
@@ -76,8 +79,8 @@ message EditTaskReq {
   string mod_name = 4;  
   uint32 task_id = 5;
   string task_name = 6;
-  uint32 period = 7;
-  repeated string topics = 8;
+  uint32 interval = 7;
+  string task_desc = 8;   
 }
 message EditTaskRsp {
   Result result = 1;
@@ -89,26 +92,36 @@ message EditTaskRsp {
 
 message EditFBReq {
   EditType edit_type = 1;
-  uint32 task_id = 2;
-  uint32 task_name = 3;
-  uint32 fb_id = 4;
-  string flib_name = 5;
-  string fc_name = 6;
-  string fb_name = 7;
+  uint32 mod_id = 2;
+  string mod_name = 3;   
+  uint32 task_id = 4;
+  uint32 task_name = 5;
+  uint32 fb_id = 6;
+  string flib_name = 7;
+  string fc_name = 8;
+  string fb_name = 9;
 }
 message EditFBRsp {
   Result result = 1;
-  uint32 fb_id = 2;
-  string fb_name = 3;
+  uint32 mod_id = 2;
+  string mod_name = 3;   
+  uint32 task_id = 4;
+  uint32 task_name = 5;  
+  uint32 fb_id = 6;
+  string fb_name = 7;
 }
 
 message EditPinReq {
   EditType edit_type = 1;
-  uint32 fb_id = 2;
-  string fb_name = 3;
-  uint32 pin_index = 4;
-  string pin_name = 5;
-  value_tm pin_val = 6;
+  uint32 mod_id = 2;
+  string mod_name = 3;   
+  uint32 task_id = 4;
+  uint32 task_name = 5;  
+  uint32 fb_id = 6;
+  string fb_name = 7;
+  uint32 pin_index = 8;
+  string pin_name = 9;
+  value_tm pin_val = 10;
 }
 message EditPinRsp {
   Result result = 1;
@@ -116,6 +129,14 @@ message EditPinRsp {
   string fb_name = 3;
   uint32 pin_index = 4;
   string pin_name = 5;
+}
+message EditIOReq {
+  EditType edit_type = 1;
+
+}
+message EditIORsp {
+  Result result = 1;
+
 }
 message EditEVReq {
   EditType edit_type = 1;
@@ -130,16 +151,18 @@ message EditEVRsp {
 }
 message EditLinkReq {
   EditType edit_type = 1;
-  uint32 task_id = 2;
-  string task_name = 3;
-  uint32 lk_id = 4;
-  string lk_name = 5;
-  uint32 src_fb_id = 6;
-  string src_fb_name = 7;
-  string src_pin_index = 8;
-  uint32 target_fb_id = 9;
-  string target_fb_name = 10;
-  string target_pin_index = 11;
+  uint32 mod_id = 2;
+  string mod_name = 3;
+  uint32 task_id = 4;
+  string task_name = 5;
+  uint32 lk_id = 6;
+  string lk_name = 7;
+  uint32 src_fb_id = 8;
+  string src_fb_name = 9;
+  uint32 src_pin_index = 10;
+  uint32 target_fb_id = 11;
+  string target_fb_name = 12;
+  uint32 target_pin_index = 13;
 }
 message EditLinkRsp {
   Result result = 1;
@@ -158,6 +181,8 @@ message EditInfo {
     EditPinReq pin = 7;
     EditEVReq ev = 8;
     EditLinkReq lk = 9;
+    EditIOReq io = 10;
+
   }
 }
 message EditInfos { repeated EditInfo infos = 1; }

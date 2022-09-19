@@ -31,6 +31,8 @@ value_tm setvar(v_type t, std::string value);
 
 vam_t * ev_find_v(int id);
 int ev_add(int id, const std::string & val, const std::string &name);
+int ev_add(int id, const std::string & name, const value_tm & val);
+
 int ev_remove(int id);
 void ev_reset();
 void ev_dump();

@@ -22,7 +22,6 @@ int main(int argc, char *argv[])
 
 	lib_init();
 	value_tm vtm;
-	vtm
 	value_t *vt = vtm.mutable_v();
 	vt->set_t(v_type::T_INT32);
 	vt->set_i(1);
