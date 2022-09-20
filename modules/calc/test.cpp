@@ -18,7 +18,7 @@
 int main(int argc, char *argv[])
 {
  	 apollo::cyber::Init(argv[0]);
-	std::shared_ptr<apollo::cyber::Node>  node =  apollo::cyber::CreateNode("TestMode");
+	std::unique_ptr<apollo::cyber::Node>  node =  apollo::cyber::CreateNode("TestMode");
 
 	lib_init();
 	value_tm vtm;
@@ -60,8 +60,8 @@ int main(int argc, char *argv[])
 
 	mod_t * mod =  mod_new();
 
-	mod_prgadd(mod, 1, "PRG_1", Cmd::TaskType::PERIODIC);
-	mod_prgadd(mod, 2, "Task_1", Cmd::TaskType::ASYNC);
+	mod_prgadd(mod, 1, "PRG_1", Cmd::TaskType::PERIODIC,"desc",50);
+	mod_prgadd(mod, 2, "Task_1", Cmd::TaskType::ASYNC,"desc",50);
 
 
 

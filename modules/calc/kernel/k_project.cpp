@@ -11,7 +11,7 @@
 
 static prjinfo_t info;
 static prjinfo_t info_p;
-static pnode_t pn_head = {&pn_head, &pn_head, 0, "","",true, 0};
+static pnode_t pn_head = {&pn_head, &pn_head, 0, "","",true, "{00000000-0000-0000-0000-00000000}",nullptr,0};
 static pnode_t *p_pn_select = &pn_head;
 
 static int is_run;
@@ -178,7 +178,7 @@ int prj_prgadd(int idmod, int idprg, std::string name,int type,std::string desc,
   {
     return -1;
   }
-  return mod_prgadd(p_pn_select->p_mod, idprg, name,desc,period);
+  return mod_prgadd(p_pn_select->p_mod, idprg, name,type,desc,period);
 }
 int prj_prgremove(int idmod, int idprg)
 {

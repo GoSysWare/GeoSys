@@ -7,129 +7,145 @@
 #include <stdlib.h>
 #include <string.h>
 
+int cmd_dispatch(const Cmd::EditInfo &edit_info) {
 
-int cmd_dispatch(Cmd::EditInfo edit_info) {
+  Cmd::EditElement element = element;
 
-  if (edit_info.element() == Cmd::EditElement::PROJ) {
-    if (edit_info.mutable_proj()->edit_type() == Cmd::EditType::ADD) {
+  if (element == Cmd::EditElement::PROJ) {
+    Cmd::EditType type = edit_info.proj().edit_type();
+    if (type == Cmd::EditType::ADD) {
 
-    } else if (edit_info.mutable_proj()->edit_type() == Cmd::EditType::RM) {
+    } else if (type == Cmd::EditType::RM) {
 
-    } else if (edit_info.mutable_proj()->edit_type() == Cmd::EditType::SET) {
+    } else if (type == Cmd::EditType::SET) {
 
-    } else if (edit_info.mutable_proj()->edit_type() == Cmd::EditType::SHOW) {
-
-    } else {
-    }
-
-  } else if (edit_info.element() == Cmd::EditElement::MOD) {
-    if (edit_info.mutable_mod()->edit_type() == Cmd::EditType::ADD) {
-      prj_modadd(edit_info.mutable_mod()->mod_id(),
-                 edit_info.mutable_mod()->mod_name(),
-                 edit_info.mutable_mod()->mod_desc());
-
-    } else if (edit_info.mutable_mod()->edit_type() == Cmd::EditType::RM) {
-      prj_modremove(edit_info.mutable_mod()->mod_id());
-
-    } else if (edit_info.mutable_mod()->edit_type() == Cmd::EditType::SET) {
-
-    } else if (edit_info.mutable_mod()->edit_type() == Cmd::EditType::SHOW) {
+    } else if (type == Cmd::EditType::SHOW) {
 
     } else {
     }
-  } else if (edit_info.element() == Cmd::EditElement::TASK) {
-    if (edit_info.mutable_task()->edit_type() == Cmd::EditType::ADD) {
 
-      prj_prgadd(edit_info.mutable_task()->mod_id(),
-                 edit_info.mutable_task()->task_id(),
-                 edit_info.mutable_task()->task_name(),
-                 edit_info.mutable_task()->task_type(),
-                 edit_info.mutable_task()->task_desc(),
-                 edit_info.mutable_task()->interval());
+  } else if (element == Cmd::EditElement::MOD) {
+    Cmd::EditType type = edit_info.mod().edit_type();
 
-    } else if (edit_info.mutable_task()->edit_type() == Cmd::EditType::RM) {
-      prj_prgremove(edit_info.mutable_task()->mod_id(),
-                    edit_info.mutable_task()->task_id());
-    } else if (edit_info.mutable_task()->edit_type() == Cmd::EditType::SET) {
+    if (type == Cmd::EditType::ADD) {
+      prj_modadd(edit_info.mod().mod_id(),
+                 edit_info.mod().mod_name(),
+                 edit_info.mod().mod_desc());
 
-    } else if (edit_info.mutable_task()->edit_type() == Cmd::EditType::SHOW) {
+    } else if (type == Cmd::EditType::RM) {
+      prj_modremove(edit_info.mod().mod_id());
 
-    } else {
-    }
-  } else if (edit_info.element() == Cmd::EditElement::EV) {
-    if (edit_info.mutable_ev()->edit_type() == Cmd::EditType::ADD) {
-      ev_add(edit_info.mutable_ev()->ev_id(), edit_info.mutable_ev()->ev_name(),
-             edit_info.mutable_ev()->val());
+    } else if (type == Cmd::EditType::SET) {
 
-    } else if (edit_info.mutable_ev()->edit_type() == Cmd::EditType::RM) {
-      ev_remove(edit_info.mutable_ev()->ev_id());
-
-    } else if (edit_info.mutable_ev()->edit_type() == Cmd::EditType::SET) {
-
-    } else if (edit_info.mutable_ev()->edit_type() == Cmd::EditType::SHOW) {
+    } else if (type == Cmd::EditType::SHOW) {
 
     } else {
     }
-  } else if (edit_info.element() == Cmd::EditElement::IO) {
-    if (edit_info.mutable_io()->edit_type() == Cmd::EditType::ADD) {
+  } else if (element == Cmd::EditElement::TASK) {
+    Cmd::EditType type = edit_info.task().edit_type();
 
-    } else if (edit_info.mutable_io()->edit_type() == Cmd::EditType::RM) {
+    if (type == Cmd::EditType::ADD) {
 
-    } else if (edit_info.mutable_io()->edit_type() == Cmd::EditType::SET) {
+      prj_prgadd(edit_info.task().mod_id(),
+                 edit_info.task().task_id(),
+                 edit_info.task().task_name(),
+                 edit_info.task().task_type(),
+                 edit_info.task().task_desc(),
+                 edit_info.task().interval());
 
-    } else if (edit_info.mutable_io()->edit_type() == Cmd::EditType::SHOW) {
+    } else if (type == Cmd::EditType::RM) {
+      prj_prgremove(edit_info.task().mod_id(),
+                    edit_info.task().task_id());
+    } else if (type == Cmd::EditType::SET) {
+
+    } else if (type == Cmd::EditType::SHOW) {
 
     } else {
     }
-  } else if (edit_info.element() == Cmd::EditElement::FB) {
-    if (edit_info.mutable_fb()->edit_type() == Cmd::EditType::ADD) {
+  } else if (element == Cmd::EditElement::EV) {
+    Cmd::EditType type = edit_info.ev().edit_type();
+
+    if (type == Cmd::EditType::ADD) {
+      ev_add(edit_info.ev().ev_id(), edit_info.ev().ev_name(),
+             edit_info.ev().val());
+
+    } else if (type == Cmd::EditType::RM) {
+      ev_remove(edit_info.ev().ev_id());
+
+    } else if (type == Cmd::EditType::SET) {
+
+    } else if (type == Cmd::EditType::SHOW) {
+
+    } else {
+    }
+  } else if (element == Cmd::EditElement::IO) {
+    Cmd::EditType type = edit_info.io().edit_type();
+
+    if (type == Cmd::EditType::ADD) {
+
+    } else if (type == Cmd::EditType::RM) {
+
+    } else if (type == Cmd::EditType::SET) {
+
+    } else if (type == Cmd::EditType::SHOW) {
+
+    } else {
+    }
+  } else if (element == Cmd::EditElement::FB) {
+    Cmd::EditType type = edit_info.fb().edit_type();
+
+    if (type == Cmd::EditType::ADD) {
       prj_fbadd(
-          edit_info.mutable_fb()->mod_id(), edit_info.mutable_fb()->task_id(),
-          edit_info.mutable_fb()->fb_id(), edit_info.mutable_fb()->flib_name(),
-          edit_info.mutable_fb()->fc_name(), edit_info.mutable_fb()->fb_name());
+          edit_info.fb().mod_id(), edit_info.fb().task_id(),
+          edit_info.fb().fb_id(), edit_info.fb().flib_name(),
+          edit_info.fb().fc_name(), edit_info.fb().fb_name());
 
-    } else if (edit_info.mutable_fb()->edit_type() == Cmd::EditType::RM) {
-      prj_fbremove(edit_info.mutable_fb()->mod_id(),
-                   edit_info.mutable_fb()->task_id(),
-                   edit_info.mutable_fb()->fb_id());
-    } else if (edit_info.mutable_fb()->edit_type() == Cmd::EditType::SET) {
+    } else if (type == Cmd::EditType::RM) {
+      prj_fbremove(edit_info.fb().mod_id(),
+                   edit_info.fb().task_id(),
+                   edit_info.fb().fb_id());
+    } else if (type == Cmd::EditType::SET) {
 
-    } else if (edit_info.mutable_fb()->edit_type() == Cmd::EditType::SHOW) {
+    } else if (type == Cmd::EditType::SHOW) {
 
     } else {
     }
-  } else if (edit_info.element() == Cmd::EditElement::LK) {
-    if (edit_info.mutable_lk()->edit_type() == Cmd::EditType::ADD) {
+  } else if (element == Cmd::EditElement::LK) {
+    Cmd::EditType type = edit_info.lk().edit_type();
+
+    if (type == Cmd::EditType::ADD) {
       prj_lkadd(
-          edit_info.mutable_lk()->mod_id(), edit_info.mutable_lk()->task_id(),
-          edit_info.mutable_lk()->lk_id(), edit_info.mutable_lk()->src_fb_id(),
-          edit_info.mutable_lk()->src_pin_index(),
-          edit_info.mutable_lk()->target_fb_id(),
-          edit_info.mutable_lk()->target_pin_index());
-    } else if (edit_info.mutable_lk()->edit_type() == Cmd::EditType::RM) {
+          edit_info.lk().mod_id(), edit_info.lk().task_id(),
+          edit_info.lk().lk_id(), edit_info.lk().src_fb_id(),
+          edit_info.lk().src_pin_index(),
+          edit_info.lk().target_fb_id(),
+          edit_info.lk().target_pin_index());
+    } else if (type == Cmd::EditType::RM) {
 
-    } else if (edit_info.mutable_lk()->edit_type() == Cmd::EditType::SET) {
+    } else if (type == Cmd::EditType::SET) {
 
-    } else if (edit_info.mutable_lk()->edit_type() == Cmd::EditType::SHOW) {
+    } else if (type == Cmd::EditType::SHOW) {
 
     } else {
     }
-  } else if (edit_info.element() == Cmd::EditElement::PIN) {
-    if (edit_info.mutable_pin()->edit_type() == Cmd::EditType::ADD) {
+  } else if (element == Cmd::EditElement::PIN) {
+    Cmd::EditType type = edit_info.pin().edit_type();
 
-    } else if (edit_info.mutable_pin()->edit_type() == Cmd::EditType::RM) {
+    if (type == Cmd::EditType::ADD) {
 
-    } else if (edit_info.mutable_pin()->edit_type() == Cmd::EditType::SET) {
+    } else if (type == Cmd::EditType::RM) {
+
+    } else if (type == Cmd::EditType::SET) {
 
       fb_t *p_fb;
-      p_fb = prj_fbfind(edit_info.mutable_pin()->mod_id(),
-                        edit_info.mutable_pin()->task_id(),
-                        edit_info.mutable_pin()->fb_id());
+      p_fb = prj_fbfind(edit_info.pin().mod_id(),
+                        edit_info.pin().task_id(),
+                        edit_info.pin().fb_id());
 
-      fb_setpin(p_fb, PININPUT, edit_info.mutable_pin()->pin_index(),
-                edit_info.mutable_pin()->pin_val());
+      fb_setpin(p_fb, PININPUT, edit_info.pin().pin_index(),
+                edit_info.pin().pin_val());
 
-    } else if (edit_info.mutable_pin()->edit_type() == Cmd::EditType::SHOW) {
+    } else if (type == Cmd::EditType::SHOW) {
 
     } else {
     }
@@ -138,11 +154,10 @@ int cmd_dispatch(Cmd::EditInfo edit_info) {
   return 0;
 }
 
-int cmds_dispatch(Cmd::EditInfos edit_infos) {
+int cmds_dispatch(Cmd::EditInfos &edit_infos) {
 
   int info_size = edit_infos.infos_size();
-  for(auto i =0; i < info_size; i++)
-  {
+  for (auto i = 0; i < info_size; i++) {
     cmd_dispatch(edit_infos.infos(i));
   }
 

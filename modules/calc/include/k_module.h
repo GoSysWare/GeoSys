@@ -98,8 +98,9 @@ void mod_reset(mod_t *p_mod);
 mod_t *mod_new();
 void mod_delete(mod_t *p_mod);
 
-int mod_prgadd(mod_t *p_mod, int id, std::string name, std::string desc,
-               int type);
+int mod_prgadd(mod_t *p_mod, int id, std::string name, int type,
+               std::string desc, int interval);
+               
 int mod_prgremove(mod_t *p_mod, int id);
 void mod_exec(mod_t *p_mod, std::unique_ptr<apollo::cyber::Node> &node);
 

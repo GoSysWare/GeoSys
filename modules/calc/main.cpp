@@ -81,6 +81,8 @@ int main(int argc, char *argv[])
    info_ptr->mutable_ev()->mutable_val()->mutable_v()->set_f(1.223f);
  
 
+  cmds_dispatch(edit_infos);
+
   std::string file ="/home/shuimujie/Works/GeoSys/modules/calc/logic_out.ce";
   apollo::cyber::common::SetProtoToASCIIFile(edit_infos,file);
 

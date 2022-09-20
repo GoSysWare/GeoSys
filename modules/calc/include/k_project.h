@@ -43,7 +43,7 @@ void prj_reset();
 int prj_modadd(int idmod, std::string name, std::string desc);
 int prj_modremove(int idmod);
 
-int prj_prgadd(int idmod, int idprg, std::string name,int type,std::string desc, int period);
+int prj_prgadd(int idmod, int idprg, std::string name,int type,std::string desc = "", int period = 50);
 int prj_prgremove(int idmod, int idprg);
 
 void prj_exec();
