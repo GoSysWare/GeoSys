@@ -34,8 +34,9 @@ typedef struct ENode{
 // prg的动态运行信息
 typedef struct ProgramInfo{
 	int status;
+	unsigned int thread_id;
 	u_int64_t begin_time;
-	u_int64_t last_time;
+	u_int64_t expend_time;
 } proginfo_t;
 
 

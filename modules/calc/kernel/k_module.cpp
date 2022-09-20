@@ -134,7 +134,7 @@ void mod_stop(mod_t *p_mod) {
       ((fsm_node_t *)p_mn)->timer.Stop();
     } else if (p_mn->type == Cmd::TaskType::ACTION) {
       /* code */
-    }else if (p_mn->type == Cmd::TaskType::TIMER) {
+    } else if (p_mn->type == Cmd::TaskType::TIMER) {
       /* code */
     }
     p_mn = p_mn->p_next;
@@ -207,7 +207,6 @@ void mod_delete(mod_t *p_mod) {
   }
   delete p_mod;
 }
-
 
 int mod_prgadd(mod_t *p_mod, int id, std::string name, int type,
                std::string desc, int interval) {
@@ -326,13 +325,14 @@ void mod_dump(mod_t *p_mod) {
   mnode_t *p_mn;
   p_mn = p_mod->mn_head.p_next;
   while (p_mn != &p_mod->mn_head) {
-    printf("prg:%d - %s\n", p_mn->id, p_mn->name.c_str());
+    printf("Task: [id]:%d - [name]:%s - [type]%d - [enable]:%d\n", p_mn->id,
+           p_mn->name.c_str(), p_mn->type, p_mn->enable);
     p_mn = p_mn->p_next;
   }
 }
 
-int mod_fbadd(mod_t *p_mod, int idprg, int id, std::string libname, std::string fcname,
-              std::string fbname) {
+int mod_fbadd(mod_t *p_mod, int idprg, int id, std::string libname,
+              std::string fcname, std::string fbname) {
   if (mod_prgselect(p_mod, idprg) != 0) {
     return -1;
   }

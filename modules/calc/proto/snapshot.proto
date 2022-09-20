@@ -1,0 +1,41 @@
+syntax = "proto3";
+import "modules/calc/proto/value.proto";
+
+
+
+message TaskSnapshot
+{
+    int32 mod_id = 1;
+    int32 task_id = 2;
+	int32 status =3;
+	uint64 begin_time =4 ;
+	uint64 expend_time = 5;
+    string creator =6;
+    repeated value_tm vals = 7;
+}
+message ModSnapshot
+{
+    int32 mod_id = 1;
+    repeated TaskSnapshot tasks = 2;
+
+}
+message EVNodeValue
+{
+    int32 ev_id = 1;
+    value_tm val = 2;
+}
+
+message EVNodeSnapshot
+{
+    repeated EVNodeValue vals = 1;  
+}
+message ProjectInfo
+{
+    string uuid = 1;
+}
+
+message ProjectSnapshot
+{
+    ProjectInfo  proj_info = 1;
+    repeated ModSnapshot mods = 2;
+}

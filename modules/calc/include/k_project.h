@@ -9,11 +9,6 @@
 typedef struct PrjInfo {
   std::string uuid;
   int id_cmd;
-  int id_stb;
-  int stat;
-  int peerlife;
-  int imgsize;
-  int zimgsize;
 } prjinfo_t;
 
 typedef struct PrjImg {
@@ -60,8 +55,8 @@ int prj_lkremove(int idmod, int idprg, int id);
 int prj_checkloop(int idmod, int idprg, int idsrc, int idtgt);
 
 pnode_t *prj_gethead();
-void prj_dump();
 
+void prj_dump();
 int prj_moddump(int idmod);
 int prj_prgdump(int idmod, int idprg);
 int prj_fbdump(int idmod, int idprg, int idfb);
