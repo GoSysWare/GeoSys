@@ -121,7 +121,9 @@ int cmd_dispatch(const Cmd::EditInfo &edit_info) {
           edit_info.lk().target_fb_id(),
           edit_info.lk().target_pin_index());
     } else if (type == Cmd::EditType::RM) {
-
+      prj_lkremove(
+          edit_info.lk().mod_id(), edit_info.lk().task_id(),
+          edit_info.lk().lk_id());
     } else if (type == Cmd::EditType::SET) {
 
     } else if (type == Cmd::EditType::SHOW) {
