@@ -61,7 +61,7 @@ message EditModuleReq {
     string proj_name = 3;      
     uint32 mod_id = 4;
     string mod_name = 5;
-    string mode_desc = 6;   
+    string mod_desc = 6;   
     string uuid = 7;
 
 }
