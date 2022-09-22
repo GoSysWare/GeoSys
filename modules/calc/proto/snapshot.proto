@@ -18,12 +18,12 @@ message ModSnapshot
     int32 mod_id =1;
     repeated TaskSnapshot tasks = 2;
 }
-message ProjectSnapshot
+message ProjectSnapshotRsp
 {
     repeated ModSnapshot mods = 1;
 }
 
-message SnapshotReq
+message ProjectSnapshotReq
 {
     string host_name = 1;
     string host_ip = 2;
@@ -51,7 +51,7 @@ message ModInfo
     string mod_name = 3;
 }
 
-message ProjectInfo
+message ProjectInfoRsp
 {
     string host_name = 1;
     string host_ip = 2;
@@ -60,7 +60,7 @@ message ProjectInfo
     string prj_uuid = 5;
     repeated ModInfo mod_info = 6;
 }
-message InfoReq
+message ProjectInfoReq
 {
     string host_name = 1;
     string host_ip = 2;
