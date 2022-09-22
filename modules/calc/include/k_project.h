@@ -3,7 +3,6 @@
 
 #include "cyber/cyber.h"
 #include "k_config.h"
-#include "k_io.h"
 #include "k_module.h"
 
 typedef struct PrjInfo {

@@ -3,11 +3,10 @@
 #include <stdlib.h>
 #include <string>
 
-#include "modules/calc/include/k_compress.h"
-#include "modules/calc/include/k_process.h"
 #include "modules/calc/include/k_project.h"
-#include "modules/calc/include/k_state.h"
 #include "modules/calc/include/k_util.h"
+#include "modules/calc/proto/snapshot.pb.h"
+
 
 static prjinfo_t info;
 static prjinfo_t info_p;
@@ -323,66 +322,66 @@ mod_t *prj_modfind(std::string mod_name) {
 
 int prj_to_snapshot(ProjectSnapshot snapshot)
 {
-  std::string buf;
-  pin_t *ppin;
-  pnode_t *p_pn;
-  enode_t *p_en;
-  fb_t *p_fb;
-  unsigned int i;
-  int s;
-  int v_len;
+  // std::string buf;
+  // pin_t *ppin;
+  // pnode_t *p_pn;
+  // enode_t *p_en;
+  // fb_t *p_fb;
+  // unsigned int i;
+  // int s;
+  // int v_len;
 
-  p_pn = pn_head.p_next;
-  while (p_pn != &pn_head)
-  {
-    p_en = p_pn->p_prg->en_head.p_next;
-    while (p_en != &p_pn->p_prg->en_head)
-    {
-      if (p_en->p_fb != ((void *)0))
-      {
-        p_fb = p_en->p_fb;
-        for (i = 0; i < p_fb->ins.size(); i++)
-        {
-          v_len = p_fb->ins[i].v->ByteSize();
-          memcpy(buf, &v_len, sizeof(int));
-          buf += sizeof(int);
-          p_fb->ins[i].v->SerializeToArray(buf, v_len);
-          buf += v_len;
-          s++;
-        }
-        for (i = 0; i < p_fb->outs.size(); i++)
-        {
-          v_len = p_fb->outs[i].v->ByteSize();
-          memcpy(buf, &v_len, sizeof(int));
-          buf += sizeof(int);
-          p_fb->outs[i].v->SerializeToArray(buf, v_len);
-          buf += v_len;
-          s++;
-        }
-        for (i = 0; i < p_fb->props.size(); i++)
-        {
-          v_len = p_fb->props[i].v->ByteSize();
-          memcpy(buf, &v_len, sizeof(int));
-          buf += sizeof(int);
-          p_fb->props[i].v->SerializeToArray(buf, v_len);
-          buf += v_len;
-          s++;
-        }
-      }
-      p_en = p_en->p_next;
-    }
-    p_pn = p_pn->p_next;
-  }
+  // p_pn = pn_head.p_next;
+  // while (p_pn != &pn_head)
+  // {
+  //   p_en = p_pn->p_prg->en_head.p_next;
+  //   while (p_en != &p_pn->p_prg->en_head)
+  //   {
+  //     if (p_en->p_fb != ((void *)0))
+  //     {
+  //       p_fb = p_en->p_fb;
+  //       for (i = 0; i < p_fb->ins.size(); i++)
+  //       {
+  //         v_len = p_fb->ins[i].v->ByteSize();
+  //         memcpy(buf, &v_len, sizeof(int));
+  //         buf += sizeof(int);
+  //         p_fb->ins[i].v->SerializeToArray(buf, v_len);
+  //         buf += v_len;
+  //         s++;
+  //       }
+  //       for (i = 0; i < p_fb->outs.size(); i++)
+  //       {
+  //         v_len = p_fb->outs[i].v->ByteSize();
+  //         memcpy(buf, &v_len, sizeof(int));
+  //         buf += sizeof(int);
+  //         p_fb->outs[i].v->SerializeToArray(buf, v_len);
+  //         buf += v_len;
+  //         s++;
+  //       }
+  //       for (i = 0; i < p_fb->props.size(); i++)
+  //       {
+  //         v_len = p_fb->props[i].v->ByteSize();
+  //         memcpy(buf, &v_len, sizeof(int));
+  //         buf += sizeof(int);
+  //         p_fb->props[i].v->SerializeToArray(buf, v_len);
+  //         buf += v_len;
+  //         s++;
+  //       }
+  //     }
+  //     p_en = p_en->p_next;
+  //   }
+  //   p_pn = p_pn->p_next;
+  // }
 
-  buf = ev_to_img(buf);
-  // buf = io_to_img(buf);
+  // buf = ev_to_img(buf);
+  // // buf = io_to_img(buf);
 
-  pimg->bufsize = buf - pimg->imgbuf;
-  info.zimgsize = pimg->bufsize;
-  // info.imgsize = s * sizeof(var_t) + sizeof(iostation_t) * IOSTATIONCOUNT;
+  // pimg->bufsize = buf - pimg->imgbuf;
+  // info.zimgsize = pimg->bufsize;
+  // // info.imgsize = s * sizeof(var_t) + sizeof(iostation_t) * IOSTATIONCOUNT;
 
-  // printf("imgsize=%d, zimgsize=%d\n", info.imgsize, info.zimgsize);
-  k_runlock(prjlock);
+  // // printf("imgsize=%d, zimgsize=%d\n", info.imgsize, info.zimgsize);
+  // k_runlock(prjlock);
 
   return 0;
 }

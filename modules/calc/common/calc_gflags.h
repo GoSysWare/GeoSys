@@ -3,5 +3,5 @@
 
 #include <gflags/gflags.h>
 
-DECLARE_String(calc_edit_cmd_name);
+DECLARE_string(calc_edit_cmd_name);
 #endif

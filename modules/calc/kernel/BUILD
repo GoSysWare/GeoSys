@@ -12,16 +12,14 @@ cc_library(
 
     ],
     srcs = [
+        "k_bus.cpp",
         "k_command.cpp",
         "k_evdata.cpp",
         "k_functionblock.cpp",
-        # "k_io.cpp",
         "k_lib.cpp",
-        "k_process.cpp",
         "k_program.cpp",
         "k_module.cpp",
         "k_project.cpp",
-        # "k_state.cpp",
         "k_util.cpp",
     ],
     deps = [
@@ -30,6 +28,9 @@ cc_library(
         "//modules/calc/proto:value_cc_proto",
         "//modules/calc/proto:cmd_cc_proto",
         "//modules/calc/proto:task_def_cc_proto",
+        "//modules/calc/proto:snapshot_cc_proto",
+        "//modules/calc/common:calc_gflags",
+
     ],
 )
 

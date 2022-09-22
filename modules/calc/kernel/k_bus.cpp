@@ -1,12 +1,10 @@
 #ifndef k_service_h
 #define k_service_h
 
-#include "cyber/cyber.h"
-
-#include "modules/calc/proto/cmd.pb.h"
-
+#include "modules/calc/include/k_command.h"
+#include "modules/calc/include/k_bus.h"
 #include "modules/calc/common/calc_gflags.h"
-#include "bus.h"
+
 
 
 // apollo::cyber::Service engine_info_srv;
@@ -18,11 +16,11 @@
 
 
 
-int rbus_init(std::shared_ptr<apollo::cyber::Node> & node)
+int bus_init(std::shared_ptr<apollo::cyber::Node> & node)
 {
 
     auto prj_edit_srv = node->CreateService<Cmd::EditInfos,Cmd::EditInfosRsq>(
-      FLAG_calc_edit_cmd_name, [](const std::shared_ptr<Cmd::EditInfos>& request,
+      FLAGS_calc_edit_cmd_name, [](const std::shared_ptr<Cmd::EditInfos>& request,
                         std::shared_ptr<Cmd::EditInfosRsq>& response) {
         AINFO << "cmd edit ";
         cmds_dispatch(*request);
@@ -30,7 +28,7 @@ int rbus_init(std::shared_ptr<apollo::cyber::Node> & node)
 
 }
 
-int rbus_uninit()
+int bus_uninit()
 {
 
 }

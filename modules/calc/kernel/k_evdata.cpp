@@ -3,7 +3,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "modules/calc/include/k_compress.h"
 #include "modules/calc/include/k_datatype.h"
 #include "modules/calc/include/k_evdata.h"
 #include "modules/calc/include/k_util.h"
