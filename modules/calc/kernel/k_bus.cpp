@@ -19,15 +19,15 @@
 int bus_init(std::shared_ptr<apollo::cyber::Node> & node)
 {
 
-    auto prj_edit_srv = node->CreateService<Cmd::EditInfos,Cmd::EditInfosRsq>(
+    auto prj_edit_srv = node->CreateService<Cmd::EditInfos,Cmd::EditInfosRsp>(
       FLAGS_edit_cmd_name, [](const std::shared_ptr<Cmd::EditInfos>& request,
-                        std::shared_ptr<Cmd::EditInfosRsq>& response) {
+                        std::shared_ptr<Cmd::EditInfosRsp>& response) {
         AINFO << "cmd edit ";
         cmds_dispatch(*request);
       });  
-    auto prj_info_srv = node->CreateService<Cmd::EditInfos,Cmd::EditInfosRsq>(
+    auto prj_info_srv = node->CreateService<Cmd::EditInfos,Cmd::EditInfosRsp>(
       FLAGS_prj_info_name, [](const std::shared_ptr<Cmd::EditInfos>& request,
-                        std::shared_ptr<Cmd::EditInfosRsq>& response) {
+                        std::shared_ptr<Cmd::EditInfosRsp>& response) {
         AINFO << "cmd edit ";
         cmds_dispatch(*request);
       });  
