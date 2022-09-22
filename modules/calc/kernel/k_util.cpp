@@ -6,89 +6,81 @@
 #include "modules/calc/include/k_util.h"
 #include <sys/time.h>
 
-static unsigned int clock_prev;
-static unsigned int clock_this;
 
 #ifdef _WIN32
-static unsigned int clock_ms()
-{
-	return clock();
-}
 
-void k_clk_init()
-{
-	clock_this=clock_ms();
-	clock_prev=clock_this;
-}
-
-void k_clk_do()
-{
-	clock_prev=clock_this;
-	clock_this=clock();
-}
-
-Int clk_cycle_ms()
-{
-	return clock_this-clock_prev;
-}
-
-Time clk_cycle()
-{
-	return (Time)(clock_this-clock_prev)/1000.;
-}
-
-Time clk_now()
-{
-	return 0.;
-}
 #endif
 
 #ifdef _LINUX
-static struct timeval t_prev;
-static struct timeval t_this;
+#include <arpa/inet.h>
+#include <ifaddrs.h>
+#include <netdb.h>
+#include <sys/types.h>
+#include <unistd.h>
 
-void k_clk_init()
+#include <climits>
+#include <cstdlib>
+
+int k_getpid()
 {
-	gettimeofday(&t_this, NULL);
-	t_prev = t_this; 
+	return getpid();
+}
+std::string k_getpidstr()
+{
+	return std::to_string(k_getpid());
 }
 
-void k_clk_do()
-{
-	t_prev = t_this; 
-	gettimeofday(&t_this, NULL);
+
+std::string k_hostname() {
+  char host_name[1024];
+  gethostname(host_name, sizeof(host_name));
+  return std::string(host_name);
 }
 
-Int clk_cycle_ms()
-{
-	long sec,usec;
-	sec = t_this.tv_sec - t_prev.tv_sec;
-	usec = t_this.tv_usec - t_prev.tv_usec;
-	return (1000 * sec + 0.001 * usec);
+std::string k_hostip(){
+  std::string host_ip = "127.0.0.1";
+
+  // if we have exported a non-loopback CYBER_IP, we will use it firstly,
+  // otherwise, we try to find first non-loopback ipv4 addr.
+  const char* ip_env = getenv("CYBER_IP");
+  if (ip_env != nullptr) {
+    // maybe we need to verify ip_env
+    std::string ip_env_str(ip_env);
+    std::string starts = ip_env_str.substr(0, 3);
+    if (starts != "127") {
+      host_ip = ip_env_str;
+      return host_ip;
+    }
+  }
+
+  ifaddrs* ifaddr = nullptr;
+  if (getifaddrs(&ifaddr) != 0) {
+    return std::string();
+  }
+  for (ifaddrs* ifa = ifaddr; ifa; ifa = ifa->ifa_next) {
+    if (ifa->ifa_addr == nullptr) {
+      continue;
+    }
+    int family = ifa->ifa_addr->sa_family;
+    if (family != AF_INET) {
+      continue;
+    }
+    char addr[NI_MAXHOST] = {0};
+    if (getnameinfo(ifa->ifa_addr, sizeof(sockaddr_in), addr, NI_MAXHOST, NULL,
+                    0, NI_NUMERICHOST) != 0) {
+      continue;
+    }
+    std::string tmp_ip(addr);
+    std::string starts = tmp_ip.substr(0, 3);
+    if (starts != "127") {
+      host_ip = tmp_ip;
+      break;
+    }
+  }
+  freeifaddrs(ifaddr);
+  return host_ip;
 }
 
-Time clk_cycle()
-{
-	long sec,usec;
-	sec = t_this.tv_sec - t_prev.tv_sec;
-	usec = t_this.tv_usec - t_prev.tv_usec;
-	return (sec + 0.000001 * usec);
-}
-
-Time clk_now()
-{
-	return 0.;
-}
 #endif
 
-
-void *k_malloc(size_t s)
-{
-	return malloc(s);
-}
-
-void k_free(void *p)
-{
-	free(p);
-}
 

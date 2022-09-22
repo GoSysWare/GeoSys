@@ -2,4 +2,5 @@
 
 
 // DEFINE_bool(big_menu, true, "Include 'advanced' options in the menu listing");
-DEFINE_string(calc_edit_cmd_name, "/calc/kernel/cmd/edit","balabala");
+DEFINE_string(edit_cmd_name, "/calc/cmd/edit","balabala");
+DEFINE_string(prj_inof_name, "/calc/prj/info","balabala");

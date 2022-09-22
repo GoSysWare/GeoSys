@@ -44,7 +44,7 @@ std::shared_ptr<Node> GlobalNode(){
 
   if(g_node == nullptr)
   {
-    g_node = std::move(CreateNode("global_node",""));
+    g_node = std::move(CreateNode("global_node_"+ std::to_string(GlobalData::Instance()->ProcessId()),""));
   }
   return g_node;
       

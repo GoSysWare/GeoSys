@@ -301,7 +301,6 @@ char *ev_to_img(char *buf) {
 }
 
 char *ev_from_img(char *buf) {
-  Int t;
   evnode_t *p_vn;
   int v_len;
   p_vn = vn_head.p_next;

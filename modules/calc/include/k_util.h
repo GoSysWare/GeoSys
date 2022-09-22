@@ -1,24 +1,16 @@
 #ifndef k_util_h
 #define k_util_h
 
-// #ifdef __cplusplus
-// extern "C" {
-// #endif
 
-#include <string.h>
+#include <string>
 #include "k_datatype.h"
+#include "k_config.h"
 
-void *k_malloc(size_t s);
-void k_free(void *p);
-void k_clk_init();
-void k_clk_do();
 
-Time clk_now();
-Time clk_cycle();
-//Int clk_cycle_us();
-Int clk_cycle_ms();
+int k_getpid();
+std::string k_getpidstr();
+std::string k_hostname();
+std::string k_hostip();
 
-// #ifdef __cplusplus
-// }
-// #endif
+
 #endif

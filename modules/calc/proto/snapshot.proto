@@ -52,5 +52,6 @@ message ProjectInfo
 }
 message InfoReq
 {
-    repeated int32 mod_id = 1;
+    string host_name = 1;
+    string prj_name = 2;
 }

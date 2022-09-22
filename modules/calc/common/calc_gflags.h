@@ -3,5 +3,7 @@
 
 #include <gflags/gflags.h>
 
-DECLARE_string(calc_edit_cmd_name);
+DECLARE_string(edit_cmd_name);
+DECLARE_string(prj_info_name);
+
 #endif
