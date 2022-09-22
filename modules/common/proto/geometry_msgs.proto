@@ -1,0 +1,68 @@
+syntax = "proto2";
+
+package apollo.common;
+
+
+import "modules/common/proto/std_msgs.proto";
+
+message geometry_msgs
+{
+
+    message Point
+    {
+        optional double x = 1 ;
+        optional double y = 2 ;
+        optional double z = 3 ;
+    }
+  
+    message Point32
+    {
+        optional float x = 1 ;
+        optional float y = 2 ;
+        optional float z = 3 ;
+    }
+      
+    
+    message PointStamped
+    {
+        optional std_msgs.Header header = 1 ;
+        optional Point point = 2 ;
+    }
+
+    message Quaternion
+    {
+        optional double x = 1 [default = 0];
+        optional double y = 2 [default = 0]; 
+        optional double z = 3 [default = 0];
+        optional double w = 4 [default = 1];
+    }  
+    message QuaternionStamped
+    {
+        optional std_msgs.Header header = 1 ;
+        optional Quaternion quaternion = 2 ;     
+    }
+
+    message Pose
+    {
+        optional Point position = 1;
+        optional Quaternion orientation = 2;
+    }   
+    message PoseStamped
+    {
+        optional std_msgs.Header header = 1;
+        optional Pose pose = 2 ;     
+    }
+  
+    message Polygon
+    {
+        repeated Point32 points =1;
+    }
+    message PolygonStamped
+    {
+        optional std_msgs.Header header = 1;
+        optional Polygon polygon = 2 ;     
+    }
+
+
+
+}

@@ -186,3 +186,7 @@ message EditInfo {
   }
 }
 message EditInfos { repeated EditInfo infos = 1; }
+
+message EditInfosRsq {
+  Result result = 1;
+}

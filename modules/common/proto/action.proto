@@ -1,0 +1,48 @@
+syntax = "proto2";
+
+package apollo.common.proto;
+
+
+
+message ActionHeader
+{
+    optional uint32 seq = 1;
+    optional uint64 timestamp = 2;
+    optional string frame_id = 3;
+
+}
+
+message GoalID {
+    optional uint64 timestamp = 1;
+    optional string id = 2;
+}
+
+
+enum GoalStatusType {
+    PENDING = 0;
+    ACTIVE = 1;
+    PREEMPTED = 2;
+    SUCCEEDED = 3;
+    ABORTED = 4;
+    REJECTED = 5;
+    PREEMPTING = 6;
+    RECALLING = 7;
+    RECALLED = 8;
+    LOST = 9;
+
+  }
+  
+message GoalStatus {
+    optional GoalID goal_id = 1;
+    optional GoalStatusType status =2;
+    optional string text = 3;
+
+}
+
+message GoalStatusArray {
+    optional ActionHeader header = 1;
+    repeated GoalStatus status_list =2;
+}
+
+
+

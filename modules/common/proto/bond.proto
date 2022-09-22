@@ -1,0 +1,22 @@
+syntax = "proto2";
+
+package apollo.common.proto;
+
+
+import "modules/common/proto/std_msgs.proto";
+
+
+
+message bond
+{
+    message Status
+    { 
+        optional std_msgs.Header header = 1 ;
+        optional string id = 2 ;
+        optional string instance_id = 3 ;
+        optional bool active = 4 ;
+        optional float heartbeat_timeout = 5 ;
+        optional float heartbeat_period = 6 ;
+    }
+
+}
