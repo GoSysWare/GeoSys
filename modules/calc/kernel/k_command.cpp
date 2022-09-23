@@ -7,44 +7,44 @@
 #include <stdlib.h>
 #include <string.h>
 
-int cmd_dispatch(const Cmd::EditInfo &edit_info) {
+int cmd_dispatch(const Bus::EditInfo &edit_info) {
 
-  Cmd::EditElement element = element;
+  Bus::EditElement element = element;
 
-  if (element == Cmd::EditElement::PROJ) {
-    Cmd::EditType type = edit_info.proj().edit_type();
-    if (type == Cmd::EditType::ADD) {
+  if (element == Bus::EditElement::PROJ) {
+    Bus::EditType type = edit_info.proj().edit_type();
+    if (type == Bus::EditType::ADD) {
 
-    } else if (type == Cmd::EditType::RM) {
+    } else if (type == Bus::EditType::RM) {
 
-    } else if (type == Cmd::EditType::SET) {
+    } else if (type == Bus::EditType::SET) {
 
-    } else if (type == Cmd::EditType::SHOW) {
+    } else if (type == Bus::EditType::SHOW) {
 
     } else {
     }
 
-  } else if (element == Cmd::EditElement::MOD) {
-    Cmd::EditType type = edit_info.mod().edit_type();
+  } else if (element == Bus::EditElement::MOD) {
+    Bus::EditType type = edit_info.mod().edit_type();
 
-    if (type == Cmd::EditType::ADD) {
+    if (type == Bus::EditType::ADD) {
       prj_modadd(edit_info.mod().mod_id(),
                  edit_info.mod().mod_name(),
                  edit_info.mod().mod_desc());
 
-    } else if (type == Cmd::EditType::RM) {
+    } else if (type == Bus::EditType::RM) {
       prj_modremove(edit_info.mod().mod_id());
 
-    } else if (type == Cmd::EditType::SET) {
+    } else if (type == Bus::EditType::SET) {
 
-    } else if (type == Cmd::EditType::SHOW) {
+    } else if (type == Bus::EditType::SHOW) {
 
     } else {
     }
-  } else if (element == Cmd::EditElement::TASK) {
-    Cmd::EditType type = edit_info.task().edit_type();
+  } else if (element == Bus::EditElement::TASK) {
+    Bus::EditType type = edit_info.task().edit_type();
 
-    if (type == Cmd::EditType::ADD) {
+    if (type == Bus::EditType::ADD) {
 
       prj_prgadd(edit_info.task().mod_id(),
                  edit_info.task().task_id(),
@@ -53,91 +53,91 @@ int cmd_dispatch(const Cmd::EditInfo &edit_info) {
                  edit_info.task().task_desc(),
                  edit_info.task().interval());
 
-    } else if (type == Cmd::EditType::RM) {
+    } else if (type == Bus::EditType::RM) {
       prj_prgremove(edit_info.task().mod_id(),
                     edit_info.task().task_id());
-    } else if (type == Cmd::EditType::SET) {
+    } else if (type == Bus::EditType::SET) {
 
-    } else if (type == Cmd::EditType::SHOW) {
+    } else if (type == Bus::EditType::SHOW) {
 
     } else {
     }
-  } else if (element == Cmd::EditElement::EV) {
-    Cmd::EditType type = edit_info.ev().edit_type();
+  } else if (element == Bus::EditElement::EV) {
+    Bus::EditType type = edit_info.ev().edit_type();
 
-    if (type == Cmd::EditType::ADD) {
+    if (type == Bus::EditType::ADD) {
       ev_add(edit_info.ev().ev_id(), edit_info.ev().ev_name(),
              edit_info.ev().val());
 
-    } else if (type == Cmd::EditType::RM) {
+    } else if (type == Bus::EditType::RM) {
       ev_remove(edit_info.ev().ev_id());
 
-    } else if (type == Cmd::EditType::SET) {
+    } else if (type == Bus::EditType::SET) {
 
-    } else if (type == Cmd::EditType::SHOW) {
-
-    } else {
-    }
-  } else if (element == Cmd::EditElement::IO) {
-    Cmd::EditType type = edit_info.io().edit_type();
-
-    if (type == Cmd::EditType::ADD) {
-
-    } else if (type == Cmd::EditType::RM) {
-
-    } else if (type == Cmd::EditType::SET) {
-
-    } else if (type == Cmd::EditType::SHOW) {
+    } else if (type == Bus::EditType::SHOW) {
 
     } else {
     }
-  } else if (element == Cmd::EditElement::FB) {
-    Cmd::EditType type = edit_info.fb().edit_type();
+  } else if (element == Bus::EditElement::IO) {
+    Bus::EditType type = edit_info.io().edit_type();
 
-    if (type == Cmd::EditType::ADD) {
+    if (type == Bus::EditType::ADD) {
+
+    } else if (type == Bus::EditType::RM) {
+
+    } else if (type == Bus::EditType::SET) {
+
+    } else if (type == Bus::EditType::SHOW) {
+
+    } else {
+    }
+  } else if (element == Bus::EditElement::FB) {
+    Bus::EditType type = edit_info.fb().edit_type();
+
+    if (type == Bus::EditType::ADD) {
       prj_fbadd(
           edit_info.fb().mod_id(), edit_info.fb().task_id(),
           edit_info.fb().fb_id(), edit_info.fb().flib_name(),
           edit_info.fb().fc_name(), edit_info.fb().fb_name());
 
-    } else if (type == Cmd::EditType::RM) {
+    } else if (type == Bus::EditType::RM) {
       prj_fbremove(edit_info.fb().mod_id(),
                    edit_info.fb().task_id(),
                    edit_info.fb().fb_id());
-    } else if (type == Cmd::EditType::SET) {
+    } else if (type == Bus::EditType::SET) {
 
-    } else if (type == Cmd::EditType::SHOW) {
+    } else if (type == Bus::EditType::SHOW) {
 
     } else {
     }
-  } else if (element == Cmd::EditElement::LK) {
-    Cmd::EditType type = edit_info.lk().edit_type();
+  } else if (element == Bus::EditElement::LK) {
+    Bus::EditType type = edit_info.lk().edit_type();
 
-    if (type == Cmd::EditType::ADD) {
+    if (type == Bus::EditType::ADD) {
       prj_lkadd(
           edit_info.lk().mod_id(), edit_info.lk().task_id(),
           edit_info.lk().lk_id(), edit_info.lk().src_fb_id(),
           edit_info.lk().src_pin_index(),
           edit_info.lk().target_fb_id(),
           edit_info.lk().target_pin_index());
-    } else if (type == Cmd::EditType::RM) {
+    } else if (type == Bus::EditType::RM) {
       prj_lkremove(
           edit_info.lk().mod_id(), edit_info.lk().task_id(),
           edit_info.lk().lk_id());
-    } else if (type == Cmd::EditType::SET) {
+    } else if (type == Bus::EditType::SET) {
 
-    } else if (type == Cmd::EditType::SHOW) {
+    } else if (type == Bus::EditType::SHOW) {
 
     } else {
     }
-  } else if (element == Cmd::EditElement::PIN) {
-    Cmd::EditType type = edit_info.pin().edit_type();
+  } else if (element == Bus::EditElement::PIN) {
+    Bus::EditType type = edit_info.pin().edit_type();
 
-    if (type == Cmd::EditType::ADD) {
+    if (type == Bus::EditType::ADD) {
 
-    } else if (type == Cmd::EditType::RM) {
+    } else if (type == Bus::EditType::RM) {
 
-    } else if (type == Cmd::EditType::SET) {
+    } else if (type == Bus::EditType::SET) {
 
       fb_t *p_fb;
       p_fb = prj_fbfind(edit_info.pin().mod_id(),
@@ -147,7 +147,7 @@ int cmd_dispatch(const Cmd::EditInfo &edit_info) {
       fb_setpin(p_fb, PININPUT, edit_info.pin().pin_index(),
                 edit_info.pin().pin_val());
 
-    } else if (type == Cmd::EditType::SHOW) {
+    } else if (type == Bus::EditType::SHOW) {
 
     } else {
     }
@@ -156,7 +156,7 @@ int cmd_dispatch(const Cmd::EditInfo &edit_info) {
   return 0;
 }
 
-int cmds_dispatch(Cmd::EditInfos &edit_infos) {
+int cmds_dispatch(Bus::EditInfos &edit_infos) {
 
   int info_size = edit_infos.infos_size();
   for (auto i = 0; i < info_size; i++) {

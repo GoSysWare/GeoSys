@@ -9,6 +9,12 @@
 #include "k_program.h"
 #include "modules/calc/proto/task_def.pb.h"
 
+
+typedef struct ModInfo {
+  std::string uuid;
+  int id_cmd;
+} modinfo_t;
+
 typedef struct MNode {
   struct MNode *p_prev;
   struct MNode *p_next;

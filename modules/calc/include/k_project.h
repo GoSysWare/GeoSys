@@ -10,11 +10,6 @@ typedef struct PrjInfo {
   int id_cmd;
 } prjinfo_t;
 
-typedef struct PrjImg {
-  prjinfo_t info;
-  int bufsize;
-  char imgbuf[IMAGSIZE];
-} prjimg_t;
 
 typedef struct PNode {
   struct PNode *p_prev;

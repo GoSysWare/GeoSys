@@ -8,17 +8,17 @@
 #include "modules/calc/proto/cmd.pb.h"
 
 static mnode_t *mn_new(int type) {
-  if (type == Cmd::TaskType::PERIODIC) {
+  if (type == Bus::TaskType::PERIODIC) {
     return new period_node_t;
-  } else if (type == Cmd::TaskType::SERVICE) {
+  } else if (type == Bus::TaskType::SERVICE) {
     return new service_node_t;
-  } else if (type == Cmd::TaskType::FSM) {
+  } else if (type == Bus::TaskType::FSM) {
     return new fsm_node_t;
-  } else if (type == Cmd::TaskType::ACTION) {
+  } else if (type == Bus::TaskType::ACTION) {
     return new action_node_t;
-  } else if (type == Cmd::TaskType::ASYNC) {
+  } else if (type == Bus::TaskType::ASYNC) {
     return new task_node_t;
-  } else if (type == Cmd::TaskType::TIMER) {
+  } else if (type == Bus::TaskType::TIMER) {
     return new timer_node_t;
   } else {
     return 0;
@@ -49,14 +49,14 @@ static void mn_remove(mnode_t *p) {
 static void mod_init(mnode_t *p_mnode, int id, std::string name, int type,
                      std::string desc, int interval) {
 
-  if (type == Cmd::TaskType::PERIODIC) {
+  if (type == Bus::TaskType::PERIODIC) {
     ((period_node_t *)p_mnode)->interval = interval;
-  } else if (type == Cmd::TaskType::SERVICE) {
-  } else if (type == Cmd::TaskType::FSM) {
+  } else if (type == Bus::TaskType::SERVICE) {
+  } else if (type == Bus::TaskType::FSM) {
     ((fsm_node_t *)p_mnode)->interval = interval;
-  } else if (type == Cmd::TaskType::ACTION) {
-  } else if (type == Cmd::TaskType::ASYNC) {
-  } else if (type == Cmd::TaskType::TIMER) {
+  } else if (type == Bus::TaskType::ACTION) {
+  } else if (type == Bus::TaskType::ASYNC) {
+  } else if (type == Bus::TaskType::TIMER) {
     ((timer_node_t *)p_mnode)->interval = interval;
   } else {
     return;
@@ -122,15 +122,15 @@ void mod_stop(mod_t *p_mod) {
   mnode_t *p_mn;
   p_mn = p_mod->mn_head.p_next;
   while (p_mn != &p_mod->mn_head) {
-    if (p_mn->type == Cmd::TaskType::PERIODIC) {
+    if (p_mn->type == Bus::TaskType::PERIODIC) {
       ((period_node_t *)p_mn)->timer.Stop();
-    } else if (p_mn->type == Cmd::TaskType::SERVICE) {
+    } else if (p_mn->type == Bus::TaskType::SERVICE) {
       /* code */
-    } else if (p_mn->type == Cmd::TaskType::FSM) {
+    } else if (p_mn->type == Bus::TaskType::FSM) {
       ((fsm_node_t *)p_mn)->timer.Stop();
-    } else if (p_mn->type == Cmd::TaskType::ACTION) {
+    } else if (p_mn->type == Bus::TaskType::ACTION) {
       /* code */
-    } else if (p_mn->type == Cmd::TaskType::TIMER) {
+    } else if (p_mn->type == Bus::TaskType::TIMER) {
       /* code */
     }
     p_mn = p_mn->p_next;
@@ -253,7 +253,7 @@ void mod_exec(mod_t *p_mod, std::unique_ptr<apollo::cyber::Node> &node) {
     if (p_mn->enable)
       continue;
 
-    if (p_mn->type == Cmd::TaskType::PERIODIC) {
+    if (p_mn->type == Bus::TaskType::PERIODIC) {
 
       apollo::cyber::TimerOption opt;
       opt.oneshot = false;
@@ -265,7 +265,7 @@ void mod_exec(mod_t *p_mod, std::unique_ptr<apollo::cyber::Node> &node) {
       ((period_node_t *)p_mn)->timer.SetTimerOption(opt);
       ((period_node_t *)p_mn)->timer.Start();
 
-    } else if (p_mn->type == Cmd::TaskType::SERVICE) {
+    } else if (p_mn->type == Bus::TaskType::SERVICE) {
       auto f = [p_mn](const vam_t &request, vam_t &response) {
         fb_t *pqfb, *ppfb;
         pqfb = prg_fbfind_by_lib(p_mn->p_prg, "Task", "REQUEST");
@@ -279,16 +279,16 @@ void mod_exec(mod_t *p_mod, std::unique_ptr<apollo::cyber::Node> &node) {
         prg_exec(p_mn->p_prg);
       };
       auto service_ = node->CreateService<value_tm, value_tm>(p_mn->name, f);
-    } else if (p_mn->type == Cmd::TaskType::FSM) {
+    } else if (p_mn->type == Bus::TaskType::FSM) {
       apollo::cyber::TimerOption opt;
       opt.oneshot = false;
       opt.callback = [p_mn]() { prg_exec(p_mn->p_prg); };
       opt.period = ((fsm_node_t *)p_mn)->interval;
       ((fsm_node_t *)p_mn)->timer.SetTimerOption(opt);
       ((fsm_node_t *)p_mn)->timer.Start();
-    } else if (p_mn->type == Cmd::TaskType::ACTION) {
+    } else if (p_mn->type == Bus::TaskType::ACTION) {
 
-    } else if (p_mn->type == Cmd::TaskType::ASYNC) {
+    } else if (p_mn->type == Bus::TaskType::ASYNC) {
 
       auto f = [p_mn](const std::shared_ptr<TaskReqParam> &request,
                       std::shared_ptr<TaskRspParam> &response) {
