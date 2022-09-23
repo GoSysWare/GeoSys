@@ -48,7 +48,8 @@ message EditProjReq {
     EditType edit_type = 1;
     uint32 proj_id = 2;
     string proj_name = 3;
-    string proj_desc = 4;   
+    string proj_desc = 4;
+    string proj_uuid = 4;   
 }
 message EditProjRsp { 
     Result result = 1;
@@ -171,7 +172,7 @@ message EditLinkRsp {
 }
 
 message EditInfo {
-  uint32 id = 1;
+  uint32 cmd_id = 1;
   EditElement element = 2;
   oneof info {
     EditProjReq proj = 3;

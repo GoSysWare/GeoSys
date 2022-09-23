@@ -9,10 +9,25 @@ load("@rules_proto//proto:defs.bzl", "proto_library")
 
 package(default_visibility = ["//visibility:public"])
 
+cc_proto_library(
+    name = "bus_cc_proto",
+    deps = [
+        "bus_proto",
+    ],
+)
+
+proto_library(
+    name = "bus_proto",
+    deps = [
+        ":cmd_proto",
+        ":snapshot_proto",
+        ":task_def_proto",
+        ":value_proto",    ],
+)
 
 cc_proto_library(
     name = "task_def_cc_proto",
-    deps = [":task_def_proto"], 
+    deps = [":task_def_proto"],
 )
 
 proto_library(
@@ -25,7 +40,7 @@ proto_library(
 
 cc_proto_library(
     name = "snapshot_cc_proto",
-    deps = [":snapshot_proto"], 
+    deps = [":snapshot_proto"],
 )
 
 proto_library(
@@ -38,7 +53,7 @@ proto_library(
 
 cc_proto_library(
     name = "cmd_cc_proto",
-    deps = [":cmd_proto"], 
+    deps = [":cmd_proto"],
 )
 
 proto_library(
@@ -51,7 +66,7 @@ proto_library(
 
 cc_proto_library(
     name = "value_cc_proto",
-    deps = [":value_proto"], 
+    deps = [":value_proto"],
 )
 
 proto_library(
@@ -63,7 +78,7 @@ proto_library(
 
 cc_proto_library(
     name = "image_cc_proto",
-    deps = [":image_proto"], 
+    deps = [":image_proto"],
 )
 
 proto_library(

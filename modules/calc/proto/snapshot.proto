@@ -46,9 +46,12 @@ message EVNodeSnapshot
 
 message ModInfo
 {
-    string mod_uuid = 1;
-    string mod_id = 2;
-    string mod_name = 3;
+    string mod_id = 1;
+    string mod_name = 2;
+    string mod_uuid = 3;
+    string cmd_id = 4;
+   
+
 }
 
 message ProjectInfoRsp
@@ -58,7 +61,8 @@ message ProjectInfoRsp
     string process_id = 3;
     string prj_name = 4;
     string prj_uuid = 5;
-    repeated ModInfo mod_info = 6;
+    string cmd_id = 6;
+    repeated ModInfo mod_info = 7;
 }
 message ProjectInfoReq
 {

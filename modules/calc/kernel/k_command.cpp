@@ -18,7 +18,9 @@ int cmd_dispatch(const Bus::EditInfo &edit_info) {
     } else if (type == Bus::EditType::RM) {
 
     } else if (type == Bus::EditType::SET) {
-
+      prjinfo_t *info;
+      info = prj_info();
+      info->uuid = edit_info.proj().proj_uuid();
     } else if (type == Bus::EditType::SHOW) {
 
     } else {
@@ -28,8 +30,7 @@ int cmd_dispatch(const Bus::EditInfo &edit_info) {
     Bus::EditType type = edit_info.mod().edit_type();
 
     if (type == Bus::EditType::ADD) {
-      prj_modadd(edit_info.mod().mod_id(),
-                 edit_info.mod().mod_name(),
+      prj_modadd(edit_info.mod().mod_id(), edit_info.mod().mod_name(),
                  edit_info.mod().mod_desc());
 
     } else if (type == Bus::EditType::RM) {
@@ -46,16 +47,12 @@ int cmd_dispatch(const Bus::EditInfo &edit_info) {
 
     if (type == Bus::EditType::ADD) {
 
-      prj_prgadd(edit_info.task().mod_id(),
-                 edit_info.task().task_id(),
-                 edit_info.task().task_name(),
-                 edit_info.task().task_type(),
-                 edit_info.task().task_desc(),
-                 edit_info.task().interval());
+      prj_prgadd(edit_info.task().mod_id(), edit_info.task().task_id(),
+                 edit_info.task().task_name(), edit_info.task().task_type(),
+                 edit_info.task().task_desc(), edit_info.task().interval());
 
     } else if (type == Bus::EditType::RM) {
-      prj_prgremove(edit_info.task().mod_id(),
-                    edit_info.task().task_id());
+      prj_prgremove(edit_info.task().mod_id(), edit_info.task().task_id());
     } else if (type == Bus::EditType::SET) {
 
     } else if (type == Bus::EditType::SHOW) {
@@ -95,14 +92,12 @@ int cmd_dispatch(const Bus::EditInfo &edit_info) {
     Bus::EditType type = edit_info.fb().edit_type();
 
     if (type == Bus::EditType::ADD) {
-      prj_fbadd(
-          edit_info.fb().mod_id(), edit_info.fb().task_id(),
-          edit_info.fb().fb_id(), edit_info.fb().flib_name(),
-          edit_info.fb().fc_name(), edit_info.fb().fb_name());
+      prj_fbadd(edit_info.fb().mod_id(), edit_info.fb().task_id(),
+                edit_info.fb().fb_id(), edit_info.fb().flib_name(),
+                edit_info.fb().fc_name(), edit_info.fb().fb_name());
 
     } else if (type == Bus::EditType::RM) {
-      prj_fbremove(edit_info.fb().mod_id(),
-                   edit_info.fb().task_id(),
+      prj_fbremove(edit_info.fb().mod_id(), edit_info.fb().task_id(),
                    edit_info.fb().fb_id());
     } else if (type == Bus::EditType::SET) {
 
@@ -114,16 +109,13 @@ int cmd_dispatch(const Bus::EditInfo &edit_info) {
     Bus::EditType type = edit_info.lk().edit_type();
 
     if (type == Bus::EditType::ADD) {
-      prj_lkadd(
-          edit_info.lk().mod_id(), edit_info.lk().task_id(),
-          edit_info.lk().lk_id(), edit_info.lk().src_fb_id(),
-          edit_info.lk().src_pin_index(),
-          edit_info.lk().target_fb_id(),
-          edit_info.lk().target_pin_index());
+      prj_lkadd(edit_info.lk().mod_id(), edit_info.lk().task_id(),
+                edit_info.lk().lk_id(), edit_info.lk().src_fb_id(),
+                edit_info.lk().src_pin_index(), edit_info.lk().target_fb_id(),
+                edit_info.lk().target_pin_index());
     } else if (type == Bus::EditType::RM) {
-      prj_lkremove(
-          edit_info.lk().mod_id(), edit_info.lk().task_id(),
-          edit_info.lk().lk_id());
+      prj_lkremove(edit_info.lk().mod_id(), edit_info.lk().task_id(),
+                   edit_info.lk().lk_id());
     } else if (type == Bus::EditType::SET) {
 
     } else if (type == Bus::EditType::SHOW) {
@@ -140,8 +132,7 @@ int cmd_dispatch(const Bus::EditInfo &edit_info) {
     } else if (type == Bus::EditType::SET) {
 
       fb_t *p_fb;
-      p_fb = prj_fbfind(edit_info.pin().mod_id(),
-                        edit_info.pin().task_id(),
+      p_fb = prj_fbfind(edit_info.pin().mod_id(), edit_info.pin().task_id(),
                         edit_info.pin().fb_id());
 
       fb_setpin(p_fb, PININPUT, edit_info.pin().pin_index(),
@@ -160,6 +151,10 @@ int cmds_dispatch(Bus::EditInfos &edit_infos) {
 
   int info_size = edit_infos.infos_size();
   for (auto i = 0; i < info_size; i++) {
+    prjinfo_t *info = prj_info();
+    if (info->id_cmd < edit_infos.id_cmd()) {
+      info->id_cmd = edit_infos.id_cmd();
+    }
     cmd_dispatch(edit_infos.infos(i));
   }
 
