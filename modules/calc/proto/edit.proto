@@ -1,0 +1,187 @@
+
+syntax = "proto3";
+import "modules/calc/proto/value.proto";
+import "modules/calc/proto/return.proto";
+
+package Bus;
+
+enum EditType {
+  ADD = 0;  // 增加
+  RM = 1;   // 删除
+  SET = 2;  // 设置/修改
+  SHOW = 3; // 可视化输出
+}
+enum EditElement {
+  PROJ = 0;
+  MOD  = 1;
+  TASK = 2;
+  EV = 3;
+  IO = 4;
+  FB = 5;
+  LK = 6;
+  PIN = 7;
+}
+enum TaskType {
+  PERIODIC = 0; // 周期任务
+  ASYNC = 1;    // 异步任务
+  SERVICE = 2;  // 服务
+  TIMER = 3;    // 定时器
+  FSM = 4;      // 状态机
+  ACTION = 5;   // action
+}
+
+
+
+message EditProjReq { 
+    EditType edit_type = 1;
+    uint32 proj_id = 2;
+    string proj_name = 3;
+    string proj_desc = 4;
+    string proj_uuid = 4;   
+}
+message EditProjRsp { 
+    Result result = 1;
+    uint32 proj_id = 2;
+    string proj_name = 3;
+}
+message EditModuleReq { 
+    EditType edit_type = 1; 
+    uint32 proj_id = 2;
+    string proj_name = 3;      
+    uint32 mod_id = 4;
+    string mod_name = 5;
+    string mod_desc = 6;   
+    string uuid = 7;
+
+}
+message EditModuleRsp { 
+    Result result = 1; 
+    uint32 proj_id = 2;
+    string proj_name = 3;      
+    uint32 mod_id = 4;
+    string mod_name = 5;
+}
+message EditTaskReq {
+  EditType edit_type = 1;
+  TaskType task_type = 2;
+  uint32 mod_id = 3;
+  string mod_name = 4;  
+  uint32 task_id = 5;
+  string task_name = 6;
+  uint32 interval = 7;
+  string task_desc = 8;   
+}
+message EditTaskRsp {
+  Result result = 1;
+  uint32 mod_id = 2;
+  string mod_name = 3; 
+  uint32 task_id = 4;
+  string task_name = 5;
+}
+
+message EditFBReq {
+  EditType edit_type = 1;
+  uint32 mod_id = 2;
+  string mod_name = 3;   
+  uint32 task_id = 4;
+  uint32 task_name = 5;
+  uint32 fb_id = 6;
+  string flib_name = 7;
+  string fc_name = 8;
+  string fb_name = 9;
+}
+message EditFBRsp {
+  Result result = 1;
+  uint32 mod_id = 2;
+  string mod_name = 3;   
+  uint32 task_id = 4;
+  uint32 task_name = 5;  
+  uint32 fb_id = 6;
+  string fb_name = 7;
+}
+
+message EditPinReq {
+  EditType edit_type = 1;
+  uint32 mod_id = 2;
+  string mod_name = 3;   
+  uint32 task_id = 4;
+  uint32 task_name = 5;  
+  uint32 fb_id = 6;
+  string fb_name = 7;
+  uint32 pin_index = 8;
+  string pin_name = 9;
+  value_tm pin_val = 10;
+}
+message EditPinRsp {
+  Result result = 1;
+  uint32 fb_id = 2;
+  string fb_name = 3;
+  uint32 pin_index = 4;
+  string pin_name = 5;
+}
+message EditIOReq {
+  EditType edit_type = 1;
+
+}
+message EditIORsp {
+  Result result = 1;
+
+}
+message EditEVReq {
+  EditType edit_type = 1;
+  uint32 ev_id = 2;
+  string ev_name = 3;
+  value_tm val = 4;
+}
+message EditEVRsp {
+  Result result = 1;
+  uint32 ev_id = 2;
+  string ev_name = 3;
+}
+message EditLinkReq {
+  EditType edit_type = 1;
+  uint32 mod_id = 2;
+  string mod_name = 3;
+  uint32 task_id = 4;
+  string task_name = 5;
+  uint32 lk_id = 6;
+  string lk_name = 7;
+  uint32 src_fb_id = 8;
+  string src_fb_name = 9;
+  uint32 src_pin_index = 10;
+  uint32 target_fb_id = 11;
+  string target_fb_name = 12;
+  uint32 target_pin_index = 13;
+}
+message EditLinkRsp {
+  Result result = 1;
+  uint32 lk_id = 2;
+  string lk_name = 3;
+}
+
+message EditInfo {
+  uint32 cmd_id = 1;
+  EditElement element = 2;
+  oneof info {
+    EditProjReq proj = 3;
+    EditModuleReq mod = 4;
+    EditTaskReq task = 5;
+    EditFBReq fb = 6;
+    EditPinReq pin = 7;
+    EditEVReq ev = 8;
+    EditLinkReq lk = 9;
+    EditIOReq io = 10;
+
+  }
+}
+message EditInfosReq { 
+  string host_name = 1;
+  string host_ip = 2;
+  string process_id = 3;
+  string prj_name = 4;
+  repeated EditInfo infos = 5; 
+}
+
+message EditInfosRsp {
+  Result result = 1;
+}

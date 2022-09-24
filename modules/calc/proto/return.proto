@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package Bus;
+
+message Result {
+    int32 result_code = 1;
+    string result_msg = 2;
+  }
+  
