@@ -2,8 +2,13 @@ syntax = "proto3";
 
 package Bus;
 
+enum ResultCode{
+  OK = 1;
+  FAIL =2;
+}
+
 message Result {
-    int32 result_code = 1;
-    string result_msg = 2;
-  }
+  int code = 1;
+  string msg = 2;
+}
   

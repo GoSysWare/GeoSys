@@ -28,10 +28,10 @@ message ProjectCmdReq{
 
 
 message ProjectCmdRsp{
-
-  string host_name = 1;
-  string host_ip = 2;
-  string process_id = 3;
-  string prj_name = 4;
-  RunType cmd_type =5;
+  Result result =1;
+  string host_name = 2;
+  string host_ip = 3;
+  string process_id = 4;
+  string prj_name = 5;
+  RunType cmd_type =6;
 }

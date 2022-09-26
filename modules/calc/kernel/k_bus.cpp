@@ -5,66 +5,18 @@
 #include "modules/calc/common/calc_gflags.h"
 #include "modules/calc/include/k_command.h"
 
-
-// case FUNCCMD:
-// 		stbbus_sync_prog(p_frm);
-// 		oncommand(p_frm->h.len,p_frm->d);
-// 		vtcp_srvsend(CONFIGPORT, income, sizeof(cfghead_t)+frm_answer.h.len, (char *)&frm_answer);
-// 		break;
-// 	case FUNCIMG:
-// 		onimg();
-// 		vtcp_srvsend(CONFIGPORT, income, sizeof(cfghead_t)+frm_answer.h.len, (char *)&frm_answer);
-// 		break;
-// 	case FUNCPRJINFO:
-// 		onprjinfo();
-// 		vtcp_srvsend(CONFIGPORT, income, sizeof(cfghead_t)+frm_answer.h.len, (char *)&frm_answer);
-// 		break;
-// 	case FUNCRESET:
-// 		onreset();
-// 		vtcp_srvsend(CONFIGPORT, income, sizeof(cfghead_t)+frm_answer.h.len, (char *)&frm_answer);
-// 		break;
-// 	case FUNCRUN:
-// 		onrun();
-// 		vtcp_srvsend(CONFIGPORT, income, sizeof(cfghead_t)+frm_answer.h.len, (char *)&frm_answer);
-// 		break;
-//         case FUNCSTOP:
-// 		onstop();
-// 		vtcp_srvsend(CONFIGPORT, income, sizeof(cfghead_t)+frm_answer.h.len, (char *)&frm_answer);
-// 		break;
-// 	case FUNCUCMD:
-// 		c();
-// 		vtcp_srvsend(CONFIGPORT, income, sizeof(cfghead_t)+frm_answer.h.len, (char *)&frm_answer);
-// 	default:
-
-static int on_bus_connect()
-{
-
-}
-static int on_bus_disconnect()
-{
-
-}
-
-static int on_bus_reset()
-{
-
-}
-static int on_bus_run()
-{
-  
-}
-static int on_bus_stop()
-{
-  
-}
-static int on_bus_upload()
-{
-  
-}
+static int on_bus_connect() {}
+static int on_bus_disconnect() {}
+static int on_bus_reset() {}
+static int on_bus_run() {}
+static int on_bus_stop() {}
+static int on_bus_download() {}
+static int on_bus_upload() {}
+static int on_bus_sync() {}
 static bool filter_service(std::string host_name, std::string host_ip,
                            std::string process_id, std::string prj_name) {
 
-return true;
+  return true;
 }
 
 int bus_init(std::shared_ptr<apollo::cyber::Node> &node) {
@@ -92,12 +44,43 @@ int bus_init(std::shared_ptr<apollo::cyber::Node> &node) {
           [](const std::shared_ptr<Bus::ProjectCmdReq> &request,
              std::shared_ptr<Bus::ProjectCmdRsp> &response) {
             std::cout << "prject  cmd" << std::endl;
-
-
+            switch (request->cmd_type) {
+            case Bus::RunType::ONLINE:
+              on_bus_connect();
+              response->mutable_result()->set_code(ResultCode::OK);
+              break;
+            case Bus::RunType::OFFLINE:
+              on_bus_disconnect();
+              response->mutable_result()->set_code(ResultCode::OK);
+              break;
+            case Bus::RunType::RUN:
+              on_bus_run();
+              break;
+            case Bus::RunType::STOP:
+              on_bus_stop();
+              /* code */
+              break;
+            case Bus::RunType::RESET:
+              on_bus_reset();
+              /* code */
+              break;
+            case Bus::RunType::SYNC:
+              on_bus_sync();
+              /* code */
+              break;
+            case Bus::RunType::DOWNLOAD:
+              on_bus_download();
+              /* code */
+              break;
+            case Bus::RunType::UPLOAD:
+              on_bus_upload();
+              /* code */
+              break;
+            default:
+              break;
+            }
           });
 }
-
-
 
 int bus_uninit() {}
 
