@@ -19,10 +19,14 @@ cc_proto_library(
 proto_library(
     name = "bus_proto",
     deps = [
+        ":return_proto",    
         ":cmd_proto",
         ":snapshot_proto",
         ":task_def_proto",
-        ":value_proto",    ],
+        ":value_proto", 
+        ":edit_proto", 
+
+    ],
 )
 
 cc_proto_library(
@@ -35,6 +39,8 @@ proto_library(
     srcs = ["task_def.proto"],
     deps = [
         ":value_proto",
+        ":return_proto",
+
     ],
 )
 
@@ -48,6 +54,8 @@ proto_library(
     srcs = ["snapshot.proto"],
     deps = [
         ":value_proto",
+        ":return_proto",
+
     ],
 )
 
@@ -61,9 +69,24 @@ proto_library(
     srcs = ["cmd.proto"],
     deps = [
         ":value_proto",
+        ":return_proto",
+      
     ],
 )
+cc_proto_library(
+    name = "edit_cc_proto",
+    deps = [":edit_proto"],
+)
 
+proto_library(
+    name = "edit_proto",
+    srcs = ["edit.proto"],
+    deps = [
+        ":value_proto",
+        ":return_proto",
+      
+    ],
+)
 cc_proto_library(
     name = "value_cc_proto",
     deps = [":value_proto"],
@@ -72,6 +95,18 @@ cc_proto_library(
 proto_library(
     name = "value_proto",
     srcs = ["value.proto"],
+    deps = [
+    ],
+)
+
+cc_proto_library(
+    name = "return_cc_proto",
+    deps = [":return_proto"],
+)
+
+proto_library(
+    name = "return_proto",
+    srcs = ["return.proto"],
     deps = [
     ],
 )

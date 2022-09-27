@@ -21,8 +21,8 @@ static bool filter_service(std::string host_name, std::string host_ip,
 
 int bus_init(std::shared_ptr<apollo::cyber::Node> &node) {
 
-  auto prj_edit_srv = node->CreateService<Bus::EditInfos, Bus::EditInfosRsp>(
-      FLAGS_edit_cmd_name, [](const std::shared_ptr<Bus::EditInfos> &request,
+  auto prj_edit_srv = node->CreateService<Bus::EditInfosReq, Bus::EditInfosRsp>(
+      FLAGS_prj_edit_name, [](const std::shared_ptr<Bus::EditInfosReq> &request,
                               std::shared_ptr<Bus::EditInfosRsp> &response) {
         std::cout << "cmds_dispatch" << std::endl;
 
@@ -44,14 +44,14 @@ int bus_init(std::shared_ptr<apollo::cyber::Node> &node) {
           [](const std::shared_ptr<Bus::ProjectCmdReq> &request,
              std::shared_ptr<Bus::ProjectCmdRsp> &response) {
             std::cout << "prject  cmd" << std::endl;
-            switch (request->cmd_type) {
+            switch (request->cmd_type()) {
             case Bus::RunType::ONLINE:
               on_bus_connect();
-              response->mutable_result()->set_code(ResultCode::OK);
+              response->mutable_result()->set_code((int)Bus::ResultCode::OK);
               break;
             case Bus::RunType::OFFLINE:
               on_bus_disconnect();
-              response->mutable_result()->set_code(ResultCode::OK);
+              response->mutable_result()->set_code((int)Bus::ResultCode::OK);
               break;
             case Bus::RunType::RUN:
               on_bus_run();

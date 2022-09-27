@@ -37,7 +37,7 @@ message EditProjReq {
     uint32 proj_id = 2;
     string proj_name = 3;
     string proj_desc = 4;
-    string proj_uuid = 4;   
+    string proj_uuid = 5;   
 }
 message EditProjRsp { 
     Result result = 1;

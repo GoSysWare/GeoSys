@@ -49,7 +49,7 @@ message ModInfo
     string mod_id = 1;
     string mod_name = 2;
     string mod_uuid = 3;
-    string cmd_id = 4;
+    uint32 cmd_id = 4;
    
 
 }
@@ -70,6 +70,6 @@ message ProjectInfoRsp
     string process_id = 3;
     string prj_name = 4;
     string prj_uuid = 5;
-    string cmd_id = 6;
+    uint32 cmd_id = 6;
     repeated ModInfo mod_info = 7;
 }

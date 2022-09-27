@@ -232,7 +232,7 @@ int prj_checkloop(int idmod, int idprg, int idsrc, int idtgt) {
 void prj_dump() {
   pnode_t *p_pn;
 
-  printf("Project: uuid:%s\ncmd:%d\nstat:%d\n", info.uuid.c_str(), info.id_cmd);
+  printf("Project: uuid:%s\ncmd:%d\nstat:%d\n", info.uuid.c_str(), info.cmd_id);
   p_pn = pn_head.p_next;
   while (p_pn != &pn_head) {
     printf(
@@ -320,7 +320,7 @@ mod_t *prj_modfind(std::string mod_name) {
 }
 
 
-int prj_to_snapshot(ProjectSnapshot snapshot)
+int prj_to_snapshot(Bus::ProjectSnapshotRsp snapshot)
 {
   // std::string buf;
   // pin_t *ppin;

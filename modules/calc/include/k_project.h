@@ -7,7 +7,7 @@
 
 typedef struct PrjInfo {
   std::string uuid;
-  int id_cmd;
+  unsigned int cmd_id;
 } prjinfo_t;
 
 

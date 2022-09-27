@@ -8,6 +8,8 @@
 #include "k_config.h"
 #include "k_program.h"
 #include "modules/calc/proto/task_def.pb.h"
+#include "modules/calc/proto/cmd.pb.h"
+#include "modules/calc/proto/edit.pb.h"
 
 
 typedef struct ModInfo {

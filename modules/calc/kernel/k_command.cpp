@@ -147,13 +147,13 @@ int cmd_dispatch(const Bus::EditInfo &edit_info) {
   return 0;
 }
 
-int cmds_dispatch(Bus::EditInfos &edit_infos) {
+int cmds_dispatch(Bus::EditInfosReq &edit_infos) {
 
   int info_size = edit_infos.infos_size();
   for (auto i = 0; i < info_size; i++) {
     prjinfo_t *info = prj_info();
-    if (info->id_cmd < edit_infos.id_cmd()) {
-      info->id_cmd = edit_infos.id_cmd();
+    if (info->cmd_id < edit_infos.infos(i).cmd_id()) {
+      info->cmd_id = edit_infos.infos(i).cmd_id();
     }
     cmd_dispatch(edit_infos.infos(i));
   }
