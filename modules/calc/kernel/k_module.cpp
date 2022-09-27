@@ -5,7 +5,6 @@
 
 #include "modules/calc/include/k_module.h"
 #include "modules/calc/include/k_util.h"
-#include "modules/calc/proto/cmd.pb.h"
 
 static mnode_t *mn_new(int type) {
   if (type == Bus::TaskType::PERIODIC) {
