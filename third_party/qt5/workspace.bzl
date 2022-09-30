@@ -10,5 +10,5 @@ def repo():
     native.new_local_repository(
         name = "qt",
         build_file = clean_dep("//third_party/qt5:qt.BUILD"),
-        path = "/opt/Qt5.14.2/5.14.2/gcc_64",
+        path = "/usr/local/Qt-5.14.2",
     )

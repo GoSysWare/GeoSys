@@ -2,7 +2,7 @@
 #define PLPIN_H
 
 #include <QString>
-#include "k_evdata.h"
+#include "modules/calc/include/k_evdata.h"
 
 class PLPin
 {

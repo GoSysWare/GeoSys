@@ -12,7 +12,7 @@ cc_library(
         "include/QtCore",
     ],
     linkopts = [
-        "-Wl,-rpath,/opt/Qt5.14.2/5.14.2/gcc_64//lib",
+        "-Wl,-rpath,/usr/local/Qt-5.14.2//lib",
         "-lQt5Core",
     ],
     visibility = ["//visibility:public"],
@@ -30,7 +30,7 @@ cc_library(
         "include/QtWidgets",
     ],
     linkopts = [
-        "-L/opt/Qt5.14.2/5.14.2/gcc_64//lib",
+        "-L/usr/local/Qt-5.14.2//lib",
         "-lQt5Widgets",
     ],
     visibility = ["//visibility:public"],
@@ -49,7 +49,7 @@ cc_library(
         "include/QtGui",
     ],
     linkopts = [
-        "-L/opt/Qt5.14.2/5.14.2/gcc_64//lib",
+        "-L/usr/local/Qt-5.14.2//lib",
         "-lQt5Gui",
     ],
     visibility = ["//visibility:public"],
@@ -71,7 +71,7 @@ cc_library(
         "include/QtOpenGL",
     ],
     linkopts = [
-        "-L/opt/Qt5.14.2/5.14.2/gcc_64/lib",
+        "-L/usr/local/Qt-5.14.2/lib",
         "-lQt5OpenGL",
         "-lGL",
     ],
@@ -95,7 +95,7 @@ cc_library(
         "include/QtBluetooth",
     ],
     linkopts = [
-        "-L/opt/Qt5.14.2/5.14.2/gcc_64/lib",
+        "-L/usr/local/Qt-5.14.2/lib",
         "-lQt5Bluetooth",
     ],
     visibility = ["//visibility:public"],
@@ -116,7 +116,7 @@ cc_library(
         "include/QtQml",
     ],
     linkopts = [
-        "-L/opt/Qt5.14.2/5.14.2/gcc_64/lib",
+        "-L/usr/local/Qt-5.14.2/lib",
         "-lQt5Qml",
     ],
     visibility = ["//visibility:public"],
