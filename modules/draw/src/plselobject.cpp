@@ -11,5 +11,4 @@ void PLSelObject::reset()
     value = 0;
     fb = NULL;
     lk = NULL;
-    vlk = NULL;
 }

@@ -6,7 +6,7 @@
 #include "plprogram.h"
 #include "dlgpinset.h"
 #include "dlgobjname.h"
-#include "k_project.h"
+// #include "k_project.h"
 #include <QMessageBox>
 
 CadPanel::CadPanel()

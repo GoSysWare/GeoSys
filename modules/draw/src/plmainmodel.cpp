@@ -1,10 +1,10 @@
 #include <QFile>
 #include <QTextStream>
 #include "plmainmodel.h"
-#include "k_functionblock.h"
-#include "k_lib.h"
-#include "k_command.h"
-#include "k_project.h"
+#include "modules/calc/include/k_functionblock.h"
+#include "modules/calc/include/k_lib.h"
+#include "modules/calc/include/k_command.h"
+#include "modules/calc/include/k_project.h"
 
 PLMainModel::PLMainModel()
 {

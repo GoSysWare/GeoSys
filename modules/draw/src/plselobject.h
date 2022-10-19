@@ -3,7 +3,6 @@
 
 #include "pllink.h"
 #include "plfunctionblock.h"
-#include "plvlink.h"
 
 const int PT_NONE=0;
 const int PT_INPUT=1;
@@ -24,7 +23,6 @@ public:
     int value;
     PLFunctionBlock *fb;
     PLLink *lk;
-    PLVLink *vlk;
 };
 
 #endif // PLSELOBJECT_H

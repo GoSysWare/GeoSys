@@ -2,7 +2,6 @@
 #define PLTARGET_H
 
 #include <QTimer>
-#include "pliomodel.h"
 
 class PLTarget : public QTimer
 {
@@ -21,7 +20,6 @@ public:
 
     void timerEvent(QTimerEvent *e);
 
-    PLIOModel modelIO;
 
 private:
     bool bOnline;

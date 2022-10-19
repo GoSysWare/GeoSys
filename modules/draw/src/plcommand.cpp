@@ -1,8 +1,8 @@
 #include <QStringList>
 #include "gdefine.h"
 #include "plcommand.h"
-#include "k_command.h"
-#include "k_project.h"
+#include "modules/calc/include/k_command.h"
+#include "modules/calc/include/k_project.h"
 
 PLCommand::PLCommand()
 {
@@ -567,24 +567,3 @@ bool PLCommand::removeVLinkOutput(PLProgram *prg, int id)
     return false;
 }
 
-PLVLink* PLCommand::getVi(PLProgram *prg, int id)
-{
-    for(int i=0; i<prg->vis.size(); i++){
-        if(prg->vis.at(i).id == id){
-            return &prg->vis[i];
-        }
-    }
-
-    return NULL;
-}
-
-PLVLink* PLCommand::getVo(PLProgram *prg, int id)
-{
-    for(int i=0; i<prg->vos.size(); i++){
-        if(prg->vos.at(i).id == id){
-            return &prg->vos[i];
-        }
-    }
-
-    return NULL;
-}

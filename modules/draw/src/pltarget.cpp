@@ -1,11 +1,7 @@
 #include "pltarget.h"
 #include "gdefine.h"
-#include "vnet.h"
-#include "vtcp.h"
-#include "cfgbus.h"
 #include "k_command.h"
 
-static char cmdsbuf[MAXFRMDATASIZE];
 
 //定时器中刷新各个引脚和变量的值，并更新画面
 void PLTarget::timerEvent(QTimerEvent *e)
@@ -67,9 +63,6 @@ void PLTarget::timerEvent(QTimerEvent *e)
 PLTarget::PLTarget(QObject *parent)
     : QTimer(parent)
 {
-    vnet_init();
-    vtcp_init();
-    cfgbus_init(0);
 
     bOnline = false;
     bMonitor = false;
