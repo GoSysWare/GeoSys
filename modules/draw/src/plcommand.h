@@ -4,6 +4,7 @@
 #include <QString>
 #include "plprogram.h"
 #include "plfunctionblock.h"
+#include "plevdata.h"
 
 class PLCommand
 {
@@ -24,8 +25,6 @@ public:
     static PLProgram *getProgram(int id);
     static PLFunctionBlock *getFunctionBlock(PLProgram *prg, int id);
     static PLLink *getLink(PLProgram *prg, int id);
-    static PLVLink *getVi(PLProgram *prg, int id);
-    static PLVLink *getVo(PLProgram *prg, int id);
 
     void setProgram(PLProgram *prg);
     static bool removeProgram(int id);
