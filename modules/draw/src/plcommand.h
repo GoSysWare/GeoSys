@@ -6,20 +6,18 @@
 #include "plfunctionblock.h"
 #include "plevdata.h"
 
+
+#include "modules/calc/proto/edit.pb.h"
+
 class PLCommand
 {
 public:
     PLCommand();
-    PLCommand(QString line);
+    PLCommand(Bus::EditInfo  info);
     bool dispatch();
-    void makeCmdLine();
 
-    QString cmdLine;
-    int id;
-    QString fun;
-    QString para;
-    QString res;
-    bool mark;
+    
+    Bus::EditInfo editInfo;
 
     static PLEVData *getEv(int id);
     static PLProgram *getProgram(int id);

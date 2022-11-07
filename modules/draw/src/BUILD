@@ -256,8 +256,10 @@ qt_cc_library(
     copts = [
     ],
     deps = [
+
         ":plevdata",
         ":plprogram",
+        "//modules/calc/proto:edit_cc_proto",
         "//modules/calc/proto:value_cc_proto",
         "//modules/calc/include:calc_include",
         "//modules/calc/include/lib:lib_include",   

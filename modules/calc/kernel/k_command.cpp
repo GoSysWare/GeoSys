@@ -9,7 +9,7 @@
 
 int cmd_dispatch(const Bus::EditInfo &edit_info) {
 
-  Bus::EditElement element = element;
+  Bus::EditElement element = edit_info.element();
 
   if (element == Bus::EditElement::PROJ) {
     Bus::EditType type = edit_info.proj().edit_type();

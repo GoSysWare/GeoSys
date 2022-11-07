@@ -8,31 +8,38 @@ PLCommand::PLCommand()
 {
 }
 
-PLCommand::PLCommand(QString line)
+PLCommand::PLCommand(Bus::EditInfo  info)
 {
-    cmdLine = line;
-    QStringList list = cmdLine.split(";");
-
-    QString sid = list.at(0);
-    id = sid.toInt();
-    fun = list.at(1);
-    para = list.at(2);
-    res = list.at(3);
+    editInfo = edit
 }
 
-void PLCommand::makeCmdLine()
-{
-    cmdLine = QString::asprintf("%d", id);
-    cmdLine += ";";
-    cmdLine += fun;
-    cmdLine += ";";
-    cmdLine += para;
-    cmdLine += ";";
-    cmdLine += res;
-}
 
 bool PLCommand::dispatch()
 {
+
+  Bus::EditElement element = editInfo.element();
+
+  if (element == Bus::EditElement::PROJ) {
+    Bus::EditType type = editInfo.proj().edit_type();
+    if (type == Bus::EditType::ADD) {
+        PLProgram prg;
+        setProgram(&prg);
+        gMainModel->prgList.append(prg);
+        if(gMainModel->objID < prg.id){
+            gMainModel->objID = prg.id;
+        }
+    } else if (type == Bus::EditType::RM) {
+
+    } else if (type == Bus::EditType::SET) {
+
+
+    } else if (type == Bus::EditType::SHOW) {
+
+    } else {
+    }
+
+  } 
+
     if(fun == "addprg"){
         PLProgram prg;
         setProgram(&prg);
@@ -265,6 +272,241 @@ bool PLCommand::dispatch()
     return true;
 }
 
+
+
+// bool PLCommand::dispatch()
+// {
+//     if(fun == "addprg"){
+//         PLProgram prg;
+//         setProgram(&prg);
+//         gMainModel->prgList.append(prg);
+//         if(gMainModel->objID < prg.id){
+//             gMainModel->objID = prg.id;
+//         }
+//     }else if(fun == "setprg"){
+//         int id = para.toInt();
+//         for(int i=0; i<gMainModel->prgList.size(); i++){
+//             if(gMainModel->prgList.at(i).id == id){
+//                 gMainModel->prgList[i].name = res;
+//             }
+//         }
+//     }else if(fun == "rmprg"){
+//         int id = para.toInt();
+//         return removeProgram(id);
+//     }else if(fun == "addfb"){
+//         PLFunctionBlock fb;
+//         setFunctionBlock(&fb);
+//         PLProgram *prg = getProgram(fb.idPrg);
+//         if(prg == NULL){
+//             return false;
+//         }
+
+//         fb_t *p_fb = prj_fbfind(fb.idPrg, fb.id);
+//         unsigned int i;
+//         PLPin pin;
+//         int h, w, wi=0, wo=0;
+//         // input
+//         for(i = 0; i < p_fb->ins.size(); i++){
+//             pin.type = p_fb->ins[i].t;
+//             pin.name = QString::fromStdString( p_fb->ins[i].pinname);
+//             pin.value =  *(p_fb->ins[i].v);
+//             fb.input.append(pin);
+//             if(wi < pin.name.size()){
+//                 wi = pin.name.size();
+//             }
+//         }
+//         // output
+//         for(i = 0; i < p_fb->outs.size(); i++){
+//             pin.name = QString::fromStdString( p_fb->outs[i].pinname);
+//             pin.value =  *(p_fb->outs[i].v);
+//             fb.output.append(pin);
+//             if(wo < pin.name.size()){
+//                 wo = pin.name.size();
+//             }
+//         }
+
+//         // property
+//         for(i = 0; i < p_fb->props.size(); i++){
+//             pin.name = QString::fromStdString( p_fb->props[i].pinname);
+//             pin.value =  *(p_fb->props[i].v);
+//             fb.property.append(pin);
+//         }
+
+//         fb.flag = p_fb->h.flag;
+
+//         h = std::max(p_fb->ins.size(),p_fb->outs.size());
+
+//         w = fb.funName.size() + 1;
+//         if(w < (wi + wo + 2)){
+//             w = wi + wo + 2;
+//         }
+//         fb.h = h + 1;
+//         fb.w = w;
+
+//         fb.isSelected = true;
+//         prg->fbs.append(fb);
+//         if(gMainModel->objID < fb.id){
+//             gMainModel->objID = fb.id;
+//         }
+//     }else if(fun == "mvfb"){
+//         QStringList list = para.split(",");
+//         int idPrg = list.at(0).toInt();
+//         int idFb = list.at(1).toInt();
+//         PLProgram *prg = getProgram(idPrg);
+//         if(prg == NULL){
+//             return false;
+//         }
+//         PLFunctionBlock *fb = getFunctionBlock(prg, idFb);
+//         if(fb == NULL){
+//             return false;
+//         }
+//         list = res.split(",");
+//         fb->blkName = list.at(0);
+//         fb->x = list.at(1).toInt();
+//         fb->y = list.at(2).toInt();
+//     }else if(fun == "rmfb"){
+//         QStringList list = para.split(",");
+//         int idPrg = list.at(0).toInt();
+//         int idFb = list.at(1).toInt();
+//         PLProgram *prg = getProgram(idPrg);
+//         if(prg == NULL){
+//             return false;
+//         }
+//         return removeFunctionBlock(prg, idFb);
+//     }else if(fun == "addlk"){
+//         PLLink lk;
+//         setLink(&lk, false);
+//         PLProgram *prg = getProgram(lk.idPrg);
+//         if(prg==NULL){
+//             return false;
+//         }
+//         lk.isSelected = true;
+//         if(!addLink(prg, &lk)){
+//             return false;
+//         }
+//         if(gMainModel->objID < lk.id){
+//             gMainModel->objID = lk.id;
+//         }
+//     }else if(fun == "mvlk"){
+//         QStringList list = para.split(",");
+//         int idPrg = list.at(0).toInt();
+//         int idLk = list.at(1).toInt();
+//         PLProgram *prg = getProgram(idPrg);
+//         if(prg == NULL){
+//             return false;
+//         }
+//         PLLink *lk = getLink(prg, idLk);
+//         if(lk == NULL){
+//             return false;
+//         }
+//         setLink(lk, true);
+//     }else if(fun == "rmlk"){
+//         QStringList list = para.split(",");
+//         int idPrg = list.at(0).toInt();
+//         int idLk = list.at(1).toInt();
+//         PLProgram *prg = getProgram(idPrg);
+//         if(prg == NULL){
+//             return false;
+//         }
+//         return removeLink(prg, idLk);
+//     }else if(fun == "addev"){
+//         PLEVData ev;
+//         setEVData(&ev);
+//         gMainModel->evList.append(ev);
+//         if(gMainModel->objID < ev.id){
+//             gMainModel->objID = ev.id;
+//         }
+//     }else if(fun == "rmev"){
+//         QStringList list = para.split(",");
+//         int id = list.at(0).toInt();
+//         return removeEVData(id);
+//     }else if(fun == "addvi"){
+//         PLVLink vi;
+//         setVLink(&vi);
+//         PLProgram *prg = getProgram(vi.idPrg);
+//         if(prg == NULL){
+//             return false;
+//         }
+//         if(!addVLinkInput(prg, &vi)){
+//             return false;
+//         }
+//         if(gMainModel->objID < vi.id){
+//             gMainModel->objID = vi.id;
+//         }
+//     }else if(fun == "rmvi"){
+//         QStringList list = para.split(",");
+//         int idPrg = list.at(0).toInt();
+//         int idVi = list.at(1).toInt();
+//         PLProgram *prg = getProgram(idPrg);
+//         if(prg == NULL){
+//             return false;
+//         }
+//         return removeVLinkInput(prg, idVi);
+//     }else if(fun == "addvo"){
+//         PLVLink vo;
+//         setVLink(&vo);
+//         PLProgram *prg = getProgram(vo.idPrg);
+//         if(prg == NULL){
+//             return false;
+//         }
+//         if(!addVLinkOutput(prg, &vo)){
+//             return false;
+//         }
+//         if(gMainModel->objID < vo.id){
+//             gMainModel->objID = vo.id;
+//         }
+//     }else if(fun == "rmvo"){
+//         QStringList list = para.split(",");
+//         int idPrg = list.at(0).toInt();
+//         int idVo = list.at(1).toInt();
+//         PLProgram *prg = getProgram(idPrg);
+//         if(prg == NULL){
+//             return false;
+//         }
+//         return removeVLinkOutput(prg, idVo);
+//     }else if(fun == "setpin"){
+//         QStringList list = para.split(",");
+//         int idPrg = list.at(0).toInt();
+//         int idFb = list.at(1).toInt();
+//         int pin = list.at(2).toInt();
+//         QString val = list.at(3);
+//         PLProgram *prg = getProgram(idPrg);
+//         if(prg == NULL){
+//             return false;
+//         }
+//         PLFunctionBlock *fb = getFunctionBlock(prg, idFb);
+//         if(fb == NULL){
+//             return false;
+//         }
+
+//         value_tm *v = &fb->input[pin].value;
+//         *v = str2var(std::string(val.toLatin1()));
+
+
+//     }else if(fun == "setev"){
+//         QStringList list = para.split(",");
+//         int id = list.at(0).toInt();
+//         QString val = list.at(1);
+//         PLEVData *ev = NULL;
+//         for(int i=0; i<gMainModel->evList.size(); i++){
+//             if(gMainModel->evList.at(i).id == id){
+//                 ev = &gMainModel->evList[i];
+//                 break;
+//             }
+//         }
+//         ev->initValue  = str2var(std::string(val.toLatin1()));
+//         ev->value = ev->initValue;
+//         list = res.split(",");
+//         ev->name = list.at(0);
+//         ev->comment = list.at(1);
+//     }else if(fun == "setprj"){
+//         gMainModel->project.uuid = para;
+//     }
+
+//     gMainModel->isModified = true;
+
+//     return true;
+// }
 
 void PLCommand::setProgram(PLProgram *prg)
 {
