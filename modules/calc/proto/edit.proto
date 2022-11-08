@@ -53,7 +53,7 @@ message EditModuleReq {
   uint32 mod_id = 4;
   string mod_name = 5;
   string mod_desc = 6;
-  string uuid = 7;
+  string mod_uuid = 7;
 }
 message EditModuleRsp {
   Result result = 1;

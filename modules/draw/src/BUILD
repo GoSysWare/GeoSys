@@ -117,7 +117,28 @@ qt_cc_library(
 
     ],
 )
+qt_cc_library(
+    name = "plvlink",
+    srcs =[
+        "plvlink.cpp",
+    ],
+    hdrs = [
+        "plvlink.h",
+    ],
+    copts = [
+    ],
+    deps = [
+        ":plpoint",
+        ":plpin",
+        ":plevdata",
+        ":plfunctionblock",
+        "//modules/calc/proto:value_cc_proto",
+        "//modules/calc/include:calc_include",
+        "//modules/calc/include/lib:lib_include",   
+        "@qt//:qt_core",
 
+    ],
+)
 qt_cc_library(
     name = "plfunctionblock",
     srcs =[
@@ -161,6 +182,25 @@ qt_cc_library(
     ],
 )
 
+qt_cc_library(
+    name = "plmodule",
+    srcs =[
+        "plmodule.cpp",
+    ],
+    hdrs = [
+        "plmodule.h",
+    ],
+    copts = [
+    ],
+    deps = [
+        ":plprogram",
+        "//modules/calc/proto:value_cc_proto",
+        "//modules/calc/include:calc_include",
+        "//modules/calc/include/lib:lib_include",   
+        "@qt//:qt_core",
+
+    ],
+)
 qt_cc_library(
     name = "plproject",
     srcs =[
@@ -256,7 +296,9 @@ qt_cc_library(
     copts = [
     ],
     deps = [
-
+        ":plmodule",
+        ":plvlink",
+        ":pllink",
         ":plevdata",
         ":plprogram",
         "//modules/calc/proto:edit_cc_proto",

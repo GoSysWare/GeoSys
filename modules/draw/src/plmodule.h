@@ -12,7 +12,9 @@ public:
     int id;
     int idLog;
     QString name;
-    QList<PLProgram> prgs;
+    QString desc;
+    QString uuid;
+    QList<PLProgram> prgList;
 };
 
 #endif // PLPROGRAM_H

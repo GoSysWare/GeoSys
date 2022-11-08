@@ -7,6 +7,7 @@
 #include <QStringListModel>
 #include "plcommand.h"
 #include "plprogram.h"
+#include "plmodule.h"
 #include "plevdata.h"
 #include "plcommand.h"
 #include "plproject.h"
@@ -31,7 +32,7 @@ public:
     QList<PLCommand> cmdList;
 
     int objID;
-    QList<PLProgram> prgList;
+    QList<PLModule> modList;
     QList<PLEVData> evList;
 
     bool exeCommand(PLCommand &cmd);
