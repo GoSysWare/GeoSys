@@ -1,5 +1,6 @@
 
 syntax = "proto3";
+import "google/protobuf/any.proto";
 
 enum v_type {
   T_NONE = 0 ;
@@ -17,6 +18,8 @@ enum v_type {
   T_LIDAR = 12 ;
   T_SONAR = 13 ;
   T_FILE = 14 ;
+  T_ANY = 15 ;
+
 }
 
 message value_t {
@@ -36,6 +39,7 @@ message value_t {
     bytes lidar = 13;
     bytes sonar = 14;
     bytes file = 15;
+    google.protobuf.Any any =16;
   }
 }
 
