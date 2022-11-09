@@ -12,5 +12,7 @@ std::string k_getpidstr();
 std::string k_hostname();
 std::string k_hostip();
 
+std::string gen_uuid();
+
 
 #endif

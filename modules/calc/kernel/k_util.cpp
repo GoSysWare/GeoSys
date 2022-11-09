@@ -6,6 +6,12 @@
 #include "modules/calc/include/k_util.h"
 #include <sys/time.h>
 
+#include <iostream>
+#include <sstream>
+#include <random>
+#include <climits>
+#include <algorithm>
+#include <functional>
 
 #ifdef _WIN32
 
@@ -79,6 +85,29 @@ std::string k_hostip(){
   }
   freeifaddrs(ifaddr);
   return host_ip;
+}
+unsigned char random_char() {
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution<> dis(0, 255);
+    return static_cast<unsigned char>(dis(gen));
+}
+
+std::string generate_hex(const unsigned int len) {
+    std::stringstream ss;
+    for (unsigned int i = 0; i < len; i++) {
+        auto rc = random_char();
+        std::stringstream hexstream;
+        hexstream << std::hex << int(rc);
+        auto hex = hexstream.str();
+        ss << (hex.length() < 2 ? '0' + hex : hex);
+    }
+    return ss.str();
+}
+
+std::string gen_uuid() {
+    return generate_hex(4) + "-" + generate_hex(2) + "-" + generate_hex(2) + "-" + generate_hex(2) + "-" +
+        generate_hex(6);
 }
 
 #endif
