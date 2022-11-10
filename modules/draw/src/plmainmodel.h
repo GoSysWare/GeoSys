@@ -23,7 +23,9 @@ public:
     void updateProgList();
     QStringListModel modelLibrary;
     QStringListModel modelFunction;
+    QStringListModel modelModule;
     QStringListModel modelProgram;
+
     EVDataModel modelEVData;
 
     PLProject project;

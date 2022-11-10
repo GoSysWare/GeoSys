@@ -145,6 +145,12 @@
         "stop_token": "cpp",
         "syncstream": "cpp",
         "request": "cpp",
-        "response": "cpp"
+        "response": "cpp",
+        "__hash_table": "cpp",
+        "__split_buffer": "cpp",
+        "__tree": "cpp",
+        "queue": "cpp",
+        "stack": "cpp",
+        "filesystem": "cpp"
     }
 }
