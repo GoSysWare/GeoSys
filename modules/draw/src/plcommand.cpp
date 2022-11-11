@@ -12,7 +12,7 @@ bool PLCommand::dispatch() {
   Bus::EditElement element = editInfo.element();
 
   if (element == Bus::EditElement::PROJ) {
-    Bus::EditType type = editInfo.proj().edit_type();
+    Bus::EditType type = editInfo.edit_type();
     if (type == Bus::EditType::ADD) {
 
     } else if (type == Bus::EditType::RM) {
@@ -33,7 +33,7 @@ bool PLCommand::dispatch() {
   }
 
   else if (element == Bus::EditElement::MOD) {
-    Bus::EditType type = editInfo.mod().edit_type();
+    Bus::EditType type = editInfo.edit_type();
     if (type == Bus::EditType::ADD) {
         // PLModule mod;
         // setModule(&mod);
@@ -56,7 +56,7 @@ bool PLCommand::dispatch() {
   }
 
   else if (element == Bus::EditElement::TASK) {
-    Bus::EditType type = editInfo.task().edit_type();
+    Bus::EditType type = editInfo.edit_type();
     if (type == Bus::EditType::ADD) {
         // PLProgram prg;
         // setProgram(&prg);
@@ -83,7 +83,7 @@ bool PLCommand::dispatch() {
   }
 
   else if (element == Bus::EditElement::EV) {
-    Bus::EditType type = editInfo.ev().edit_type();
+    Bus::EditType type = editInfo.edit_type();
     if (type == Bus::EditType::ADD) {
 
     } else if (type == Bus::EditType::RM) {
@@ -101,7 +101,7 @@ bool PLCommand::dispatch() {
     } else {
     }
   } else if (element == Bus::EditElement::IO) {
-    Bus::EditType type = editInfo.io().edit_type();
+    Bus::EditType type = editInfo.edit_type();
     if (type == Bus::EditType::ADD) {
 
     } else if (type == Bus::EditType::RM) {
@@ -120,7 +120,7 @@ bool PLCommand::dispatch() {
     }
 
   } else if (element == Bus::EditElement::FB) {
-    Bus::EditType type = editInfo.fb().edit_type();
+    Bus::EditType type = editInfo.edit_type();
     if (type == Bus::EditType::ADD) {
 
     } else if (type == Bus::EditType::RM) {
@@ -158,7 +158,7 @@ bool PLCommand::dispatch() {
     }
 
   } else if (element == Bus::EditElement::PIN) {
-    Bus::EditType type = editInfo.pin().edit_type();
+    Bus::EditType type = editInfo.edit_type();
     if (type == Bus::EditType::ADD) {
 
     } else if (type == Bus::EditType::RM) {

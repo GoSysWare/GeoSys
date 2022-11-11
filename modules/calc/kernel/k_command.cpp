@@ -12,7 +12,7 @@ int cmd_dispatch(const Bus::EditInfo &edit_info) {
   Bus::EditElement element = edit_info.element();
 
   if (element == Bus::EditElement::PROJ) {
-    Bus::EditType type = edit_info.proj().edit_type();
+    Bus::EditType type = edit_info.edit_type();
     if (type == Bus::EditType::ADD) {
 
     } else if (type == Bus::EditType::RM) {
@@ -27,7 +27,7 @@ int cmd_dispatch(const Bus::EditInfo &edit_info) {
     }
 
   } else if (element == Bus::EditElement::MOD) {
-    Bus::EditType type = edit_info.mod().edit_type();
+    Bus::EditType type = edit_info.edit_type();
 
     if (type == Bus::EditType::ADD) {
       prj_modadd(edit_info.mod().mod_id(), edit_info.mod().mod_name(),
@@ -43,7 +43,7 @@ int cmd_dispatch(const Bus::EditInfo &edit_info) {
     } else {
     }
   } else if (element == Bus::EditElement::TASK) {
-    Bus::EditType type = edit_info.task().edit_type();
+    Bus::EditType type = edit_info.edit_type();
 
     if (type == Bus::EditType::ADD) {
 
@@ -60,7 +60,7 @@ int cmd_dispatch(const Bus::EditInfo &edit_info) {
     } else {
     }
   } else if (element == Bus::EditElement::EV) {
-    Bus::EditType type = edit_info.ev().edit_type();
+    Bus::EditType type = edit_info.edit_type();
 
     if (type == Bus::EditType::ADD) {
       ev_add(edit_info.ev().ev_id(), edit_info.ev().ev_name(),
@@ -76,7 +76,7 @@ int cmd_dispatch(const Bus::EditInfo &edit_info) {
     } else {
     }
   } else if (element == Bus::EditElement::IO) {
-    Bus::EditType type = edit_info.io().edit_type();
+    Bus::EditType type = edit_info.edit_type();
 
     if (type == Bus::EditType::ADD) {
 
@@ -89,7 +89,7 @@ int cmd_dispatch(const Bus::EditInfo &edit_info) {
     } else {
     }
   } else if (element == Bus::EditElement::FB) {
-    Bus::EditType type = edit_info.fb().edit_type();
+    Bus::EditType type = edit_info.edit_type();
 
     if (type == Bus::EditType::ADD) {
       prj_fbadd(edit_info.fb().mod_id(), edit_info.fb().task_id(),
@@ -106,7 +106,7 @@ int cmd_dispatch(const Bus::EditInfo &edit_info) {
     } else {
     }
   } else if (element == Bus::EditElement::LK) {
-    Bus::EditType type = edit_info.lk().edit_type();
+    Bus::EditType type = edit_info.edit_type();
 
     if (type == Bus::EditType::ADD) {
       prj_lkadd(edit_info.lk().mod_id(), edit_info.lk().task_id(),
@@ -123,7 +123,7 @@ int cmd_dispatch(const Bus::EditInfo &edit_info) {
     } else {
     }
   } else if (element == Bus::EditElement::PIN) {
-    Bus::EditType type = edit_info.pin().edit_type();
+    Bus::EditType type = edit_info.edit_type();
 
     if (type == Bus::EditType::ADD) {
 

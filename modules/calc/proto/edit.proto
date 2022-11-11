@@ -35,7 +35,6 @@ enum TaskType {
 }
 
 message EditProjReq {
-  EditType edit_type = 1;
   uint32 proj_id = 2;
   string proj_name = 3;
   string proj_desc = 4;
@@ -47,7 +46,6 @@ message EditProjRsp {
   string proj_name = 3;
 }
 message EditModuleReq {
-  EditType edit_type = 1;
   uint32 proj_id = 2;
   string proj_name = 3;
   uint32 mod_id = 4;
@@ -63,7 +61,6 @@ message EditModuleRsp {
   string mod_name = 5;
 }
 message EditTaskReq {
-  EditType edit_type = 1;
   TaskType task_type = 2;
   uint32 mod_id = 3;
   string mod_name = 4;
@@ -81,7 +78,6 @@ message EditTaskRsp {
 }
 
 message EditFBReq {
-  EditType edit_type = 1;
   uint32 mod_id = 2;
   string mod_name = 3;
   uint32 task_id = 4;
@@ -102,7 +98,6 @@ message EditFBRsp {
 }
 
 message EditPinReq {
-  EditType edit_type = 1;
   uint32 mod_id = 2;
   string mod_name = 3;
   uint32 task_id = 4;
@@ -123,7 +118,6 @@ message EditPinRsp {
 message EditIOReq { EditType edit_type = 1; }
 message EditIORsp { Result result = 1; }
 message EditEVReq {
-  EditType edit_type = 1;
   uint32 ev_id = 2;
   string ev_name = 3;
   value_tm val = 4;
@@ -134,7 +128,6 @@ message EditEVRsp {
   string ev_name = 3;
 }
 message EditLinkReq {
-  EditType edit_type = 1;
   uint32 mod_id = 2;
   string mod_name = 3;
   uint32 task_id = 4;
@@ -157,15 +150,16 @@ message EditLinkRsp {
 message EditInfo {
   uint32 cmd_id = 1;
   EditElement element = 2;
+  EditType edit_type = 3;
   oneof info {
-    EditProjReq proj = 3;
-    EditModuleReq mod = 4;
-    EditTaskReq task = 5;
-    EditFBReq fb = 6;
-    EditPinReq pin = 7;
-    EditEVReq ev = 8;
-    EditLinkReq lk = 9;
-    EditIOReq io = 10;
+    EditProjReq proj = 4;
+    EditModuleReq mod = 5;
+    EditTaskReq task = 6;
+    EditFBReq fb = 7;
+    EditPinReq pin = 8;
+    EditEVReq ev = 9;
+    EditLinkReq lk = 10;
+    EditIOReq io = 11;
   }
 }
 message EditInfosReq {

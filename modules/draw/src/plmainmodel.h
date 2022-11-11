@@ -30,7 +30,7 @@ public:
 
     PLProject project;
 
-    int cmdID;
+    unsigned int cmdID;
     QList<PLCommand> cmdList;
 
     int objID;
