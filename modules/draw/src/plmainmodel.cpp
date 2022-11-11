@@ -97,7 +97,7 @@ bool PLMainModel::exeCommand(PLCommand &cmd) {
   }
 
   if (cmd.editInfo.element() != Bus::EditElement::PROJ &&
-      cmd.editInfo.proj().edit_type() != Bus::EditType::SET) {
+      cmd.editInfo.edit_type() != Bus::EditType::SET) {
     cmdList.append(cmd);
   }
 
@@ -106,15 +106,29 @@ bool PLMainModel::exeCommand(PLCommand &cmd) {
 
 void PLMainModel::makeLkNewCmd(PLCommand &cmd, PLLink &lk, bool newId) {
   cmdID++;
-  cmd.id = cmdID;
-  cmd.fun = "addlk";
+  cmd.editInfo.set_cmd_id(cmdID);
+  cmd.editInfo.set_element(Bus::EditElement::LK);
+  cmd.editInfo.set_edit_type(Bus::EditType::ADD)
   if (newId) {
     objID++;
     lk.id = objID;
   }
-  cmd.para = QString::asprintf("%d,%d,%d,%d,%d,%d", lk.idPrg, lk.id, lk.idFbSrc,
-                               lk.pinSrc, lk.idFbTgt, lk.pinTgt);
+  cmd.editInfo.mutable_lk()->set_mod_id(lk.id);
+  cmd.editInfo.mutable_lk()->set_mod_name(lk.id);
+  cmd.editInfo.mutable_lk()->set_task_id(lk.id);
+  cmd.editInfo.mutable_lk()->set_task_name(lk.id);
+  cmd.editInfo.mutable_lk()->set_lk_id(lk.id);
+  cmd.editInfo.mutable_lk()->set_lk_name(lk.id);
+  cmd.editInfo.mutable_lk()->set_src_fb_id(lk.id);
+  cmd.editInfo.mutable_lk()->set_src_fb_name(lk.id);
+  cmd.editInfo.mutable_lk()->set_src_pin_index(lk.id);
+  cmd.editInfo.mutable_lk()->set_target_fb_id(lk.id);
+  cmd.editInfo.mutable_lk()->set_target_fb_name(lk.id);
+  cmd.editInfo.mutable_lk()->set_target_pin_index(lk.id);
+
+
   lk.removeDualPoints();
+  
   cmd.res.clear();
   QString sp;
   for (int i = 0; i < lk.pts.size(); i++) {
