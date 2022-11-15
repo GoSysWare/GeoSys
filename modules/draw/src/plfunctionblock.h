@@ -9,7 +9,7 @@ class PLFunctionBlock
 public:
     PLFunctionBlock();
     PLFunctionBlock(const PLFunctionBlock &fb);
-
+    int idMod;
     int idPrg;
     int id;
     int idLog;

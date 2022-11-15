@@ -16,9 +16,9 @@ enum EditType {
   RM = 2;    // 删除
   SET = 3;   // 设置/修改
   SHOW = 4;  // 可视化输出
-  MOVE = 5;  // 移动
-  COPY = 6;  //  复制
-  PASTE = 7; //   粘贴
+  MV = 5;  // 移动
+  CP = 6;  //  复制
+  PS = 7; //   粘贴
 }
 enum EditElement {
   PROJ = 0;

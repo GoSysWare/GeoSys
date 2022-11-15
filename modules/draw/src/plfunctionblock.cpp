@@ -8,6 +8,7 @@ PLFunctionBlock::PLFunctionBlock()
 
 PLFunctionBlock::PLFunctionBlock(const PLFunctionBlock &fb)
 {
+    idMod = fb.idMod;
     idPrg = fb.idPrg;
     id = fb.id;
     libName = fb.libName;

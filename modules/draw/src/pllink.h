@@ -12,7 +12,7 @@ public:
     PLLink(const PLLink &lk);
     void clear();
     void removeDualPoints();
-
+    int idMod;
     int idPrg;
     int id;
     int idLog;
