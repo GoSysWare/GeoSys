@@ -55,7 +55,6 @@ proto_library(
     deps = [
         ":value_proto",
         ":return_proto",
-
     ],
 )
 
@@ -89,13 +88,16 @@ proto_library(
 )
 cc_proto_library(
     name = "value_cc_proto",
-    deps = [":value_proto"],
+    deps = [
+        ":value_proto",
+        ],
 )
 
 proto_library(
     name = "value_proto",
     srcs = ["value.proto"],
     deps = [
+            "@com_google_protobuf//:any_proto",
     ],
 )
 
