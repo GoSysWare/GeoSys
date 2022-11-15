@@ -10,9 +10,9 @@ PLCommand::PLCommand(Bus::EditInfo info) { editInfo = info; }
 bool PLCommand::dispatch() {
 
   Bus::EditElement element = editInfo.element();
+  Bus::EditType type = editInfo.edit_type();
 
   if (element == Bus::EditElement::PROJ) {
-    Bus::EditType type = editInfo.edit_type();
     if (type == Bus::EditType::ADD) {
 
     } else if (type == Bus::EditType::RM) {
@@ -33,7 +33,6 @@ bool PLCommand::dispatch() {
   }
 
   else if (element == Bus::EditElement::MOD) {
-    Bus::EditType type = editInfo.edit_type();
     if (type == Bus::EditType::ADD) {
         // PLModule mod;
         // setModule(&mod);
@@ -56,7 +55,6 @@ bool PLCommand::dispatch() {
   }
 
   else if (element == Bus::EditElement::TASK) {
-    Bus::EditType type = editInfo.edit_type();
     if (type == Bus::EditType::ADD) {
         // PLProgram prg;
         // setProgram(&prg);
@@ -83,7 +81,6 @@ bool PLCommand::dispatch() {
   }
 
   else if (element == Bus::EditElement::EV) {
-    Bus::EditType type = editInfo.edit_type();
     if (type == Bus::EditType::ADD) {
 
     } else if (type == Bus::EditType::RM) {
@@ -101,7 +98,6 @@ bool PLCommand::dispatch() {
     } else {
     }
   } else if (element == Bus::EditElement::IO) {
-    Bus::EditType type = editInfo.edit_type();
     if (type == Bus::EditType::ADD) {
 
     } else if (type == Bus::EditType::RM) {
@@ -139,7 +135,6 @@ bool PLCommand::dispatch() {
     }
 
   } else if (element == Bus::EditElement::LK) {
-    Bus::EditType type = editInfo.lk().edit_type();
     if (type == Bus::EditType::ADD) {
 
     } else if (type == Bus::EditType::RM) {
@@ -158,7 +153,6 @@ bool PLCommand::dispatch() {
     }
 
   } else if (element == Bus::EditElement::PIN) {
-    Bus::EditType type = editInfo.edit_type();
     if (type == Bus::EditType::ADD) {
 
     } else if (type == Bus::EditType::RM) {
