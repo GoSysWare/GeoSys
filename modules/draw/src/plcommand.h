@@ -22,9 +22,10 @@ public:
     Bus::EditInfo editInfo;
 
     static PLEVData *getEv(int id);
-    static PLProgram *getProgram(int id);
-    static PLFunctionBlock *getFunctionBlock(PLProgram *prg, int id);
-    static PLLink *getLink(PLProgram *prg, int id);
+    static PLProgram *getProgram(PLModule * mod,int idPrg);
+    static PLFunctionBlock *getFunctionBlock(PLProgram *prg, int idFB);
+    static PLLink *getLink(PLProgram *prg, int idLk);
+    static PLModule *getModule(int idMod);
 
     void setModule(PLModule *mod);
     static bool removeModule(int modId);

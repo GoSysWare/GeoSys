@@ -457,7 +457,7 @@ PLEVData *PLCommand::getEv(int id) {
   return NULL;
 }
 
-PLProgram *PLCommand::getProgram(int id) {
+PLProgram *PLCommand::getProgram(PLModule * mod,int idPrg) {
 //   for (int i = 0; i < gMainModel->prgList.size(); i++) {
 //     if (gMainModel->prgList.at(i).id == id) {
 //       return &gMainModel->prgList[i];
@@ -466,7 +466,15 @@ PLProgram *PLCommand::getProgram(int id) {
 
   return NULL;
 }
+PLModule *PLCommand::getModule(int idMod) {
+//   for (int i = 0; i < gMainModel->prgList.size(); i++) {
+//     if (gMainModel->prgList.at(i).id == id) {
+//       return &gMainModel->prgList[i];
+//     }
+//   }
 
+  return NULL;
+}
 void PLCommand::setFunctionBlock(PLFunctionBlock *fb) {
 //   QStringList list = para.split(",");
 //   fb->idPrg = list.at(0).toInt();
