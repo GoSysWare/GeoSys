@@ -5,6 +5,11 @@ import "modules/calc/proto/return.proto";
 
 package Bus;
 
+message EditPosition {
+  uint32 x = 1;
+  uint32 y = 2;
+}
+
 enum EditType {
   NONE = 0;
   ADD = 1;   // 增加
@@ -35,10 +40,10 @@ enum TaskType {
 }
 
 message EditProjReq {
-  uint32 proj_id = 2;
-  string proj_name = 3;
-  string proj_desc = 4;
-  string proj_uuid = 5;
+  uint32 proj_id = 1;
+  string proj_name = 2;
+  string proj_desc = 3;
+  string proj_uuid = 4;
 }
 message EditProjRsp {
   Result result = 1;
@@ -46,12 +51,12 @@ message EditProjRsp {
   string proj_name = 3;
 }
 message EditModuleReq {
-  uint32 proj_id = 2;
-  string proj_name = 3;
-  uint32 mod_id = 4;
-  string mod_name = 5;
-  string mod_desc = 6;
-  string mod_uuid = 7;
+  uint32 proj_id = 1;
+  string proj_name = 2;
+  uint32 mod_id = 3;
+  string mod_name = 4;
+  string mod_desc = 5;
+  string mod_uuid = 6;
 }
 message EditModuleRsp {
   Result result = 1;
@@ -61,13 +66,13 @@ message EditModuleRsp {
   string mod_name = 5;
 }
 message EditTaskReq {
-  TaskType task_type = 2;
-  uint32 mod_id = 3;
-  string mod_name = 4;
-  uint32 task_id = 5;
-  string task_name = 6;
-  uint32 interval = 7;
-  string task_desc = 8;
+  TaskType task_type = 1;
+  uint32 mod_id = 2;
+  string mod_name = 3;
+  uint32 task_id = 4;
+  string task_name = 5;
+  uint32 interval = 6;
+  string task_desc = 7;
 }
 message EditTaskRsp {
   Result result = 1;
@@ -78,14 +83,14 @@ message EditTaskRsp {
 }
 
 message EditFBReq {
-  uint32 mod_id = 2;
-  string mod_name = 3;
-  uint32 task_id = 4;
-  uint32 task_name = 5;
-  uint32 fb_id = 6;
-  string flib_name = 7;
-  string fc_name = 8;
-  string fb_name = 9;
+  uint32 mod_id = 1;
+  string mod_name = 2;
+  uint32 task_id = 3;
+  uint32 task_name = 4;
+  uint32 fb_id = 5;
+  string flib_name = 6;
+  string fc_name = 7;
+  string fb_name = 8;
 }
 message EditFBRsp {
   Result result = 1;
@@ -98,15 +103,15 @@ message EditFBRsp {
 }
 
 message EditPinReq {
-  uint32 mod_id = 2;
-  string mod_name = 3;
-  uint32 task_id = 4;
-  uint32 task_name = 5;
-  uint32 fb_id = 6;
-  string fb_name = 7;
-  uint32 pin_index = 8;
-  string pin_name = 9;
-  value_tm pin_val = 10;
+  uint32 mod_id = 1;
+  string mod_name = 2;
+  uint32 task_id = 3;
+  uint32 task_name = 4;
+  uint32 fb_id = 5;
+  string fb_name = 6;
+  uint32 pin_index = 7;
+  string pin_name = 8;
+  value_tm pin_val = 9;
 }
 message EditPinRsp {
   Result result = 1;
@@ -118,9 +123,9 @@ message EditPinRsp {
 message EditIOReq { EditType edit_type = 1; }
 message EditIORsp { Result result = 1; }
 message EditEVReq {
-  uint32 ev_id = 2;
-  string ev_name = 3;
-  value_tm val = 4;
+  uint32 ev_id = 1;
+  string ev_name = 2;
+  value_tm val = 3;
 }
 message EditEVRsp {
   Result result = 1;
@@ -128,18 +133,18 @@ message EditEVRsp {
   string ev_name = 3;
 }
 message EditLinkReq {
-  uint32 mod_id = 2;
-  string mod_name = 3;
-  uint32 task_id = 4;
-  string task_name = 5;
-  uint32 lk_id = 6;
-  string lk_name = 7;
-  uint32 src_fb_id = 8;
-  string src_fb_name = 9;
-  uint32 src_pin_index = 10;
-  uint32 target_fb_id = 11;
-  string target_fb_name = 12;
-  uint32 target_pin_index = 13;
+  uint32 mod_id = 1;
+  string mod_name = 2;
+  uint32 task_id = 3;
+  string task_name = 4;
+  uint32 lk_id = 5;
+  string lk_name = 6;
+  uint32 src_fb_id = 7;
+  string src_fb_name = 8;
+  uint32 src_pin_index = 9;
+  uint32 target_fb_id = 10;
+  string target_fb_name = 11;
+  uint32 target_pin_index = 12;
 }
 message EditLinkRsp {
   Result result = 1;
@@ -161,6 +166,7 @@ message EditInfo {
     EditLinkReq lk = 10;
     EditIOReq io = 11;
   }
+  repeated EditPosition pos =12;
 }
 message EditInfosReq {
   string host_name = 1;
