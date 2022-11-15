@@ -10,7 +10,7 @@ class PLVLink
 public:
     PLVLink();
     PLVLink(const PLVLink &vlk);
-
+    int idMod;
     int idPrg;
     int id;
     int idLog;

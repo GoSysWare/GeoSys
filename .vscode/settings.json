@@ -151,6 +151,8 @@
         "__tree": "cpp",
         "queue": "cpp",
         "stack": "cpp",
-        "filesystem": "cpp"
+        "filesystem": "cpp",
+        "__tuple": "cpp",
+        "__locale": "cpp"
     }
 }

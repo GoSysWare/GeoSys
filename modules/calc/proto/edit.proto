@@ -129,7 +129,11 @@ message EditIORsp { Result result = 1; }
 message EditEVReq {
   uint32 ev_id = 1;
   string ev_name = 2;
-  value_tm val = 3;
+  uint32 ev_type =3;
+  string ev_desc =4;
+  value_tm init_val = 5;
+  value_tm real_val = 6;
+
 }
 
 message EditEVRsp {
@@ -147,7 +151,9 @@ message EditVIReq {
   uint32 pin_index = 7;
   string pin_name = 8;
   uint32 ev_id = 9;
-  string ev_name = 10;  
+  string ev_name = 10; 
+  uint32 vi_id = 11;
+  string vi_name = 12;   
 }
 message EditVIRsp {
   Result result = 1;
@@ -163,6 +169,8 @@ message EditVOReq {
   string pin_name = 8;
   uint32 ev_id = 9;
   string ev_name = 10;  
+  uint32 vo_id = 11;
+  string vo_name = 12;   
 }
 message EditVORsp {
   Result result = 1;

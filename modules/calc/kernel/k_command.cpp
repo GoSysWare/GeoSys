@@ -7,12 +7,14 @@
 #include <stdlib.h>
 #include <string.h>
 
+
+
 int cmd_dispatch(const Bus::EditInfo &edit_info) {
 
   Bus::EditElement element = edit_info.element();
+  Bus::EditType type = edit_info.edit_type();
 
   if (element == Bus::EditElement::PROJ) {
-    Bus::EditType type = edit_info.edit_type();
     if (type == Bus::EditType::ADD) {
 
     } else if (type == Bus::EditType::RM) {
@@ -27,8 +29,6 @@ int cmd_dispatch(const Bus::EditInfo &edit_info) {
     }
 
   } else if (element == Bus::EditElement::MOD) {
-    Bus::EditType type = edit_info.edit_type();
-
     if (type == Bus::EditType::ADD) {
       prj_modadd(edit_info.mod().mod_id(), edit_info.mod().mod_name(),
                  edit_info.mod().mod_desc());
@@ -43,8 +43,6 @@ int cmd_dispatch(const Bus::EditInfo &edit_info) {
     } else {
     }
   } else if (element == Bus::EditElement::TASK) {
-    Bus::EditType type = edit_info.edit_type();
-
     if (type == Bus::EditType::ADD) {
 
       prj_prgadd(edit_info.task().mod_id(), edit_info.task().task_id(),
@@ -60,8 +58,6 @@ int cmd_dispatch(const Bus::EditInfo &edit_info) {
     } else {
     }
   } else if (element == Bus::EditElement::EV) {
-    Bus::EditType type = edit_info.edit_type();
-
     if (type == Bus::EditType::ADD) {
       ev_add(edit_info.ev().ev_id(), edit_info.ev().ev_name(),
              edit_info.ev().val());
@@ -76,8 +72,6 @@ int cmd_dispatch(const Bus::EditInfo &edit_info) {
     } else {
     }
   } else if (element == Bus::EditElement::IO) {
-    Bus::EditType type = edit_info.edit_type();
-
     if (type == Bus::EditType::ADD) {
 
     } else if (type == Bus::EditType::RM) {
@@ -89,8 +83,6 @@ int cmd_dispatch(const Bus::EditInfo &edit_info) {
     } else {
     }
   } else if (element == Bus::EditElement::FB) {
-    Bus::EditType type = edit_info.edit_type();
-
     if (type == Bus::EditType::ADD) {
       prj_fbadd(edit_info.fb().mod_id(), edit_info.fb().task_id(),
                 edit_info.fb().fb_id(), edit_info.fb().flib_name(),
@@ -106,8 +98,6 @@ int cmd_dispatch(const Bus::EditInfo &edit_info) {
     } else {
     }
   } else if (element == Bus::EditElement::LK) {
-    Bus::EditType type = edit_info.edit_type();
-
     if (type == Bus::EditType::ADD) {
       prj_lkadd(edit_info.lk().mod_id(), edit_info.lk().task_id(),
                 edit_info.lk().lk_id(), edit_info.lk().src_fb_id(),
@@ -123,8 +113,6 @@ int cmd_dispatch(const Bus::EditInfo &edit_info) {
     } else {
     }
   } else if (element == Bus::EditElement::PIN) {
-    Bus::EditType type = edit_info.edit_type();
-
     if (type == Bus::EditType::ADD) {
 
     } else if (type == Bus::EditType::RM) {
@@ -137,6 +125,30 @@ int cmd_dispatch(const Bus::EditInfo &edit_info) {
 
       fb_setpin(p_fb, PININPUT, edit_info.pin().pin_index(),
                 edit_info.pin().pin_val());
+
+    } else if (type == Bus::EditType::SHOW) {
+
+    } else {
+    }
+  }else if (element == Bus::EditElement::VI) {
+    if (type == Bus::EditType::ADD) {
+
+    } else if (type == Bus::EditType::RM) {
+
+    } else if (type == Bus::EditType::SET) {
+
+
+    } else if (type == Bus::EditType::SHOW) {
+
+    } else {
+    }
+  }else if (element == Bus::EditElement::VO) {
+    if (type == Bus::EditType::ADD) {
+
+    } else if (type == Bus::EditType::RM) {
+
+    } else if (type == Bus::EditType::SET) {
+
 
     } else if (type == Bus::EditType::SHOW) {
 

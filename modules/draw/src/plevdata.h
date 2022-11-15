@@ -16,9 +16,10 @@ public:
     int id;
     int idLog;
     QString name;
-    QString comment;
+    QString desc;
     int refIn;
     int refOut;
+    int type;
     value_tm initValue;
     value_tm value;
     bool isSelected;

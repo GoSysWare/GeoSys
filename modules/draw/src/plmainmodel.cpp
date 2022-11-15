@@ -192,7 +192,7 @@ void PLMainModel::makeFbRemoveCmd(PLCommand &cmd, PLFunctionBlock &fb) {
 }
 
 void PLMainModel::makeFbMoveCmd(PLCommand &cmd, PLFunctionBlock &fb) {
-    cmdID++;
+  cmdID++;
   cmd.editInfo.set_cmd_id(cmdID);
   cmd.editInfo.set_element(Bus::EditElement::FB);
   cmd.editInfo.set_edit_type(Bus::EditType::MV)
@@ -211,156 +211,195 @@ void PLMainModel::makeFbMoveCmd(PLCommand &cmd, PLFunctionBlock &fb) {
 
 void PLMainModel::makeViNewCmd(PLCommand &cmd, PLVLink &vlk, bool newId) {
   cmdID++;
-  cmd.id = cmdID;
-  cmd.fun = "addvi";
+  cmd.editInfo.set_cmd_id(cmdID);
+  cmd.editInfo.set_element(Bus::EditElement::VI);
+  cmd.editInfo.set_edit_type(Bus::EditType::ADD)
   if (newId) {
     objID++;
     vlk.id = objID;
   }
-  cmd.para = QString::asprintf("%d,%d,%d,%d,%d", vlk.idPrg, vlk.id, vlk.idEv,
-                               vlk.idFb, vlk.idPin);
-  cmd.makeCmdLine();
+  cmd.editInfo.mutable_vi()->set_vi_id(vlk.id);
+  cmd.editInfo.mutable_vi()->set_mod_id(vlk.idMod);
+  cmd.editInfo.mutable_vi()->set_task_id(vlk.idPrg);
+  cmd.editInfo.mutable_vi()->set_fb_id(vlk.idFb);
+  cmd.editInfo.mutable_vi()->set_pin_index(vlk.idPin);
+  cmd.editInfo.mutable_vi()->set_ev_id(vlk.idEv);
+
+
 }
 
 void PLMainModel::makeViRemoveCmd(PLCommand &cmd, PLVLink &vlk) {
   cmdID++;
-  cmd.id = cmdID;
-  cmd.fun = "rmvi";
-  cmd.para = QString::asprintf("%d,%d", vlk.idPrg, vlk.id);
-  cmd.makeCmdLine();
+  cmd.editInfo.set_cmd_id(cmdID);
+  cmd.editInfo.set_element(Bus::EditElement::VI);
+  cmd.editInfo.set_edit_type(Bus::EditType::RM)
+  cmd.editInfo.mutable_vi()->set_vi_id(vlk.id);
+  cmd.editInfo.mutable_vi()->set_mod_id(vlk.idMod);
+  cmd.editInfo.mutable_vi()->set_task_id(vlk.idPrg);
+
 }
 
 void PLMainModel::makeVoNewCmd(PLCommand &cmd, PLVLink &vlk, bool newId) {
   cmdID++;
-  cmd.id = cmdID;
-  cmd.fun = "addvo";
+  cmd.editInfo.set_cmd_id(cmdID);
+  cmd.editInfo.set_element(Bus::EditElement::VO);
+  cmd.editInfo.set_edit_type(Bus::EditType::ADD)
   if (newId) {
     objID++;
     vlk.id = objID;
   }
-  cmd.para = QString::asprintf("%d,%d,%d,%d,%d", vlk.idPrg, vlk.id, vlk.idEv,
-                               vlk.idFb, vlk.idPin);
-  cmd.makeCmdLine();
+  cmd.editInfo.mutable_vo()->set_vo_id(vlk.id);
+  cmd.editInfo.mutable_vo()->set_mod_id(vlk.idMod);
+  cmd.editInfo.mutable_vo()->set_task_id(vlk.idPrg);
+  cmd.editInfo.mutable_vo()->set_fb_id(vlk.idFb);
+  cmd.editInfo.mutable_vo()->set_pin_index(vlk.idPin);
+  cmd.editInfo.mutable_vo()->set_ev_id(vlk.idEv); 
 }
 
 void PLMainModel::makeVoRemoveCmd(PLCommand &cmd, PLVLink &vlk) {
   cmdID++;
-  cmd.id = cmdID;
-  cmd.fun = "rmvo";
-  cmd.para = QString::asprintf("%d,%d", vlk.idPrg, vlk.id);
-  cmd.makeCmdLine();
+  cmd.editInfo.set_cmd_id(cmdID);
+  cmd.editInfo.set_element(Bus::EditElement::VO);
+  cmd.editInfo.set_edit_type(Bus::EditType::RM)
+  cmd.editInfo.mutable_vo()->set_vo_id(vlk.id);
+  cmd.editInfo.mutable_vo()->set_mod_id(vlk.idMod);
+  cmd.editInfo.mutable_vo()->set_task_id(vlk.idPrg);
 }
 
 void PLMainModel::makeEvNewCmd(PLCommand &cmd, PLEVData &ev, bool newId) {
   cmdID++;
-  cmd.id = cmdID;
-  cmd.fun = "addev";
+  cmd.editInfo.set_cmd_id(cmdID);
+  cmd.editInfo.set_element(Bus::EditElement::EV);
+  cmd.editInfo.set_edit_type(Bus::EditType::ADD)
   if (newId) {
     objID++;
     ev.id = objID;
   }
-
-  std::string type;
-  std::string value;
-  std::string id;
-  id = std::to_string(ev.id);
-  type = type2str(ev.initValue.v().t());
-  value = var2str(ev.initValue);
-  cmd.para = QString::fromLatin1((id + "," + type + "," + value).c_str());
-  cmd.res = ev.name;
-  cmd.res += ",";
-  cmd.res += ev.comment;
-  cmd.makeCmdLine();
+  cmd.editInfo.mutable_ev()->set_ev_id(ev.id); 
+  cmd.editInfo.mutable_ev()->set_ev_name(ev.name); 
+  cmd.editInfo.mutable_ev()->set_ev_type(ev.type); 
+  cmd.editInfo.mutable_ev()->set_ev_desc(ev.desc); 
+  cmd.editInfo.mutable_ev()->set_init_val(ev.initValue); 
 }
 
 void PLMainModel::makeEvSetCmd(PLCommand &cmd, PLEVData &ev) {
   cmdID++;
-  cmd.id = cmdID;
-  cmd.fun = "setev";
-  std::string value;
-  std::string id;
-
-  value = var2str(ev.initValue);
-  id = std::to_string(ev.id);
-  cmd.para = QString::fromLatin1((id + "," + value).c_str());
-  cmd.res = ev.name;
-  cmd.res += ",";
-  cmd.res += ev.comment;
-  cmd.makeCmdLine();
+  cmd.editInfo.set_cmd_id(cmdID);
+  cmd.editInfo.set_element(Bus::EditElement::EV);
+  cmd.editInfo.set_edit_type(Bus::EditType::SET)
+  cmd.editInfo.mutable_ev()->set_ev_id(ev.id); 
+  cmd.editInfo.mutable_ev()->set_ev_name(ev.name); 
+  cmd.editInfo.mutable_ev()->set_ev_type(ev.type); 
+  cmd.editInfo.mutable_ev()->set_ev_desc(ev.desc); 
+  cmd.editInfo.mutable_ev()->set_init_val(ev.initValue); 
 }
 
 void PLMainModel::makeEvRemoveCmd(PLCommand &cmd, PLEVData &ev) {
   cmdID++;
-  cmd.id = cmdID;
-  cmd.fun = "rmev";
-  cmd.para = QString::asprintf("%d", ev.id);
-  cmd.makeCmdLine();
+  cmd.editInfo.set_cmd_id(cmdID);
+  cmd.editInfo.set_element(Bus::EditElement::EV);
+  cmd.editInfo.set_edit_type(Bus::EditType::RM)
+  cmd.editInfo.mutable_ev()->set_ev_id(ev.id); 
 }
 
 void PLMainModel::makePrgNewCmd(PLCommand &cmd, PLProgram &prg, bool newId) {
+  
   cmdID++;
-  cmd.id = cmdID;
-  cmd.fun = "addprg";
+  cmd.editInfo.set_cmd_id(cmdID);
+  cmd.editInfo.set_element(Bus::EditElement::TASK);
+  cmd.editInfo.set_edit_type(Bus::EditType::ADD)
   if (newId) {
     objID++;
     prg.id = objID;
   }
-  cmd.para = QString::asprintf("%d", prg.id);
-  cmd.res = prg.name;
-  cmd.makeCmdLine();
+  cmd.editInfo.mutable_task()->set_mod_id(prg.idMod); 
+  cmd.editInfo.mutable_task()->set_task_id(prg.id); 
+  cmd.editInfo.mutable_task()->set_task_name(prg.name); 
+  cmd.editInfo.mutable_task()->set_task_type(prg.type); 
+  cmd.editInfo.mutable_task()->set_task_desc(prg.desc); 
 }
 
 void PLMainModel::makePrgRemoveCmd(PLCommand &cmd, PLProgram &prg) {
   cmdID++;
-  cmd.id = cmdID;
-  cmd.fun = "rmprg";
-  cmd.para = QString::asprintf("%d", prg.id);
-  cmd.makeCmdLine();
+  cmd.editInfo.set_cmd_id(cmdID);
+  cmd.editInfo.set_element(Bus::EditElement::TASK);
+  cmd.editInfo.set_edit_type(Bus::EditType::ADD)
+  cmd.editInfo.mutable_task()->set_mod_id(prg.idMod); 
+  cmd.editInfo.mutable_task()->set_task_id(prg.id);  
 }
 
 void PLMainModel::makePrgRenameCmd(PLCommand &cmd, PLProgram &prg) {
   cmdID++;
-  cmd.id = cmdID;
-  cmd.fun = "setprg";
-  cmd.para = QString::asprintf("%d", prg.id);
-  cmd.res = prg.name;
-  cmd.makeCmdLine();
+  cmd.editInfo.set_cmd_id(cmdID);
+  cmd.editInfo.set_element(Bus::EditElement::TASK);
+  cmd.editInfo.set_edit_type(Bus::EditType::SET)
+  cmd.editInfo.mutable_task()->set_mod_id(prg.idMod); 
+  cmd.editInfo.mutable_task()->set_task_id(prg.id); 
+  cmd.editInfo.mutable_task()->set_task_name(prg.name); 
+  cmd.editInfo.mutable_task()->set_task_type(prg.type); 
+  cmd.editInfo.mutable_task()->set_task_desc(prg.desc); 
 }
 
-void PLMainModel::makePinSetCmd(PLCommand &cmd, int idPrg, int idFb, int idPin,
-                                QString val) {
+void PLMainModel::makePinSetCmd(PLCommand &cmd, int idMod,int idPrg, int idFb, int idPin,
+                                vaule_tm val) {
   cmdID++;
-  cmd.id = cmdID;
-  cmd.fun = "setpin";
-  cmd.para = QString::asprintf("%d,%d,%d", idPrg, idFb, idPin) + "," + val;
-  //    cmd.para += val;
-  cmd.makeCmdLine();
+  cmd.editInfo.set_cmd_id(cmdID);
+  cmd.editInfo.set_element(Bus::EditElement::PIN);
+  cmd.editInfo.set_edit_type(Bus::EditType::SET)
+  cmd.editInfo.mutable_pin()->set_mod_id(idMod);
+  cmd.editInfo.mutable_pin()->set_task_id(idPrg);
+  cmd.editInfo.mutable_pin()->set_fb_id(idFb);
+  cmd.editInfo.mutable_pin()->set_pin_index(idPin);
+  cmd.editInfo.mutable_pin()->set_pin_val(val);
 }
 
 void PLMainModel::makeLkCopyCmd(PLCommand &cmd, PLLink &lk) {
-  cmd.id = -1;
-  cmd.fun = "cplk";
-  cmd.para = QString::asprintf("%d,%d,%d,%d,%d,%d", lk.idPrg, lk.id, lk.idFbSrc,
-                               lk.pinSrc, lk.idFbTgt, lk.pinTgt)
-                 .toLocal8Bit();
-  cmd.res.clear();
-  QString sp;
-  for (int i = 0; i < lk.pts.size(); i++) {
-    sp = QString::asprintf("%d/%d,", lk.pts.at(i).x, lk.pts.at(i).y);
-    cmd.res += sp;
+
+  cmd.editInfo.set_cmd_id(-1);
+  cmd.editInfo.set_element(Bus::EditElement::LK);
+  cmd.editInfo.set_edit_type(Bus::EditType::CP)
+  if (newId) {
+    objID++;
+    lk.id = objID;
   }
-  cmd.makeCmdLine();
+  cmd.editInfo.mutable_lk()->set_mod_id(lk.idMod);
+  cmd.editInfo.mutable_lk()->set_task_id(lk.idPrg);
+  cmd.editInfo.mutable_lk()->set_lk_id(lk.id);
+  cmd.editInfo.mutable_lk()->set_src_fb_id(lk.idFbSrc);
+  cmd.editInfo.mutable_lk()->set_src_pin_index(lk.pinSrc);
+  cmd.editInfo.mutable_lk()->set_target_fb_id(lk.idFbTgt);
+  cmd.editInfo.mutable_lk()->set_target_pin_index(lk.pinTgt);
+
+  lk.removeDualPoints();
+
+  
+  for (int i = 0; i < lk.pts.size(); i++) {
+    auto pos = cmd.editInfo.add_pos();
+    pos->x = lk.pts.at(i).x;
+    pos->y = lk.pts.at(i).y;
+  }
+
 }
 
 void PLMainModel::makeFbCopyCmd(PLCommand &cmd, PLFunctionBlock &fb) {
-  cmd.id = -1;
-  cmd.fun = "cpfb";
-  cmd.para = QString::asprintf("%d,%d,", fb.idPrg, fb.id).toLocal8Bit();
-  cmd.para += fb.libName;
-  cmd.para += ",";
-  cmd.para += fb.funName;
-  cmd.res = QString::asprintf("%d,%d", fb.x, fb.y);
-  cmd.makeCmdLine();
+  cmd.editInfo.set_cmd_id(-1);
+  cmd.editInfo.set_element(Bus::EditElement::FB);
+  cmd.editInfo.set_edit_type(Bus::EditType::CP)
+  if (newId) {
+    objID++;
+    fb.id = objID;
+  }
+  cmd.editInfo.mutable_fb()->set_mod_id(fb.idMod);
+  cmd.editInfo.mutable_fb()->set_task_id(fb.idPrg);
+  cmd.editInfo.mutable_fb()->set_fb_id(fb.id);
+  cmd.editInfo.mutable_fb()->set_flib_name(fb.libName);
+  cmd.editInfo.mutable_fb()->set_fc_name(fb.funName);
+  cmd.editInfo.mutable_fb()->set_fb_name(fb.blkName);
+
+  auto pos = cmd.editInfo.add_pos();
+  pos->x = fb.x;
+  pos->y = fb.y;
+
 }
 
 static int paraCompare(QString &p1, QString &p2) {
