@@ -12,13 +12,13 @@ message EditPosition {
 
 enum EditType {
   NONE = 0;
-  ADD = 1;   // 增加
-  RM = 2;    // 删除
-  SET = 3;   // 设置/修改
-  SHOW = 4;  // 可视化输出
-  MV = 5;  // 移动
-  CP = 6;  //  复制
-  PS = 7; //   粘贴
+  ADD = 1;  // 增加
+  RM = 2;   // 删除
+  SET = 3;  // 设置/修改
+  SHOW = 4; // 可视化输出
+  MV = 5;   // 移动
+  CP = 6;   //  复制
+  PS = 7;   //   粘贴
 }
 enum EditElement {
   PROJ = 0;
@@ -29,6 +29,8 @@ enum EditElement {
   FB = 5;
   LK = 6;
   PIN = 7;
+  VI = 8;
+  VO = 9;
 }
 enum TaskType {
   PERIODIC = 0; // 周期任务
@@ -121,16 +123,49 @@ message EditPinRsp {
   string pin_name = 5;
 }
 message EditIOReq { EditType edit_type = 1; }
+
 message EditIORsp { Result result = 1; }
+
 message EditEVReq {
   uint32 ev_id = 1;
   string ev_name = 2;
   value_tm val = 3;
 }
+
 message EditEVRsp {
   Result result = 1;
   uint32 ev_id = 2;
   string ev_name = 3;
+}
+message EditVIReq {
+  uint32 mod_id = 1;
+  string mod_name = 2;
+  uint32 task_id = 3;
+  uint32 task_name = 4;
+  uint32 fb_id = 5;
+  string fb_name = 6;
+  uint32 pin_index = 7;
+  string pin_name = 8;
+  uint32 ev_id = 9;
+  string ev_name = 10;  
+}
+message EditVIRsp {
+  Result result = 1;
+}
+message EditVOReq {
+  uint32 mod_id = 1;
+  string mod_name = 2;
+  uint32 task_id = 3;
+  uint32 task_name = 4;
+  uint32 fb_id = 5;
+  string fb_name = 6;
+  uint32 pin_index = 7;
+  string pin_name = 8;
+  uint32 ev_id = 9;
+  string ev_name = 10;  
+}
+message EditVORsp {
+  Result result = 1;
 }
 message EditLinkReq {
   uint32 mod_id = 1;
@@ -165,8 +200,11 @@ message EditInfo {
     EditEVReq ev = 9;
     EditLinkReq lk = 10;
     EditIOReq io = 11;
+    EditVIReq vi = 12;
+    EditVOReq vo = 13;
+
   }
-  repeated EditPosition pos =12;
+  repeated EditPosition pos = 14;
 }
 message EditInfosReq {
   string host_name = 1;
