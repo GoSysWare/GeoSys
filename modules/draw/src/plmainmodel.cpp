@@ -858,10 +858,12 @@ void PLMainModel::extract() {
 
   int i, j;
   QList<PLCommand> setpins;
+
+
   for (i = 0; i < cmdList.size(); i++) {
-    if (cmdList.at(i).fun == "setpin") {
+    if(cmdList.at(i).editInfo.element() == Bus::EditElement::PIN &&
+               cmdList.at(i).editInfdit_type() == Bus::EditTyp::SET) 
       setpins.append(cmdList.at(i));
-    }
   }
   // int idBase = 1;
   objID = 1;
