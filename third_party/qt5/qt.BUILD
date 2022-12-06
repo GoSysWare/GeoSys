@@ -12,7 +12,7 @@ cc_library(
         "include/QtCore",
     ],
     linkopts = [
-        "-Wl,-rpath,/usr/local/Qt-5.14.2//lib",
+        "-Wl,-rpath,/usr/local/Qt-5.14.2/lib",
         "-lQt5Core",
     ],
     visibility = ["//visibility:public"],
@@ -30,7 +30,7 @@ cc_library(
         "include/QtWidgets",
     ],
     linkopts = [
-        "-L/usr/local/Qt-5.14.2//lib",
+        "-L/usr/local/Qt-5.14.2/lib",
         "-lQt5Widgets",
     ],
     visibility = ["//visibility:public"],
@@ -49,7 +49,7 @@ cc_library(
         "include/QtGui",
     ],
     linkopts = [
-        "-L/usr/local/Qt-5.14.2//lib",
+        "-L/usr/local/Qt-5.14.2/lib",
         "-lQt5Gui",
     ],
     visibility = ["//visibility:public"],
