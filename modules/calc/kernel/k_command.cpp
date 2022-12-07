@@ -60,7 +60,7 @@ int cmd_dispatch(const Bus::EditInfo &edit_info) {
   } else if (element == Bus::EditElement::EV) {
     if (type == Bus::EditType::ADD) {
       ev_add(edit_info.ev().ev_id(), edit_info.ev().ev_name(),
-             edit_info.ev().val());
+             edit_info.ev().init_val());
 
     } else if (type == Bus::EditType::RM) {
       ev_remove(edit_info.ev().ev_id());
