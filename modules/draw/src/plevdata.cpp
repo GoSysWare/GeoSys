@@ -12,7 +12,7 @@ PLEVData::PLEVData(const PLEVData &ev)
     id = ev.id;
     idLog = ev.idLog;
     name = ev.name;
-    comment = ev.comment;
+    desc = ev.desc;
     refIn = ev.refIn;
     refOut = ev.refOut;
     initValue = ev.initValue;

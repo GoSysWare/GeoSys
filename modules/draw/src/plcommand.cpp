@@ -21,11 +21,11 @@ bool PLCommand::dispatch() {
         // gMainModel->project.uuid = QString::fromStdString(editInfo.proj().proj_uuid());
     } else if (type == Bus::EditType::SHOW) {
 
-    } else if (type == Bus::EditType::MOVE) {
+    } else if (type == Bus::EditType::MV) {
 
-    } else if (type == Bus::EditType::COPY) {
+    } else if (type == Bus::EditType::CP) {
 
-    } else if (type == Bus::EditType::PASTE) {
+    } else if (type == Bus::EditType::PS) {
 
     } else {
     }
@@ -43,11 +43,11 @@ bool PLCommand::dispatch() {
 
     } else if (type == Bus::EditType::SHOW) {
 
-    } else if (type == Bus::EditType::MOVE) {
+    } else if (type == Bus::EditType::MV) {
 
-    } else if (type == Bus::EditType::COPY) {
+    } else if (type == Bus::EditType::CP) {
 
-    } else if (type == Bus::EditType::PASTE) {
+    } else if (type == Bus::EditType::PS) {
 
     } else {
     }
@@ -69,11 +69,11 @@ bool PLCommand::dispatch() {
 
     } else if (type == Bus::EditType::SHOW) {
 
-    } else if (type == Bus::EditType::MOVE) {
+    } else if (type == Bus::EditType::MV) {
 
-    } else if (type == Bus::EditType::COPY) {
+    } else if (type == Bus::EditType::CP) {
 
-    } else if (type == Bus::EditType::PASTE) {
+    } else if (type == Bus::EditType::PS) {
 
     } else {
     }
@@ -89,11 +89,11 @@ bool PLCommand::dispatch() {
 
     } else if (type == Bus::EditType::SHOW) {
 
-    } else if (type == Bus::EditType::MOVE) {
+    } else if (type == Bus::EditType::MV) {
 
-    } else if (type == Bus::EditType::COPY) {
+    } else if (type == Bus::EditType::CP) {
 
-    } else if (type == Bus::EditType::PASTE) {
+    } else if (type == Bus::EditType::PS) {
 
     } else {
     }
@@ -106,11 +106,11 @@ bool PLCommand::dispatch() {
 
     } else if (type == Bus::EditType::SHOW) {
 
-    } else if (type == Bus::EditType::MOVE) {
+    } else if (type == Bus::EditType::MV) {
 
-    } else if (type == Bus::EditType::COPY) {
+    } else if (type == Bus::EditType::CP) {
 
-    } else if (type == Bus::EditType::PASTE) {
+    } else if (type == Bus::EditType::PS) {
 
     } else {
     }
@@ -125,11 +125,11 @@ bool PLCommand::dispatch() {
 
     } else if (type == Bus::EditType::SHOW) {
 
-    } else if (type == Bus::EditType::MOVE) {
+    } else if (type == Bus::EditType::MV) {
 
-    } else if (type == Bus::EditType::COPY) {
+    } else if (type == Bus::EditType::CP) {
 
-    } else if (type == Bus::EditType::PASTE) {
+    } else if (type == Bus::EditType::PS) {
 
     } else {
     }
@@ -143,11 +143,11 @@ bool PLCommand::dispatch() {
 
     } else if (type == Bus::EditType::SHOW) {
 
-    } else if (type == Bus::EditType::MOVE) {
+    } else if (type == Bus::EditType::MV) {
 
-    } else if (type == Bus::EditType::COPY) {
+    } else if (type == Bus::EditType::CP) {
 
-    } else if (type == Bus::EditType::PASTE) {
+    } else if (type == Bus::EditType::PS) {
 
     } else {
     }
@@ -161,11 +161,11 @@ bool PLCommand::dispatch() {
 
     } else if (type == Bus::EditType::SHOW) {
 
-    } else if (type == Bus::EditType::MOVE) {
+    } else if (type == Bus::EditType::MV) {
 
-    } else if (type == Bus::EditType::COPY) {
+    } else if (type == Bus::EditType::CP) {
 
-    } else if (type == Bus::EditType::PASTE) {
+    } else if (type == Bus::EditType::PS) {
 
     } else {
     }
