@@ -59,10 +59,10 @@ public:
     void makePrgNewCmd(PLCommand &cmd, PLProgram &prg, bool newId = true);
     void makePrgRemoveCmd(PLCommand &cmd, PLProgram &prg);
     void makePrgRenameCmd(PLCommand &cmd, PLProgram &prg);
-    void makePinSetCmd(PLCommand &cmd, PLModule &mod, bool newId = true);
+    void makeModNewCmd(PLCommand &cmd, PLModule &mod, bool newId = true);
     void makeModRemoveCmd(PLCommand &cmd, PLModule &mod);
     void makeModRenameCmd(PLCommand &cmd, PLModule &mod);
-    void makePinSetCmd(PLCommand &cmd, int idPrg, int idFb, int idPin, QString val);
+    void makePinSetCmd(PLCommand &cmd,int idMod, int idPrg, int idFb, int idPin, QString val);
     void makeLkCopyCmd(PLCommand &cmd, PLLink &lk);
     void makeFbCopyCmd(PLCommand &cmd, PLFunctionBlock &fb);
 
