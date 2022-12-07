@@ -8,7 +8,10 @@ class PLModule
 {
 public:
     PLModule();
-
+    void clear();
+    void renewUuid();
+    QString description();
+    QString getUuid();
     int id;
     int idLog;
     QString name;

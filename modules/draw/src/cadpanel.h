@@ -3,6 +3,7 @@
 #include <QtGui>
 #include <QDebug>
 #include "pllink.h"
+#include "plvlink.h"
 #include "plfunctionblock.h"
 #include "plselobject.h"
 #include<QWidget>

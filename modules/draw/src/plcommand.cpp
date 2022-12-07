@@ -475,6 +475,16 @@ PLModule *PLCommand::getModule(int idMod) {
 
   return NULL;
 }
+PLVLink *PLCommand::getVi(PLProgram *prg, int idVi) {
+
+
+  return NULL;
+}
+PLVLink *PLCommand::getVo(PLProgram *prg, int idVo) {
+
+
+  return NULL;
+}
 void PLCommand::setFunctionBlock(PLFunctionBlock *fb) {
 //   QStringList list = para.split(",");
 //   fb->idPrg = list.at(0).toInt();

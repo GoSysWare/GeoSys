@@ -1,10 +1,14 @@
+#include <QFile>
+#include <QTextStream>
 #include "plmainmodel.h"
 #include "modules/calc/include/k_command.h"
 #include "modules/calc/include/k_functionblock.h"
 #include "modules/calc/include/k_lib.h"
 #include "modules/calc/include/k_project.h"
-#include <QFile>
-#include <QTextStream>
+
+#include <google/protobuf/util/message_differencer.h>
+
+using namespace google::protobuf::util;
 
 PLMainModel::PLMainModel() {
   cmdID = 0;
@@ -284,7 +288,6 @@ void PLMainModel::makeEvSetCmd(PLCommand &cmd, PLEVData &ev) {
   cmd.editInfo.mutable_ev()->set_ev_type(ev.type);
   cmd.editInfo.mutable_ev()->set_ev_desc(ev.desc.toStdString());
   cmd.editInfo.mutable_ev()->mutable_init_val()->CopyFrom(ev.value);
-
 }
 
 void PLMainModel::makeEvRemoveCmd(PLCommand &cmd, PLEVData &ev) {
@@ -366,12 +369,12 @@ void PLMainModel::makePinSetCmd(PLCommand &cmd, int idMod, int idPrg, int idFb,
   cmdID++;
   cmd.editInfo.set_cmd_id(cmdID);
   cmd.editInfo.set_element(Bus::EditElement::PIN);
-  cmd.editInfo.set_edit_type(Bus::EditType::SET) cmd.editInfo.mutable_pin()
-      ->set_mod_id(idMod);
+  cmd.editInfo.set_edit_type(Bus::EditType::SET);
+  cmd.editInfo.mutable_pin()->set_mod_id(idMod);
   cmd.editInfo.mutable_pin()->set_task_id(idPrg);
   cmd.editInfo.mutable_pin()->set_fb_id(idFb);
   cmd.editInfo.mutable_pin()->set_pin_index(idPin);
-  cmd.editInfo.mutable_pin()->set_pin_val(val);
+  cmd.editInfo.mutable_pin()->mutable_pin_val()->CopyFrom(val);
 }
 
 void PLMainModel::makeLkCopyCmd(PLCommand &cmd, PLLink &lk) {
@@ -379,10 +382,6 @@ void PLMainModel::makeLkCopyCmd(PLCommand &cmd, PLLink &lk) {
   cmd.editInfo.set_cmd_id(-1);
   cmd.editInfo.set_element(Bus::EditElement::LK);
   cmd.editInfo.set_edit_type(Bus::EditType::CP);
-  if (newId) {
-    objID++;
-    lk.id = objID;
-  }
   cmd.editInfo.mutable_lk()->set_mod_id(lk.idMod);
   cmd.editInfo.mutable_lk()->set_task_id(lk.idPrg);
   cmd.editInfo.mutable_lk()->set_lk_id(lk.id);
@@ -390,8 +389,6 @@ void PLMainModel::makeLkCopyCmd(PLCommand &cmd, PLLink &lk) {
   cmd.editInfo.mutable_lk()->set_src_pin_index(lk.pinSrc);
   cmd.editInfo.mutable_lk()->set_target_fb_id(lk.idFbTgt);
   cmd.editInfo.mutable_lk()->set_target_pin_index(lk.pinTgt);
-
-  lk.removeDualPoints();
 
   for (int i = 0; i < lk.pts.size(); i++) {
     auto pos = cmd.editInfo.add_pos();
@@ -404,10 +401,6 @@ void PLMainModel::makeFbCopyCmd(PLCommand &cmd, PLFunctionBlock &fb) {
   cmd.editInfo.set_cmd_id(-1);
   cmd.editInfo.set_element(Bus::EditElement::FB);
   cmd.editInfo.set_edit_type(Bus::EditType::CP);
-   if (newId) {
-    objID++;
-    fb.id = objID;
-  }
   cmd.editInfo.mutable_fb()->set_mod_id(fb.idMod);
   cmd.editInfo.mutable_fb()->set_task_id(fb.idPrg);
   cmd.editInfo.mutable_fb()->set_fb_id(fb.id);
@@ -423,7 +416,7 @@ void PLMainModel::makeFbCopyCmd(PLCommand &cmd, PLFunctionBlock &fb) {
 bool PLMainModel::isCmdObjRemoved(PLCommand *cmd) {
 
   if (cmd->editInfo.element() == Bus::EditElement::MOD &&
-      (cmd->editInfo.edit_type()== Bus::EditType::ADD ||
+      (cmd->editInfo.edit_type() == Bus::EditType::ADD ||
        cmd->editInfo.edit_type() == Bus::EditType::RM)) {
     if (NULL == PLCommand::getModule(cmd->editInfo.mod().mod_id())) {
       return true;
@@ -447,7 +440,7 @@ bool PLMainModel::isCmdObjRemoved(PLCommand *cmd) {
       return true;
     }
   } else if (cmd->editInfo.element() == Bus::EditElement::FB &&
-             (cmd->editInfo.edit_type()== Bus::EditType::ADD ||
+             (cmd->editInfo.edit_type() == Bus::EditType::ADD ||
               cmd->editInfo.edit_type() == Bus::EditType::RM ||
               cmd->editInfo.edit_type() == Bus::EditType::MV)) {
     PLModule *mod = PLCommand::getModule(cmd->editInfo.fb().mod_id());
@@ -515,7 +508,7 @@ bool PLMainModel::isCmdObjRemoved(PLCommand *cmd) {
       }
     }
   } else if (cmd->editInfo.element() == Bus::EditElement::VO &&
-             (cmd->editInfdit_type() == Bus::EditType::ADD ||
+             (cmd->editInfo.edit_type() == Bus::EditType::ADD ||
               cmd->editInfo.edit_type() == Bus::EditType::RM)) {
     PLModule *mod = PLCommand::getModule(cmd->editInfo.vo().mod_id());
     if (NULL == mod) {
@@ -534,18 +527,18 @@ bool PLMainModel::isCmdObjRemoved(PLCommand *cmd) {
   return false;
 }
 
-void PLMainModel::removeDualCommands(QList<PLCommand> &list, bool all) {
-  QList<PLCommand *> moveFb;
-  QList<PLCommand *> moveLk;
-  QList<PLCommand *> setPin;
-  QList<PLCommand *> setEv;
-  QList<PLCommand *> setPrg;
-  QList<PLCommand *> setMod;
+void PLMainModel::removeDualCommands(QList<PLCommand> &cmdList, bool all) {
+  QList<PLCommand *> moveFbCmdList;
+  QList<PLCommand *> moveLkCmdList;
+  QList<PLCommand *> setPinCmdList;
+  QList<PLCommand *> setEvCmdList;
+  QList<PLCommand *> setPrgCmdList;
+  QList<PLCommand *> setModCmdList;
 
   int i, j;
   PLCommand *cmd;
-  for (i = list.size() - 1; i >= 0; i--) {
-    cmd = &list[i];
+  for (i = cmdList.size() - 1; i >= 0; i--) {
+    cmd = &cmdList[i];
     cmd->mark = false;
     if (all) {
       if (isCmdObjRemoved(cmd)) {
@@ -554,87 +547,85 @@ void PLMainModel::removeDualCommands(QList<PLCommand> &list, bool all) {
     }
     if (cmd->editInfo.element() == Bus::EditElement::FB &&
         cmd->editInfo.edit_type() == Bus::EditType::MV) {
-      for (j = 0; j < moveFb.size(); j++) {
-        if (cmd->editInfo.fb().mod_id() == moveFb.at(j)->editInfo.fb().mod_id() &&
-        cmd->editInfo.fb().task_id() == moveFb.at(j)->editInfo.fb().task_id() &&
-        cmd->editInfo.fb().fb_id() == moveFb.at(j)->editInfo.fb().fb_id()) {
+
+      for (j = 0; j < moveFbCmdList.size(); j++) {
+        if (MessageDifferencer::Equivalent(
+                cmd->editInfo.fb(), moveFbCmdList.at(j)->editInfo.fb())) {
           cmd->mark = true;
           break;
         }
       }
       if (!cmd->mark) {
-        moveFb.append(cmd);
+        moveFbCmdList.append(cmd);
       }
     } else if (cmd->editInfo.element() == Bus::EditElement::LK &&
                cmd->editInfo.edit_type() == Bus::EditType::MV) {
-      for (j = 0; j < moveLk.size(); j++) {
-        if (cmd->editInfo.lk().mod_id() == moveLk.at(j)->editInfo.lk().mod_id() &&
-        cmd->editInfo.lk().task_id() == moveLk.at(j)->editInfo.lk().task_id() &&
-        cmd->editInfo.lk().lk_id() == moveLk.at(j)->editInfo.lk().lk_id()) {
+      for (j = 0; j < moveLkCmdList.size(); j++) {
+        if (MessageDifferencer::Equivalent(
+                cmd->editInfo.lk(), moveLkCmdList.at(j)->editInfo.lk())) {
           cmd->mark = true;
           break;
         }
       }
       if (!cmd->mark) {
-        moveLk.append(cmd);
+        moveLkCmdList.append(cmd);
       }
     } else if (cmd->editInfo.element() == Bus::EditElement::PIN &&
                cmd->editInfo.edit_type() == Bus::EditType::SET) {
-      for (j = 0; j < setPin.size(); j++) {
-        if (cmd->editInfo.pin().mod_id() == setPin.at(j)->editInfo.pin().mod_id() &&
-        cmd->editInfo.pin().task_id() == setPin.at(j)->editInfo.pin().task_id()  &&
-        cmd->editInfo.pin().fb_id() == setPin.at(j)->editInfo.pin().fb_id()  &&
-        cmd->editInfo.pin().pin_index() == setPin.at(j)->editInfo.pin().pin_index()  ) {
+      for (j = 0; j < setPinCmdList.size(); j++) {
+        if (MessageDifferencer::Equivalent(
+                cmd->editInfo.pin(), setPinCmdList.at(j)->editInfo.pin())) {
           cmd->mark = true;
           break;
         }
       }
       if (!cmd->mark) {
-        setPin.append(cmd);
+        setPinCmdList.append(cmd);
       }
     } else if (cmd->editInfo.element() == Bus::EditElement::EV &&
                cmd->editInfo.edit_type() == Bus::EditType::SET) {
-      for (j = 0; j < setEv.size(); j++) {
-        if (cmd->editInfo.ev().ev_id() == setEv.at(j)->editInfo.ev().ev_id()) {
+      for (j = 0; j < setEvCmdList.size(); j++) {
+        if (MessageDifferencer::Equivalent(cmd->editInfo.ev(),
+                                           setEvCmdList.at(j)->editInfo.ev())) {
           cmd->mark = true;
           break;
         }
       }
       if (!cmd->mark) {
-        setEv.append(cmd);
+        setEvCmdList.append(cmd);
       }
     } else if (cmd->editInfo.element() == Bus::EditElement::TASK &&
                cmd->editInfo.edit_type() == Bus::EditType::SET) {
-      for (j = 0; j < setPrg.size(); j++) {
-        if (cmd->editInfo.task().mod_id() == setPrg.at(j)->editInfo.task().mod_id() &&
-        cmd->editInfo.task().task_id() == setPrg.at(j)->editInfo.task().task_id()) {
+      for (j = 0; j < setPrgCmdList.size(); j++) {
+        if (MessageDifferencer::Equivalent(
+                cmd->editInfo.task(), setPrgCmdList.at(j)->editInfo.task())) {
           cmd->mark = true;
           break;
         }
       }
       if (!cmd->mark) {
-        setPrg.append(cmd);
+        setPrgCmdList.append(cmd);
       }
     } else if (cmd->editInfo.element() == Bus::EditElement::MOD &&
                cmd->editInfo.edit_type() == Bus::EditType::SET) {
-      for (j = 0; j < setMod.size(); j++) {
-        if (cmd->editInfo.mod().proj_id() == setMod.at(j)->editInfo.mod().proj_id() && cmd->editInfo.mod().mod_id() == setMod.at(j)->editInfo.mod().mod_id()) {
+      for (j = 0; j < setModCmdList.size(); j++) {
+        if (MessageDifferencer::Equivalent(
+                cmd->editInfo.mod(), setModCmdList.at(j)->editInfo.mod())) {
           cmd->mark = true;
           break;
         }
       }
       if (!cmd->mark) {
-        setMod.append(cmd);
+        setModCmdList.append(cmd);
       }
     }
   }
 
-  for (i = list.size() - 1; i >= 0; i--) {
-    if (list.at(i).mark) {
-      qDebug() << "remove cmd_id:" << list.at(i).editInfo.cmd_id() 
-      <<" element:" << list.at(i).editInfo.element() 
-      <<" edit_type:" << list.at(i).editInfo.edit_type() ;
-      list.removeAt(i);
+  for (i = cmdList.size() - 1; i >= 0; i--) {
+    if (cmdList.at(i).mark) {
+      qDebug() << "remove cmd_id:"
+               << QString::fromStdString(cmdList.at(i).editInfo.DebugString());
+      cmdList.removeAt(i);
     }
   }
 }
@@ -689,163 +680,173 @@ bool PLMainModel::extractObjsId(int &idObj, QList<PLFunctionBlock> &fbs,
   return true;
 }
 
-bool PLMainModel::extractObjsId(int &idObj, QList<PLProgram> &prgs,
+bool PLMainModel::extractObjsId(int &idObj, QList<PLModule> &mods,
                                 QList<PLEVData> &evs,
                                 QList<PLCommand> &setpins) {
+  PLModule *mod;
   PLProgram *prg;
   PLFunctionBlock *fb;
   PLLink *lk;
   PLVLink *vlk;
-  int i, j, k, step;
+  int i, j, k, m, step;
 
   for (i = 0; i < evs.size(); i++) {
     evs[i].idLog = idObj;
     idObj++;
   }
-
-  for (i = 0; i < prgs.size(); i++) {
-    prg = &prgs[i];
-    prg->idLog = idObj;
+  for (i = 0; i < mods.size(); i++) {
+    mod = &mods[i];
+    mod->idLog = idObj;
     idObj++;
   }
+  for (m = 0; m < mods.size(); m++) {
+    mod = &mods[m];
+    for (i = 0; i < mod->prgList.size(); i++) {
+      prg = &mod->prgList[i];
+      for (j = 0; j < prg->fbs.size(); j++) {
+        fb = &prg->fbs[j];
+        fb->idLog = idObj;
+        idObj++;
+        fb->idPrg = prg->idLog;
+      }
 
-  for (i = 0; i < prgs.size(); i++) {
-    prg = &prgs[i];
+      for (j = 0; j < prg->lks.size(); j++) {
+        lk = &prg->lks[j];
+        lk->id = idObj;
+        idObj++;
+        lk->idPrg = prg->idLog;
+        step = 0;
+        for (k = 0; k < prg->fbs.size(); k++) {
+          fb = &prg->fbs[k];
+          if (lk->idFbSrc == fb->id) {
+            lk->idFbSrc = fb->idLog;
+            step++;
+            break;
+          }
+        }
+        if (step < 1) {
+          return false;
+        }
+        step = 0;
+        for (k = 0; k < prg->fbs.size(); k++) {
+          fb = &prg->fbs[k];
+          if (lk->idFbTgt == fb->id) {
+            lk->idFbTgt = fb->idLog;
+            step++;
+            break;
+          }
+        }
+        if (step < 1) {
+          return false;
+        }
+      }
 
-    for (j = 0; j < prg->fbs.size(); j++) {
-      fb = &prg->fbs[j];
-      fb->idLog = idObj;
-      idObj++;
-      fb->idPrg = prg->idLog;
-    }
+      for (j = 0; j < prg->vis.size(); j++) {
+        vlk = &prg->vis[j];
+        vlk->id = idObj;
+        idObj++;
+        step = 0;
+        vlk->idPrg = prg->idLog;
+        for (k = 0; k < prg->fbs.size(); k++) {
+          fb = &prg->fbs[k];
+          if (vlk->idFb == fb->id) {
+            vlk->idFb = fb->idLog;
+            step++;
+            break;
+          }
+        }
+        if (step < 1) {
+          return false;
+        }
+        step = 0;
+        for (k = 0; k < evs.size(); k++) {
+          if (vlk->idEv == evs[k].id) {
+            vlk->idEv = evs[k].idLog;
+            step++;
+            break;
+          }
+        }
+        if (step < 1) {
+          return false;
+        }
+      }
 
-    for (j = 0; j < prg->lks.size(); j++) {
-      lk = &prg->lks[j];
-      lk->id = idObj;
-      idObj++;
-      lk->idPrg = prg->idLog;
-      step = 0;
-      for (k = 0; k < prg->fbs.size(); k++) {
-        fb = &prg->fbs[k];
-        if (lk->idFbSrc == fb->id) {
-          lk->idFbSrc = fb->idLog;
-          step++;
-          break;
+      for (j = 0; j < prg->vos.size(); j++) {
+        vlk = &prg->vos[j];
+        vlk->id = idObj;
+        idObj++;
+        step = 0;
+        vlk->idPrg = prg->idLog;
+        for (k = 0; k < prg->fbs.size(); k++) {
+          fb = &prg->fbs[k];
+          if (vlk->idFb == fb->id) {
+            vlk->idFb = fb->idLog;
+            step++;
+            break;
+          }
         }
-      }
-      if (step < 1) {
-        return false;
-      }
-      step = 0;
-      for (k = 0; k < prg->fbs.size(); k++) {
-        fb = &prg->fbs[k];
-        if (lk->idFbTgt == fb->id) {
-          lk->idFbTgt = fb->idLog;
-          step++;
-          break;
+        if (step < 1) {
+          return false;
         }
-      }
-      if (step < 1) {
-        return false;
-      }
-    }
-
-    for (j = 0; j < prg->vis.size(); j++) {
-      vlk = &prg->vis[j];
-      vlk->id = idObj;
-      idObj++;
-      step = 0;
-      vlk->idPrg = prg->idLog;
-      for (k = 0; k < prg->fbs.size(); k++) {
-        fb = &prg->fbs[k];
-        if (vlk->idFb == fb->id) {
-          vlk->idFb = fb->idLog;
-          step++;
-          break;
+        step = 0;
+        for (k = 0; k < evs.size(); k++) {
+          if (vlk->idEv == evs[k].id) {
+            vlk->idEv = evs[k].idLog;
+            step++;
+            break;
+          }
         }
-      }
-      if (step < 1) {
-        return false;
-      }
-      step = 0;
-      for (k = 0; k < evs.size(); k++) {
-        if (vlk->idEv == evs[k].id) {
-          vlk->idEv = evs[k].idLog;
-          step++;
-          break;
+        if (step < 1) {
+          return false;
         }
-      }
-      if (step < 1) {
-        return false;
-      }
-    }
-
-    for (j = 0; j < prg->vos.size(); j++) {
-      vlk = &prg->vos[j];
-      vlk->id = idObj;
-      idObj++;
-      step = 0;
-      vlk->idPrg = prg->idLog;
-      for (k = 0; k < prg->fbs.size(); k++) {
-        fb = &prg->fbs[k];
-        if (vlk->idFb == fb->id) {
-          vlk->idFb = fb->idLog;
-          step++;
-          break;
-        }
-      }
-      if (step < 1) {
-        return false;
-      }
-      step = 0;
-      for (k = 0; k < evs.size(); k++) {
-        if (vlk->idEv == evs[k].id) {
-          vlk->idEv = evs[k].idLog;
-          step++;
-          break;
-        }
-      }
-      if (step < 1) {
-        return false;
       }
     }
   }
 
   PLCommand *cmd;
-  int idMod,idPrg, idFb, pin;
+  int idMod, idPrg, idFb, pin;
   QStringList list;
-  QString value;
+  value_tm value;
   for (i = setpins.size() - 1; i >= 0; i--) {
     cmd = &setpins[i];
     idMod = cmd->editInfo.mutable_pin()->mod_id();
     idPrg = cmd->editInfo.mutable_pin()->task_id();
     idFb = cmd->editInfo.mutable_pin()->fb_id();
     pin = cmd->editInfo.mutable_pin()->pin_index();
-    value = cmd->editInfo.mutable_pin()->pin_val();
     step = 0;
-    for (j = 0; j < prgs.size(); j++) {
-      prg = &prgs[j];
-      if (idPrg == prg->id) {
-        idPrg = prg->idLog;
+    for (m = 0; m < mods.size(); m++) {
+      mod = &mods[m];
+      if (idMod == mod->id) {
+        idMod = mod->idLog;
         step++;
-        for (k = 0; k < prg->fbs.size(); k++) {
-          fb = &prg->fbs[k];
-          if (idFb == fb->id) {
-            idFb = fb->idLog;
+        for (j = 0; j < mod->prgList.size(); j++) {
+          prg = &mod->prgList[j];
+          if (idPrg == prg->id) {
+            idPrg = prg->idLog;
             step++;
+            for (k = 0; k < prg->fbs.size(); k++) {
+              fb = &prg->fbs[k];
+              if (idFb == fb->id) {
+                idFb = fb->idLog;
+                step++;
+                break;
+              }
+            }
             break;
           }
         }
-        break;
       }
     }
-    if (step < 2) {
+    //如果一个setpin指令中没有同时满足有modid、progid和fbid，则说明此命令无效
+    if (step < 3) {
       // prg or fb may be deleted!
       setpins.removeAt(i);
     } else {
-      cmd->para = QString::asprintf("%d,%d,%d,%s", idPrg, idFb, pin,
-                                    value.toLatin1().data());
-      cmd->makeCmdLine();
+      // 满足则重新封装id
+      cmd->editInfo.mutable_pin()->set_mod_id(idMod);
+      cmd->editInfo.mutable_pin()->set_task_id(idPrg);
+      cmd->editInfo.mutable_pin()->set_fb_id(idFb);
+      cmd->editInfo.mutable_pin()->set_pin_index(pin);
     }
   }
 
@@ -853,12 +854,15 @@ bool PLMainModel::extractObjsId(int &idObj, QList<PLProgram> &prgs,
     evs[i].id = evs[i].idLog;
   }
 
-  for (i = 0; i < prgs.size(); i++) {
-    prg = &prgs[i];
-    prg->id = prg->idLog;
-    for (j = 0; j < prg->fbs.size(); j++) {
-      fb = &prg->fbs[j];
-      fb->id = fb->idLog;
+  for (m = 0; m < mods.size(); m++) {
+    mod = &mods[m];
+    for (i = 0; i < mod->prgList.size(); i++) {
+      prg = &mod->prgList[i];
+      prg->id = prg->idLog;
+      for (j = 0; j < prg->fbs.size(); j++) {
+        fb = &prg->fbs[j];
+        fb->id = fb->idLog;
+      }
     }
   }
 
@@ -868,18 +872,19 @@ bool PLMainModel::extractObjsId(int &idObj, QList<PLProgram> &prgs,
 void PLMainModel::extract() {
   removeDualCommands(cmdList, true);
 
-  int i, j;
+  int i, j, m;
   QList<PLCommand> setpins;
-
-
+  PLModule *mod;
+  PLProgram *prg;
   for (i = 0; i < cmdList.size(); i++) {
-    if(cmdList.at(i).editInfo.element() == Bus::EditElement::PIN &&
-               cmdList.at(i).editInfo.edit_type() == Bus::EditTyp::SET) 
+    if (cmdList.at(i).editInfo.element() == Bus::EditElement::PIN &&
+        cmdList.at(i).editInfo.edit_type() == Bus::EditType::SET)
       setpins.append(cmdList.at(i));
   }
   // int idBase = 1;
   objID = 1;
-  extractObjsId(objID, prgList, evList, setpins);
+  //根据命令重新整理所有的id
+  extractObjsId(objID, modList, evList, setpins);
 
   project.renewUuid();
 
@@ -891,28 +896,34 @@ void PLMainModel::extract() {
     makeEvNewCmd(cmd, evList[i], false);
     cmdList.append(cmd);
   }
-  for (i = 0; i < prgList.size(); i++) {
-    makePrgNewCmd(cmd, prgList[i], false);
-    cmdList.append(cmd);
-  }
-  PLProgram *prg;
-  for (i = 0; i < prgList.size(); i++) {
-    prg = &prgList[i];
-    for (j = 0; j < prg->fbs.size(); j++) {
-      makeFbNewCmd(cmd, prg->fbs[j], false, false);
+
+  for (m = 0; m < modList.size(); m++) {
+    PLModule *mod = &modList[m];
+    mod->renewUuid();
+    makeModNewCmd(cmd,*mod,false);
+    
+    for (i = 0; i < mod->prgList.size(); i++) {
+      prg = &mod->prgList[i];
+
+      makePrgNewCmd(cmd, *prg, false);
       cmdList.append(cmd);
-    }
-    for (j = 0; j < prg->lks.size(); j++) {
-      makeLkNewCmd(cmd, prg->lks[j], false);
-      cmdList.append(cmd);
-    }
-    for (j = 0; j < prg->vis.size(); j++) {
-      makeViNewCmd(cmd, prg->vis[j], false);
-      cmdList.append(cmd);
-    }
-    for (j = 0; j < prg->vos.size(); j++) {
-      makeVoNewCmd(cmd, prg->vos[j], false);
-      cmdList.append(cmd);
+
+      for (j = 0; j < prg->fbs.size(); j++) {
+        makeFbNewCmd(cmd, prg->fbs[j], false, false);
+        cmdList.append(cmd);
+      }
+      for (j = 0; j < prg->lks.size(); j++) {
+        makeLkNewCmd(cmd, prg->lks[j], false);
+        cmdList.append(cmd);
+      }
+      for (j = 0; j < prg->vis.size(); j++) {
+        makeViNewCmd(cmd, prg->vis[j], false);
+        cmdList.append(cmd);
+      }
+      for (j = 0; j < prg->vos.size(); j++) {
+        makeVoNewCmd(cmd, prg->vos[j], false);
+        cmdList.append(cmd);
+      }
     }
   }
 

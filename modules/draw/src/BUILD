@@ -333,6 +333,28 @@ qt_cc_library(
     ],
 )
 
+qt_cc_library(
+    name = "evdatamodel",
+    srcs =[
+        "evdatamodel.cpp",
+    ],
+    hdrs = [
+        "evdatamodel.h",
+    ],
+    copts = [
+    ],
+    deps = [
+        ":plevdata",
+        "//modules/calc/proto:edit_cc_proto",
+        "//modules/calc/proto:return_cc_proto",
+        "//modules/calc/proto:value_cc_proto",
+        "//modules/calc/include:calc_include",
+        "//modules/calc/include/lib:lib_include",   
+        "@qt//:qt_core",
+        "@qt//:qt_gui",
+
+    ],
+)
 
 qt_cc_library(
     name = "plmainmodel",
@@ -346,7 +368,17 @@ qt_cc_library(
     ],
     deps = [
         ":plevdata",
-        "//modules/calc/proto:value_cc_proto",
+        ":plcommand",
+        ":plmodule",
+        ":plprogram",
+        ":plfunctionblock",
+        ":plpin",
+        ":pllink",
+        ":plpoint",
+        ":plvlink",
+        ":plproject",
+        ":evdatamodel",
+        "//modules/calc/proto:bus_cc_proto",
         "//modules/calc/include:calc_include",
         "//modules/calc/include/lib:lib_include",   
         "@qt//:qt_core",

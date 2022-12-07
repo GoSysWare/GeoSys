@@ -9,10 +9,11 @@ public:
     void clear();
     void renewUuid();
     QString description();
-    QString getProjCmdLine();
+    QString getUuid();
 
     QString name;
     QString uuid;
+    QString desc;
     QString fileName;
 };
 

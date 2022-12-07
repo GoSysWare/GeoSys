@@ -20,15 +20,11 @@ void PLProject::renewUuid()
 
 QString PLProject::description()
 {
+    return desc;
+}
+
+QString PLProject::getUuid()
+{
     return uuid;
 }
 
-QString PLProject::getProjCmdLine()
-{
-    QString line = "0;";
-    line += "setprj;";
-    line += uuid;
-    line += ";";
-
-    return line;
-}

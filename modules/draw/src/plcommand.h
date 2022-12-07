@@ -26,6 +26,9 @@ public:
     static PLProgram *getProgram(PLModule * mod,int idPrg);
     static PLFunctionBlock *getFunctionBlock(PLProgram *prg, int idFB);
     static PLLink *getLink(PLProgram *prg, int idLk);
+    static PLVLink *getVi(PLProgram *prg, int idVi);
+    static PLVLink *getVo(PLProgram *prg, int idVo);
+
     static PLModule *getModule(int idMod);
 
     void setModule(PLModule *mod);

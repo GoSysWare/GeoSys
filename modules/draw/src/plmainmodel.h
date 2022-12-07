@@ -62,7 +62,7 @@ public:
     void makeModNewCmd(PLCommand &cmd, PLModule &mod, bool newId = true);
     void makeModRemoveCmd(PLCommand &cmd, PLModule &mod);
     void makeModRenameCmd(PLCommand &cmd, PLModule &mod);
-    void makePinSetCmd(PLCommand &cmd,int idMod, int idPrg, int idFb, int idPin, QString val);
+    void makePinSetCmd(PLCommand &cmd,int idMod, int idPrg, int idFb, int idPin, value_tm val);
     void makeLkCopyCmd(PLCommand &cmd, PLLink &lk);
     void makeFbCopyCmd(PLCommand &cmd, PLFunctionBlock &fb);
 
@@ -70,7 +70,7 @@ public:
     static bool isCmdObjRemoved(PLCommand *cmd);
     static void extractObjsId(int &idObj, QList<PLEVData> &evs);
     static bool extractObjsId(int &idObj, QList<PLFunctionBlock> &fbs, QList<PLLink> &lks);
-    static bool extractObjsId(int &idObj, QList<PLProgram> &prgs, QList<PLEVData> &evs, QList<PLCommand> &setpins);
+    static bool extractObjsId(int &idObj, QList<PLModule> &mods, QList<PLEVData> &evs, QList<PLCommand> &setpins);
 
     void extract();
 
