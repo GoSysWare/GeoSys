@@ -12,7 +12,7 @@
 #include "plcommand.h"
 #include "plproject.h"
 #include "evdatamodel.h"
-
+#include "modules/calc/proto/value.pb.h"
 
 class PLMainModel
 {
@@ -20,7 +20,8 @@ public:
     PLMainModel();
     void clear();
     void updateFuncList(int libIndex);
-    void updateProgList();
+    void updateProgList(int modIndex);
+    void updateModuleList();
     QStringListModel modelLibrary;
     QStringListModel modelFunction;
     QStringListModel modelModule;
@@ -58,7 +59,7 @@ public:
     void makePrgNewCmd(PLCommand &cmd, PLProgram &prg, bool newId = true);
     void makePrgRemoveCmd(PLCommand &cmd, PLProgram &prg);
     void makePrgRenameCmd(PLCommand &cmd, PLProgram &prg);
-    void makeModNewCmd(PLCommand &cmd, PLModule &mod, bool newId = true);
+    void makePinSetCmd(PLCommand &cmd, PLModule &mod, bool newId = true);
     void makeModRemoveCmd(PLCommand &cmd, PLModule &mod);
     void makeModRenameCmd(PLCommand &cmd, PLModule &mod);
     void makePinSetCmd(PLCommand &cmd, int idPrg, int idFb, int idPin, QString val);

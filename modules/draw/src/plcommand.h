@@ -20,6 +20,7 @@ public:
 
     
     Bus::EditInfo editInfo;
+    bool mark;
 
     static PLEVData *getEv(int id);
     static PLProgram *getProgram(PLModule * mod,int idPrg);

@@ -174,6 +174,7 @@ qt_cc_library(
         ":plpoint",
         ":plpin",
         ":pllink",
+        ":plvlink",
         "//modules/calc/proto:value_cc_proto",
         "//modules/calc/include:calc_include",
         "//modules/calc/include/lib:lib_include",   

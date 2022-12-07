@@ -50,7 +50,7 @@ void PLMainModel::clear() {
   cmdID = 0;
   objID = 0;
   prgCurrent = NULL;
-  prgList.clear();
+  modList.clear();
   cmdList.clear();
   modelEVData.beginReset();
   evList.clear();
@@ -125,8 +125,8 @@ void PLMainModel::makeLkNewCmd(PLCommand &cmd, PLLink &lk, bool newId) {
 
   for (int i = 0; i < lk.pts.size(); i++) {
     auto pos = cmd.editInfo.add_pos();
-    pos->x = lk.pts.at(i).x;
-    pos->y = lk.pts.at(i).y;
+    pos->set_x(lk.pts.at(i).x);
+    pos->set_y(lk.pts.at(i).y);
   }
 }
 
@@ -152,8 +152,8 @@ void PLMainModel::makeLkMoveCmd(PLCommand &cmd, PLLink &lk) {
 
   for (int i = 0; i < lk.pts.size(); i++) {
     auto pos = cmd.editInfo.add_pos();
-    pos->x = lk.pts.at(i).x;
-    pos->y = lk.pts.at(i).y;
+    pos->set_x(lk.pts.at(i).x);
+    pos->set_y(lk.pts.at(i).y);
   }
 }
 
@@ -170,13 +170,13 @@ void PLMainModel::makeFbNewCmd(PLCommand &cmd, PLFunctionBlock &fb, bool newId,
   cmd.editInfo.mutable_fb()->set_mod_id(fb.idMod);
   cmd.editInfo.mutable_fb()->set_task_id(fb.idPrg);
   cmd.editInfo.mutable_fb()->set_fb_id(fb.id);
-  cmd.editInfo.mutable_fb()->set_flib_name(fb.libName);
-  cmd.editInfo.mutable_fb()->set_fc_name(fb.funName);
-  cmd.editInfo.mutable_fb()->set_fb_name(fb.blkName);
+  cmd.editInfo.mutable_fb()->set_flib_name(fb.libName.toStdString());
+  cmd.editInfo.mutable_fb()->set_fc_name(fb.funName.toStdString());
+  cmd.editInfo.mutable_fb()->set_fb_name(fb.blkName.toStdString());
 
   auto pos = cmd.editInfo.add_pos();
-  pos->x = fb.x;
-  pos->y = fb.y;
+  pos->set_x(fb.x);
+  pos->set_y(fb.y);
 }
 
 void PLMainModel::makeFbRemoveCmd(PLCommand &cmd, PLFunctionBlock &fb) {
@@ -196,14 +196,14 @@ void PLMainModel::makeFbMoveCmd(PLCommand &cmd, PLFunctionBlock &fb) {
   cmd.editInfo.set_edit_type(Bus::EditType::MV);
   cmd.editInfo.mutable_fb()->set_mod_id(fb.idMod);
   cmd.editInfo.mutable_fb()->set_task_id(fb.idPrg);
-  cmd.editInfo.mutable_fb()->set_lk_id(fb.id);
-  cmd.editInfo.mutable_fb()->set_fb_name(fb.blkName);
+  cmd.editInfo.mutable_fb()->set_fb_id(fb.id);
+  cmd.editInfo.mutable_fb()->set_fb_name(fb.blkName.toStdString());
 
   lk.removeDualPoints();
 
   auto pos = cmd.editInfo.add_pos();
-  pos->x = fb.x;
-  pos->y = fb.y;
+  pos->set_x(fb.x);
+  pos->set_y(fb.y);
 }
 
 void PLMainModel::makeViNewCmd(PLCommand &cmd, PLVLink &vlk, bool newId) {
@@ -270,10 +270,10 @@ void PLMainModel::makeEvNewCmd(PLCommand &cmd, PLEVData &ev, bool newId) {
     ev.id = objID;
   }
   cmd.editInfo.mutable_ev()->set_ev_id(ev.id);
-  cmd.editInfo.mutable_ev()->set_ev_name(ev.name);
+  cmd.editInfo.mutable_ev()->set_ev_name(ev.name.toStdString());
   cmd.editInfo.mutable_ev()->set_ev_type(ev.type);
-  cmd.editInfo.mutable_ev()->set_ev_desc(ev.desc);
-  cmd.editInfo.mutable_ev()->set_init_val(ev.initValue);
+  cmd.editInfo.mutable_ev()->set_ev_desc(ev.desc.toStdString());
+  cmd.editInfo.mutable_ev()->mutable_init_val()->CopyFrom(ev.initValue);
 }
 
 void PLMainModel::makeEvSetCmd(PLCommand &cmd, PLEVData &ev) {
@@ -282,10 +282,11 @@ void PLMainModel::makeEvSetCmd(PLCommand &cmd, PLEVData &ev) {
   cmd.editInfo.set_element(Bus::EditElement::EV);
   cmd.editInfo.set_edit_type(Bus::EditType::SET);
   cmd.editInfo.mutable_ev()->set_ev_id(ev.id);
-  cmd.editInfo.mutable_ev()->set_ev_name(ev.name);
+  cmd.editInfo.mutable_ev()->set_ev_name(ev.name.toStdString());
   cmd.editInfo.mutable_ev()->set_ev_type(ev.type);
-  cmd.editInfo.mutable_ev()->set_ev_desc(ev.desc);
-  cmd.editInfo.mutable_ev()->set_init_val(ev.initValue);
+  cmd.editInfo.mutable_ev()->set_ev_desc(ev.desc.toStdString());
+  cmd.editInfo.mutable_ev()->mutable_init_val()->CopyFrom(ev.value);
+
 }
 
 void PLMainModel::makeEvRemoveCmd(PLCommand &cmd, PLEVData &ev) {
@@ -308,9 +309,9 @@ void PLMainModel::makePrgNewCmd(PLCommand &cmd, PLProgram &prg, bool newId) {
   }
   cmd.editInfo.mutable_task()->set_mod_id(prg.idMod);
   cmd.editInfo.mutable_task()->set_task_id(prg.id);
-  cmd.editInfo.mutable_task()->set_task_name(prg.name);
-  cmd.editInfo.mutable_task()->set_task_type(prg.type);
-  cmd.editInfo.mutable_task()->set_task_desc(prg.desc);
+  cmd.editInfo.mutable_task()->set_task_name(prg.name.toStdString());
+  cmd.editInfo.mutable_task()->set_task_type((Bus::TaskType)prg.type);
+  cmd.editInfo.mutable_task()->set_task_desc(prg.desc.toStdString());
 }
 
 void PLMainModel::makePrgRemoveCmd(PLCommand &cmd, PLProgram &prg) {
@@ -329,37 +330,38 @@ void PLMainModel::makePrgRenameCmd(PLCommand &cmd, PLProgram &prg) {
   cmd.editInfo.set_edit_type(Bus::EditType::SET);
   cmd.editInfo.mutable_task()->set_mod_id(prg.idMod);
   cmd.editInfo.mutable_task()->set_task_id(prg.id);
-  cmd.editInfo.mutable_task()->set_task_name(prg.name);
-  cmd.editInfo.mutable_task()->set_task_type(prg.type);
-  cmd.editInfo.mutable_task()->set_task_desc(prg.desc);
+  cmd.editInfo.mutable_task()->set_task_name(prg.name.toStdString());
+  cmd.editInfo.mutable_task()->set_task_type((Bus::TaskType)prg.type);
+  cmd.editInfo.mutable_task()->set_task_desc(prg.desc.toStdString());
 }
-void makeModNewCmd(PLCommand &cmd, PLModule &mod, bool newId = true) {
+void PLMainModel::makeModNewCmd(PLCommand &cmd, PLModule &mod, bool newId) {
   cmdID++;
   cmd.editInfo.set_cmd_id(cmdID);
   cmd.editInfo.set_element(Bus::EditElement::MOD);
-  cmd.editInfo.set_edit_type(Bus::EditType::ADD) if (newId) {
+  cmd.editInfo.set_edit_type(Bus::EditType::ADD);
+  if (newId) {
     objID++;
-    prg.id = objID;
+    mod.id = objID;
   }
   cmd.editInfo.mutable_mod()->set_mod_id(mod.id);
-  cmd.editInfo.mutable_mod()->set_mod_name(mod.name);
-  cmd.editInfo.mutable_mod()->set_mod_desc(mod.desc);
+  cmd.editInfo.mutable_mod()->set_mod_name(mod.name.toStdString());
+  cmd.editInfo.mutable_mod()->set_mod_desc(mod.desc.toStdString());
 }
-void makeModRemoveCmd(PLCommand &cmd, PLModule &mod) {
+void PLMainModel::makeModRemoveCmd(PLCommand &cmd, PLModule &mod) {
   cmdID++;
   cmd.editInfo.set_cmd_id(cmdID);
   cmd.editInfo.set_element(Bus::EditElement::MOD);
   cmd.editInfo.set_edit_type(Bus::EditType::RM);
   cmd.editInfo.mutable_task()->set_mod_id(mod.id);
 }
-void makeModRenameCmd(PLCommand &cmd, PLModule &mod) {
+void PLMainModel::makeModRenameCmd(PLCommand &cmd, PLModule &mod) {
   cmdID++;
   cmd.editInfo.set_cmd_id(cmdID);
   cmd.editInfo.set_element(Bus::EditElement::MOD);
   cmd.editInfo.set_edit_type(Bus::EditType::SET);
   cmd.editInfo.mutable_mod()->set_mod_id(mod.id);
-  cmd.editInfo.mutable_mod()->set_mod_name(mod.name);
-  cmd.editInfo.mutable_mod()->set_mod_desc(mod.desc);
+  cmd.editInfo.mutable_mod()->set_mod_name(mod.name.toStdString());
+  cmd.editInfo.mutable_mod()->set_mod_desc(mod.desc.toStdString());
 }
 void PLMainModel::makePinSetCmd(PLCommand &cmd, int idMod, int idPrg, int idFb,
                                 int idPin, vaule_tm val) {
@@ -409,9 +411,9 @@ void PLMainModel::makeFbCopyCmd(PLCommand &cmd, PLFunctionBlock &fb) {
   cmd.editInfo.mutable_fb()->set_mod_id(fb.idMod);
   cmd.editInfo.mutable_fb()->set_task_id(fb.idPrg);
   cmd.editInfo.mutable_fb()->set_fb_id(fb.id);
-  cmd.editInfo.mutable_fb()->set_flib_name(fb.libName);
-  cmd.editInfo.mutable_fb()->set_fc_name(fb.funName);
-  cmd.editInfo.mutable_fb()->set_fb_name(fb.blkName);
+  cmd.editInfo.mutable_fb()->set_flib_name(fb.libName.toStdString());
+  cmd.editInfo.mutable_fb()->set_fc_name(fb.funName.toStdString());
+  cmd.editInfo.mutable_fb()->set_fb_name(fb.blkName.toStdString());
 
   auto pos = cmd.editInfo.add_pos();
   pos->x = fb.x;
@@ -421,13 +423,13 @@ void PLMainModel::makeFbCopyCmd(PLCommand &cmd, PLFunctionBlock &fb) {
 bool PLMainModel::isCmdObjRemoved(PLCommand *cmd) {
 
   if (cmd->editInfo.element() == Bus::EditElement::MOD &&
-      (cmd->editInfdit_type() == Bus::EditTypo.ee::ADD ||
+      (cmd->editInfdit_type() == Bus::EditType::ADD ||
        cmd->editInfo.edit_type() == Bus::EditType::RM)) {
     if (NULL == PLCommand::getModule(cmd->editInfo.mod().mod_id())) {
       return true;
     }
   } else if (cmd->editInfo.element() == Bus::EditElement::TASK &&
-             (cmd->editInfdit_type() == Bus::EditTypo.ee::ADD ||
+             (cmd->editInfdit_type() == Bus::EditType::ADD ||
               cmd->editInfo.edit_type() == Bus::EditType::RM)) {
     PLModule *mod = PLCommand::getModule(cmd->editInfo.task().mod_id());
     if (NULL == mod) {
@@ -438,14 +440,14 @@ bool PLMainModel::isCmdObjRemoved(PLCommand *cmd) {
       }
     }
   } else if (cmd->editInfo.element() == Bus::EditElement::EV &&
-             (cmd->editInfdit_type() == Bus::EditTypo.ee::ADD ||
+             (cmd->editInfdit_type() == Bus::EditType::ADD ||
               cmd->editInfo.edit_type() == Bus::EditType::RM ||
               cmd->editInfo.edit_type() == Bus::EditType::SET)) {
     if (NULL == PLCommand::getEv(cmd->editInfo.ev().ev_id())) {
       return true;
     }
   } else if (cmd->editInfo.element() == Bus::EditElement::FB &&
-             (cmd->editInfdit_type() == Bus::EditTypo.ee::ADD ||
+             (cmd->editInfdit_type() == Bus::EditType::ADD ||
               cmd->editInfo.edit_type() == Bus::EditType::RM ||
               cmd->editInfo.edit_type() == Bus::EditType::MV)) {
     PLModule *mod = PLCommand::getModule(cmd->editInfo.fb().mod_id());
@@ -480,7 +482,7 @@ bool PLMainModel::isCmdObjRemoved(PLCommand *cmd) {
       }
     }
   } else if (cmd->editInfo.element() == Bus::EditElement::LK &&
-             (cmd->editInfdit_type() == Bus::EditTypo.ee::ADD ||
+             (cmd->editInfdit_type() == Bus::EditType::ADD ||
               cmd->editInfo.edit_type() == Bus::EditType::RM ||
               cmd->editInfo.edit_type() == Bus::EditType::MV)) {
     PLModule *mod = PLCommand::getModule(cmd->editInfo.lk().mod_id());
@@ -497,7 +499,7 @@ bool PLMainModel::isCmdObjRemoved(PLCommand *cmd) {
       }
     }
   } else if (cmd->editInfo.element() == Bus::EditElement::VI &&
-             (cmd->editInfdit_type() == Bus::EditTypo.ee::ADD ||
+             (cmd->editInfdit_type() == Bus::EditType::ADD ||
               cmd->editInfo.edit_type() == Bus::EditType::RM)) {
     PLModule *mod = PLCommand::getModule(cmd->editInfo.vi().mod_id());
     if (NULL == mod) {
@@ -513,7 +515,7 @@ bool PLMainModel::isCmdObjRemoved(PLCommand *cmd) {
       }
     }
   } else if (cmd->editInfo.element() == Bus::EditElement::VO &&
-             (cmd->editInfdit_type() == Bus::EditTypo.ee::ADD ||
+             (cmd->editInfdit_type() == Bus::EditType::ADD ||
               cmd->editInfo.edit_type() == Bus::EditType::RM)) {
     PLModule *mod = PLCommand::getModule(cmd->editInfo.vo().mod_id());
     if (NULL == mod) {
@@ -551,9 +553,11 @@ void PLMainModel::removeDualCommands(QList<PLCommand> &list, bool all) {
       }
     }
     if (cmd->editInfo.element() == Bus::EditElement::FB &&
-        cmd->editInfdit_type() == Bus::EditTyp::MV) {
+        cmd->editInfo.edit_type() == Bus::EditType::MV) {
       for (j = 0; j < moveFb.size(); j++) {
-        if (cmd->editInfo.fb() == moveFb.at(j)->editInfo.fb()) {
+        if (cmd->editInfo.fb().mod_id() == moveFb.at(j)->editInfo.fb().mod_id() &&
+        cmd->editInfo.fb().task_id() == moveFb.at(j)->editInfo.fb().task_id() &&
+        cmd->editInfo.fb().fb_id() == moveFb.at(j)->editInfo.fb().fb_id()) {
           cmd->mark = true;
           break;
         }
@@ -562,9 +566,11 @@ void PLMainModel::removeDualCommands(QList<PLCommand> &list, bool all) {
         moveFb.append(cmd);
       }
     } else if (cmd->editInfo.element() == Bus::EditElement::LK &&
-               cmd->editInfdit_type() == Bus::EditTyp::MV) {
+               cmd->editInfo.edit_type() == Bus::EditType::MV) {
       for (j = 0; j < moveLk.size(); j++) {
-        if (cmd->editInfo.lk() == moveLk.at(j)->editInfo.lk()) {
+        if (cmd->editInfo.lk().mod_id() == moveLk.at(j)->editInfo.lk().mod_id() &&
+        cmd->editInfo.lk().task_id() == moveLk.at(j)->editInfo.lk().task_id() &&
+        cmd->editInfo.lk().lk_id() == moveLk.at(j)->editInfo.lk().lk_id()) {
           cmd->mark = true;
           break;
         }
@@ -573,9 +579,12 @@ void PLMainModel::removeDualCommands(QList<PLCommand> &list, bool all) {
         moveLk.append(cmd);
       }
     } else if (cmd->editInfo.element() == Bus::EditElement::PIN &&
-               cmd->editInfdit_type() == Bus::EditTyp::SET) {
+               cmd->editInfo.edit_type() == Bus::EditType::SET) {
       for (j = 0; j < setPin.size(); j++) {
-        if (cmd->editInfo.pin() == setPin.at(j)->editInfo.pin()) {
+        if (cmd->editInfo.pin().mod_id() == setPin.at(j)->editInfo.pin().mod_id() &&
+        cmd->editInfo.pin().task_id() == setPin.at(j)->editInfo.pin().task_id()  &&
+        cmd->editInfo.pin().fb_id() == setPin.at(j)->editInfo.pin().fb_id()  &&
+        cmd->editInfo.pin().pin_index() == setPin.at(j)->editInfo.pin().pin_index()  ) {
           cmd->mark = true;
           break;
         }
@@ -584,9 +593,9 @@ void PLMainModel::removeDualCommands(QList<PLCommand> &list, bool all) {
         setPin.append(cmd);
       }
     } else if (cmd->editInfo.element() == Bus::EditElement::EV &&
-               cmd->editInfdit_type() == Bus::EditTyp::SET) {
+               cmd->editInfo.edit_type() == Bus::EditType::SET) {
       for (j = 0; j < setEv.size(); j++) {
-        if (cmd->editInfo.ev() == setEv.at(j)->editInfo.ev()) {
+        if (cmd->editInfo.ev().ev_id() == setEv.at(j)->editInfo.ev().ev_id()) {
           cmd->mark = true;
           break;
         }
@@ -595,9 +604,11 @@ void PLMainModel::removeDualCommands(QList<PLCommand> &list, bool all) {
         setEv.append(cmd);
       }
     } else if (cmd->editInfo.element() == Bus::EditElement::TASK &&
-               cmd->editInfdit_type() == Bus::EditTyp::SET) {
+               cmd->editInfo.edit_type() == Bus::EditType::SET) {
       for (j = 0; j < setPrg.size(); j++) {
-        if (cmd->editInfo.task() == setPrg.at(j)->editInfo.task()) {
+        if (cmd->editInfo.task().proj_id() == setPrg.at(j)->editInfo.task().proj_id() &&
+        cmd->editInfo.task().mod_id() == setPrg.at(j)->editInfo.task().mod_id() &&
+        cmd->editInfo.task().task_id() == setPrg.at(j)->editInfo.task().task_id()) {
           cmd->mark = true;
           break;
         }
@@ -606,9 +617,9 @@ void PLMainModel::removeDualCommands(QList<PLCommand> &list, bool all) {
         setPrg.append(cmd);
       }
     } else if (cmd->editInfo.element() == Bus::EditElement::MOD &&
-               cmd->editInfdit_type() == Bus::EditTyp::SET) {
+               cmd->editInfo.edit_type() == Bus::EditType::SET) {
       for (j = 0; j < setMod.size(); j++) {
-        if (cmd->editInfo.mod() == setMod.at(j)->editInfo.mod()) {
+        if (cmd->editInfo.mod().proj_id() == setMod.at(j)->editInfo.mod().proj_id() && cmd->editInfo.mod().mod_id() == setMod.at(j)->editInfo.mod().mod_id()) {
           cmd->mark = true;
           break;
         }
@@ -621,7 +632,9 @@ void PLMainModel::removeDualCommands(QList<PLCommand> &list, bool all) {
 
   for (i = list.size() - 1; i >= 0; i--) {
     if (list.at(i).mark) {
-      qDebug() << "remove:" << list.at(i).editInfo;
+      qDebug() << "remove cmd_id:" << list.at(i).editInfo.cmd_id() 
+      <<" element:" << list.at(i).editInfo.element() 
+      <<" edit_type:" << list.at(i).editInfo.edit_type() ;
       list.removeAt(i);
     }
   }
