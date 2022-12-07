@@ -1,6 +1,9 @@
 #include <QMessageBox>
 #include "dlgevdata.h"
-#include "gdefine.h"
+#include "plmainmodel.h"
+
+extern PLMainModel *gMainModel;
+
 
 DlgEVData::DlgEVData(QWidget *parent, Qt::WindowFlags f)
     : QDialog(parent, f)
@@ -104,7 +107,7 @@ void DlgEVData::setValue(PLEVData &ev, int m)
     }
 
     textName->setText(ev.name);
-    textComment->setText(ev.comment);
+    textComment->setText(ev.desc);
     std::string value;
     switch(ev.initValue.v().t()){
     case v_type::T_BOOL:
@@ -173,7 +176,7 @@ void DlgEVData::setValue(PLEVData &ev, int m)
 void DlgEVData::getValue(PLEVData &ev)
 {
     ev.name = textName->text();
-    ev.comment = textComment->text();
+    ev.desc = textComment->text();
     const std::string value = textValue->text().toStdString();
     switch(listType->currentIndex().row()){
     case 0:

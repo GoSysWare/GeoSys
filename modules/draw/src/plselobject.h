@@ -2,6 +2,8 @@
 #define PLSELOBJECT_H
 
 #include "pllink.h"
+#include "plvlink.h"
+
 #include "plfunctionblock.h"
 
 const int PT_NONE=0;
@@ -23,6 +25,8 @@ public:
     int value;
     PLFunctionBlock *fb;
     PLLink *lk;
+    PLVLink *vlk;
+
 };
 
 #endif // PLSELOBJECT_H

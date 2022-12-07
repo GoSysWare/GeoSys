@@ -1,8 +1,9 @@
 //#include <QValidator>
 #include <QMessageBox>
 #include "dlgaddprog.h"
-#include "gdefine.h"
+#include "plmainmodel.h"
 
+extern PLMainModel *gMainModel;
 DlgAddProg::DlgAddProg(QWidget *parent, Qt::WindowFlags f)
     : QDialog(parent, f)
 {
@@ -50,16 +51,19 @@ void DlgAddProg::ok(bool check)
         QMessageBox::warning(this, "Warining", tr("Program name can't contains ';'"));
         return;
     }
-
-    for(int i=0; i<gMainModel->prgList.size(); i++){
-        if(gMainModel->prgList.at(i).name == prgName && i!=indexEdit){
-            QString msg = "Program '";
-            msg += prgName;
-            msg += "' already exist";
-            QMessageBox::warning(this, "Warining", msg);
-            return;
+    for(int m = 0; m < gMainModel->modList.size(); m++){
+        PLModule * mod = &gMainModel->modList[m];
+        for(int i=0; i< mod->prgList.size(); i++){
+            if(mod->prgList.at(i).name == prgName && i!=indexEdit){
+                QString msg = "Program '";
+                msg += prgName;
+                msg += "' already exist";
+                QMessageBox::warning(this, "Warining", msg);
+                return;
+            }
         }
     }
+
 
     accept();
 }

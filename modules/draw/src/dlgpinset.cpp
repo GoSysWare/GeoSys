@@ -1,7 +1,10 @@
 #include "dlgpinset.h"
-#include "gdefine.h"
 #include "dlgevdata.h"
 #include <QMessageBox>
+#include "plmainmodel.h"
+
+extern PLMainModel *gMainModel;
+
 
 TableEVView::TableEVView()
 {
@@ -126,16 +129,26 @@ void DlgPinSet::ok(bool check)
     case T_INT32:
         evData.initValue.mutable_v()->set_i(0);
         break;
+    case T_UINT32:
+        evData.initValue.mutable_v()->set_ui(0);
+        break;
+    case T_INT64:
+        evData.initValue.mutable_v()->set_ll(0);
+        break;
+    case T_UINT64:
+        evData.initValue.mutable_v()->set_ull(0);
+        break;
     case T_FLOAT32:
         evData.initValue.mutable_v()->set_f(0);
-
         break;
     case T_FLOAT64:
         evData.initValue.mutable_v()->set_d(0);
-
         break;
     case T_TIME:
         evData.initValue.mutable_v()->set_ull(0);
+        break;
+    case T_STRING:
+        evData.initValue.mutable_v()->set_str("");
         break;
     default:
         QMessageBox::critical(this, "Error", "Unknown data type");
@@ -150,7 +163,7 @@ void DlgPinSet::ok(bool check)
     PLCommand cmd;
     gMainModel->makeEvNewCmd(cmd, evData);
     if(!gMainModel->exeCommand(cmd)){
-         QMessageBox::critical(this, "Error", cmd.cmdLine);
+         QMessageBox::critical(this, "Error", QString::fromStdString(cmd.editInfo.ShortDebugString()));
         gMainModel->modelEVData.endReset();
         return;
     }

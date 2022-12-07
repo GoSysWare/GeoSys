@@ -6,7 +6,7 @@
 #include "plprogram.h"
 #include "dlgpinset.h"
 #include "dlgobjname.h"
-// #include "k_project.h"
+#include "modules/calc/include/k_project.h"
 #include <QMessageBox>
 
 CadPanel::CadPanel()
@@ -510,7 +510,7 @@ void CadPanel::mouseReleaseEvent(QMouseEvent * event)
         if(linkTracker.id != 0){
             gMainModel->makeLkMoveCmd(cmd, linkTracker);
             if(!gMainModel->exeCommand(cmd)){
-                 QMessageBox::critical(this, "Error", cmd.cmdLine);
+                 QMessageBox::critical(this, "Error", QString::fromStdString(cmd.editInfo.ShortDebugString()));
             }
         }
         break;
@@ -527,12 +527,12 @@ void CadPanel::mouseReleaseEvent(QMouseEvent * event)
             linkSel.pts[1].y = linkSel.pts[0].y;
             linkSel.pts[2].x = (linkSel.pts[0].x + linkSel.pts[3].x) / 2;
             linkSel.pts[2].y = linkSel.pts[3].y;
-            if(prj_checkloop(gMainModel->prgCurrent->id, linkSel.idFbSrc, linkSel.idFbTgt)){
+            if(prj_checkloop(gMainModel->prgCurrent->idMod,gMainModel->prgCurrent->id, linkSel.idFbSrc, linkSel.idFbTgt)){
                 QMessageBox::warning(this, "warning", "Signal loop - can't add link");
             }else{
                 gMainModel->makeLkNewCmd(cmd, linkSel);
                 if(!gMainModel->exeCommand(cmd)){
-                     QMessageBox::critical(this, "Error", cmd.cmdLine);
+                     QMessageBox::critical(this, "Error", QString::fromStdString(cmd.editInfo.ShortDebugString()));
                 }
             }
         }
@@ -551,12 +551,12 @@ void CadPanel::mouseReleaseEvent(QMouseEvent * event)
             linkSel.pts[1].y = linkSel.pts[0].y;
             linkSel.pts[2].x = (linkSel.pts[0].x + linkSel.pts[3].x) / 2;
             linkSel.pts[2].y = linkSel.pts[3].y;
-            if(prj_checkloop(gMainModel->prgCurrent->id, linkSel.idFbSrc, linkSel.idFbTgt)){
+            if(prj_checkloop(gMainModel->prgCurrent->idMod,gMainModel->prgCurrent->id, linkSel.idFbSrc, linkSel.idFbTgt)){
                 QMessageBox::warning(this, "warning", "Signal loop - can't add link");
             }else{
                 gMainModel->makeLkNewCmd(cmd, linkSel);
                 if(!gMainModel->exeCommand(cmd)){
-                     QMessageBox::critical(this, "Error", cmd.cmdLine);
+                     QMessageBox::critical(this, "Error", QString::fromStdString(cmd.editInfo.ShortDebugString()));
                 }
             }
         }
@@ -610,7 +610,7 @@ void CadPanel::mouseDoubleClickEvent(QMouseEvent * event)
             PLCommand cmd;
             gMainModel->makeFbMoveCmd(cmd, fbMove);
             if(!gMainModel->exeCommand(cmd)){
-                 QMessageBox::critical(this, "Error", cmd.cmdLine);
+                 QMessageBox::critical(this, "Error", QString::fromStdString(cmd.editInfo.ShortDebugString()));
                 return;
             }
             update();
@@ -660,9 +660,9 @@ void CadPanel::mouseDoubleClickEvent(QMouseEvent * event)
     if(isConst){
         value_tm val;
         val =setvar(selCurrent.fb->input[selCurrent.value].type,constValue.toStdString());
-        gMainModel->makePinSetCmd(cmd, gMainModel->prgCurrent->id, selCurrent.fb->id, selCurrent.value, QString::fromLatin1(var2str(val).data()));
+        gMainModel->makePinSetCmd(cmd, gMainModel->prgCurrent->idMod,gMainModel->prgCurrent->id, selCurrent.fb->id, selCurrent.value, val);
         if(!gMainModel->exeCommand(cmd)){
-            QMessageBox::critical(this, "Error", cmd.cmdLine);
+            QMessageBox::critical(this, "Error", QString::fromStdString(cmd.editInfo.ShortDebugString()));
             return;
         }
         update();
@@ -671,7 +671,7 @@ void CadPanel::mouseDoubleClickEvent(QMouseEvent * event)
             gMainModel->modelEVData.beginReset();
             gMainModel->makeViNewCmd(cmd, vlk);
             if(!gMainModel->exeCommand(cmd)){
-                QMessageBox::critical(this, "Error", cmd.cmdLine);
+                QMessageBox::critical(this, "Error", QString::fromStdString(cmd.editInfo.ShortDebugString()));
                 gMainModel->modelEVData.endReset();
                 return;
             }
@@ -681,7 +681,7 @@ void CadPanel::mouseDoubleClickEvent(QMouseEvent * event)
             gMainModel->modelEVData.beginReset();
             gMainModel->makeVoNewCmd(cmd, vlk);
             if(!gMainModel->exeCommand(cmd)){
-                QMessageBox::critical(this, "Error", cmd.cmdLine);
+                QMessageBox::critical(this, "Error", QString::fromStdString(cmd.editInfo.ShortDebugString()));
                 gMainModel->modelEVData.endReset();
                 return;
             }
@@ -711,7 +711,7 @@ void CadPanel::dropEvent(QDropEvent * event)
     PLCommand cmd;
     gMainModel->makeFbNewCmd(cmd, fb);
     if(!gMainModel->exeCommand(cmd)){
-        QMessageBox::critical(this, "Error", cmd.cmdLine);
+        QMessageBox::critical(this, "Error", QString::fromStdString(cmd.editInfo.ShortDebugString()));
         return;
     }
 
@@ -1164,7 +1164,7 @@ void CadPanel::moveAllSelectedFbs(int dx, int dy)
             markLinks(fbMove.id);
             gMainModel->makeFbMoveCmd(cmd, fbMove);
             if(!gMainModel->exeCommand(cmd)){
-                QMessageBox::critical(this, "Error", cmd.cmdLine);
+                QMessageBox::critical(this, "Error", QString::fromStdString(cmd.editInfo.ShortDebugString()));
                 return;
             }
         }
@@ -1257,7 +1257,7 @@ void CadPanel::moveMarkLinks(int dx, int dy)
 
         gMainModel->makeLkMoveCmd(cmd, lkm);
         if(!gMainModel->exeCommand(cmd)){
-            QMessageBox::critical(this, "Error", cmd.cmdLine);
+            QMessageBox::critical(this, "Error", QString::fromStdString(cmd.editInfo.ShortDebugString()));
             return;
         }
     }
@@ -1297,7 +1297,7 @@ void CadPanel::removeAllSelected()
         if(vlk.isSelected || vlk.mark){
             gMainModel->makeViRemoveCmd(cmd, vlk);
             if(!gMainModel->exeCommand(cmd)){
-                QMessageBox::critical(this, "Error", cmd.cmdLine);
+                QMessageBox::critical(this, "Error", QString::fromStdString(cmd.editInfo.ShortDebugString()));
                 return;
             }
         }
@@ -1307,7 +1307,7 @@ void CadPanel::removeAllSelected()
         if(vlk.isSelected || vlk.mark){
             gMainModel->makeVoRemoveCmd(cmd, vlk);
             if(!gMainModel->exeCommand(cmd)){
-                QMessageBox::critical(this, "Error", cmd.cmdLine);
+                QMessageBox::critical(this, "Error", QString::fromStdString(cmd.editInfo.ShortDebugString()));
                 return;
             }
         }
@@ -1317,7 +1317,7 @@ void CadPanel::removeAllSelected()
         if(lk.isSelected || lk.markSrc || lk.markTgt){
             gMainModel->makeLkRemoveCmd(cmd, lk);
             if(!gMainModel->exeCommand(cmd)){
-                QMessageBox::critical(this, "Error", cmd.cmdLine);
+                QMessageBox::critical(this, "Error", QString::fromStdString(cmd.editInfo.ShortDebugString()));
                 return;
             }
         }
@@ -1327,7 +1327,7 @@ void CadPanel::removeAllSelected()
         if(fb.isSelected){
             gMainModel->makeFbRemoveCmd(cmd, fb);
             if(!gMainModel->exeCommand(cmd)){
-                QMessageBox::critical(this, "Error", cmd.cmdLine);
+                QMessageBox::critical(this, "Error", QString::fromStdString(cmd.editInfo.ShortDebugString()));
                 return;
             }
         }
@@ -1421,12 +1421,12 @@ void CadPanel::getCopyCommands(QByteArray &cpCmds)
     QDataStream in(&buff_io);
     for(i=0; i<fbs.size(); i++){
         gMainModel->makeFbCopyCmd(cmd, fbs[i]);
-        in << cmd.cmdLine.toLatin1();
+        in << QString::fromStdString(cmd.editInfo.ShortDebugString()).toLatin1();
     }
 
     for(i=0; i<lks.size(); i++){
         gMainModel->makeLkCopyCmd(cmd, lks[i]);
-        in << cmd.cmdLine.toLatin1();
+        in << QString::fromStdString(cmd.editInfo.ShortDebugString()).toLatin1();
     }
     cpCmds = buff_io.buffer();
     buff_io.close();
@@ -1511,15 +1511,15 @@ void CadPanel::exeCopyCommands(QByteArray &cpCmds)
     for(i=0; i<fbList.size(); i++){
         gMainModel->makeFbNewCmd(cmd, fbList[i], false);
         if(!gMainModel->exeCommand(cmd)){
-           QMessageBox::critical(this, "Error", cmd.cmdLine);
+           QMessageBox::critical(this, "Error", QString::fromStdString(cmd.editInfo.ShortDebugString()));
             return;
         }
     }
     for(i=0; i<lkList.size(); i++){
         gMainModel->makeLkNewCmd(cmd, lkList[i], false);
-        qDebug()<<"cmd:"<<cmd.cmdLine;
+        qDebug()<<"cmd:"<<QString::fromStdString(cmd.editInfo.ShortDebugString());
         if(!gMainModel->exeCommand(cmd)){
-            QMessageBox::critical(this, "Error", cmd.cmdLine);
+            QMessageBox::critical(this, "Error", QString::fromStdString(cmd.editInfo.ShortDebugString()));
             return;
         }
     }

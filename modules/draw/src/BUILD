@@ -234,6 +234,8 @@ qt_cc_library(
     ],
     deps = [
         ":pllink",
+        ":plvlink",
+        ":plevdata",
         ":plfunctionblock",
         "//modules/calc/proto:value_cc_proto",
         "//modules/calc/include:calc_include",
@@ -264,27 +266,6 @@ qt_cc_library(
     ],
 )
 
-qt_cc_library(
-    name = "dlgaddprog",
-    srcs =[
-        "dlgaddprog.cpp",
-    ],
-    hdrs = [
-        "dlgaddprog.h",
-    ],
-    copts = [
-    ],
-    deps = [
-        ":plevdata",
-        ":plprogram",
-        "//modules/calc/proto:value_cc_proto",
-        "//modules/calc/include:calc_include",
-        "//modules/calc/include/lib:lib_include",   
-        "@qt//:qt_core",
-        "@qt//:qt_gui",
-
-    ],
-)
 
 qt_cc_library(
     name = "plcommand",
@@ -312,49 +293,8 @@ qt_cc_library(
     ],
 )
 
-qt_cc_library(
-    name = "cadpanel",
-    srcs =[
-        "cadpanel.cpp",
-    ],
-    hdrs = [
-        "cadpanel.h",
-    ],
-    copts = [
-    ],
-    deps = [
 
-        "//modules/calc/proto:value_cc_proto",
-        "//modules/calc/include:calc_include",
-        "//modules/calc/include/lib:lib_include",   
-        "@qt//:qt_core",
-        "@qt//:qt_gui",
 
-    ],
-)
-
-qt_cc_library(
-    name = "evdatamodel",
-    srcs =[
-        "evdatamodel.cpp",
-    ],
-    hdrs = [
-        "evdatamodel.h",
-    ],
-    copts = [
-    ],
-    deps = [
-        ":plevdata",
-        "//modules/calc/proto:edit_cc_proto",
-        "//modules/calc/proto:return_cc_proto",
-        "//modules/calc/proto:value_cc_proto",
-        "//modules/calc/include:calc_include",
-        "//modules/calc/include/lib:lib_include",   
-        "@qt//:qt_core",
-        "@qt//:qt_gui",
-
-    ],
-)
 
 qt_cc_library(
     name = "plmainmodel",
@@ -388,3 +328,192 @@ qt_cc_library(
 )
 
 
+qt_cc_library(
+    name = "cadpanel",
+    srcs =[
+        "cadpanel.cpp",
+    ],
+    hdrs = [
+        "cadpanel.h",
+    ],
+    copts = [
+    ],
+    deps = [
+        ":plselobject",
+        ":plmainmodel",
+
+        "//modules/calc/proto:bus_cc_proto",
+        "//modules/calc/include:calc_include",
+        "//modules/calc/include/lib:lib_include",   
+        "@qt//:qt_core",
+        "@qt//:qt_gui",
+
+    ],
+)
+qt_cc_library(
+    name = "dlgaddprog",
+    srcs =[
+        "dlgaddprog.cpp",
+    ],
+    hdrs = [
+        "dlgaddprog.h",
+    ],
+    copts = [
+    ],
+    deps = [
+        ":plmainmodel",
+        "//modules/calc/proto:bus_cc_proto",
+        "//modules/calc/include:calc_include",
+        "//modules/calc/include/lib:lib_include",   
+        "@qt//:qt_core",
+        "@qt//:qt_gui",
+
+    ],
+)
+qt_cc_library(
+    name = "dlgevdata",
+    srcs =[
+        "dlgevdata.cpp",
+    ],
+    hdrs = [
+        "dlgevdata.h",
+    ],
+    copts = [
+    ],
+    deps = [
+        ":plevdata",
+        ":plmainmodel",
+        "//modules/calc/proto:bus_cc_proto",
+        "//modules/calc/include:calc_include",
+        "//modules/calc/include/lib:lib_include",   
+        "@qt//:qt_core",
+        "@qt//:qt_gui",
+
+    ],
+)
+qt_cc_library(
+    name = "dlgipaddress",
+    srcs =[
+        "dlgipaddress.cpp",
+    ],
+    hdrs = [
+        "dlgipaddress.h",
+    ],
+    copts = [
+    ],
+    deps = [
+        "//modules/calc/proto:bus_cc_proto",
+        "//modules/calc/include:calc_include",
+        "//modules/calc/include/lib:lib_include",   
+        "@qt//:qt_core",
+        "@qt//:qt_gui",
+
+    ],
+)
+qt_cc_library(
+    name = "dlgobjname",
+    srcs =[
+        "dlgobjname.cpp",
+    ],
+    hdrs = [
+        "dlgobjname.h",
+    ],
+    copts = [
+    ],
+    deps = [
+        ":dlgevdata",
+        ":plmainmodel",
+        "//modules/calc/proto:bus_cc_proto",
+        "//modules/calc/include:calc_include",
+        "//modules/calc/include/lib:lib_include",   
+        "@qt//:qt_core",
+        "@qt//:qt_gui",
+
+    ],
+)
+qt_cc_library(
+    name = "dlgpinset",
+    srcs =[
+        "dlgpinset.cpp",
+    ],
+    hdrs = [
+        "dlgpinset.h",
+    ],
+    copts = [
+    ],
+    deps = [
+        ":dlgevdata",
+        ":plmainmodel",
+        "//modules/calc/proto:bus_cc_proto",
+        "//modules/calc/include:calc_include",
+        "//modules/calc/include/lib:lib_include",   
+        "@qt//:qt_core",
+        "@qt//:qt_gui",
+
+    ],
+)
+qt_cc_library(
+    name = "dlgsaveproj",
+    srcs =[
+        "dlgsaveproj.cpp",
+    ],
+    hdrs = [
+        "dlgsaveproj.h",
+    ],
+    copts = [
+    ],
+    deps = [
+        "//modules/calc/proto:bus_cc_proto",
+        "//modules/calc/include:calc_include",
+        "//modules/calc/include/lib:lib_include",   
+        "@qt//:qt_core",
+        "@qt//:qt_gui",
+
+    ],
+)
+
+qt_cc_library(
+    name = "evdatamodel",
+    srcs =[
+        "evdatamodel.cpp",
+    ],
+    hdrs = [
+        "evdatamodel.h",
+    ],
+    copts = [
+    ],
+    deps = [
+        ":plevdata",
+        "//modules/calc/proto:edit_cc_proto",
+        "//modules/calc/proto:return_cc_proto",
+        "//modules/calc/proto:value_cc_proto",
+        "//modules/calc/include:calc_include",
+        "//modules/calc/include/lib:lib_include",   
+        "@qt//:qt_core",
+        "@qt//:qt_gui",
+
+    ],
+)
+
+qt_cc_library(
+    name = "libpanel",
+    srcs =[
+        "libpanel.cpp",
+    ],
+    hdrs = [
+        "libpanel.h",
+    ],
+    copts = [
+    ],
+    deps = [
+        ":plmainmodel",
+        "//modules/calc/proto:edit_cc_proto",
+        "//modules/calc/proto:return_cc_proto",
+        "//modules/calc/proto:value_cc_proto",
+        "//modules/calc/include:calc_include",
+        "//modules/calc/include/lib:lib_include",   
+        "@qt//:qt_core",
+        "@qt//:qt_gui",
+
+    ],
+)
