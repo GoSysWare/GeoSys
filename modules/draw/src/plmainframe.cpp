@@ -2,8 +2,7 @@
 #include "gdefine.h"
 #include "dlgsaveproj.h"
 #include "dlgipaddress.h"
-#include "cfgbus.h"
-#include "k_command.h"
+#include "modules/calc/include/k_command.h"
 
 #include <QTimer>
 #include <QAction>
@@ -212,10 +211,12 @@ void PLMainFrame::createDockWindows()
     tabProj = new QTabWidget;
     tabProj->setTabPosition(QTabWidget::North);
 
+    panelmods = new ModulePanel;
     panelProgs = new ProgPanel;
     panelLib = new LibPanel;
-    tabProj->insertTab(1, panelProgs, tr("Program"));
-    tabProj->insertTab(2, panelLib, tr("Library"));
+    tabProj->insertTab(1, panelmods, tr("Module"));
+    tabProj->insertTab(2, panelProgs, tr("Program"));
+    tabProj->insertTab(3, panelLib, tr("Library"));
 
     dockProj = new QDockWidget(gMainModel->project.description(), this);
     dockProj->setWidget(tabProj);
@@ -689,7 +690,7 @@ void PLMainFrame::updateActionState()
             actEditPaste->setEnabled(false);
         }
     }
-
+    panelMods->updateState();
     panelProgs->updateState();
     panelEVData->updateState();
 }

@@ -4,7 +4,6 @@
 #include <QDebug>
 #include <QAbstractTableModel>
 #include <QList>
-// #include "plevdata.h"
 
 class EVDataModel : public QAbstractTableModel
 {

@@ -11,7 +11,7 @@
 #include "libpanel.h"
 #include "progpanel.h"
 #include "evdatapanel.h"
-
+#include "modulepanel.h"
 class PLMainFrame : public QMainWindow {
     Q_OBJECT
 public:
@@ -87,6 +87,7 @@ private:
     QTabWidget *tabProj;
     QScrollArea *scrProgCad;
     CadPanel *panelProgCad;
+    ModulePanel *panelMods;
     ProgPanel *panelProgs;
     LibPanel *panelLib;
     EVDataPanel *panelEVData;

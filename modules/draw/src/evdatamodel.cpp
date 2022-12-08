@@ -1,5 +1,8 @@
 #include "evdatamodel.h"
-// #include "gdefine.h"
+#include "plevdata.h"
+#include "gdefine.h"
+
+
 
 EVDataModel::EVDataModel(QObject *parent)
     : QAbstractTableModel(parent)
@@ -21,8 +24,7 @@ void EVDataModel::endReset()
 
 int EVDataModel::rowCount(const QModelIndex &parent) const
 {
-    // return gMainModel->evList.size();
-    return -1;
+    return gMainModel->evList.size();
 }
 
 int EVDataModel::columnCount(const QModelIndex &parent) const
@@ -88,33 +90,33 @@ QVariant EVDataModel::data(const QModelIndex &index, int role) const
             return QVariant();
         }
     } else if (role == Qt::DisplayRole) {
-        // PLEVData ev = gMainModel->evList.at(index.row());
-        // std::string type;
-        // std::string value;
-        // type = v_type_Name(ev.initValue.v().t());
-        // value = ev.initValue.ShortDebugString();
-        // QString sType = QString::fromStdString(type);
-        // QString sInitValue = QString::fromStdString(value);
-        // value = ev.value.ShortDebugString();
-        // QString sValue =  QString::fromStdString(value);
-        // QString sRef;
-        // sRef= QString::asprintf("In:%d / Out:%d", ev.refIn, ev.refOut);
-        // switch(index.column()){
-        // case 0:
-        //     return ev.name;
-        // case 1:
-        //     return sType;
-        // case 2:
-        //     return ev.desc;
-        // case 3:
-        //     return sInitValue;
-        // case 4:
-        //     return sValue;
-        // case 5:
-        //     return sRef;
-        // default:
-        //     return QVariant();
-        // }
+        PLEVData ev = gMainModel->evList.at(index.row());
+        std::string type;
+        std::string value;
+        type = v_type_Name(ev.initValue.v().t());
+        value = ev.initValue.ShortDebugString();
+        QString sType = QString::fromStdString(type);
+        QString sInitValue = QString::fromStdString(value);
+        value = ev.value.ShortDebugString();
+        QString sValue =  QString::fromStdString(value);
+        QString sRef;
+        sRef= QString::asprintf("In:%d / Out:%d", ev.refIn, ev.refOut);
+        switch(index.column()){
+        case 0:
+            return ev.name;
+        case 1:
+            return sType;
+        case 2:
+            return ev.desc;
+        case 3:
+            return sInitValue;
+        case 4:
+            return sValue;
+        case 5:
+            return sRef;
+        default:
+            return QVariant();
+        }
     }
 
     return QVariant();

@@ -1,9 +1,8 @@
 //#include <QValidator>
 #include <QMessageBox>
 #include "dlgaddprog.h"
-#include "plmainmodel.h"
+#include "gdefine.h"
 
-extern PLMainModel *gMainModel;
 DlgAddProg::DlgAddProg(QWidget *parent, Qt::WindowFlags f)
     : QDialog(parent, f)
 {

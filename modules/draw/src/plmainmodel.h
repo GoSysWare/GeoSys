@@ -9,7 +9,6 @@
 #include "plprogram.h"
 #include "plmodule.h"
 #include "plevdata.h"
-#include "plcommand.h"
 #include "plproject.h"
 #include "evdatamodel.h"
 #include "modules/calc/proto/value.pb.h"
@@ -40,6 +39,7 @@ public:
 
     bool exeCommand(PLCommand &cmd);
     PLProgram *prgCurrent;
+    PLModule *modCurrent;
 
     bool isModified;
 

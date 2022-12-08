@@ -1,7 +1,6 @@
 #include "libpanel.h"
-#include "plmainmodel.h"
+#include "gdefine.h"
 
-extern PLMainModel *gMainModel;
 
 ListFunctions::ListFunctions()
 {

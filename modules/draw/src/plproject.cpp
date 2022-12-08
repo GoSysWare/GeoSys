@@ -3,7 +3,7 @@
 
 PLProject::PLProject()
 {
-    name = "geoCalc-logic-project";
+    name = "rotbot-logic-project";
     clear();
 }
 

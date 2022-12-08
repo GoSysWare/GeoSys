@@ -2,6 +2,7 @@
 #define PLCOMMAND_H
 
 #include <QString>
+#include "plproject.h"
 #include "plmodule.h"
 #include "plprogram.h"
 #include "plfunctionblock.h"

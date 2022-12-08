@@ -11,7 +11,7 @@ void ListProgram::currentChanged(const QModelIndex &current, const QModelIndex &
     int sel = current.row();
     if(sel >0)
     {
-        gMainModel->prgCurrent = &gMainModel->prgList[sel];
+        gMainModel->prgCurrent = &gMainModel->modCurrent->prgList[sel];
         gMainFrame->updateCadView();
     }
 }
@@ -77,11 +77,11 @@ void ProgPanel::addProgram(bool check)
     prg.name = dlgAddProg.prgName;
     gMainModel->makePrgNewCmd(cmd, prg);
     if(!gMainModel->exeCommand(cmd)){
-         QMessageBox::critical(this, "Error", cmd.cmdLine);
+         QMessageBox::critical(this, "Error", QString::fromStdString(cmd.editInfo.ShortDebugString()));
         return;
     }
 
-    gMainModel->updateProgList();
+    gMainModel->updateProgList(gMainModel->modCurrent->id);
 }
 
 void ProgPanel::removeProgram(bool check)
@@ -95,7 +95,7 @@ void ProgPanel::removeProgram(bool check)
     }
 
     int sel = listPrograms->currentIndex().row();
-    PLProgram *prg = &gMainModel->prgList[sel];
+    PLProgram *prg = &gMainModel->modCurrent->prgList[sel];
     QString msg = "Confirm to delete program '";
     msg += prg->name;
     msg += "'";
@@ -106,12 +106,12 @@ void ProgPanel::removeProgram(bool check)
     PLCommand cmd;
     gMainModel->makePrgRemoveCmd(cmd, *prg);
     if(!gMainModel->exeCommand(cmd)){
-         QMessageBox::critical(this, "Error", cmd.cmdLine);
+         QMessageBox::critical(this, "Error", QString::fromStdString(cmd.editInfo.ShortDebugString()));
         return;
     }
     gMainModel->prgCurrent = NULL;
     gMainFrame->updateCadView();
-    gMainModel->updateProgList();
+    gMainModel->updateProgList(gMainModel->modCurrent->id);
 }
 
 void ProgPanel::renameProgram(bool check)
@@ -133,13 +133,13 @@ void ProgPanel::renameProgram(bool check)
 
     PLCommand cmd;
     PLProgram prg;
-    prg.id = gMainModel->prgList.at(listPrograms->currentIndex().row()).id;
+    prg.id = gMainModel->modCurrent->prgList.at(listPrograms->currentIndex().row()).id;
     prg.name = dlgAddProg.prgName;
     gMainModel->makePrgRenameCmd(cmd, prg);
     if(!gMainModel->exeCommand(cmd)){
-         QMessageBox::critical(this, "Error", cmd.cmdLine);
+         QMessageBox::critical(this, "Error", QString::fromStdString(cmd.editInfo.ShortDebugString()));
         return;
     }
 
-    gMainModel->updateProgList();
+    gMainModel->updateProgList(gMainModel->modCurrent->id);
 }

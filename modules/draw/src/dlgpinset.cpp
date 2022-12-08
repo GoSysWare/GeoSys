@@ -1,9 +1,9 @@
 #include "dlgpinset.h"
 #include "dlgevdata.h"
 #include <QMessageBox>
-#include "plmainmodel.h"
+#include "gdefine.h"
 
-extern PLMainModel *gMainModel;
+
 
 
 TableEVView::TableEVView()

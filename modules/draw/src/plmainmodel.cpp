@@ -14,6 +14,7 @@ PLMainModel::PLMainModel() {
   cmdID = 0;
   objID = 0;
   prgCurrent = NULL;
+  modCurrent = NULL;
 
   initLibrary();
   updateFuncList(0);
@@ -54,12 +55,13 @@ void PLMainModel::clear() {
   cmdID = 0;
   objID = 0;
   prgCurrent = NULL;
+  modCurrent = NULL;
+
   modList.clear();
   cmdList.clear();
   modelEVData.beginReset();
   evList.clear();
   modelEVData.endReset();
-  prj_reset();
   project.clear();
 
   prj_reset();

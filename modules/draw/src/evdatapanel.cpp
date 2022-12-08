@@ -1,7 +1,7 @@
 #include "evdatapanel.h"
-#include "gdefine.h"
 #include "dlgevdata.h"
 #include<QMessageBox>
+#include "gdefine.h"
 
 TableEVData::TableEVData()
 {
@@ -96,7 +96,7 @@ void EVDataPanel::addEVData(bool check)
     PLCommand cmd;
     gMainModel->makeEvNewCmd(cmd, evLast);
     if(!gMainModel->exeCommand(cmd)){
-         QMessageBox::critical(this, "Error", cmd.cmdLine);
+         QMessageBox::critical(this, "Error", QString::fromStdString(cmd.editInfo.ShortDebugString()));
         gMainModel->modelEVData.endReset();
         return;
     }
@@ -126,7 +126,7 @@ void EVDataPanel::editEVData(bool check)
     PLCommand cmd;
     gMainModel->makeEvSetCmd(cmd, evLast);
     if(!gMainModel->exeCommand(cmd)){
-         QMessageBox::critical(this, "Error", cmd.cmdLine);
+         QMessageBox::critical(this, "Error", QString::fromStdString(cmd.editInfo.ShortDebugString()));
         gMainModel->modelEVData.endReset();
         return;
     }
@@ -163,7 +163,7 @@ void EVDataPanel::removeEVData(bool check)
             gMainModel->makeEvRemoveCmd(cmd, gMainModel->evList[i]);
             //qDebug() << cmd.cmdLine;
             if(!gMainModel->exeCommand(cmd)){
-                 QMessageBox::critical(this, "Error", cmd.cmdLine);
+                 QMessageBox::critical(this, "Error", QString::fromStdString(cmd.editInfo.ShortDebugString()));
                 gMainModel->modelEVData.endReset();
                 return;
             }

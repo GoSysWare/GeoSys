@@ -1,7 +1,8 @@
 #include "plcommand.h"
-// #include "gdefine.h"
 // #include "modules/calc/include/k_project.h"
 #include <QStringList>
+#include "gdefine.h"
+
 
 PLCommand::PLCommand() {}
 
@@ -18,7 +19,7 @@ bool PLCommand::dispatch() {
     } else if (type == Bus::EditType::RM) {
 
     } else if (type == Bus::EditType::SET) {
-        // gMainModel->project.uuid = QString::fromStdString(editInfo.proj().proj_uuid());
+        gMainModel->project.uuid = QString::fromStdString(editInfo.proj().proj_uuid());
     } else if (type == Bus::EditType::SHOW) {
 
     } else if (type == Bus::EditType::MV) {

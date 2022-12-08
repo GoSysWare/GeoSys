@@ -1,8 +1,7 @@
 #include <QMessageBox>
 #include "dlgevdata.h"
-#include "plmainmodel.h"
+#include "gdefine.h"
 
-extern PLMainModel *gMainModel;
 
 
 DlgEVData::DlgEVData(QWidget *parent, Qt::WindowFlags f)
