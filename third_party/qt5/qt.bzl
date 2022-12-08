@@ -10,6 +10,8 @@ def _base_name(fileName):
     return fileName.split(".")[0]
 
 def qt_cc_library(name, srcs, hdrs, copts = [], uis = [], res = [], normal_hdrs = [], deps = None, **kwargs):
+    print(hdrs)
+  
     for hItem in hdrs:
         base_name = _base_name(_file_name(hItem))
         cmd = """
@@ -24,8 +26,9 @@ def qt_cc_library(name, srcs, hdrs, copts = [], uis = [], res = [], normal_hdrs 
             outs = ["moc_%s.cpp" % base_name],
             cmd = cmd,
         )
+        print(cmd)
         srcs.append("moc_%s.cpp" % base_name)
-
+    print(srcs)
     for uitem in uis:
         base_name = _base_name(_file_name(uitem))
         native.genrule(

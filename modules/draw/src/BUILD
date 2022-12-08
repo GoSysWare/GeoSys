@@ -542,94 +542,94 @@ qt_cc_library(
 # )
 
 
-qt_cc_library(
-    name = "plselobject",
-    srcs =[
-        "plselobject.cpp",
-    ],
-    hdrs = [
-        "plselobject.h",
-    ],
-    copts = [
-    ],
-    deps = [
-        ":pllink",
-        ":plvlink",
-        ":plevdata",
-        ":plfunctionblock",
-        "//modules/calc/proto:bus_cc_proto",
-        "//modules/calc/include:calc_include",
-        "//modules/calc/include/lib:lib_include",   
-        "@qt//:qt_core",
+# qt_cc_library(
+#     name = "plselobject",
+#     srcs =[
+#         "plselobject.cpp",
+#     ],
+#     hdrs = [
+#         "plselobject.h",
+#     ],
+#     copts = [
+#     ],
+#     deps = [
+#         ":pllink",
+#         ":plvlink",
+#         ":plevdata",
+#         ":plfunctionblock",
+#         "//modules/calc/proto:bus_cc_proto",
+#         "//modules/calc/include:calc_include",
+#         "//modules/calc/include/lib:lib_include",   
+#         "@qt//:qt_core",
 
-    ],
-)
+#     ],
+# )
 
-qt_cc_library(
-    name = "pltarget",
-    srcs =[
-        "pltarget.cpp",
-    ],
-    hdrs = [
-        "pltarget.h",
-    ],
-    copts = [
-    ],
-    deps = [
+# qt_cc_library(
+#     name = "pltarget",
+#     srcs =[
+#         "pltarget.cpp",
+#     ],
+#     hdrs = [
+#         "pltarget.h",
+#     ],
+#     copts = [
+#     ],
+#     deps = [
 
-        "//modules/calc/proto:bus_cc_proto",
-        "//modules/calc/include:calc_include",
-        "//modules/calc/include/lib:lib_include",   
-        "@qt//:qt_core",
-        "@qt//:qt_gui",
+#         "//modules/calc/proto:bus_cc_proto",
+#         "//modules/calc/include:calc_include",
+#         "//modules/calc/include/lib:lib_include",   
+#         "@qt//:qt_core",
+#         "@qt//:qt_gui",
 
-    ],
-)
+#     ],
+# )
 
-qt_cc_library(
-    name = "plvlink",
-    srcs =[
-        "plvlink.cpp",
-    ],
-    hdrs = [
-        "plvlink.h",
-    ],
-    copts = [
-    ],
-    deps = [
-        ":plpoint",
-        ":plpin",
-        ":plevdata",
-        ":plfunctionblock",
-        "//modules/calc/proto:bus_cc_proto",
-        "//modules/calc/include:calc_include",
-        "//modules/calc/include/lib:lib_include",   
-        "@qt//:qt_core",
+# qt_cc_library(
+#     name = "plvlink",
+#     srcs =[
+#         "plvlink.cpp",
+#     ],
+#     hdrs = [
+#         "plvlink.h",
+#     ],
+#     copts = [
+#     ],
+#     deps = [
+#         ":plpoint",
+#         ":plpin",
+#         ":plevdata",
+#         ":plfunctionblock",
+#         "//modules/calc/proto:bus_cc_proto",
+#         "//modules/calc/include:calc_include",
+#         "//modules/calc/include/lib:lib_include",   
+#         "@qt//:qt_core",
 
-    ],
-)
+#     ],
+# )
 
 
-qt_cc_library(
-    name = "progpanel",
-    srcs =[
-        "progpanel.cpp",
-    ],
-    hdrs = [
-        "progpanel.h",
-    ],
-    copts = [
-    ],
-    deps = [
+# qt_cc_library(
+#     name = "progpanel",
+#     srcs =[
+#         "progpanel.cpp",
+#     ],
+#     hdrs = [
+#         "progpanel.h",
+#     ],
+#     copts = [
+#     ],
+#     deps = [
 
-        "//modules/calc/proto:bus_cc_proto",
-        "//modules/calc/include:calc_include",
-        "//modules/calc/include/lib:lib_include",   
-        "@qt//:qt_core",
-        "@qt//:qt_gui",
+#         "//modules/calc/proto:bus_cc_proto",
+#         "//modules/calc/include:calc_include",
+#         "//modules/calc/include/lib:lib_include",   
+#         "@qt//:qt_core",
+#         "@qt//:qt_gui",
 
-    ],
-)
+#     ],
+# )
 
 
 
