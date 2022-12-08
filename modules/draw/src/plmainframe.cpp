@@ -211,10 +211,10 @@ void PLMainFrame::createDockWindows()
     tabProj = new QTabWidget;
     tabProj->setTabPosition(QTabWidget::North);
 
-    panelmods = new ModulePanel;
+    panelMods = new ModulePanel;
     panelProgs = new ProgPanel;
     panelLib = new LibPanel;
-    tabProj->insertTab(1, panelmods, tr("Module"));
+    tabProj->insertTab(1, panelMods, tr("Module"));
     tabProj->insertTab(2, panelProgs, tr("Program"));
     tabProj->insertTab(3, panelLib, tr("Library"));
 
@@ -254,7 +254,8 @@ void PLMainFrame::prjNew()
     }
 
     gMainModel->clear();
-    gMainModel->updateProgList();
+    gMainModel->updateModList();
+    // gMainModel->updateProgList();
 
     dockProj->setWindowTitle(gMainModel->project.description());
     updateCadView();
@@ -267,27 +268,24 @@ void PLMainFrame::openProject(QString fileName)
 {
     gMainModel->clear();
 
-    QFile file(fileName);
-    file.open(QFile::ReadOnly);
-    QDataStream in(&file);
+
+    Bus::EditInfosReq edit_infos;
+    apollo::cyber::common::GetProtoFromFile(fileName.toStdString(),&edit_infos);
+
 
     gMainModel->modelEVData.beginReset();
-
-    while(!in.atEnd()){
-        QByteArray line;
-        in >>line;
-        PLCommand cmd(QString::fromLatin1(line));
+    for(auto info:edit_infos)
+    {
+          PLCommand cmd(info);
         if(!gMainModel->exeCommand(cmd)){
-            QMessageBox::critical(this, tr("Error"), cmd.cmdLine);
+            QMessageBox::critical(this, tr("Error"), QString::fromStdString(cmd.editInfo.ShortDebugString()));
             gMainModel->modelEVData.endReset();
             return;
-        }
+        }   
     }
 
-    file.close();
-
     gMainModel->modelEVData.endReset();
-    gMainModel->updateProgList();
+    gMainModel->updateModList();
     gMainModel->project.fileName = fileName;
 
     dockProj->setWindowTitle(gMainModel->project.description());
@@ -298,15 +296,20 @@ void PLMainFrame::openProject(QString fileName)
     title += fileName;
     setWindowTitle(title);
 
-    int i, j;
+    int i, j,m;
+    PLModule *mod;
     PLProgram *prg;
-    for(i=0; i<gMainModel->prgList.size(); i++){
-        prg = &gMainModel->prgList[i];
-        for(j=0; j<prg->fbs.size(); j++){
-            prg->fbs[j].isSelected = false;
-        }
-        for(j=0; j<prg->lks.size(); j++){
-            prg->lks[j].isSelected = false;
+    for(m=0; m<gMainModel->modList.size(); m++){
+        mod = &gMainModel->modList[m];
+
+        for(i=0; i<mod->prgList.size(); i++){
+            prg = &mod->prgList[i];
+            for(j=0; j<prg->fbs.size(); j++){
+                prg->fbs[j].isSelected = false;
+            }
+            for(j=0; j<prg->lks.size(); j++){
+                prg->lks[j].isSelected = false;
+            }
         }
     }
 }
@@ -345,14 +348,9 @@ void PLMainFrame::prjSave()
     gMainModel->removeDualCommands(gMainModel->cmdList, false);
 
     QFile file(gMainModel->project.fileName);
-    file.open(QFile::WriteOnly| QFile::Truncate);
-    QDataStream out(&file);
 
-    out << gMainModel->project.getProjCmdLine().toLatin1();
-    for(int i=0; i<gMainModel->cmdList.size(); i++){
-        out << gMainModel->cmdList.at(i).cmdLine.toLatin1();
-    }
-    file.close();
+    apollo::cyber::common::SetProtoToASCIIFile(edit_infos, file);
+
 
     gMainModel->isModified = false;
 }
