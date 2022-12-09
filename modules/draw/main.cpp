@@ -1,7 +1,7 @@
 #include <QApplication>
-#include "plmainframe.h"
-#include "plmainmodel.h"
-#include "pltarget.h"
+#include "src/plmainframe.h"
+#include "src/plmainmodel.h"
+#include "src/pltarget.h"
 
 PLMainFrame *gMainFrame;
 PLMainModel *gMainModel;

@@ -5,39 +5,14 @@ package(default_visibility = ["//visibility:public"])
 
 
 cc_binary(
-    name = "test_qt_btchat",
-    includes = [
-        ".",
+    name = "robot_draw",
+    srcs = [
+        "main.cpp"
     ],
+
     linkopts = [
     ],
     deps = [
-        ":btchat",
-    ],
-)
-
-qt_cc_library(
-    name = "btscanner",
-    srcs = glob(
-        ["btscanner/*.cpp"],
-    ),
-    hdrs = glob([
-        "btscanner/*.h",
-    ]),
-    copts = [
-    ],
-    includes = [
-        ".",
-        "btscanner",
-    ],
-    res = glob([
-        "btscanner/*.qrc",
-    ]),
-    uis = glob([
-        "btscanner/*.ui",
-    ]),
-    deps = [
-        "@qt//:qt_bluetooth",
-        "@qt//:qt_gui",
+        "//modules/draw/src:draw",
     ],
 )

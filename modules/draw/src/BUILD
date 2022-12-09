@@ -4,20 +4,6 @@ load("//third_party/qt5:qt.bzl", "qt_cc_library")
 package(default_visibility = ["//visibility:public"])
 
 
-# cc_binary(
-#     name = "robot_draw",
-#     srcs = [
-#         "main.cpp"
-#     ]
-#     includes = [
-#         ".",
-#     ],
-#     linkopts = [
-#     ],
-#     deps = [
-#         ":draw",
-#     ],
-# )
 
 qt_cc_library(
     name = "draw",
@@ -39,6 +25,9 @@ qt_cc_library(
         "//modules/calc/proto:bus_cc_proto",
         "//modules/calc/include:calc_include",
         "//modules/calc/include/lib:lib_include",   
+        "//modules/calc/kernel:calc_kernel",   
+        "//modules/calc/lib:calc_library",   
+        
         "@qt//:qt_core",
         "@qt//:qt_gui",
 

@@ -159,7 +159,7 @@ int cmd_dispatch(const Bus::EditInfo &edit_info) {
   return 0;
 }
 
-int cmds_dispatch(Bus::EditInfosReq &edit_infos) {
+int cmds_dispatch(const Bus::EditInfosReq &edit_infos) {
 
   int info_size = edit_infos.infos_size();
   for (auto i = 0; i < info_size; i++) {

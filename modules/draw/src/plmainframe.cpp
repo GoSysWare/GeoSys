@@ -3,7 +3,7 @@
 #include "dlgsaveproj.h"
 #include "dlgipaddress.h"
 #include "modules/calc/include/k_command.h"
-
+#include "cyber/cyber.h"
 #include <QTimer>
 #include <QAction>
 #include <QtWidgets>
@@ -254,7 +254,7 @@ void PLMainFrame::prjNew()
     }
 
     gMainModel->clear();
-    gMainModel->updateModList();
+    gMainModel->updateModuleList();
     // gMainModel->updateProgList();
 
     dockProj->setWindowTitle(gMainModel->project.description());
@@ -274,9 +274,9 @@ void PLMainFrame::openProject(QString fileName)
 
 
     gMainModel->modelEVData.beginReset();
-    for(auto info:edit_infos)
+    for(auto i = 0; i < edit_infos.infos().size(); i++)
     {
-          PLCommand cmd(info);
+          PLCommand cmd(edit_infos.infos(i));
         if(!gMainModel->exeCommand(cmd)){
             QMessageBox::critical(this, tr("Error"), QString::fromStdString(cmd.editInfo.ShortDebugString()));
             gMainModel->modelEVData.endReset();
@@ -285,7 +285,7 @@ void PLMainFrame::openProject(QString fileName)
     }
 
     gMainModel->modelEVData.endReset();
-    gMainModel->updateModList();
+    gMainModel->updateModuleList();
     gMainModel->project.fileName = fileName;
 
     dockProj->setWindowTitle(gMainModel->project.description());
@@ -344,12 +344,12 @@ void PLMainFrame::prjSave()
     if(gMainModel->project.fileName.isEmpty()){
         prjSaveAs(true);
     }
+    Bus::EditInfosReq edit_infos;
 
     gMainModel->removeDualCommands(gMainModel->cmdList, false);
 
-    QFile file(gMainModel->project.fileName);
 
-    apollo::cyber::common::SetProtoToASCIIFile(edit_infos, file);
+    apollo::cyber::common::SetProtoToASCIIFile(edit_infos, gMainModel->project.fileName.toStdString());
 
 
     gMainModel->isModified = false;
@@ -359,47 +359,47 @@ void PLMainFrame::prjSaveAs(bool holdUuid)
 {
     int i;
 
-    DlgSaveProj dlgSaveProj;
-    if(dlgSaveProj.exec() != QDialog::Accepted){
-        return;
-    }
+    // DlgSaveProj dlgSaveProj;
+    // if(dlgSaveProj.exec() != QDialog::Accepted){
+    //     return;
+    // }
 
-    if(holdUuid){
-        dlgSaveProj.bCompatible = true;
-    }
-    if(dlgSaveProj.bCompatible){
-        gMainModel->removeDualCommands(gMainModel->cmdList, false);
-    }else{
-        gMainModel->extract();
-        prj_reset();
-        char cline[1024];
-        strncpy(cline, gMainModel->project.getProjCmdLine().toLatin1().data(), sizeof(cline)-1);
-        cmd_dispatch(cline);
-        for(i=0; i<gMainModel->cmdList.size(); i++){
-            strncpy(cline, gMainModel->cmdList.at(i).cmdLine.toLatin1().data(), sizeof(cline)-1);
-            cmd_dispatch(cline);
-        }
-    }
+    // if(holdUuid){
+    //     dlgSaveProj.bCompatible = true;
+    // }
+    // if(dlgSaveProj.bCompatible){
+    //     gMainModel->removeDualCommands(gMainModel->cmdList, false);
+    // }else{
+    //     gMainModel->extract();
+    //     prj_reset();
+    //     char cline[1024];
+    //     strncpy(cline, gMainModel->project.getProjCmdLine().toLatin1().data(), sizeof(cline)-1);
+    //     cmd_dispatch(cline);
+    //     for(i=0; i<gMainModel->cmdList.size(); i++){
+    //         strncpy(cline, gMainModel->cmdList.at(i).cmdLine.toLatin1().data(), sizeof(cline)-1);
+    //         cmd_dispatch(cline);
+    //     }
+    // }
 
-    QFile file(dlgSaveProj.fileName);
-    file.open(QFile::WriteOnly| QFile::Truncate);
-    QTextStream out(&file);
-    out << gMainModel->project.getProjCmdLine().toLatin1();
-    for(int i=0; i<gMainModel->cmdList.size(); i++){
-        out << gMainModel->cmdList.at(i).cmdLine.toLatin1();
-    }
-    file.close();
+    // QFile file(dlgSaveProj.fileName);
+    // file.open(QFile::WriteOnly| QFile::Truncate);
+    // QTextStream out(&file);
+    // out << gMainModel->project.getProjCmdLine().toLatin1();
+    // for(int i=0; i<gMainModel->cmdList.size(); i++){
+    //     out << gMainModel->cmdList.at(i).cmdLine.toLatin1();
+    // }
+    // file.close();
 
-    gMainModel->isModified = false;
-    QString title = "geoCalc - ";
-    title += dlgSaveProj.fileName;
-    setWindowTitle(title);
-    gMainModel->project.fileName = dlgSaveProj.fileName;
-    dockProj->setWindowTitle(gMainModel->project.description());
+    // gMainModel->isModified = false;
+    // QString title = "geoCalc - ";
+    // title += dlgSaveProj.fileName;
+    // setWindowTitle(title);
+    // gMainModel->project.fileName = dlgSaveProj.fileName;
+    // dockProj->setWindowTitle(gMainModel->project.description());
 
-    if(!dlgSaveProj.bCompatible){
-        updateCadView();
-    }
+    // if(!dlgSaveProj.bCompatible){
+    //     updateCadView();
+    // }
 }
 
 void PLMainFrame::editSelectAll()
