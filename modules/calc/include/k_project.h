@@ -38,7 +38,6 @@ int prj_prgremove(int idmod, int idprg);
 void prj_exec();
 
 prjinfo_t *prj_info();
-prjinfo_t *prj_info_p();
 
 int prj_fbadd(int idmod, int idprg, int id, std::string libname,
               std::string fcname, std::string fbname);

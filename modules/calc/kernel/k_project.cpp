@@ -9,7 +9,6 @@
 
 
 static prjinfo_t info;
-static prjinfo_t info_p;
 static pnode_t pn_head = {
     &pn_head, &pn_head, 0, "", "", true, "{00000000-0000-0000-0000-00000000}",
     nullptr,  0};
@@ -21,7 +20,6 @@ pnode_t *prj_gethead() { return &pn_head; }
 
 prjinfo_t *prj_info() { return &info; }
 
-prjinfo_t *prj_info_p() { return &info_p; }
 
 static pnode_t *pn_new() { return new pnode_t; }
 
@@ -48,7 +46,7 @@ static void pn_remove(pnode_t *p) {
 
 static void clear_prjinfo() {}
 
-void prj_run() {}
+void prj_run() {is_run = 1;}
 
 void prj_stop() { is_run = 0; }
 
