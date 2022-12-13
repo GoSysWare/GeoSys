@@ -306,6 +306,7 @@ bazel-bin
 bazel-out
 bazel-testlogs
 bazel-GeoSys
+logs
 .vscode/settings.json
 .vscode/settings.json
 .vscode/settings.json

@@ -7,7 +7,7 @@
 #include "modules/calc/proto/snapshot.pb.h"
 #include "k_project.h"
 
-int bus_init(std::shared_ptr<apollo::cyber::Node> & node);
+int bus_init(std::shared_ptr<apollo::cyber::Node>  node);
 int bus_uninit();
 
 #endif

@@ -25,11 +25,7 @@ cc_library(
     deps = [
         "//modules/calc/include:calc_include",
         "//modules/calc/include/lib:lib_include",
-        "//modules/calc/proto:value_cc_proto",
-        "//modules/calc/proto:cmd_cc_proto",
-        "//modules/calc/proto:edit_cc_proto",
-        "//modules/calc/proto:task_def_cc_proto",
-        "//modules/calc/proto:snapshot_cc_proto",
+        "//modules/calc/proto:bus_cc_proto",
         "//modules/calc/common:calc_gflags",
 
     ],

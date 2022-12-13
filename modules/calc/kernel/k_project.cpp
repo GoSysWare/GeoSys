@@ -5,7 +5,6 @@
 
 #include "modules/calc/include/k_project.h"
 #include "modules/calc/include/k_util.h"
-#include "modules/calc/proto/snapshot.pb.h"
 
 
 static prjinfo_t info;
@@ -44,7 +43,9 @@ static void pn_remove(pnode_t *p) {
   p->p_next->p_prev = p->p_prev;
 }
 
-static void clear_prjinfo() {}
+static void clear_prjinfo() {
+  
+}
 
 void prj_run() {is_run = 1;}
 
@@ -318,7 +319,7 @@ mod_t *prj_modfind(std::string mod_name) {
 }
 
 
-int prj_to_snapshot(Bus::ProjectSnapshotRsp snapshot)
+int prj_to_snapshot(Bus::ProjSnapshotRsp * snapshot)
 {
   // std::string buf;
   // pin_t *ppin;

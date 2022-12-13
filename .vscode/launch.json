@@ -4,6 +4,8 @@
     // 欲了解更多信息，请访问: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
+
+        
         {
             "name": "Python: 当前文件",
             "type": "python",
@@ -19,24 +21,10 @@
             "args": [],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
-            "environment": [
-                {
-                    "name": "CYBER_PATH",
-                    "value": "/home/shuimujie/Works/GeoSys/cyber"
-                },
-                {
-                    "name": "GLOG_log_dir",
-                    "value": "/home/shuimujie/Works/logs"
-                } 
-            ],            "externalConsole": false,
-            "MIMode": "gdb",
-            "setupCommands": [
-                {
-                    "description": "为 gdb 启用整齐打印",
-                    "text": "-enable-pretty-printing",
-                    "ignoreFailures": true
-                }
-            ]
+            "env":  {
+                "CYBER_PATH":"/home/shuimujie/Works/GeoSys/cyber",
+                "GLOG_log_dir":"/home/shuimujie/Works/GeoSys/cyber",
+            },
         },
         {
             "name": "Test Engine",
@@ -53,9 +41,10 @@
                 },
                 {
                     "name": "GLOG_log_dir",
-                    "value": "/home/shuimujie/Works/logs"
-                } 
-            ],            "externalConsole": false,
+                    "value": "/home/shuimujie/Works/GeoSys/logs"
+                }
+            ],
+            "externalConsole": false,
             "MIMode": "gdb",
             "setupCommands": [
                 {
@@ -65,6 +54,7 @@
                 }
             ]
         },
+      
         {
             "name": "Test V",
             "type": "cppdbg",
@@ -81,7 +71,7 @@
                 {
                     "name": "GLOG_log_dir",
                     "value": "/home/shuimujie/Works/logs"
-                } 
+                }
             ],
             "externalConsole": false,
             "MIMode": "gdb",
@@ -112,7 +102,7 @@
                 {
                     "name": "GLOG_log_dir",
                     "value": "/home/shuimujie/Works/logs"
-                } 
+                }
             ],
             "externalConsole": false,
             "MIMode": "gdb",
@@ -164,12 +154,11 @@
         },
         {
             "name": "Test Draw",
-            "type":"lldb",
+            "type": "lldb",
             // "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceFolder}/bazel-bin/modules/draw/robot_draw",
-            "args": [
-            ],
+            "args": [],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
             "environment": [
@@ -180,7 +169,7 @@
                 {
                     "name": "GLOG_log_dir",
                     "value": "/home/shuimujie/Works/logs"
-                } 
+                }
             ],
             "externalConsole": false,
             "MIMode": "gdb",

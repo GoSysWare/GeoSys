@@ -16,7 +16,7 @@ cc_library(
         "calc_gflags.cpp",
     ],
     deps = [
-        "@com_google_gflags_gflags//:gflags"
+        "@com_github_gflags_gflags//:gflags"
     ],
 )
 

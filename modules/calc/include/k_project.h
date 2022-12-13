@@ -2,6 +2,9 @@
 #define k_project_h
 
 #include "cyber/cyber.h"
+
+#include "modules/calc/proto/snapshot.pb.h"
+
 #include "k_config.h"
 #include "k_module.h"
 
@@ -59,6 +62,10 @@ prog_t *prj_prgfind(int idmod, int idprg);
 prog_t *prj_prgfind(int idmod, std::string prog_name);
 mod_t *prj_modfind(int idmod);
 mod_t *mod_modfind(std::string mod_name);
+
+
+int prj_to_snapshot(Bus::ProjSnapshotRsp  snapshot);
+int prj_from_snapshot(Bus::ProjSnapshotRsp *snapshot);
 
 // int prj_img_size();
 // int prj_to_img(prjimg_t *img);

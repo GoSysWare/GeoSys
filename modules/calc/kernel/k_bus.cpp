@@ -19,7 +19,7 @@ static bool filter_service(std::string host_name, std::string host_ip,
   return true;
 }
 
-int bus_init(std::shared_ptr<apollo::cyber::Node> &node) {
+int bus_init(std::shared_ptr<apollo::cyber::Node> node) {
 
   auto prj_edit_srv = node->CreateService<Bus::EditInfosReq, Bus::EditInfosRsp>(
       FLAGS_prj_edit_name, [](const std::shared_ptr<Bus::EditInfosReq> &request,

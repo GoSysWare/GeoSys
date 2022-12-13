@@ -5,46 +5,17 @@ package(default_visibility = ["//visibility:public"])
 
 
 cc_binary(
-    name = "calc_core",
-    srcs = [
-        "calc_cyber.cpp",
-
-    ],
-    linkopts = [
-        "-lpthread",
-
-    ],
-    linkstatic = False,
-    deps = [
-        "//modules/calc/proto:value_cc_proto",
-        "//modules/calc/kernel:calc_kernel",
-        "//modules/calc/lib:calc_library",
-        "//modules/calc/net:calc_net",
-        # "//modules/calc/rtdb:calc_rtdb",
-        "//modules/calc/include:calc_include",
-        "//modules/calc/include/lib:lib_include",
-        "//cyber",
-
-    ],
-)
-cc_binary(
     name = "robot_engine",
     srcs = [
         "main.cpp",
-
     ],
     linkopts = [
         "-lpthread",
-
     ],
     linkstatic = False,
     deps = [
-        "//modules/calc/proto:value_cc_proto",
-        "//modules/calc/proto:cmd_cc_proto",
-        "//modules/calc/proto:task_def_cc_proto",
         "//modules/calc/kernel:calc_kernel",
         "//modules/calc/lib:calc_library",
-        "//modules/calc/include:calc_include",
         "//modules/calc/include/lib:lib_include",
         "//cyber",
 

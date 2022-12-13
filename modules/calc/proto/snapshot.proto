@@ -18,12 +18,12 @@ message ModSnapshot
     int32 mod_id =1;
     repeated TaskSnapshot tasks = 2;
 }
-message ProjectSnapshotRsp
+message ProjSnapshotRsp
 {
     repeated ModSnapshot mods = 1;
 }
 
-message ProjectSnapshotReq
+message ProjSnapshotReq
 {
     string host_name = 1;
     string host_ip = 2;
