@@ -154,8 +154,7 @@
         },
         {
             "name": "Test Draw",
-            "type": "lldb",
-            // "type": "cppdbg",
+             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceFolder}/bazel-bin/modules/draw/robot_draw",
             "args": [],
@@ -168,7 +167,7 @@
                 },
                 {
                     "name": "GLOG_log_dir",
-                    "value": "/home/shuimujie/Works/logs"
+                    "value": "/home/shuimujie/Works/GeoSys/logs"
                 }
             ],
             "externalConsole": false,

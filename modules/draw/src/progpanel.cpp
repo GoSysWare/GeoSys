@@ -9,10 +9,18 @@ ListProgram::ListProgram()
 void ListProgram::currentChanged(const QModelIndex &current, const QModelIndex &previous)
 {
     int sel = current.row();
-    if(sel >0)
+    if(sel >= 0)
     {
-        gMainModel->prgCurrent = &gMainModel->modCurrent->prgList[sel];
-        gMainFrame->updateCadView();
+        if(gMainModel->modCurrent)
+        {
+            gMainModel->prgCurrent = &gMainModel->modCurrent->prgList[sel];
+            gMainFrame->updateCadView();
+        }
+        else{
+            QMessageBox::critical(this, "Error", tr("Select Mod"));
+            return;  
+        }
+
     }
 }
 
@@ -65,7 +73,11 @@ void ProgPanel::addProgram(bool check)
     if(gTarget->isMonitor()){
         return;
     }
-
+   if(!gMainModel->modCurrent){
+         QMessageBox::critical(this, "Error", tr("Select Mod"));
+        return;
+    }
+    
     DlgAddProg dlgAddProg(this);
 
     if(dlgAddProg.exec() != QDialog::Accepted){
@@ -75,6 +87,12 @@ void ProgPanel::addProgram(bool check)
     PLCommand cmd;
     PLProgram prg;
     prg.name = dlgAddProg.prgName;
+    prg.desc = dlgAddProg.prgDesc;
+    prg.type  = dlgAddProg.prgType == -1 ? Bus::TaskType::PERIODIC : dlgAddProg.prgType;
+
+    prg.idMod = gMainModel->modCurrent->id;
+
+
     gMainModel->makePrgNewCmd(cmd, prg);
     if(!gMainModel->exeCommand(cmd)){
          QMessageBox::critical(this, "Error", QString::fromStdString(cmd.editInfo.ShortDebugString()));
@@ -133,8 +151,12 @@ void ProgPanel::renameProgram(bool check)
 
     PLCommand cmd;
     PLProgram prg;
+    prg.idMod = gMainModel->modCurrent->id;
     prg.id = gMainModel->modCurrent->prgList.at(listPrograms->currentIndex().row()).id;
     prg.name = dlgAddProg.prgName;
+    prg.desc = dlgAddProg.prgDesc;
+    prg.type  = dlgAddProg.prgType == -1 ? Bus::TaskType::PERIODIC : dlgAddProg.prgType;
+
     gMainModel->makePrgRenameCmd(cmd, prg);
     if(!gMainModel->exeCommand(cmd)){
          QMessageBox::critical(this, "Error", QString::fromStdString(cmd.editInfo.ShortDebugString()));

@@ -15,6 +15,9 @@ public:
     DlgAddProg(QWidget *parent = 0, Qt::WindowFlags f = 0);
     ~DlgAddProg();
     QString prgName;
+    QString prgDesc;
+    int prgType;
+
     int indexEdit;
 
 private slots:

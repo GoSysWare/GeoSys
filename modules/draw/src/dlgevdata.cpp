@@ -12,7 +12,7 @@ DlgEVData::DlgEVData(QWidget *parent, Qt::WindowFlags f)
     labelName = new QLabel(tr("Name"));
     labelType = new QLabel(tr("Type"));
     labelValue = new QLabel(tr("Value"));
-    labelComment = new QLabel(tr("Comment"));
+    labelComment = new QLabel(tr("Desc"));
     textName = new QLineEdit;
     textName->setMaxLength(32);
     listType = new QListWidget;

@@ -9,9 +9,10 @@ ListModule::ListModule()
 void ListModule::currentChanged(const QModelIndex &current, const QModelIndex &previous)
 {
     int sel = current.row();
-    if(sel >0)
+    if(sel >= 0)
     {
         gMainModel->modCurrent = &gMainModel->modList[sel];
+        gMainModel->updateProgList(gMainModel->modCurrent ->id);        
     }
 }
 

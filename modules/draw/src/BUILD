@@ -16,9 +16,13 @@ qt_cc_library(
     copts = [
     ],
 
-    res = glob([
-        "qrc/*.qrc",
-    ]),
+    # res = glob([
+    #     "resource.qrc",
+    # ]),
+
+    res = [
+        "resource.qrc",
+    ],
     uis = glob([
     ]),
     deps = [

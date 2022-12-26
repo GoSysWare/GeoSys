@@ -28,6 +28,7 @@ DlgAddProg::DlgAddProg(QWidget *parent, Qt::WindowFlags f)
     connect(buttonCancel, SIGNAL(clicked(bool)), this, SLOT(cancel(bool)));
 
     indexEdit = -1;
+    prgType =  -1;
 }
 
 DlgAddProg::~DlgAddProg()

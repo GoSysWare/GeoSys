@@ -13,9 +13,11 @@ public:
     int idMod;
     int id;
     int idLog;
+    QString nameMod;
     QString name;
     QString desc;
     int type;
+    unsigned int interval;
     QList<PLFunctionBlock> fbs;
     QList<PLLink> lks;
     QList<PLVLink> vis;

@@ -3,7 +3,7 @@
 
 PLProject::PLProject()
 {
-    name = "rotbot-logic-project";
+    name = "rotbot-engine-project";
     clear();
 }
 

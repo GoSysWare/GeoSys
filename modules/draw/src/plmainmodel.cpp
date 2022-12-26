@@ -1,10 +1,10 @@
-#include <QFile>
-#include <QTextStream>
 #include "plmainmodel.h"
 #include "modules/calc/include/k_command.h"
 #include "modules/calc/include/k_functionblock.h"
 #include "modules/calc/include/k_lib.h"
 #include "modules/calc/include/k_project.h"
+#include <QFile>
+#include <QTextStream>
 
 #include <google/protobuf/util/message_differencer.h>
 
@@ -70,7 +70,7 @@ void PLMainModel::updateModuleList() {
   QStringList list;
 
   for (int i = 0; i < modList.size(); i++) {
-    PLModule mod = modList.at(i);
+    PLModule mod = modList[i];
     list << mod.name;
   }
 
@@ -79,13 +79,15 @@ void PLMainModel::updateModuleList() {
 
 void PLMainModel::updateProgList(int modIndex) {
   QStringList list;
-  if (modIndex > modList.size())
-    return;
 
-  PLModule mod = modList.at(modIndex);
-  for (int i = 0; i < mod.prgList.size(); i++) {
-    PLProgram prg = mod.prgList.at(i);
-    list << prg.name;
+  for (int i = 0; i < modList.size(); i++) {
+    if (modList[i].id == modIndex) {
+      PLModule mod = modList[i];
+      for (int j = 0; j < mod.prgList.size(); j++) {
+        PLProgram prg = mod.prgList[j];
+        list << prg.name;
+      }
+    }
   }
   modelProgram.setStringList(list);
 }
@@ -111,6 +113,8 @@ bool PLMainModel::exeCommand(PLCommand &cmd) {
 }
 
 void PLMainModel::makeLkNewCmd(PLCommand &cmd, PLLink &lk, bool newId) {
+  cmd.reset();
+
   cmdID++;
   cmd.editInfo.set_cmd_id(cmdID);
   cmd.editInfo.set_element(Bus::EditElement::LK);
@@ -137,6 +141,8 @@ void PLMainModel::makeLkNewCmd(PLCommand &cmd, PLLink &lk, bool newId) {
 }
 
 void PLMainModel::makeLkRemoveCmd(PLCommand &cmd, PLLink &lk) {
+  cmd.reset();
+
   cmdID++;
   cmd.editInfo.set_cmd_id(cmdID);
   cmd.editInfo.set_element(Bus::EditElement::LK);
@@ -147,6 +153,8 @@ void PLMainModel::makeLkRemoveCmd(PLCommand &cmd, PLLink &lk) {
 }
 
 void PLMainModel::makeLkMoveCmd(PLCommand &cmd, PLLink &lk) {
+  cmd.reset();
+
   cmdID++;
   cmd.editInfo.set_cmd_id(cmdID);
   cmd.editInfo.set_element(Bus::EditElement::LK);
@@ -165,6 +173,8 @@ void PLMainModel::makeLkMoveCmd(PLCommand &cmd, PLLink &lk) {
 
 void PLMainModel::makeFbNewCmd(PLCommand &cmd, PLFunctionBlock &fb, bool newId,
                                bool newName) {
+  cmd.reset();
+
   cmdID++;
   cmd.editInfo.set_cmd_id(cmdID);
   cmd.editInfo.set_element(Bus::EditElement::FB);
@@ -186,6 +196,8 @@ void PLMainModel::makeFbNewCmd(PLCommand &cmd, PLFunctionBlock &fb, bool newId,
 }
 
 void PLMainModel::makeFbRemoveCmd(PLCommand &cmd, PLFunctionBlock &fb) {
+  cmd.reset();
+
   cmdID++;
   cmd.editInfo.set_cmd_id(cmdID);
   cmd.editInfo.set_element(Bus::EditElement::LK);
@@ -196,6 +208,8 @@ void PLMainModel::makeFbRemoveCmd(PLCommand &cmd, PLFunctionBlock &fb) {
 }
 
 void PLMainModel::makeFbMoveCmd(PLCommand &cmd, PLFunctionBlock &fb) {
+  cmd.reset();
+
   cmdID++;
   cmd.editInfo.set_cmd_id(cmdID);
   cmd.editInfo.set_element(Bus::EditElement::FB);
@@ -211,6 +225,8 @@ void PLMainModel::makeFbMoveCmd(PLCommand &cmd, PLFunctionBlock &fb) {
 }
 
 void PLMainModel::makeViNewCmd(PLCommand &cmd, PLVLink &vlk, bool newId) {
+  cmd.reset();
+
   cmdID++;
   cmd.editInfo.set_cmd_id(cmdID);
   cmd.editInfo.set_element(Bus::EditElement::VI);
@@ -228,6 +244,8 @@ void PLMainModel::makeViNewCmd(PLCommand &cmd, PLVLink &vlk, bool newId) {
 }
 
 void PLMainModel::makeViRemoveCmd(PLCommand &cmd, PLVLink &vlk) {
+  cmd.reset();
+
   cmdID++;
   cmd.editInfo.set_cmd_id(cmdID);
   cmd.editInfo.set_element(Bus::EditElement::VI);
@@ -238,6 +256,8 @@ void PLMainModel::makeViRemoveCmd(PLCommand &cmd, PLVLink &vlk) {
 }
 
 void PLMainModel::makeVoNewCmd(PLCommand &cmd, PLVLink &vlk, bool newId) {
+  cmd.reset();
+
   cmdID++;
   cmd.editInfo.set_cmd_id(cmdID);
   cmd.editInfo.set_element(Bus::EditElement::VO);
@@ -255,6 +275,8 @@ void PLMainModel::makeVoNewCmd(PLCommand &cmd, PLVLink &vlk, bool newId) {
 }
 
 void PLMainModel::makeVoRemoveCmd(PLCommand &cmd, PLVLink &vlk) {
+  cmd.reset();
+
   cmdID++;
   cmd.editInfo.set_cmd_id(cmdID);
   cmd.editInfo.set_element(Bus::EditElement::VO);
@@ -265,6 +287,8 @@ void PLMainModel::makeVoRemoveCmd(PLCommand &cmd, PLVLink &vlk) {
 }
 
 void PLMainModel::makeEvNewCmd(PLCommand &cmd, PLEVData &ev, bool newId) {
+  cmd.reset();
+
   cmdID++;
   cmd.editInfo.set_cmd_id(cmdID);
   cmd.editInfo.set_element(Bus::EditElement::EV);
@@ -281,6 +305,8 @@ void PLMainModel::makeEvNewCmd(PLCommand &cmd, PLEVData &ev, bool newId) {
 }
 
 void PLMainModel::makeEvSetCmd(PLCommand &cmd, PLEVData &ev) {
+  cmd.reset();
+
   cmdID++;
   cmd.editInfo.set_cmd_id(cmdID);
   cmd.editInfo.set_element(Bus::EditElement::EV);
@@ -289,10 +315,12 @@ void PLMainModel::makeEvSetCmd(PLCommand &cmd, PLEVData &ev) {
   cmd.editInfo.mutable_ev()->set_ev_name(ev.name.toStdString());
   cmd.editInfo.mutable_ev()->set_ev_type(ev.type);
   cmd.editInfo.mutable_ev()->set_ev_desc(ev.desc.toStdString());
-  cmd.editInfo.mutable_ev()->mutable_init_val()->CopyFrom(ev.value);
+  cmd.editInfo.mutable_ev()->mutable_init_val()->CopyFrom(ev.initValue);
 }
 
 void PLMainModel::makeEvRemoveCmd(PLCommand &cmd, PLEVData &ev) {
+  cmd.reset();
+
   cmdID++;
   cmd.editInfo.set_cmd_id(cmdID);
   cmd.editInfo.set_element(Bus::EditElement::EV);
@@ -301,6 +329,7 @@ void PLMainModel::makeEvRemoveCmd(PLCommand &cmd, PLEVData &ev) {
 }
 
 void PLMainModel::makePrgNewCmd(PLCommand &cmd, PLProgram &prg, bool newId) {
+  cmd.reset();
 
   cmdID++;
   cmd.editInfo.set_cmd_id(cmdID);
@@ -318,15 +347,19 @@ void PLMainModel::makePrgNewCmd(PLCommand &cmd, PLProgram &prg, bool newId) {
 }
 
 void PLMainModel::makePrgRemoveCmd(PLCommand &cmd, PLProgram &prg) {
+  cmd.reset();
+
   cmdID++;
   cmd.editInfo.set_cmd_id(cmdID);
   cmd.editInfo.set_element(Bus::EditElement::TASK);
-  cmd.editInfo.set_edit_type(Bus::EditType::ADD);
+  cmd.editInfo.set_edit_type(Bus::EditType::RM);
   cmd.editInfo.mutable_task()->set_mod_id(prg.idMod);
   cmd.editInfo.mutable_task()->set_task_id(prg.id);
 }
 
 void PLMainModel::makePrgRenameCmd(PLCommand &cmd, PLProgram &prg) {
+  cmd.reset();
+
   cmdID++;
   cmd.editInfo.set_cmd_id(cmdID);
   cmd.editInfo.set_element(Bus::EditElement::TASK);
@@ -338,6 +371,7 @@ void PLMainModel::makePrgRenameCmd(PLCommand &cmd, PLProgram &prg) {
   cmd.editInfo.mutable_task()->set_task_desc(prg.desc.toStdString());
 }
 void PLMainModel::makeModNewCmd(PLCommand &cmd, PLModule &mod, bool newId) {
+  cmd.reset();
   cmdID++;
   cmd.editInfo.set_cmd_id(cmdID);
   cmd.editInfo.set_element(Bus::EditElement::MOD);
@@ -351,13 +385,17 @@ void PLMainModel::makeModNewCmd(PLCommand &cmd, PLModule &mod, bool newId) {
   cmd.editInfo.mutable_mod()->set_mod_desc(mod.desc.toStdString());
 }
 void PLMainModel::makeModRemoveCmd(PLCommand &cmd, PLModule &mod) {
+  cmd.reset();
+
   cmdID++;
   cmd.editInfo.set_cmd_id(cmdID);
   cmd.editInfo.set_element(Bus::EditElement::MOD);
   cmd.editInfo.set_edit_type(Bus::EditType::RM);
-  cmd.editInfo.mutable_task()->set_mod_id(mod.id);
+  cmd.editInfo.mutable_mod()->set_mod_id(mod.id);
 }
 void PLMainModel::makeModRenameCmd(PLCommand &cmd, PLModule &mod) {
+  cmd.reset();
+
   cmdID++;
   cmd.editInfo.set_cmd_id(cmdID);
   cmd.editInfo.set_element(Bus::EditElement::MOD);
@@ -368,6 +406,8 @@ void PLMainModel::makeModRenameCmd(PLCommand &cmd, PLModule &mod) {
 }
 void PLMainModel::makePinSetCmd(PLCommand &cmd, int idMod, int idPrg, int idFb,
                                 int idPin, value_tm val) {
+  cmd.reset();
+
   cmdID++;
   cmd.editInfo.set_cmd_id(cmdID);
   cmd.editInfo.set_element(Bus::EditElement::PIN);
@@ -380,6 +420,7 @@ void PLMainModel::makePinSetCmd(PLCommand &cmd, int idMod, int idPrg, int idFb,
 }
 
 void PLMainModel::makeLkCopyCmd(PLCommand &cmd, PLLink &lk) {
+  cmd.reset();
 
   cmd.editInfo.set_cmd_id(-1);
   cmd.editInfo.set_element(Bus::EditElement::LK);
@@ -400,6 +441,8 @@ void PLMainModel::makeLkCopyCmd(PLCommand &cmd, PLLink &lk) {
 }
 
 void PLMainModel::makeFbCopyCmd(PLCommand &cmd, PLFunctionBlock &fb) {
+  cmd.reset();
+
   cmd.editInfo.set_cmd_id(-1);
   cmd.editInfo.set_element(Bus::EditElement::FB);
   cmd.editInfo.set_edit_type(Bus::EditType::CP);
@@ -705,6 +748,9 @@ bool PLMainModel::extractObjsId(int &idObj, QList<PLModule> &mods,
     mod = &mods[m];
     for (i = 0; i < mod->prgList.size(); i++) {
       prg = &mod->prgList[i];
+      prg->idLog = idObj;
+      idObj++;
+      
       for (j = 0; j < prg->fbs.size(); j++) {
         fb = &prg->fbs[j];
         fb->idLog = idObj;
@@ -900,10 +946,12 @@ void PLMainModel::extract() {
   }
 
   for (m = 0; m < modList.size(); m++) {
-    PLModule *mod = &modList[m];
+    mod = &modList[m];
+
     mod->renewUuid();
-    makeModNewCmd(cmd,*mod,false);
-    
+    makeModNewCmd(cmd, *mod, false);
+    cmdList.append(cmd);
+
     for (i = 0; i < mod->prgList.size(); i++) {
       prg = &mod->prgList[i];
 

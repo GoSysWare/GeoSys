@@ -707,6 +707,7 @@ void CadPanel::dropEvent(QDropEvent * event)
     fb.funName = list.at(2);
     fb.x = (event->pos().x() + 0.5 * step) / step;
     fb.y = (event->pos().y() + 0.5 * step) / step;
+    fb.idMod = gMainModel->modCurrent->id;
     fb.idPrg = gMainModel->prgCurrent->id;
     PLCommand cmd;
     gMainModel->makeFbNewCmd(cmd, fb);

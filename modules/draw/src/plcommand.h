@@ -16,8 +16,11 @@ class PLCommand
 {
 public:
     PLCommand();
+    ~PLCommand();
+
     PLCommand(Bus::EditInfo  info);
     bool dispatch();
+    void reset();
 
     
     Bus::EditInfo editInfo;
