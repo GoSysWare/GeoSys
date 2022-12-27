@@ -10,6 +10,7 @@ PLVLink::PLVLink()
 
 PLVLink::PLVLink(const PLVLink &vlk)
 {
+    idMod = vlk.idMod;
     idPrg = vlk.idPrg;
     id = vlk.id;
     idLog = vlk.idLog;

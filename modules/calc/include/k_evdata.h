@@ -3,6 +3,7 @@
 
 
 #include "modules/calc/proto/value.pb.h"
+#include "modules/calc/proto/snapshot.pb.h"
 
 typedef std::shared_ptr<value_t> var_t;
 typedef std::shared_ptr<value_tm> vam_t;
@@ -34,8 +35,12 @@ void ev_reset();
 void ev_dump();
 evnode_t* ev_gethead();
 int ev_img_size();
-char *ev_to_img(char *buf);
-char *ev_from_img(char *buf);
+
+int ev_to_snapshot(Bus::ProjSnapshotRsp *snapshot );
+int ev_from_snapshot(Bus::ProjSnapshotRsp *snapshot);
+
+// char *ev_to_img(char *buf);
+// char *ev_from_img(char *buf);
 
 
 #endif

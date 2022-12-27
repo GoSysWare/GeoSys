@@ -8,6 +8,7 @@ PLLink::PLLink()
 
 PLLink::PLLink(const PLLink &lk)
 {
+    idMod = lk.idMod;
     idPrg = lk.idPrg;
     id = lk.id;
     idLog = lk.idLog;
@@ -26,6 +27,7 @@ PLLink::PLLink(const PLLink &lk)
 
 void PLLink::clear()
 {
+    idMod = 0;
     idPrg = 0;
     id = 0;
     idLog = 0;

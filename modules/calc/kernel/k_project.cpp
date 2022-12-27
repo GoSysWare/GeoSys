@@ -6,7 +6,6 @@
 #include "modules/calc/include/k_project.h"
 #include "modules/calc/include/k_util.h"
 
-
 static prjinfo_t info;
 static pnode_t pn_head = {
     &pn_head, &pn_head, 0, "", "", true, "{00000000-0000-0000-0000-00000000}",
@@ -18,7 +17,6 @@ static int is_run;
 pnode_t *prj_gethead() { return &pn_head; }
 
 prjinfo_t *prj_info() { return &info; }
-
 
 static pnode_t *pn_new() { return new pnode_t; }
 
@@ -43,11 +41,9 @@ static void pn_remove(pnode_t *p) {
   p->p_next->p_prev = p->p_prev;
 }
 
-static void clear_prjinfo() {
-  
-}
+static void clear_prjinfo() {}
 
-void prj_run() {is_run = 1;}
+void prj_run() { is_run = 1; }
 
 void prj_stop() { is_run = 0; }
 
@@ -236,7 +232,8 @@ void prj_dump() {
   while (p_pn != &pn_head) {
     printf(
         "Modules: [id]:%d - [name]:%s - [desc]%s - [enabel]:%d - [uuid]:%s\n",
-        p_pn->id, p_pn->name.c_str(), p_pn->desc.c_str(),p_pn->enable,p_pn->uuid.c_str());
+        p_pn->id, p_pn->name.c_str(), p_pn->desc.c_str(), p_pn->enable,
+        p_pn->uuid.c_str());
     p_pn = p_pn->p_next;
   }
 }
@@ -318,69 +315,51 @@ mod_t *prj_modfind(std::string mod_name) {
   return p_pn_select->p_mod;
 }
 
+int prj_to_snapshot(Bus::ProjSnapshotRsp *snapshot) {
+  std::string buf;
+  pin_t *ppin;
+  pnode_t *p_pn;
+  mnode_t *p_mn;
+  enode_t *p_en;
+  fb_t *p_fb;
+  unsigned int i;
+  int s;
+  int v_len;
 
-int prj_to_snapshot(Bus::ProjSnapshotRsp * snapshot)
-{
-  // std::string buf;
-  // pin_t *ppin;
-  // pnode_t *p_pn;
-  // enode_t *p_en;
-  // fb_t *p_fb;
-  // unsigned int i;
-  // int s;
-  // int v_len;
+  p_pn = pn_head.p_next;
+  while (p_pn != &pn_head) {
+    Bus::ModSnapshot *mod_sp = snapshot->add_mods();
+    mod_sp->set_mod_id(p_pn->id);
+    p_mn = p_pn->p_mod->mn_head.p_next;
+    while (p_mn != &p_pn->p_mod->mn_head) {
+      Bus::TaskSnapshot *task_sp = mod_sp->add_tasks();
+      task_sp->set_mod_id(p_pn->id);
+      task_sp->set_task_id(p_mn->id);
+      p_en = p_mn->p_prg->en_head.p_next;
+      while (p_en != &p_mn->p_prg->en_head) {
+        if (p_en->p_fb != ((void *)0)) {
+          p_fb = p_en->p_fb;
+          for (i = 0; i < p_fb->ins.size(); i++) {
+            value_tm *val_sp = task_sp->add_vals();
+            val_sp->CopyFrom(*(p_fb->ins[i].v));
+          }
+          for (i = 0; i < p_fb->outs.size(); i++) {
+            value_tm *val_sp = task_sp->add_vals();
+            val_sp->CopyFrom(*(p_fb->outs[i].v));
+          }
+          for (i = 0; i < p_fb->props.size(); i++) {
+            value_tm *val_sp = task_sp->add_vals();
+            val_sp->CopyFrom(*(p_fb->props[i].v));
+          }
+        }
+        p_en = p_en->p_next;
+      }
+      p_mn = p_mn->p_next;
+    }
+    p_pn = p_pn->p_next;
+  }
 
-  // p_pn = pn_head.p_next;
-  // while (p_pn != &pn_head)
-  // {
-  //   p_en = p_pn->p_prg->en_head.p_next;
-  //   while (p_en != &p_pn->p_prg->en_head)
-  //   {
-  //     if (p_en->p_fb != ((void *)0))
-  //     {
-  //       p_fb = p_en->p_fb;
-  //       for (i = 0; i < p_fb->ins.size(); i++)
-  //       {
-  //         v_len = p_fb->ins[i].v->ByteSize();
-  //         memcpy(buf, &v_len, sizeof(int));
-  //         buf += sizeof(int);
-  //         p_fb->ins[i].v->SerializeToArray(buf, v_len);
-  //         buf += v_len;
-  //         s++;
-  //       }
-  //       for (i = 0; i < p_fb->outs.size(); i++)
-  //       {
-  //         v_len = p_fb->outs[i].v->ByteSize();
-  //         memcpy(buf, &v_len, sizeof(int));
-  //         buf += sizeof(int);
-  //         p_fb->outs[i].v->SerializeToArray(buf, v_len);
-  //         buf += v_len;
-  //         s++;
-  //       }
-  //       for (i = 0; i < p_fb->props.size(); i++)
-  //       {
-  //         v_len = p_fb->props[i].v->ByteSize();
-  //         memcpy(buf, &v_len, sizeof(int));
-  //         buf += sizeof(int);
-  //         p_fb->props[i].v->SerializeToArray(buf, v_len);
-  //         buf += v_len;
-  //         s++;
-  //       }
-  //     }
-  //     p_en = p_en->p_next;
-  //   }
-  //   p_pn = p_pn->p_next;
-  // }
-
-  // buf = ev_to_img(buf);
-  // // buf = io_to_img(buf);
-
-  // pimg->bufsize = buf - pimg->imgbuf;
-  // info.zimgsize = pimg->bufsize;
-  // // info.imgsize = s * sizeof(var_t) + sizeof(iostation_t) * IOSTATIONCOUNT;
-
-  // // printf("imgsize=%d, zimgsize=%d\n", info.imgsize, info.zimgsize);
-  // k_runlock(prjlock);
+ ev_to_snapshot(snapshot );
 
   return 0;
 }

@@ -283,37 +283,60 @@ int ev_img_size() {
   return s;
 }
 
-char *ev_to_img(char *buf) {
+int ev_to_snapshot(Bus::ProjSnapshotRsp *snapshot ) {
   evnode_t *p_vn;
-  int v_len;
-
   p_vn = vn_head.p_next;
   while (p_vn != &vn_head) {
-    v_len = p_vn->v->ByteSizeLong();
-    memcpy(buf, &v_len, sizeof(int));
-    buf += sizeof(int);
-    p_vn->v->SerializeToArray(buf, v_len);
-    buf += p_vn->v->ByteSizeLong();
+    Bus::EVNodeValue * val_sp = snapshot->add_vals();
+    val_sp->set_ev_id(p_vn->id);
+    val_sp->mutable_val()->CopyFrom(*(p_vn->v));
     p_vn = p_vn->p_next;
   }
-
-  return buf;
+  return 0;
 }
 
-char *ev_from_img(char *buf) {
+int ev_from_snapshot(Bus::ProjSnapshotRsp *snapshot ) {
   evnode_t *p_vn;
-  int v_len;
+  int i;
   p_vn = vn_head.p_next;
   while (p_vn != &vn_head) {
-    v_len = *(int *)buf;
-    buf += sizeof(int);
-    p_vn->v->ParseFromArray(buf, v_len);
-    buf += v_len;
+    p_vn->id = snapshot->mutable_vals(i)->ev_id();
+    p_vn->v.get()->CopyFrom(snapshot->mutable_vals(i)->val());
     p_vn = p_vn->p_next;
   }
-  return buf;
+  return 0;
 }
 
+// char *ev_to_img(char *buf) {
+//   evnode_t *p_vn;
+//   int v_len;
+
+//   p_vn = vn_head.p_next;
+//   while (p_vn != &vn_head) {
+//     v_len = p_vn->v->ByteSizeLong();
+//     memcpy(buf, &v_len, sizeof(int));
+//     buf += sizeof(int);
+//     p_vn->v->SerializeToArray(buf, v_len);
+//     buf += p_vn->v->ByteSizeLong();
+//     p_vn = p_vn->p_next;
+//   }
+
+//   return buf;
+// }
+
+// char *ev_from_img(char *buf) {
+//   evnode_t *p_vn;
+//   int v_len;
+//   p_vn = vn_head.p_next;
+//   while (p_vn != &vn_head) {
+//     v_len = *(int *)buf;
+//     buf += sizeof(int);
+//     p_vn->v->ParseFromArray(buf, v_len);
+//     buf += v_len;
+//     p_vn = p_vn->p_next;
+//   }
+//   return buf;
+// }
 /*
 static int bool_convert(val_t *t1, const val_t *t2)
 {

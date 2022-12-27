@@ -374,6 +374,7 @@ void CadPanel::mousePressEvent(QMouseEvent * event)
     case PT_INPUT:
         linkSel.clear();
         //linkTracker.clear();
+        linkSel.idMod = selCurrent.fb->idMod;       
         linkSel.idPrg = selCurrent.fb->idPrg;
         linkSel.idFbTgt = selCurrent.fb->id;
         linkSel.pinTgt = selCurrent.value;
@@ -388,6 +389,7 @@ void CadPanel::mousePressEvent(QMouseEvent * event)
     case PT_OUTPUT:
         linkSel.clear();
         //linkTracker.clear();
+        linkSel.idMod = selCurrent.fb->idMod;       
         linkSel.idPrg = selCurrent.fb->idPrg;
         linkSel.idFbSrc = selCurrent.fb->id;
         linkSel.pinSrc = selCurrent.value;
@@ -653,6 +655,7 @@ void CadPanel::mouseDoubleClickEvent(QMouseEvent * event)
 
     PLCommand cmd;
     PLVLink vlk;
+    vlk.idMod = gMainModel->prgCurrent->idMod;
     vlk.idPrg = gMainModel->prgCurrent->id;
     vlk.idFb = selCurrent.fb->id;
     vlk.idPin = selCurrent.value;
@@ -707,7 +710,7 @@ void CadPanel::dropEvent(QDropEvent * event)
     fb.funName = list.at(2);
     fb.x = (event->pos().x() + 0.5 * step) / step;
     fb.y = (event->pos().y() + 0.5 * step) / step;
-    fb.idMod = gMainModel->modCurrent->id;
+    fb.idMod = gMainModel->prgCurrent->idMod;
     fb.idPrg = gMainModel->prgCurrent->id;
     PLCommand cmd;
     gMainModel->makeFbNewCmd(cmd, fb);
@@ -1494,10 +1497,12 @@ void CadPanel::exeCopyCommands(QByteArray &cpCmds)
         QString cmd = QString::fromLatin1(meta_cmd);
         t = getObjFromCpCmd(cmd, fb, lk);
         if(t == 1){
+            fb.idMod = gMainModel->prgCurrent->idMod;
             fb.idPrg = gMainModel->prgCurrent->id;
             fb.id += idBase;
             fbList.append(fb);
         }else if(t ==2){
+            lk.idMod = gMainModel->prgCurrent->idMod;
             lk.idPrg = gMainModel->prgCurrent->id;
             lk.id += idBase;
             lk.idFbSrc += idBase;
