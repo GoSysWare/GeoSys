@@ -2,6 +2,7 @@
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include "cyber/time/time.h"
 
 #include "modules/calc/include/k_datatype.h"
 #include "modules/calc/include/k_evdata.h"
@@ -11,6 +12,15 @@ static evnode_t vn_head = {&vn_head, &vn_head, 0, "", nullptr};
 static evnode_t *p_vn_select = &vn_head;
 
 std::string type2str(v_type it) { return v_type_Name(it); }
+
+void vam_init(vam_t * vam,v_type t){
+ 
+  vam->reset( new value_tm );
+  vam->get()->set_tm(apollo::cyber::Time::Now().ToNanosecond());
+  vam->get()->mutable_v()->set_t(t); 
+  vam->get()->mutable_v()->clear_var();
+}
+
 
 v_type str2type(const std::string &str) {
   v_type it;
@@ -23,72 +33,24 @@ std::string var2str(const value_tm &v) { return v.SerializeAsString(); }
 value_tm str2var(const std::string &str) {
   value_tm v;
   v.ParseFromString(str);
-  return v;
+  return std::move(v);
 }
 
 int setvar(vam_t vam, v_type t, value_tm val) {
   if (t != val.v().t()) {
     return -1;
   }
-  value_t *vt = vam->mutable_v();
-  vt->set_t(val.v().t());
-  switch (t) {
-  case T_NONE:
-    break;
-  case T_BOOL:
-    vt->set_b(val.v().b());
-    break;
-  case T_INT32:
-    vt->set_i(val.v().i());
-    break;
-  case T_UINT32:
-    vt->set_ui(val.v().ui());
-    break;
-  case T_INT64:
-    vt->set_ll(val.v().ll());
-    break;
-  case T_UINT64:
-    vt->set_ull(val.v().ull());
-    break;
-  case T_FLOAT32:
-    vt->set_i(val.v().i());
-    break;
-  case T_FLOAT64:
-    vt->set_d(val.v().d());
-    break;
-  case T_TIME:
-    vt->set_tm(val.v().tm());
-    break;
-  case T_STRING:
-    vt->set_str(val.v().str());
-    break;
-  case T_BYTES:
-    vt->set_blob(val.v().blob());
-    break;
-  case T_IMAGE:
-    vt->set_img(val.v().img());
-    break;
-  case T_LIDAR:
-    vt->set_lidar(val.v().lidar());
-    break;
-  case T_SONAR:
-    vt->set_sonar(val.v().sonar());
-    break;
-  case T_FILE:
-    vt->set_file(val.v().file());
-    break;
-  default:
-    break;
-  }
+  vam->CopyFrom(val);
   return 0;
 }
 
 value_tm setvar(v_type t, std::string value) {
   value_tm vam;
+  vam.set_tm(apollo::cyber::Time::Now().ToNanosecond());
   vam.mutable_v()->set_t(t);
   switch (t) {
   case v_type::T_BOOL:
-    vam.mutable_v()->set_b(value == "false" || value == "0" ? false : true);
+    vam.mutable_v()->set_b(value == "false"|| value == "FALSE" || value == "0" ? false : true);
     break;
   case v_type::T_INT32:
     vam.mutable_v()->set_i(std::stoi(value));
@@ -131,7 +93,7 @@ value_tm setvar(v_type t, std::string value) {
     break;
   default:;
   }
-  return vam;
+  return std::move(vam);
 }
 
 static evnode_t *v_new() {
@@ -217,7 +179,7 @@ int ev_add(int id, const std::string &name, const value_tm &val) {
 
   p_vn->id = id;
   p_vn->name = name;
-  p_vn->v = std::make_shared<value_tm>(val);
+  p_vn->v.reset(new value_tm(val));
 
   v_addbefore(p_vn, &vn_head);
 
@@ -297,12 +259,13 @@ int ev_to_snapshot(Bus::ProjSnapshotRsp *snapshot ) {
 
 int ev_from_snapshot(Bus::ProjSnapshotRsp *snapshot ) {
   evnode_t *p_vn;
-  int i;
+  int i = 0;
   p_vn = vn_head.p_next;
   while (p_vn != &vn_head) {
     p_vn->id = snapshot->mutable_vals(i)->ev_id();
     p_vn->v.get()->CopyFrom(snapshot->mutable_vals(i)->val());
     p_vn = p_vn->p_next;
+    i++;
   }
   return 0;
 }

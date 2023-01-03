@@ -48,6 +48,12 @@ int prj_fbremove(int idmod, int idprg, int id);
 int prj_lkadd(int idmod, int idprg, int id, int fbsrc, int pinsrc, int fbtgt,
               int pintgt);
 int prj_lkremove(int idmod, int idprg, int id);
+
+int prj_viadd(int idmod, int idprg, int idev, int idfb, int pin);
+int prj_viremove(int idmod, int idprg, int idfb, int pin);
+int prj_voadd(int idmod, int idprg, int idev, int idfb, int pin);
+int prj_voremove(int idmod, int idprg, int idfb, int pin);
+
 int prj_checkloop(int idmod, int idprg, int idsrc, int idtgt);
 
 pnode_t *prj_gethead();
@@ -64,7 +70,7 @@ mod_t *prj_modfind(int idmod);
 mod_t *mod_modfind(std::string mod_name);
 
 
-int prj_to_snapshot(Bus::ProjSnapshotRsp  snapshot);
+int prj_to_snapshot(Bus::ProjSnapshotRsp * snapshot);
 int prj_from_snapshot(Bus::ProjSnapshotRsp *snapshot);
 
 // int prj_img_size();

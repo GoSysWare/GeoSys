@@ -10,6 +10,7 @@
 
 
 int cmd_dispatch(const Bus::EditInfo &edit_info) {
+  std::cout << edit_info.DebugString()<<std::endl;
 
   Bus::EditElement element = edit_info.element();
   Bus::EditType type = edit_info.edit_type();
@@ -66,6 +67,9 @@ int cmd_dispatch(const Bus::EditInfo &edit_info) {
       ev_remove(edit_info.ev().ev_id());
 
     } else if (type == Bus::EditType::SET) {
+
+      vam_t * p_val = ev_find_v(edit_info.ev().ev_id());
+      p_val->get()->CopyFrom(edit_info.ev().real_val());
 
     } else if (type == Bus::EditType::SHOW) {
 
@@ -133,7 +137,11 @@ int cmd_dispatch(const Bus::EditInfo &edit_info) {
   }else if (element == Bus::EditElement::VI) {
     if (type == Bus::EditType::ADD) {
 
+       prj_viadd(edit_info.vi().mod_id(),edit_info.vi().task_id(),edit_info.vi().ev_id(),edit_info.vi().fb_id(),edit_info.vi().pin_index());
+
+
     } else if (type == Bus::EditType::RM) {
+       prj_viremove(edit_info.vi().mod_id(),edit_info.vi().task_id(),edit_info.vi().fb_id(),edit_info.vi().pin_index());
 
     } else if (type == Bus::EditType::SET) {
 
@@ -144,8 +152,10 @@ int cmd_dispatch(const Bus::EditInfo &edit_info) {
     }
   }else if (element == Bus::EditElement::VO) {
     if (type == Bus::EditType::ADD) {
+       prj_voadd(edit_info.vo().mod_id(),edit_info.vo().task_id(),edit_info.vo().ev_id(),edit_info.vo().fb_id(),edit_info.vo().pin_index());
 
     } else if (type == Bus::EditType::RM) {
+       prj_viremove(edit_info.vo().mod_id(),edit_info.vo().task_id(),edit_info.vo().fb_id(),edit_info.vo().pin_index());
 
     } else if (type == Bus::EditType::SET) {
 

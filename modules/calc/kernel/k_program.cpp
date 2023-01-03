@@ -290,6 +290,23 @@ int prg_viadd(prog_t *p_prg, int idev, int idfb, int pin) {
 
   return 0;
 }
+int prg_viremove(prog_t *p_prg,int idfb, int pin) {
+  fb_t *p_fb;
+  pin_t *p_pin;
+
+
+  p_fb = prg_fbfind(p_prg, idfb);
+  if (p_fb == 0) {
+    return -1;
+  }
+  p_pin = fb_getpin(p_fb, PININPUT, pin);
+  if (p_pin == 0) {
+    return -1;
+  }
+  vam_init(&p_pin->v,p_pin->t);
+
+  return 0;
+}
 
 int prg_voadd(prog_t *p_prg, int idev, int idfb, int pin) {
   fb_t *p_fb;
@@ -310,6 +327,24 @@ int prg_voadd(prog_t *p_prg, int idev, int idfb, int pin) {
   }
 
   p_pin->v = *p_var;
+
+  return 0;
+}
+
+int prg_voremove(prog_t *p_prg, int idfb, int pin) {
+  fb_t *p_fb;
+  pin_t *p_pin;
+
+  p_fb = prg_fbfind(p_prg, idfb);
+  if (p_fb == 0) {
+    return -1;
+  }
+  p_pin = fb_getpin(p_fb, PINOUTPUT, pin);
+  if (p_pin == 0) {
+    return -1;
+  }
+
+  vam_init(&p_pin->v,p_pin->t);
 
   return 0;
 }
@@ -404,16 +439,17 @@ int prg_lkremove(prog_t *p_prg, int id) {
 void prg_dump(prog_t *p_prg) {
   // vnode_t *p_vn;
   enode_t *p_en;
-  std::cout << "program:" << std::endl;
+  std::cout << "\t\tprogram:" << std::endl;
 
-  std::cout << "en:" << std::endl;
+  std::cout << "\t\ten:" << std::endl;
   p_en = p_prg->en_head.p_next;
   while (p_en != &p_prg->en_head) {
     if (p_en->p_fb != 0) {
-      std::cout << "  fb: " << p_en->id << " - " << p_en->fbname
+      std::cout << "  \t\tfb: " << p_en->id << " - " << p_en->fbname
                 << ", fc: " << p_en->p_fb->h.fcname << std::endl;
+      fb_dump(p_en->p_fb);
     } else {
-      std::cout << "  lk: " << p_en->id << ", From.pin: " << p_en->idsrc << "."
+      std::cout << "  \t\tlk: " << p_en->id << ", From.pin: " << p_en->idsrc << "."
                 << p_en->p_vsrc->pinname << " --> "
                 << " To.pin: " << p_en->idtgt << "." << p_en->p_vtgt->pinname
                 << std::endl;

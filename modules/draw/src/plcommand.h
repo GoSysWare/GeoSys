@@ -11,6 +11,8 @@
 
 
 #include "modules/calc/proto/edit.pb.h"
+#include "modules/calc/proto/cmd.pb.h"
+#include "modules/calc/proto/snapshot.pb.h"
 
 class PLCommand
 {

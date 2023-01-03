@@ -26,6 +26,9 @@ value_tm str2var(const std::string & str);
 //这个是明文可读的string
 value_tm setvar(v_type t, std::string value);
 
+void vam_init(vam_t * vam,v_type t);
+
+
 vam_t * ev_find_v(int id);
 int ev_add(int id, const std::string & val, const std::string &name);
 int ev_add(int id, const std::string & name, const value_tm & val);

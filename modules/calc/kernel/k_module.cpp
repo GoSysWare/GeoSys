@@ -316,15 +316,8 @@ void mod_exec(mod_t *p_mod, std::unique_ptr<apollo::cyber::Node> &node) {
   }
 }
 
-void mod_dump(mod_t *p_mod) {
-  mnode_t *p_mn;
-  p_mn = p_mod->mn_head.p_next;
-  while (p_mn != &p_mod->mn_head) {
-    printf("Task: [id]:%d - [name]:%s - [type]%d - [enable]:%d\n", p_mn->id,
-           p_mn->name.c_str(), p_mn->type, p_mn->enable);
-    p_mn = p_mn->p_next;
-  }
-}
+
+
 
 int mod_fbadd(mod_t *p_mod, int idprg, int id, std::string libname,
               std::string fcname, std::string fbname) {
@@ -359,6 +352,38 @@ int mod_lkremove(mod_t *p_mod, int idprg, int id) {
   return prg_lkremove(p_mod->p_mn_select->p_prg, id);
 }
 
+int mod_viadd(mod_t *p_mod, int idprg,int idev, int idfb, int pin)
+{
+  if (mod_prgselect(p_mod, idprg) != 0) {
+    return -1;
+  }
+
+  return prg_viadd(p_mod->p_mn_select->p_prg, idev,idfb,pin);  
+}
+int mod_viremove(mod_t *p_mod, int idprg, int idfb, int pin)
+{
+    if (mod_prgselect(p_mod, idprg) != 0) {
+    return -1;
+  }
+
+  return prg_viremove(p_mod->p_mn_select->p_prg,idfb,pin);  
+}
+int mod_voadd(mod_t *p_mod, int idprg, int idev, int idfb, int pin)
+{
+    if (mod_prgselect(p_mod, idprg) != 0) {
+    return -1;
+  }
+
+  return prg_voadd(p_mod->p_mn_select->p_prg, idev,idfb,pin);  
+}
+int mod_voremove(mod_t *p_mod, int idprg, int idfb, int pin)
+{
+      if (mod_prgselect(p_mod, idprg) != 0) {
+    return -1;
+  }
+
+  return prg_voremove(p_mod->p_mn_select->p_prg,idfb,pin);  
+}
 int mod_checkloop(mod_t *p_mod, int idprg, int idsrc, int idtgt) {
   if (mod_prgselect(p_mod, idprg) != 0) {
     return -1;
@@ -367,27 +392,35 @@ int mod_checkloop(mod_t *p_mod, int idprg, int idsrc, int idtgt) {
   return prg_checkloop(p_mod->p_mn_select->p_prg, idsrc, idtgt);
 }
 
+void mod_dump(mod_t *p_mod) {
+  mnode_t *p_mn;
+  p_mn = p_mod->mn_head.p_next;
+  while (p_mn != &p_mod->mn_head) {
+    printf("\tTask: [id]:%d - [name]:%s - [type]:%d - [enable]:%d\n", p_mn->id,
+           p_mn->name.c_str(), p_mn->type, p_mn->enable);
+    mod_prgdump(p_mod,p_mn->id);
+    p_mn = p_mn->p_next;
+  }
+}
+
+
 int mod_prgdump(mod_t *p_mod, int idprg) {
   if (mod_prgselect(p_mod, idprg) != 0) {
     return -1;
   }
-
   prg_dump(p_mod->p_mn_select->p_prg);
   return 0;
 }
 
 int mod_fbdump(mod_t *p_mod, int idprg, int idfb) {
   fb_t *p_fb;
-
   if (mod_prgselect(p_mod, idprg) != 0) {
     return -1;
   }
-
   p_fb = prg_fbfind(p_mod->p_mn_select->p_prg, idfb);
   if (p_fb == ((void *)0)) {
     return -1;
   }
-
   fb_dump(p_fb);
   return 0;
 }

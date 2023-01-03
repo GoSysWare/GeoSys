@@ -2,6 +2,7 @@
 #include "dlgevdata.h"
 #include<QMessageBox>
 #include "gdefine.h"
+#include "cyber/time/time.h"
 
 TableEVData::TableEVData()
 {

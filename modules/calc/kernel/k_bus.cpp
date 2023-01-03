@@ -84,4 +84,20 @@ int bus_init(std::shared_ptr<apollo::cyber::Node> node) {
 
 int bus_uninit() {}
 
+std::shared_ptr<apollo::cyber::Client<Bus::EditInfosReq, Bus::EditInfosRsp>>
+bus_init_client_edit(std::shared_ptr<apollo::cyber::Node> node){
+
+  return node->CreateClient<Bus::EditInfosReq, Bus::EditInfosRsp>(FLAGS_prj_edit_name);
+}
+
+std::shared_ptr<apollo::cyber::Client<Bus::ProjectInfoReq, Bus::ProjectInfoRsp>>
+bus_init_client_info(std::shared_ptr<apollo::cyber::Node> node){
+
+  return node->CreateClient<Bus::ProjectInfoReq, Bus::ProjectInfoRsp>(FLAGS_prj_info_name);
+}
+std::shared_ptr<apollo::cyber::Client<Bus::ProjectCmdReq, Bus::ProjectCmdRsp>>
+bus_init_client_cmd(std::shared_ptr<apollo::cyber::Node> node){
+
+  return node->CreateClient<Bus::ProjectCmdReq, Bus::ProjectCmdRsp>(FLAGS_prj_cmd_name);
+}
 #endif

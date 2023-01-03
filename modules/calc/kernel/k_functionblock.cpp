@@ -5,61 +5,69 @@
 #include <stdio.h>
 #include <string.h>
 
+
 static void fb_init_pin(pin_t *pin) {
   pin->s = PIN_NO_LINK;
-  pin->v.reset( new value_tm );
-  pin->v->set_tm(0);
-  pin->v->mutable_v()->set_t(pin->t);
-  value_t *vt = pin->v->mutable_v();
-  switch (pin->t) {
-  case T_NONE:
-    break;
-  case T_BOOL:
-    vt->set_b(false);
-    break;
-  case T_INT32:
-    vt->set_i(0);
-    break;
-  case T_UINT32:
-    vt->set_ui(0);
-    break;
-  case T_INT64:
-    vt->set_ll(0);
-    break;
-  case T_UINT64:
-    vt->set_ull(0);
-    break;
-  case T_FLOAT32:
-    vt->set_i(0.0);
-    break;
-  case T_FLOAT64:
-    vt->set_d(0.0);
-    break;
-  case T_TIME:
-    vt->set_tm(0);
-    break;
-  case T_STRING:
-    vt->set_str("");
-    break;
-  case T_BYTES:
-    vt->set_blob("");
-    break;
-  case T_IMAGE:
-    vt->set_img("");
-    break;
-  case T_LIDAR:
-    vt->set_lidar("");
-    break;
-  case T_SONAR:
-    vt->set_sonar("");
-    break;
-  case T_FILE:
-    vt->set_file("");
-    break;
-  default:
-    break;
-  }
+  vam_init(&pin->v,pin->t);
 }
+
+// static void fb_init_pin(pin_t *pin) {
+//   pin->s = PIN_NO_LINK;
+
+//   pin->v.reset( new value_tm );
+//   pin->v->set_tm(apollo::cyber::Time::Now().ToNanosecond());
+
+//   pin->v->mutable_v()->set_t(pin->t);
+//   value_t *vt = pin->v->mutable_v();
+//   switch (pin->t) {
+//   case T_NONE:
+//     break;
+//   case T_BOOL:
+//     vt->set_b(false);
+//     break;
+//   case T_INT32:
+//     vt->set_i(0);
+//     break;
+//   case T_UINT32:
+//     vt->set_ui(0);
+//     break;
+//   case T_INT64:
+//     vt->set_ll(0);
+//     break;
+//   case T_UINT64:
+//     vt->set_ull(0);
+//     break;
+//   case T_FLOAT32:
+//     vt->set_i(0.0);
+//     break;
+//   case T_FLOAT64:
+//     vt->set_d(0.0);
+//     break;
+//   case T_TIME:
+//     vt->set_tm(0);
+//     break;
+//   case T_STRING:
+//     vt->set_str("");
+//     break;
+//   case T_BYTES:
+//     vt->set_blob("");
+//     break;
+//   case T_IMAGE:
+//     vt->set_img("");
+//     break;
+//   case T_LIDAR:
+//     vt->set_lidar("");
+//     break;
+//   case T_SONAR:
+//     vt->set_sonar("");
+//     break;
+//   case T_FILE:
+//     vt->set_file("");
+//     break;
+//   default:
+//     break;
+//   }
+// }
 // static void fb_init_pin(pin_t *pin) {
 //   if(pin->v != nullptr) 
 //     pin->v.reset(); 
@@ -191,22 +199,22 @@ int fb_setpin(fb_t *p_fb, int pintype, unsigned int n, vam_t v) {
 
 void fb_dump(fb_t *p_fb) {
   unsigned int i;
-  std::cout << "fc: " << p_fb->h.fcname << std::endl;
-  std::cout << "input: " << std::endl;
+  std::cout << "\t\t\tfc: " << p_fb->h.fcname << std::endl;
+  std::cout << "\t\t\tinput: " << std::endl;
   for (i = 0; i < p_fb->ins.size(); i++) {
-    std::cout << "fb: " << p_fb->ins[i].pinname << "- "
+    std::cout << "\t\t\t\tfb: " << p_fb->ins[i].pinname << "- "
               << type2str(p_fb->ins[i].t) << ": "
               << p_fb->ins[i].v->ShortDebugString() << std::endl;
   }
-  std::cout << "output: " << std::endl;
+  std::cout << "\t\t\toutput: " << std::endl;
   for (i = 0; i < p_fb->outs.size(); i++) {
-    std::cout << "fb: " << p_fb->outs[i].pinname << "- "
+    std::cout << "\t\t\t\tfb: " << p_fb->outs[i].pinname << "- "
               << type2str(p_fb->outs[i].t) << ": "
               << p_fb->ins[i].v->ShortDebugString() << std::endl;
   }
-  std::cout << "property: " << std::endl;
+  std::cout << "\t\t\tproperty: " << std::endl;
   for (i = 0; i < p_fb->props.size(); i++) {
-    std::cout << "fb: " << p_fb->props[i].pinname << "- "
+    std::cout << "\t\t\t\tfb: " << p_fb->props[i].pinname << "- "
               << type2str(p_fb->props[i].t) << ": "
               << p_fb->ins[i].v->ShortDebugString() << std::endl;
   }

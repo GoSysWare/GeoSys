@@ -31,6 +31,21 @@ typedef struct ENode{
 	int mark{0};
 } enode_t;
 
+
+/* VNode map a variable to a fb pin */
+typedef struct VNode{
+	struct VNode *p_prev;
+	struct VNode *p_next;
+	int id;
+	int idev;
+	int idfb;
+    pin_t *p_pin;//引脚值，参与功能块计算
+    vam_t *p_val;//临时值，保存初始值或输出值
+	int mark;
+} vnode_t;
+
+
+
 // prg的动态运行信息
 typedef struct ProgramInfo{
 	int status;
@@ -42,7 +57,12 @@ typedef struct ProgramInfo{
 
 typedef struct Program{
 	enode_t en_head;
+	vnode_t vnin_head;
+	vnode_t vnout_head;
 	enode_t *p_en_select;
+	vnode_t *p_vnin_select;
+	vnode_t *p_vnout_select;
+
 } prog_t;
 
 prog_t *prg_new();
@@ -52,7 +72,9 @@ int prg_fbremove(prog_t *p_prg, int id);
 int prg_lkadd(prog_t *p_prg, int id, int fbsrc, int pinsrc, int fbtgt, int pintgt);
 int prg_lkremove(prog_t *p_prg, int id);
 int prg_viadd(prog_t *p_prg, int idev, int idfb, int pin);
+int prg_viremove(prog_t *p_prg, int idfb, int pin);
 int prg_voadd(prog_t *p_prg, int idev, int idfb, int pin);
+int prg_voremove(prog_t *p_prg, int idfb, int pin);
 
 void prg_exec(prog_t *p_prg);
 void prg_dump(prog_t *p_prg);

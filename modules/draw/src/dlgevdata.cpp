@@ -177,6 +177,7 @@ void DlgEVData::getValue(PLEVData &ev)
     ev.name = textName->text();
     ev.desc = textComment->text();
     const std::string value = textValue->text().toStdString();
+    ev.initValue.set_tm(apollo::cyber::Time::Now().ToNanosecond());
     switch(listType->currentIndex().row()){
     case 0:
         ev.initValue.mutable_v()->set_t(v_type::T_BOOL);

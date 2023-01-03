@@ -118,9 +118,15 @@ int mod_lkadd(mod_t *p_mod, int idprg, int id, int fbsrc, int pinsrc, int fbtgt,
               int pintgt);
 int mod_lkremove(mod_t *p_mod, int idprg, int id);
 
+int mod_viadd(mod_t *p_mod, int idprg,int idev, int idfb, int pin);
+int mod_viremove(mod_t *p_mod, int idprg, int idfb, int pin);
+int mod_voadd(mod_t *p_mod, int idprg, int idev, int idfb, int pin);
+int mod_voremove(mod_t *p_mod, int idprg, int idfb, int pin);
+
 int mod_checkloop(mod_t *p_mod, int idprg, int idsrc, int idtgt);
 
 void mod_dump(mod_t *p_mod);
+
 int mod_prgdump(mod_t *p_mod, int idprg);
 int mod_fbdump(mod_t *p_mod, int idprg, int idfb);
 

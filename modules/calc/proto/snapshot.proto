@@ -20,8 +20,9 @@ message ModSnapshot
 }
 message ProjSnapshotRsp
 {
-    repeated ModSnapshot mods = 1;
-    repeated EVNodeValue vals = 2;  
+    ProjectInfoRsp proj_info = 1;
+    repeated ModSnapshot mods = 2;
+    repeated EVNodeValue vals = 3;  
    
 }
 
