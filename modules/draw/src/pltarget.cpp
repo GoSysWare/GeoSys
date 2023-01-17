@@ -1,273 +1,269 @@
 #include "pltarget.h"
 #include "gdefine.h"
-
+#include "modules/calc/include/k_bus.h"
+#include "modules/calc/include/k_command.h"
 
 //定时器中刷新各个引脚和变量的值，并更新画面
-void PLTarget::timerEvent(QTimerEvent *e)
-{
-    //  if(0 == cfgbus_send(FUNCPRJINFO, 0, NULL)){
-    //      prjinfo_t *pinfo = cfgbus_prjinfo();
-    //      idCmdTarget = pinfo->id_cmd;
-    //      uuidTarget = pinfo->uuid;
-    //      //qDebug() << uuidTarget << idCmdTarget;
-    //  }else{
-    //      online(false, NULL);
-    //  }
+void PLTarget::timerEvent(QTimerEvent *e) {
 
-    // if(bMonitor){        
-    //     if(0 == cfgbus_send(FUNCIMG, 0, NULL)){
-    //         int i, j, k, n;
-    //         // load fbs value
-    //         PLProgram *prg;
-    //         PLFunctionBlock *fb;
-    //         fb_t *p_fb;
-    //         for(i=0; i<gMainModel->prgList.size(); i++){
-    //             prg = &gMainModel->prgList[i];
-    //             for(j=0; j<prg->fbs.size(); j++){
-    //                 fb = &prg->fbs[j];
-    //                 p_fb = prj_fbfind(fb->idPrg, fb->id);
-    //                 // input
-    //                 for(k=0; k<fb->input.size(); k++){
-    //                     fb->input[k].value = *(p_fb->ins[k].v);
-    //                 }
-    //                 // output
-    //                 for(k=0; k<fb->output.size(); k++){
-    //                     fb->output[k].value = *(p_fb->outs[k].v);
-    //                     qDebug() << "fb" << fb->id << "pin" << k << "val" << fb->output[k].value.v().i();
-    //                 }
-    //                 // property
-    //                 for(k=0; k<fb->property.size(); k++){
-    //                     fb->property[k].value = *(p_fb->props[k].v);
-    //                 }
-    //             }
-    //         }
-    //         // load evs value
-    //         PLEVData *ev;
-    //         value_tm *p_ev;
-    //         for(int i=0; i<gMainModel->evList.size(); i++){
-    //             ev = &gMainModel->evList[i];
-    //             p_ev = ev_find_v(ev->id)->get();
-    //             ev->value = *p_ev;
-    //         }
-    //         gMainFrame->updateCadView();
-    //     }else{
-    //         online(false, NULL);
-    //     }
-    // }
 
-    //static int i = 0;
-    //qDebug() << "timer:" << i++ << uuidTarget;
+    std::shared_ptr<Bus::ProjectInfoRsp> info_res =
+    bus_proj_info_send(gNode, gclient_proj_info);
+
+    if (info_res != nullptr && info_res->has_result() &&info_res->result().code() == Bus::ResultCode::OK) {
+       idCmdTarget = info_res->cmd_id();
+       uuidTarget = QString::fromStdString(info_res->prj_uuid());
+    }else{
+       online(false, NULL);
+   }
+
+  if(bMonitor){
+
+    std::shared_ptr<Bus::ProjSnapshotRsp> sp_res =
+    bus_proj_snapshot_send(gNode, gclient_proj_snapshot);
+
+    if (sp_res != nullptr && sp_res->has_result() && sp_res->result().code() == Bus::ResultCode::OK) {
+          int i, j, k, n,m;
+          // load fbs value
+          PLModule *mod;
+
+          PLProgram *prg;
+          PLFunctionBlock *fb;
+          fb_t *p_fb;
+          for(m=0; m<gMainModel->modList.size(); m++){
+            mod = &gMainModel->modList[i];
+
+            for(i=0; i<mod->prgList.size(); i++){
+                prg = &mod->prgList[i];
+                for(j=0; j<prg->fbs.size(); j++){
+                    fb = &prg->fbs[j];
+                    p_fb = prj_fbfind(fb->idMod,fb->idPrg, fb->id);
+                    // input
+                    for(k=0; k<fb->input.size(); k++){
+                        fb->input[k].value = *(p_fb->ins[k].v);
+                    }
+                    // output
+                    for(k=0; k<fb->output.size(); k++){
+                        fb->output[k].value = *(p_fb->outs[k].v);
+                        qDebug() << "fb" << fb->id << "pin" << k << "val" <<
+                        fb->output[k].value.v().i();
+                    }
+                    // property
+                    for(k=0; k<fb->property.size(); k++){
+                        fb->property[k].value = *(p_fb->props[k].v);
+                    }
+                }
+            }
+          }
+          // load evs value
+          PLEVData *ev;
+          value_tm *p_ev;
+          for(int i=0; i<gMainModel->evList.size(); i++){
+              ev = &gMainModel->evList[i];
+              p_ev = ev_find_v(ev->id)->get();
+              ev->value = *p_ev;
+          }
+          gMainFrame->updateCadView();
+      }else{
+          online(false, NULL);
+      }
+  }
+
 }
 
-PLTarget::PLTarget(QObject *parent)
-    : QTimer(parent)
-{
+PLTarget::PLTarget(QObject *parent) : QTimer(parent) {
 
+  bOnline = false;
+  bMonitor = false;
+
+  setInterval(200);
+}
+
+PLTarget::~PLTarget() {}
+
+bool PLTarget::online(bool mode, char *ip) {
+  if (mode == bOnline) {
+    return false;
+  }
+
+  if (mode) {
+
+    std::shared_ptr<Bus::ProjectCmdRsp> res =
+        bus_online_send(gNode, gclient_proj_cmd);
+
+    if (res != nullptr && res->has_result() && res->result().code() == Bus::ResultCode::OK) {
+      bOnline = true;
+      start();
+    }
+  } else {
+    stop();
+    bus_disconnect_send(gNode, gclient_proj_cmd);
     bOnline = false;
     bMonitor = false;
+    idCmdTarget = 0;
+    uuidTarget.clear();
+    gMainFrame->updateCadView();
+  }
 
-    setInterval(200);
+  return bOnline;
 }
 
-PLTarget::~PLTarget()
-{
-
-}
-
-bool PLTarget::online(bool mode, char *ip)
-{
-    // if(mode == bOnline){
-    //     return false;
-    // }
-
-    // if(mode){
-    //     if(0 == cfgbus_connect(ip)){
-    //         bOnline = true;
-    //         start();
-    //     }
-    // }else{
-    //     stop();
-    //     cfgbus_disconnect();
-    //     bOnline = false;
-    //     bMonitor = false;
-    //     idCmdTarget = 0;
-    //     uuidTarget.clear();
-    //     gMainFrame->updateCadView();
-    // }
-
-    // return bOnline;
-
+bool PLTarget::sync() {
+  if (!bOnline) {
     return false;
-
-}
-
-bool PLTarget::sync()
-{
-    // if(!bOnline){
-    //     return false;
-    // }
-    // if(bMonitor){
-    //     return false;
-    // }
-    // if(!isMatch()){
-    //     return false;
-    // }
-    // if(isSync()){
-    //     return false;
-    // }
-
-    // QByteArray bigCmd;
-    // for(int i=0; i<gMainModel->cmdList.size(); i++){
-    //     if(gMainModel->cmdList.at(i).id > idCmdTarget){
-    //         bigCmd += QByteArray::number(gMainModel->cmdList.at(i).cmdLine.toLatin1().length());
-    //         bigCmd += gMainModel->cmdList.at(i).cmdLine.toLatin1();
-    //     }
-    // }
-    // if(bigCmd.length() >= sizeof(cmdsbuf)){
-    //     return false;
-    // }
-    // strncpy(cmdsbuf, bigCmd.data(), sizeof(cmdsbuf)-1);
-    // cmdsbuf[sizeof(cmdsbuf)-1] = 0;
-
-    // stop();
-
-    // if(0 != cfgbus_send(FUNCSTOP, 0, NULL)){
-    //     online(false, NULL);
-    //     return false;
-    // }
-
-    // if(0 == cfgbus_send(FUNCCMD, strlen(cmdsbuf)+1, cmdsbuf)){
-    //     cfgbus_send(FUNCRUN, 0, NULL);
-    //     start();
-    //     return true;
-    // }else{
-    //     online(false, NULL);
-    //     return false;
-    // }
+  }
+  if (bMonitor) {
     return false;
+  }
+  if (!isMatch()) {
+    return false;
+  }
+  if (isSync()) {
+    return false;
+  }
 
+  stop();
+  std::shared_ptr<Bus::ProjectCmdRsp> online_res =
+      bus_stop_send(gNode, gclient_proj_cmd);
+
+  if (online_res == nullptr ||   online_res->has_result() == false || online_res->result().code() != Bus::ResultCode::OK) {
+    online(false, NULL);
+    return false;
+  }
+
+  std::shared_ptr<Bus::ProjectCmdRsp> run_res =
+      bus_run_send(gNode, gclient_proj_cmd);
+
+  if (run_res == nullptr || run_res->has_result() == false ||  run_res->result().code() != Bus::ResultCode::OK) {
+    start();
+    return true;
+  } else {
+    online(false, NULL);
+    return false;
+  }
+
+  return false;
 }
 
-void PLTarget::monitor(bool mode)
-{
-    if(mode){
-        if(!bOnline){
-            return;
-        }
-        if(!isSync()){
-            return;
-        }
-        bMonitor = true;
-    }else{
-        bMonitor = false;
+void PLTarget::monitor(bool mode) {
+  if (mode) {
+    if (!bOnline) {
+      return;
     }
+    if (!isSync()) {
+      return;
+    }
+    bMonitor = true;
+  } else {
+    bMonitor = false;
+  }
 }
 
-bool PLTarget::download()
-{
-    // if(!bOnline){
-    //     return false;
-    // }
-    // if(bMonitor){
-    //     return false;
-    // }
-    // if(isSync()){
-    //     return false;
-    // }
+bool PLTarget::download() {
+  if(!bOnline){
+      return false;
+  }
+  if(bMonitor){
+      return false;
+  }
+  if(isSync()){
+      return false;
+  }
 
-    // gMainModel->project.renewUuid();
-    // char cline[1024];
-    // strncpy(cline, gMainModel->project.getProjCmdLine().toLatin1().data(), sizeof(cline)-1);
-    // cmd_dispatch(cline);
+  Bus::EditInfo proj_info;
+
+  proj_info.set_element(Bus::PROJ);
+  proj_info.set_edit_type(Bus::SET);
+  proj_info.mutable_proj()->set_proj_uuid(gMainModel->project.uuid.toStdString());
+  proj_info.mutable_proj()->set_proj_name(gMainModel->project.name.toStdString());
+  proj_info.mutable_proj()->set_proj_desc(gMainModel->project.desc.toStdString());
 
 
-    // QByteArray bigCmd;
-    // QBuffer buff_io(&bigCmd);
-    // buff_io.open(QFile::WriteOnly| QFile::Truncate);
-    // QDataStream out(&buff_io);
-    // out.setByteOrder(QDataStream::LittleEndian);
-    // out << gMainModel->project.getProjCmdLine().toLatin1();
-    // for(int i=0; i<gMainModel->cmdList.size(); i++){
-    //     out << gMainModel->cmdList.at(i).cmdLine.toLatin1();
-    // }
-    // buff_io.close();
+  cmd_dispatch(proj_info);
 
-    // if(bigCmd.length() >= sizeof(cmdsbuf)){
-    //     return false;
-    // }
-    // memcpy(cmdsbuf, bigCmd.data(), std::min((int)sizeof(cmdsbuf),bigCmd.length()));
-    // cmdsbuf[sizeof(cmdsbuf)-1] = 0;
-    // stop();
 
-    // if(0 != cfgbus_send(FUNCSTOP, 0, NULL)){
-    //     //qDebug() << "Err: FUNCSTOP";
-    //     online(false, NULL);
-    //     return false;
-    // }
-    // if(0 != cfgbus_send(FUNCRESET, 0, NULL)){
-    //     //qDebug() << "Err: FUNCRESET";
-    //     online(false, NULL);
-    //     return false;
-    // }
+  stop();
 
-    // if(0 == cfgbus_send(FUNCCMD, std::min((int)sizeof(cmdsbuf),bigCmd.length()), cmdsbuf)){
-    //     cfgbus_send(FUNCRUN, 0, NULL);
-    //     start();
-    //     return true;
-    // }else{
-    //     //qDebug() << "Err: FUNCSTART";
-    //     online(false, NULL);
-    //     return false;
-    // }
+  std::shared_ptr<Bus::ProjectCmdRsp> stop_res =
+      bus_stop_send(gNode, gclient_proj_cmd);
+
+  if (stop_res == nullptr ||   stop_res->has_result() == false || stop_res->result().code() != Bus::ResultCode::OK) {
+    online(false, NULL);
     return false;
+  }
 
-}
+  std::shared_ptr<Bus::ProjectCmdRsp> reset_res =
+      bus_stop_send(gNode, gclient_proj_cmd);
 
-bool PLTarget::upload(QString &cmds)
-{
-    // if(0 != cfgbus_send(FUNCUCMD,0,NULL)){
-    //     online(false, NULL);
-    //     return false;
-    // }
-
-    // cmds = cfgbus_cmdsbuf();
-    // return true;
+  if (reset_res == nullptr ||   reset_res->has_result() == false || reset_res->result().code() != Bus::ResultCode::OK) {
+    online(false, NULL);
     return false;
+  }
 
-}
 
-bool PLTarget::isOnline()
-{
-    return bOnline;
-}
+ std::shared_ptr<Bus::ProjectCmdRsp> reset_res = bus_stop_send(gNode, gclient_proj_cmd);
 
-bool PLTarget::isMonitor()
-{
-    return bMonitor;
-}
-
-bool PLTarget::isMatch()
-{
-    // if(uuidTarget == gMainModel->project.uuid){
-    //     if(idCmdTarget <= gMainModel->cmdID){
-    //         return true;
-    //     }else{
-    //         return false;
-    //     }
-    // }else{
-    //     return false;
-    // }
-
-        return false;
-
-}
-
-bool PLTarget::isSync()
-{
-    // if(isMatch()){
-    //     if(idCmdTarget == gMainModel->cmdID){
-    //         return true;
-    //     }
-    // }
+  if (reset_res == nullptr ||   reset_res->has_result() == false || reset_res->result().code() != Bus::ResultCode::OK) {
+    online(false, NULL);
     return false;
+  }
+
+ std::shared_ptr<Bus::ProjectCmdRsp> download_res = bus_download_send(gNode, gclient_proj_cmd);
+
+  if (download_res != nullptr &&   download_res->has_result() == true || download_res->result().code() != Bus::ResultCode::OK) {
+    online(false, NULL);
+    return false;
+  }
+
+
+  if(0 == cfgbus_send(FUNCCMD,std::min((int)sizeof(cmdsbuf),bigCmd.length()), cmdsbuf)){
+      cfgbus_send(FUNCRUN, 0, NULL);
+      start();
+      return true;
+  }else{
+      //qDebug() << "Err: FUNCSTART";
+      online(false, NULL);
+      return false;
+  }
+  return false;
+}
+
+bool PLTarget::upload(Bus::EditInfosReq &edit) {
+    std::shared_ptr<Bus::ProjectCmdRsp> online_res =
+      bus_upload_send(gNode, gclient_proj_cmd);
+
+  if (online_res == nullptr ||  online_res->has_result() == false || online_res->result().code() != Bus::ResultCode::OK) {
+    online(false, NULL);
+    return false;
+  }
+  //edit 需要赋值
+
+  return true;
+}
+
+bool PLTarget::isOnline() { return bOnline; }
+
+bool PLTarget::isMonitor() { return bMonitor; }
+
+bool PLTarget::isMatch() {
+  if (uuidTarget == gMainModel->project.uuid) {
+    if (idCmdTarget <= gMainModel->cmdID) {
+      return true;
+    } else {
+      return false;
+    }
+  } else {
+    return false;
+  }
+
+  return false;
+}
+
+bool PLTarget::isSync() {
+  if (isMatch()) {
+    if (idCmdTarget == gMainModel->cmdID) {
+      return true;
+    }
+  }
+  return false;
 }
