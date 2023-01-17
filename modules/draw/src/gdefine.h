@@ -16,4 +16,6 @@ extern std::shared_ptr<apollo::cyber::Client<Bus::ProjectInfoReq, Bus::ProjectIn
 extern std::shared_ptr<apollo::cyber::Client<Bus::ProjectCmdReq, Bus::ProjectCmdRsp>> gclient_proj_cmd;
 
 
+
+extern std::shared_ptr<apollo::cyber::Client<Bus::ProjSnapshotReq, Bus::ProjSnapshotRsp>>  gclient_proj_snapshot;
 #endif // GDEFINE_H

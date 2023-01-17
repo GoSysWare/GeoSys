@@ -19,36 +19,37 @@ int main(int argc, char *argv[]) {
   auto engine_node = apollo::cyber::CreateNode("robot_engine");
   prj_init(0);
   lib_init();
-  Bus::EditInfosReq edit_infos;
+  bus_init(std::move(engine_node));
+  // Bus::EditInfosReq edit_infos;
 
-  std::string file = "/home/shuimujie/Works/save_mod_3_lk.cl";
-  apollo::cyber::common::GetProtoFromASCIIFile(file,&edit_infos);
-  cmds_dispatch(edit_infos);
-  std::cout<< "++++++++++++++++++++++" << std::endl;
+  // std::string file = "/home/shuimujie/Works/save_mod_3_lk.cl";
+  // apollo::cyber::common::GetProtoFromASCIIFile(file,&edit_infos);
+  // cmds_dispatch(edit_infos);
+  // std::cout<< "++++++++++++++++++++++" << std::endl;
 
-  ev_dump();
-  prj_dump();
-  std::cout<< "++++++++++++++++++++++" << std::endl;
+  // ev_dump();
+  // prj_dump();
+  // std::cout<< "++++++++++++++++++++++" << std::endl;
 
-  Bus::ProjSnapshotRsp snapshot;
-  prj_to_snapshot(&snapshot);
+  // Bus::ProjSnapshotRsp snapshot;
+  // prj_to_snapshot(&snapshot);
 
-  std::cout<< "snapshot:" << std::endl;
-  std::cout<< snapshot.DebugString() << std::endl;
-  std::cout<< "++++++++++++++++++++++" << std::endl;
+  // std::cout<< "snapshot:" << std::endl;
+  // std::cout<< snapshot.DebugString() << std::endl;
+  // std::cout<< "++++++++++++++++++++++" << std::endl;
 
-  prj_from_snapshot(&snapshot);
-
-
-
+  // prj_from_snapshot(&snapshot);
 
 
-  std::cout<< "snapshot:" << std::endl;
-  std::cout<< snapshot.DebugString() << std::endl;
 
-  std::cout<< "++++++++++++++++++++++" << std::endl;
 
-  ev_dump();
-  prj_dump();
+
+  // std::cout<< "snapshot:" << std::endl;
+  // std::cout<< snapshot.DebugString() << std::endl;
+
+  // std::cout<< "++++++++++++++++++++++" << std::endl;
+
+  // ev_dump();
+  // prj_dump();
   apollo::cyber::WaitForShutdown();
 }

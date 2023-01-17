@@ -14,6 +14,7 @@ std::shared_ptr<apollo::cyber::Client<Bus::EditInfosReq, Bus::EditInfosRsp>> gcl
 
 std::shared_ptr<apollo::cyber::Client<Bus::ProjectInfoReq, Bus::ProjectInfoRsp>> gclient_proj_info;
 std::shared_ptr<apollo::cyber::Client<Bus::ProjectCmdReq, Bus::ProjectCmdRsp>> gclient_proj_cmd;
+ std::shared_ptr<apollo::cyber::Client<Bus::ProjSnapshotReq, Bus::ProjSnapshotRsp>>  gclient_proj_snapshot;
 
 int main(int argc, char *argv[])
 {
@@ -35,6 +36,7 @@ int main(int argc, char *argv[])
     gclient_proj_eidt = bus_init_client_edit(gNode);
     gclient_proj_info = bus_init_client_info(gNode);
     gclient_proj_cmd = bus_init_client_cmd(gNode);
+    gclient_proj_snapshot = bus_init_client_snapshot(gNode);
 
     return app.exec();
 }

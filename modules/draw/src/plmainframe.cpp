@@ -539,17 +539,15 @@ void PLMainFrame::tgtUpload() {
     return;
   }
 
-  QString cmds;
-  if (!gTarget->upload(cmds)) {
+  Bus::EditInfosReq edit_infos;
+
+  if (!gTarget->upload(edit_infos)) {
     QMessageBox::critical(this, tr("Error"), tr("Upload fail"));
   }
 
-  QFile file(fileName);
-  file.open(QFile::WriteOnly | QFile::Truncate);
-  QDataStream out(&file);
 
-  out << cmds.toLatin1();
-  file.close();
+  apollo::cyber::common::SetProtoToASCIIFile(edit_infos, fileName.toStdString());
+
 }
 
 void PLMainFrame::showProj() { dockProj->show(); }
