@@ -197,24 +197,22 @@ bus_sync_send(std::shared_ptr<apollo::cyber::Node> node,
   return bus_cmd->SendRequest(req);
 }
 
-std::shared_ptr<Bus::ProjectCmdRsp> bus_download_send(
+std::shared_ptr<Bus::EditInfosRsp> bus_download_send(
     std::shared_ptr<apollo::cyber::Node> node,
     std::shared_ptr<
-        apollo::cyber::Client<Bus::ProjectCmdReq, Bus::ProjectCmdRsp>>
+        apollo::cyber::Client<Bus::EditInfosReq, Bus::EditInfosRsp>>
         bus_cmd) {
-   std::shared_ptr<Bus::ProjectCmdReq> req= std::make_shared<Bus::ProjectCmdReq>();
-  req->set_cmd_type(Bus::RunType::DOWNLOAD);
+   std::shared_ptr<Bus::EditInfosReq> req= std::make_shared<Bus::EditInfosReq>();
 
   return bus_cmd->SendRequest(req);
 }
 
-std::shared_ptr<Bus::ProjectCmdRsp> bus_upload_send(
+std::shared_ptr<Bus::EditInfosRsp> bus_upload_send(
     std::shared_ptr<apollo::cyber::Node> node,
     std::shared_ptr<
-        apollo::cyber::Client<Bus::ProjectCmdReq, Bus::ProjectCmdRsp>>
+        apollo::cyber::Client<Bus::EditInfosReq, Bus::EditInfosRsp>>
         bus_cmd) {
-  std::shared_ptr<Bus::ProjectCmdReq> req= std::make_shared<Bus::ProjectCmdReq>();
-  req->set_cmd_type(Bus::RunType::UPLOAD);
+  std::shared_ptr<Bus::EditInfosReq> req= std::make_shared<Bus::EditInfosReq>();
 
   return bus_cmd->SendRequest(req);
 }

@@ -6,69 +6,69 @@
 //定时器中刷新各个引脚和变量的值，并更新画面
 void PLTarget::timerEvent(QTimerEvent *e) {
 
+  std::shared_ptr<Bus::ProjectInfoRsp> info_res =
+      bus_proj_info_send(gNode, gclient_proj_info);
 
-    std::shared_ptr<Bus::ProjectInfoRsp> info_res =
-    bus_proj_info_send(gNode, gclient_proj_info);
-
-    if (info_res != nullptr && info_res->has_result() &&info_res->result().code() == Bus::ResultCode::OK) {
-       idCmdTarget = info_res->cmd_id();
-       uuidTarget = QString::fromStdString(info_res->prj_uuid());
-    }else{
-       online(false, NULL);
-   }
-
-  if(bMonitor){
-
-    std::shared_ptr<Bus::ProjSnapshotRsp> sp_res =
-    bus_proj_snapshot_send(gNode, gclient_proj_snapshot);
-
-    if (sp_res != nullptr && sp_res->has_result() && sp_res->result().code() == Bus::ResultCode::OK) {
-          int i, j, k, n,m;
-          // load fbs value
-          PLModule *mod;
-
-          PLProgram *prg;
-          PLFunctionBlock *fb;
-          fb_t *p_fb;
-          for(m=0; m<gMainModel->modList.size(); m++){
-            mod = &gMainModel->modList[i];
-
-            for(i=0; i<mod->prgList.size(); i++){
-                prg = &mod->prgList[i];
-                for(j=0; j<prg->fbs.size(); j++){
-                    fb = &prg->fbs[j];
-                    p_fb = prj_fbfind(fb->idMod,fb->idPrg, fb->id);
-                    // input
-                    for(k=0; k<fb->input.size(); k++){
-                        fb->input[k].value = *(p_fb->ins[k].v);
-                    }
-                    // output
-                    for(k=0; k<fb->output.size(); k++){
-                        fb->output[k].value = *(p_fb->outs[k].v);
-                        qDebug() << "fb" << fb->id << "pin" << k << "val" <<
-                        fb->output[k].value.v().i();
-                    }
-                    // property
-                    for(k=0; k<fb->property.size(); k++){
-                        fb->property[k].value = *(p_fb->props[k].v);
-                    }
-                }
-            }
-          }
-          // load evs value
-          PLEVData *ev;
-          value_tm *p_ev;
-          for(int i=0; i<gMainModel->evList.size(); i++){
-              ev = &gMainModel->evList[i];
-              p_ev = ev_find_v(ev->id)->get();
-              ev->value = *p_ev;
-          }
-          gMainFrame->updateCadView();
-      }else{
-          online(false, NULL);
-      }
+  if (info_res != nullptr && info_res->has_result() &&
+      info_res->result().code() == Bus::ResultCode::OK) {
+    idCmdTarget = info_res->cmd_id();
+    uuidTarget = QString::fromStdString(info_res->prj_uuid());
+  } else {
+    online(false, NULL);
   }
 
+  if (bMonitor) {
+
+    std::shared_ptr<Bus::ProjSnapshotRsp> sp_res =
+        bus_proj_snapshot_send(gNode, gclient_proj_snapshot);
+
+    if (sp_res != nullptr && sp_res->has_result() &&
+        sp_res->result().code() == Bus::ResultCode::OK) {
+      int i, j, k, n, m;
+      // load fbs value
+      PLModule *mod;
+
+      PLProgram *prg;
+      PLFunctionBlock *fb;
+      fb_t *p_fb;
+      for (m = 0; m < gMainModel->modList.size(); m++) {
+        mod = &gMainModel->modList[i];
+
+        for (i = 0; i < mod->prgList.size(); i++) {
+          prg = &mod->prgList[i];
+          for (j = 0; j < prg->fbs.size(); j++) {
+            fb = &prg->fbs[j];
+            p_fb = prj_fbfind(fb->idMod, fb->idPrg, fb->id);
+            // input
+            for (k = 0; k < fb->input.size(); k++) {
+              fb->input[k].value = *(p_fb->ins[k].v);
+            }
+            // output
+            for (k = 0; k < fb->output.size(); k++) {
+              fb->output[k].value = *(p_fb->outs[k].v);
+              qDebug() << "fb" << fb->id << "pin" << k << "val"
+                       << fb->output[k].value.v().i();
+            }
+            // property
+            for (k = 0; k < fb->property.size(); k++) {
+              fb->property[k].value = *(p_fb->props[k].v);
+            }
+          }
+        }
+      }
+      // load evs value
+      PLEVData *ev;
+      value_tm *p_ev;
+      for (int i = 0; i < gMainModel->evList.size(); i++) {
+        ev = &gMainModel->evList[i];
+        p_ev = ev_find_v(ev->id)->get();
+        ev->value = *p_ev;
+      }
+      gMainFrame->updateCadView();
+    } else {
+      online(false, NULL);
+    }
+  }
 }
 
 PLTarget::PLTarget(QObject *parent) : QTimer(parent) {
@@ -91,7 +91,8 @@ bool PLTarget::online(bool mode, char *ip) {
     std::shared_ptr<Bus::ProjectCmdRsp> res =
         bus_online_send(gNode, gclient_proj_cmd);
 
-    if (res != nullptr && res->has_result() && res->result().code() == Bus::ResultCode::OK) {
+    if (res != nullptr && res->has_result() &&
+        res->result().code() == Bus::ResultCode::OK) {
       bOnline = true;
       start();
     }
@@ -126,7 +127,8 @@ bool PLTarget::sync() {
   std::shared_ptr<Bus::ProjectCmdRsp> online_res =
       bus_stop_send(gNode, gclient_proj_cmd);
 
-  if (online_res == nullptr ||   online_res->has_result() == false || online_res->result().code() != Bus::ResultCode::OK) {
+  if (online_res == nullptr || online_res->has_result() == false ||
+      online_res->result().code() != Bus::ResultCode::OK) {
     online(false, NULL);
     return false;
   }
@@ -134,7 +136,8 @@ bool PLTarget::sync() {
   std::shared_ptr<Bus::ProjectCmdRsp> run_res =
       bus_run_send(gNode, gclient_proj_cmd);
 
-  if (run_res == nullptr || run_res->has_result() == false ||  run_res->result().code() != Bus::ResultCode::OK) {
+  if (run_res == nullptr || run_res->has_result() == false ||
+      run_res->result().code() != Bus::ResultCode::OK) {
     start();
     return true;
   } else {
@@ -160,83 +163,87 @@ void PLTarget::monitor(bool mode) {
 }
 
 bool PLTarget::download() {
-  if(!bOnline){
-      return false;
+  if (!bOnline) {
+    return false;
   }
-  if(bMonitor){
-      return false;
+  if (bMonitor) {
+    return false;
   }
-  if(isSync()){
-      return false;
+  if (isSync()) {
+    return false;
   }
 
   Bus::EditInfo proj_info;
 
   proj_info.set_element(Bus::PROJ);
   proj_info.set_edit_type(Bus::SET);
-  proj_info.mutable_proj()->set_proj_uuid(gMainModel->project.uuid.toStdString());
-  proj_info.mutable_proj()->set_proj_name(gMainModel->project.name.toStdString());
-  proj_info.mutable_proj()->set_proj_desc(gMainModel->project.desc.toStdString());
-
+  proj_info.mutable_proj()->set_proj_uuid(
+      gMainModel->project.uuid.toStdString());
+  proj_info.mutable_proj()->set_proj_name(
+      gMainModel->project.name.toStdString());
+  proj_info.mutable_proj()->set_proj_desc(
+      gMainModel->project.desc.toStdString());
 
   cmd_dispatch(proj_info);
 
-
+  // 停掉hmi的本地逻辑
   stop();
-
+  // 停掉remote的引擎
   std::shared_ptr<Bus::ProjectCmdRsp> stop_res =
       bus_stop_send(gNode, gclient_proj_cmd);
 
-  if (stop_res == nullptr ||   stop_res->has_result() == false || stop_res->result().code() != Bus::ResultCode::OK) {
+  if (stop_res == nullptr || stop_res->has_result() == false ||
+      stop_res->result().code() != Bus::ResultCode::OK) {
     online(false, NULL);
     return false;
   }
-
+  // 重启remote的引擎
   std::shared_ptr<Bus::ProjectCmdRsp> reset_res =
       bus_stop_send(gNode, gclient_proj_cmd);
 
-  if (reset_res == nullptr ||   reset_res->has_result() == false || reset_res->result().code() != Bus::ResultCode::OK) {
+  if (reset_res == nullptr || reset_res->has_result() == false ||
+      reset_res->result().code() != Bus::ResultCode::OK) {
     online(false, NULL);
     return false;
   }
 
+  // 下载到remote的引擎
+  std::shared_ptr<Bus::EditInfosRsp> download_res =
+      bus_download_send(gNode, gclient_proj_eidt);
 
- std::shared_ptr<Bus::ProjectCmdRsp> reset_res = bus_stop_send(gNode, gclient_proj_cmd);
+  if (download_res != nullptr && download_res->has_result() == true &&
+      download_res->result().code() == Bus::ResultCode::OK) {
+    //启动remote的引擎
+    std::shared_ptr<Bus::ProjectCmdRsp> start_res =
+        bus_run_send(gNode, gclient_proj_cmd);
 
-  if (reset_res == nullptr ||   reset_res->has_result() == false || reset_res->result().code() != Bus::ResultCode::OK) {
-    online(false, NULL);
-    return false;
-  }
-
- std::shared_ptr<Bus::ProjectCmdRsp> download_res = bus_download_send(gNode, gclient_proj_cmd);
-
-  if (download_res != nullptr &&   download_res->has_result() == true || download_res->result().code() != Bus::ResultCode::OK) {
-    online(false, NULL);
-    return false;
-  }
-
-
-  if(0 == cfgbus_send(FUNCCMD,std::min((int)sizeof(cmdsbuf),bigCmd.length()), cmdsbuf)){
-      cfgbus_send(FUNCRUN, 0, NULL);
-      start();
-      return true;
-  }else{
-      //qDebug() << "Err: FUNCSTART";
+    if (start_res == nullptr || start_res->has_result() == false ||
+        start_res->result().code() != Bus::ResultCode::OK) {
       online(false, NULL);
       return false;
+    } else {
+      //启动draw的逻辑
+      start();
+      return true;
+    }
+
+  } else {
+    online(false, NULL);
+    return false;
   }
   return false;
 }
 
 bool PLTarget::upload(Bus::EditInfosReq &edit) {
-    std::shared_ptr<Bus::ProjectCmdRsp> online_res =
-      bus_upload_send(gNode, gclient_proj_cmd);
+  std::shared_ptr<Bus::EditInfosRsp> online_res =
+      bus_upload_send(gNode, gclient_proj_eidt);
 
-  if (online_res == nullptr ||  online_res->has_result() == false || online_res->result().code() != Bus::ResultCode::OK) {
+  if (online_res == nullptr || online_res->has_result() == false ||
+      online_res->result().code() != Bus::ResultCode::OK) {
     online(false, NULL);
     return false;
   }
-  //edit 需要赋值
+  // edit 需要赋值
 
   return true;
 }

@@ -48,13 +48,13 @@ std::shared_ptr<Bus::ProjectCmdRsp> bus_sync_send(
     std::shared_ptr<apollo::cyber::Node> node,
     std::shared_ptr<apollo::cyber::Client<Bus::ProjectCmdReq, Bus::ProjectCmdRsp>> bus_cmd);
 
-std::shared_ptr<Bus::ProjectCmdRsp> bus_download_send(
+std::shared_ptr<Bus::EditInfosRsp> bus_download_send(
     std::shared_ptr<apollo::cyber::Node> node,
-    std::shared_ptr<apollo::cyber::Client<Bus::ProjectCmdReq, Bus::ProjectCmdRsp>> bus_cmd);
+    std::shared_ptr<apollo::cyber::Client<Bus::EditInfosReq, Bus::EditInfosRsp>> bus_cmd);
 
-std::shared_ptr<Bus::ProjectCmdRsp> bus_upload_send(
+std::shared_ptr<Bus::EditInfosRsp> bus_upload_send(
     std::shared_ptr<apollo::cyber::Node> node,
-    std::shared_ptr<apollo::cyber::Client<Bus::ProjectCmdReq, Bus::ProjectCmdRsp>> bus_cmd);
+    std::shared_ptr<apollo::cyber::Client<Bus::EditInfosReq, Bus::EditInfosRsp>> bus_cmd);
 
 
 std::shared_ptr<Bus::ProjSnapshotRsp> bus_proj_snapshot_send(
