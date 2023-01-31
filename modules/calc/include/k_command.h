@@ -5,7 +5,7 @@
 #include "modules/calc/proto/edit.pb.h"
 
 int cmd_dispatch(const Bus::EditInfo &edit_info);
-int cmds_dispatch(const Bus::EditInfosReq &edit_infos);
+int cmds_dispatch(const Bus::EditInfos &edit_infos);
 
 int cmds_reset();
 int cmds_load(char *buf, int len);

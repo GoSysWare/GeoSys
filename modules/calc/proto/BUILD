@@ -69,7 +69,8 @@ proto_library(
     deps = [
         ":value_proto",
         ":return_proto",
-      
+         ":edit_proto",
+     
     ],
 )
 cc_proto_library(

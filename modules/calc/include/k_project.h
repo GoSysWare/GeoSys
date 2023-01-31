@@ -22,7 +22,6 @@ typedef struct PNode {
   std::string desc;
   bool enable;
   std::string uuid;
-  std::unique_ptr<apollo::cyber::Node> cyber_node;
   mod_t *p_mod;
 } pnode_t;
 

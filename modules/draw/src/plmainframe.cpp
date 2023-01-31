@@ -263,7 +263,7 @@ void PLMainFrame::prjNew() {
 void PLMainFrame::openProject(QString fileName) {
   gMainModel->clear();
 
-  Bus::EditInfosReq edit_infos;
+  Bus::EditInfos edit_infos;
   apollo::cyber::common::GetProtoFromFile(fileName.toStdString(), &edit_infos);
 
   gMainModel->modelEVData.beginReset();
@@ -339,7 +339,7 @@ void PLMainFrame::prjSave() {
   if (gMainModel->project.fileName.isEmpty()) {
     prjSaveAs(true);
   }
-  Bus::EditInfosReq edit_infos;
+  Bus::EditInfos edit_infos;
 
   gMainModel->removeDualCommands(gMainModel->cmdList, false);
 
@@ -366,7 +366,7 @@ void PLMainFrame::prjSaveAs(bool holdUuid) {
     gMainModel->extract();
     prj_reset();
   }
-  Bus::EditInfosReq edit_infos;
+  Bus::EditInfos edit_infos;
 
   Bus::EditInfo *proj_info = edit_infos.add_infos();
   proj_info->set_element(Bus::PROJ);
@@ -539,7 +539,7 @@ void PLMainFrame::tgtUpload() {
     return;
   }
 
-  Bus::EditInfosReq edit_infos;
+  Bus::EditInfos edit_infos;
 
   if (!gTarget->upload(edit_infos)) {
     QMessageBox::critical(this, tr("Error"), tr("Upload fail"));

@@ -21,5 +21,5 @@ PLPin::PLPin(const PLPin &pin)
 
 QString PLPin::getStrValue()
 {
-    return QString::fromStdString(value.ShortDebugString());
+    return QString::fromStdString(value.v().ShortDebugString());
 }

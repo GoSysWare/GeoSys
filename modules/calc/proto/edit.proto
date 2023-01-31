@@ -41,18 +41,15 @@ enum TaskType {
   ACTION = 5;   // action
 }
 
-message EditProjReq {
+
+message EditProj {
   uint32 proj_id = 1;
   string proj_name = 2;
   string proj_desc = 3;
   string proj_uuid = 4;
 }
-message EditProjRsp {
-  Result result = 1;
-  uint32 proj_id = 2;
-  string proj_name = 3;
-}
-message EditModuleReq {
+
+message EditModule {
   uint32 proj_id = 1;
   string proj_name = 2;
   uint32 mod_id = 3;
@@ -60,14 +57,8 @@ message EditModuleReq {
   string mod_desc = 5;
   string mod_uuid = 6;
 }
-message EditModuleRsp {
-  Result result = 1;
-  uint32 proj_id = 2;
-  string proj_name = 3;
-  uint32 mod_id = 4;
-  string mod_name = 5;
-}
-message EditTaskReq {
+
+message EditTask {
   TaskType task_type = 1;
   uint32 mod_id = 2;
   string mod_name = 3;
@@ -76,15 +67,9 @@ message EditTaskReq {
   uint32 interval = 6;
   string task_desc = 7;
 }
-message EditTaskRsp {
-  Result result = 1;
-  uint32 mod_id = 2;
-  string mod_name = 3;
-  uint32 task_id = 4;
-  string task_name = 5;
-}
 
-message EditFBReq {
+
+message EditFB {
   uint32 mod_id = 1;
   string mod_name = 2;
   uint32 task_id = 3;
@@ -94,17 +79,9 @@ message EditFBReq {
   string fc_name = 7;
   string fb_name = 8;
 }
-message EditFBRsp {
-  Result result = 1;
-  uint32 mod_id = 2;
-  string mod_name = 3;
-  uint32 task_id = 4;
-  uint32 task_name = 5;
-  uint32 fb_id = 6;
-  string fb_name = 7;
-}
 
-message EditPinReq {
+
+message EditPin {
   uint32 mod_id = 1;
   string mod_name = 2;
   uint32 task_id = 3;
@@ -115,25 +92,17 @@ message EditPinReq {
   string pin_name = 8;
   value_tm pin_val = 9;
 }
-message EditPinRsp {
-  Result result = 1;
-  uint32 fb_id = 2;
-  string fb_name = 3;
-  uint32 pin_index = 4;
-  string pin_name = 5;
-}
-message EditIOReq { EditType edit_type = 1; }
 
-message EditIORsp { Result result = 1; }
+message EditIO { EditType edit_type = 1; }
 
-message EditEVReq {
+
+message EditEV {
   uint32 ev_id = 1;
   string ev_name = 2;
-  uint32 ev_type =3;
-  string ev_desc =4;
+  uint32 ev_type = 3;
+  string ev_desc = 4;
   value_tm init_val = 5;
   value_tm real_val = 6;
-
 }
 
 message EditEVRsp {
@@ -141,7 +110,7 @@ message EditEVRsp {
   uint32 ev_id = 2;
   string ev_name = 3;
 }
-message EditVIReq {
+message EditVI {
   uint32 mod_id = 1;
   string mod_name = 2;
   uint32 task_id = 3;
@@ -151,14 +120,11 @@ message EditVIReq {
   uint32 pin_index = 7;
   string pin_name = 8;
   uint32 ev_id = 9;
-  string ev_name = 10; 
+  string ev_name = 10;
   uint32 vi_id = 11;
-  string vi_name = 12;   
+  string vi_name = 12;
 }
-message EditVIRsp {
-  Result result = 1;
-}
-message EditVOReq {
+message EditVO {
   uint32 mod_id = 1;
   string mod_name = 2;
   uint32 task_id = 3;
@@ -168,14 +134,11 @@ message EditVOReq {
   uint32 pin_index = 7;
   string pin_name = 8;
   uint32 ev_id = 9;
-  string ev_name = 10;  
+  string ev_name = 10;
   uint32 vo_id = 11;
-  string vo_name = 12;   
+  string vo_name = 12;
 }
-message EditVORsp {
-  Result result = 1;
-}
-message EditLinkReq {
+message EditLink {
   uint32 mod_id = 1;
   string mod_name = 2;
   uint32 task_id = 3;
@@ -189,32 +152,27 @@ message EditLinkReq {
   string target_fb_name = 11;
   uint32 target_pin_index = 12;
 }
-message EditLinkRsp {
-  Result result = 1;
-  uint32 lk_id = 2;
-  string lk_name = 3;
-}
+
 
 message EditInfo {
   uint32 cmd_id = 1;
   EditElement element = 2;
   EditType edit_type = 3;
   oneof info {
-    EditProjReq proj = 4;
-    EditModuleReq mod = 5;
-    EditTaskReq task = 6;
-    EditFBReq fb = 7;
-    EditPinReq pin = 8;
-    EditEVReq ev = 9;
-    EditLinkReq lk = 10;
-    EditIOReq io = 11;
-    EditVIReq vi = 12;
-    EditVOReq vo = 13;
-
+    EditProj proj = 4;
+    EditModule mod = 5;
+    EditTask task = 6;
+    EditFB fb = 7;
+    EditPin pin = 8;
+    EditEV ev = 9;
+    EditLink lk = 10;
+    EditIO io = 11;
+    EditVI vi = 12;
+    EditVO vo = 13;
   }
   repeated EditPosition pos = 14;
 }
-message EditInfosReq {
+message EditInfos {
   string host_name = 1;
   string host_ip = 2;
   string process_id = 3;
@@ -222,4 +180,3 @@ message EditInfosReq {
   repeated EditInfo infos = 5;
 }
 
-message EditInfosRsp { Result result = 1; }

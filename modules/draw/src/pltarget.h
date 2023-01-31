@@ -2,7 +2,7 @@
 #define PLTARGET_H
 
 #include <QTimer>
-#include "modules/calc/proto/edit.pb.h"
+#include "modules/calc/proto/cmd.pb.h"
 class PLTarget : public QTimer
 {
 public:
@@ -12,7 +12,7 @@ public:
     void monitor(bool mode);
     bool sync();
     bool download();
-    bool upload(Bus::EditInfosReq &edit);
+    bool upload(Bus::EditInfos &edit);
     bool isOnline();
     bool isMonitor();
     bool isMatch();

@@ -109,7 +109,7 @@ int mod_prgadd(mod_t *p_mod, int id, std::string name, int type,
                std::string desc, int interval);
                
 int mod_prgremove(mod_t *p_mod, int id);
-void mod_exec(mod_t *p_mod, std::unique_ptr<apollo::cyber::Node> &node);
+void mod_exec(mod_t *p_mod);
 
 int mod_fbadd(mod_t *p_mod, int idprg, int id, std::string libname,
               std::string fcname, std::string fbname);

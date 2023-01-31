@@ -9,7 +9,7 @@
 static prjinfo_t info;
 static pnode_t pn_head = {
     &pn_head, &pn_head, 0, "", "", true, "{00000000-0000-0000-0000-00000000}",
-    nullptr,  0};
+    nullptr};
 static pnode_t *p_pn_select = &pn_head;
 
 static int is_run;
@@ -121,7 +121,7 @@ int prj_modadd(int id, std::string name, std::string desc) {
   p_pn->name = name;
   p_pn->desc = desc;
   p_pn->enable = true;
-  p_pn->cyber_node = std::move(apollo::cyber::CreateNode(p_pn->name));
+
   pn_addbefore(p_pn, &pn_head);
 
   return 0;
@@ -162,7 +162,7 @@ void prj_exec() {
   p_pn = pn_head.p_next;
   while (p_pn != &pn_head) {
     if (p_pn->enable) {
-      mod_exec(p_pn->p_mod, p_pn->cyber_node);
+      mod_exec(p_pn->p_mod);
     }
     p_pn = p_pn->p_next;
   }

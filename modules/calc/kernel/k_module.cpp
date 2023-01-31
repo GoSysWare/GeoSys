@@ -243,7 +243,7 @@ int mod_prgremove(mod_t *p_mod, int id) {
   return 0;
 }
 
-void mod_exec(mod_t *p_mod, std::unique_ptr<apollo::cyber::Node> &node) {
+void mod_exec(mod_t *p_mod) {
   mnode_t *p_mn;
 
   p_mn = p_mod->mn_head.p_next;
@@ -277,7 +277,7 @@ void mod_exec(mod_t *p_mod, std::unique_ptr<apollo::cyber::Node> &node) {
         }
         prg_exec(p_mn->p_prg);
       };
-      auto service_ = node->CreateService<value_tm, value_tm>(p_mn->name, f);
+      auto service_ = apollo::cyber::GlobalNode()->CreateService<value_tm, value_tm>(p_mn->name, f);
     } else if (p_mn->type == Bus::TaskType::FSM) {
       apollo::cyber::TimerOption opt;
       opt.oneshot = false;

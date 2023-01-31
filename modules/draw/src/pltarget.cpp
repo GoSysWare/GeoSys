@@ -32,7 +32,7 @@ void PLTarget::timerEvent(QTimerEvent *e) {
       PLFunctionBlock *fb;
       fb_t *p_fb;
       for (m = 0; m < gMainModel->modList.size(); m++) {
-        mod = &gMainModel->modList[i];
+        mod = &gMainModel->modList[m];
 
         for (i = 0; i < mod->prgList.size(); i++) {
           prg = &mod->prgList[i];
@@ -172,19 +172,27 @@ bool PLTarget::download() {
   if (isSync()) {
     return false;
   }
+  //重新生成uuid
+  gMainModel->project.renewUuid();
 
-  Bus::EditInfo proj_info;
+  Bus::EditInfos edit_infos;
 
-  proj_info.set_element(Bus::PROJ);
-  proj_info.set_edit_type(Bus::SET);
-  proj_info.mutable_proj()->set_proj_uuid(
+  Bus::EditInfo *proj_info = edit_infos.add_infos();
+  proj_info->set_element(Bus::PROJ);
+  proj_info->set_edit_type(Bus::SET);
+  proj_info->mutable_proj()->set_proj_uuid(
       gMainModel->project.uuid.toStdString());
-  proj_info.mutable_proj()->set_proj_name(
+  proj_info->mutable_proj()->set_proj_name(
       gMainModel->project.name.toStdString());
-  proj_info.mutable_proj()->set_proj_desc(
+  proj_info->mutable_proj()->set_proj_desc(
       gMainModel->project.desc.toStdString());
 
-  cmd_dispatch(proj_info);
+  cmd_dispatch(*proj_info);
+
+  for (auto i = 0; i < gMainModel->cmdList.size(); i++) {
+    Bus::EditInfo *info = edit_infos.add_infos();
+    info->CopyFrom(gMainModel->cmdList.at(i).editInfo);
+  }
 
   // 停掉hmi的本地逻辑
   stop();
@@ -199,7 +207,7 @@ bool PLTarget::download() {
   }
   // 重启remote的引擎
   std::shared_ptr<Bus::ProjectCmdRsp> reset_res =
-      bus_stop_send(gNode, gclient_proj_cmd);
+      bus_reset_send(gNode, gclient_proj_cmd);
 
   if (reset_res == nullptr || reset_res->has_result() == false ||
       reset_res->result().code() != Bus::ResultCode::OK) {
@@ -208,8 +216,8 @@ bool PLTarget::download() {
   }
 
   // 下载到remote的引擎
-  std::shared_ptr<Bus::EditInfosRsp> download_res =
-      bus_download_send(gNode, gclient_proj_eidt);
+  std::shared_ptr<Bus::ProjectCmdRsp> download_res =
+      bus_download_send(gNode, gclient_proj_cmd, edit_infos);
 
   if (download_res != nullptr && download_res->has_result() == true &&
       download_res->result().code() == Bus::ResultCode::OK) {
@@ -234,9 +242,9 @@ bool PLTarget::download() {
   return false;
 }
 
-bool PLTarget::upload(Bus::EditInfosReq &edit) {
-  std::shared_ptr<Bus::EditInfosRsp> online_res =
-      bus_upload_send(gNode, gclient_proj_eidt);
+bool PLTarget::upload(Bus::EditInfos &edit) {
+  std::shared_ptr<Bus::ProjectCmdRsp> online_res =
+      bus_upload_send(gNode, gclient_proj_cmd);
 
   if (online_res == nullptr || online_res->has_result() == false ||
       online_res->result().code() != Bus::ResultCode::OK) {

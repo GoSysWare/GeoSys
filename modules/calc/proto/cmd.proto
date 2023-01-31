@@ -2,6 +2,7 @@
 syntax = "proto3";
 import "modules/calc/proto/value.proto";
 import "modules/calc/proto/return.proto";
+import "modules/calc/proto/edit.proto";
 
 package Bus;
 
@@ -24,6 +25,7 @@ message ProjectCmdReq{
   string process_id = 3;
   string prj_name = 4;
   RunType cmd_type =5;
+  EditInfos req_infos = 6;
 }
 
 
@@ -34,4 +36,6 @@ message ProjectCmdRsp{
   string process_id = 4;
   string prj_name = 5;
   RunType cmd_type =6;
+  EditInfos req_infos = 7;
+
 }

@@ -26,5 +26,5 @@ PLEVData::~PLEVData()
 
 QString PLEVData::getStrValue()
 {
-    return QString::fromStdString(value.ShortDebugString());
+    return QString::fromStdString(value.v().ShortDebugString());
 }
