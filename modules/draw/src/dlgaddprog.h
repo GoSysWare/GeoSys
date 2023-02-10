@@ -17,16 +17,18 @@ public:
     QString prgName;
     QString prgDesc;
     int prgType;
-
     int indexEdit;
+    int interval;
 
 private slots:
     void ok(bool check);
     void cancel(bool Check);
 
 private:
-    QLabel *label;
-    QLineEdit *textName;
+    QLabel *lblProgNmae;
+    QLineEdit * txtProgName;
+    QLabel *lblInterval;
+    QLineEdit *txtInterval;
     QDialogButtonBox *buttonBox;
     QVBoxLayout *layout;
 };

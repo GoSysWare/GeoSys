@@ -16,11 +16,12 @@ static int on_bus_disconnect() {
 }
 static int on_bus_reset() {
   std::cout << "on_bus_reset " << std::endl;
-
+  prj_reset();
   return 0;
 }
 static int on_bus_run() {
   std::cout << "on_bus_run " << std::endl;
+  prj_start();
   return 0;
 }
 static int on_bus_stop() {

@@ -30,7 +30,7 @@ int main(int argc, char *argv[]) {
   uint64_t interval_ = 1000;
   std::unique_ptr<apollo::cyber::Timer> timer_;
   auto func = []() {
-    prj_exec();
+    prj_start();
     ev_dump();
   };
   timer_.reset(new apollo::cyber::Timer(interval_, func, false));

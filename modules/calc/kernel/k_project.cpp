@@ -43,14 +43,11 @@ static void pn_remove(pnode_t *p) {
 
 static void clear_prjinfo() {}
 
-void prj_run() { is_run = 1; }
 
-void prj_stop() { is_run = 0; }
 
 void prj_init(int mode) {
 
   clear_prjinfo();
-  prj_run();
 }
 
 void prj_uninit() {}
@@ -157,12 +154,22 @@ int prj_prgremove(int idmod, int idprg) {
   return mod_prgremove(p_pn_select->p_mod, idprg);
 }
 
-void prj_exec() {
+void prj_start() {
   pnode_t *p_pn;
   p_pn = pn_head.p_next;
   while (p_pn != &pn_head) {
     if (p_pn->enable) {
-      mod_exec(p_pn->p_mod);
+      mod_start(p_pn->p_mod);
+    }
+    p_pn = p_pn->p_next;
+  }
+}
+void prj_stop() {
+  pnode_t *p_pn;
+  p_pn = pn_head.p_next;
+  while (p_pn != &pn_head) {
+    if (p_pn->enable) {
+      mod_stop(p_pn->p_mod);
     }
     p_pn = p_pn->p_next;
   }

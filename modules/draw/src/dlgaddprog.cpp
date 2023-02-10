@@ -8,19 +8,22 @@ DlgAddProg::DlgAddProg(QWidget *parent, Qt::WindowFlags f)
 {
     setWindowTitle(tr("Add program"));
 
-    label = new QLabel(tr("Program name:"));
-    textName = new QLineEdit;
-    //QRegExp rx("-?\\d{1,3}");
-    //QValidator *validator = new QRegExpValidator(rx, this);
-    //textName->setValidator(validator);
-    textName->setMaxLength(15);
-    //textName->setInputMask("nnnnnnnnnnnnnnn");
+    lblProgNmae = new QLabel(tr("Program name:"));
+    txtProgName = new QLineEdit;
+
+    lblInterval = new QLabel(tr("Interval"));
+    txtInterval = new QLineEdit;
+
+    txtProgName->setMaxLength(15);
+
     buttonBox = new QDialogButtonBox;
     QPushButton *buttonOk = buttonBox->addButton(QDialogButtonBox::Ok);
     QPushButton *buttonCancel = buttonBox->addButton(QDialogButtonBox::Cancel);
     layout = new QVBoxLayout;
-    layout->addWidget(label);
-    layout->addWidget(textName);
+    layout->addWidget(lblProgNmae);
+    layout->addWidget(txtProgName);
+    layout->addWidget(lblInterval);
+    layout->addWidget(txtInterval);
     layout->addWidget(buttonBox);
     setLayout(layout);
 
@@ -33,20 +36,27 @@ DlgAddProg::DlgAddProg(QWidget *parent, Qt::WindowFlags f)
 
 DlgAddProg::~DlgAddProg()
 {
-    delete label;
-    delete textName;
+    delete lblProgNmae;
+    delete txtProgName;
+    delete lblInterval;
+    delete txtInterval;
     delete buttonBox;
     delete layout;
 }
 
 void DlgAddProg::ok(bool check)
 {
-    prgName = textName->text();
+    prgName = txtProgName->text();
+  
 
     if(prgName.isEmpty()){
         return;
     }
-
+    if(txtInterval->text().isEmpty()){
+        interval = 1000;
+    }else{
+        interval = txtInterval->text().toInt();
+    }
     if(prgName.indexOf(";") != -1){
         QMessageBox::warning(this, "Warining", tr("Program name can't contains ';'"));
         return;

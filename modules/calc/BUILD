@@ -97,5 +97,20 @@ cc_binary(
     ],
 )
 
+cc_binary(
+    name = "test_comm",
+    srcs = [
+        "test_comm.cpp",
+
+    ],
+    linkopts = [
+        "-lpthread",
+
+    ],
+    linkstatic = False,
+    deps = [
+
+    ],
+)
 
 cpplint()

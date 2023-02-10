@@ -170,7 +170,7 @@ int main(int argc, char *argv[])
 	prg_lkadd(prg2,5,8,1,7,2);
 
 
-	mod_exec(mod,node);
+	mod_start(mod,node);
 
 
   apollo::cyber::WaitForShutdown();

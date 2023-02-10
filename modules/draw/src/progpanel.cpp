@@ -89,6 +89,7 @@ void ProgPanel::addProgram(bool check)
     prg.name = dlgAddProg.prgName;
     prg.desc = dlgAddProg.prgDesc;
     prg.type  = dlgAddProg.prgType == -1 ? Bus::TaskType::PERIODIC : dlgAddProg.prgType;
+    prg.interval = dlgAddProg.interval;
 
     prg.idMod = gMainModel->modCurrent->id;
 

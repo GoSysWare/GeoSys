@@ -344,6 +344,8 @@ void PLMainModel::makePrgNewCmd(PLCommand &cmd, PLProgram &prg, bool newId) {
   cmd.editInfo.mutable_task()->set_task_name(prg.name.toStdString());
   cmd.editInfo.mutable_task()->set_task_type((Bus::TaskType)prg.type);
   cmd.editInfo.mutable_task()->set_task_desc(prg.desc.toStdString());
+  cmd.editInfo.mutable_task()->set_interval(prg.interval);
+
 }
 
 void PLMainModel::makePrgRemoveCmd(PLCommand &cmd, PLProgram &prg) {

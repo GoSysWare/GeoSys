@@ -20,7 +20,13 @@ int main(int argc, char *argv[]) {
   prj_init(0);
   lib_init();
   bus_init(std::move(engine_node));
-  prj_exec();
+  // Bus::EditInfos edit_infos;
+  // apollo::cyber::common::GetProtoFromFile("/home/shuimujie/Works/uion_lk_add_2.cl",&edit_infos);
+  // cmds_dispatch(edit_infos);
+
+  
+  prj_start();
+
   
   apollo::cyber::WaitForShutdown();
 }

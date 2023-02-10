@@ -115,10 +115,10 @@
             ]
         },
         {
-            "name": "Test Opencv",
+            "name": "Test C++",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/bazel-bin/modules/calc/test_opencv",
+            "program": "${workspaceFolder}/bazel-bin/modules/calc/test_comm",
             "args": [],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",

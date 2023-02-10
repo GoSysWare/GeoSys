@@ -12,6 +12,13 @@
 int cmd_dispatch(const Bus::EditInfo &edit_info) {
   std::cout << edit_info.DebugString()<<std::endl;
 
+  prjinfo_t *info;
+  info = prj_info();
+  if(info->cmd_id < edit_info.cmd_id()){
+    info->cmd_id = edit_info.cmd_id();
+  }
+
+
   Bus::EditElement element = edit_info.element();
   Bus::EditType type = edit_info.edit_type();
 

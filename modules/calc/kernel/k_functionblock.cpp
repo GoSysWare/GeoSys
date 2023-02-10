@@ -210,13 +210,13 @@ void fb_dump(fb_t *p_fb) {
   for (i = 0; i < p_fb->outs.size(); i++) {
     std::cout << "\t\t\t\tfb: " << p_fb->outs[i].pinname << "- "
               << type2str(p_fb->outs[i].t) << ": "
-              << p_fb->ins[i].v->ShortDebugString() << std::endl;
+              << p_fb->outs[i].v->ShortDebugString() << std::endl;
   }
   std::cout << "\t\t\tproperty: " << std::endl;
   for (i = 0; i < p_fb->props.size(); i++) {
     std::cout << "\t\t\t\tfb: " << p_fb->props[i].pinname << "- "
               << type2str(p_fb->props[i].t) << ": "
-              << p_fb->ins[i].v->ShortDebugString() << std::endl;
+              << p_fb->props[i].v->ShortDebugString() << std::endl;
   }
   std::cout << std::endl;
 }

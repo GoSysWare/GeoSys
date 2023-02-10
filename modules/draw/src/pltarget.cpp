@@ -13,6 +13,7 @@ void PLTarget::timerEvent(QTimerEvent *e) {
       info_res->result().code() == Bus::ResultCode::OK) {
     idCmdTarget = info_res->cmd_id();
     uuidTarget = QString::fromStdString(info_res->prj_uuid());
+    // qDebug() << "Target cmd_id:" << idCmdTarget << "uuid" << uuidTarget;
   } else {
     online(false, NULL);
   }
@@ -24,6 +25,9 @@ void PLTarget::timerEvent(QTimerEvent *e) {
 
     if (sp_res != nullptr && sp_res->has_result() &&
         sp_res->result().code() == Bus::ResultCode::OK) {
+
+      prj_from_snapshot(sp_res.get());
+      prj_dump();
       int i, j, k, n, m;
       // load fbs value
       PLModule *mod;

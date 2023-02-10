@@ -15,7 +15,7 @@ int main(int argc, char *argv[]) {
   apollo::cyber::Init(argv[0]);
   // create talker node
   auto engine_node = apollo::cyber::CreateNode("robot_engine");
-  Bus::EditInfosReq edit_infos;
+  Bus::EditInfos edit_infos;
   Bus::EditInfo *info_ptr;
   // apollo::cyber::common::GetProtoFromFile("/home/shuimujie/Works/GeoSys/modules/calc/logic.ce",&edit_infos);
   info_ptr = edit_infos.add_infos();
@@ -75,6 +75,7 @@ int main(int argc, char *argv[]) {
       apollo::cyber::Time::Now().ToNanosecond());
   info_ptr->mutable_ev()->mutable_init_val()->mutable_v()->set_t(T_FLOAT32);
   info_ptr->mutable_ev()->mutable_init_val()->mutable_v()->set_f(1.223f);
+
 
   cmds_dispatch(edit_infos);
 

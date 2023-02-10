@@ -243,13 +243,13 @@ int mod_prgremove(mod_t *p_mod, int id) {
   return 0;
 }
 
-void mod_exec(mod_t *p_mod) {
+void mod_start(mod_t *p_mod) {
   mnode_t *p_mn;
 
   p_mn = p_mod->mn_head.p_next;
   while (p_mn != &p_mod->mn_head) {
 
-    if (p_mn->enable)
+    if (!p_mn->enable)
       continue;
 
     if (p_mn->type == Bus::TaskType::PERIODIC) {
@@ -257,8 +257,9 @@ void mod_exec(mod_t *p_mod) {
       apollo::cyber::TimerOption opt;
       opt.oneshot = false;
       opt.callback = [p_mn]() {
+
         prg_exec(p_mn->p_prg);
-        ev_dump();
+        prg_dump(p_mn->p_prg);
       };
       opt.period = ((period_node_t *)p_mn)->interval;
       ((period_node_t *)p_mn)->timer.SetTimerOption(opt);
@@ -315,9 +316,6 @@ void mod_exec(mod_t *p_mod) {
     p_mn = p_mn->p_next;
   }
 }
-
-
-
 
 int mod_fbadd(mod_t *p_mod, int idprg, int id, std::string libname,
               std::string fcname, std::string fbname) {
