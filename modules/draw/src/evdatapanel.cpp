@@ -58,6 +58,9 @@ EVDataPanel::EVDataPanel()
     connect(buttonRemoveData, SIGNAL(clicked(bool)), this, SLOT(removeEVData(bool)));
     connect(tableData, SIGNAL(doubleClicked(const QModelIndex&)), this, SLOT(tableDoubleClicked(const QModelIndex &)));
 
+    evLast.name = "EV";
+    evLast.desc = "Desc";
+    evLast.type = v_type::T_INT32;
     evLast.initValue.mutable_v()->set_t(T_INT32);
     evLast.initValue.mutable_v()->set_i(0);
 }

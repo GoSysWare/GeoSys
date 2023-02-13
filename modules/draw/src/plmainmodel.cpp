@@ -104,8 +104,9 @@ bool PLMainModel::exeCommand(PLCommand &cmd) {
     return false;
   }
 
-  if (cmd.editInfo.element() != Bus::EditElement::PROJ &&
-      cmd.editInfo.edit_type() != Bus::EditType::SET) {
+  // SET PROJ 不进入cmd列表
+  if (!(cmd.editInfo.element() == Bus::EditElement::PROJ &&
+        cmd.editInfo.edit_type() == Bus::EditType::SET)) {
     cmdList.append(cmd);
   }
 
@@ -345,7 +346,6 @@ void PLMainModel::makePrgNewCmd(PLCommand &cmd, PLProgram &prg, bool newId) {
   cmd.editInfo.mutable_task()->set_task_type((Bus::TaskType)prg.type);
   cmd.editInfo.mutable_task()->set_task_desc(prg.desc.toStdString());
   cmd.editInfo.mutable_task()->set_interval(prg.interval);
-
 }
 
 void PLMainModel::makePrgRemoveCmd(PLCommand &cmd, PLProgram &prg) {
@@ -737,43 +737,46 @@ bool PLMainModel::extractObjsId(int &idObj, QList<PLModule> &mods,
   PLVLink *vlk;
   int i, j, k, m, step;
 
+  // idLog是重新排序后的cmd_id,所有子项按顺序计数
+  // ev在前
   for (i = 0; i < evs.size(); i++) {
     evs[i].idLog = idObj;
     idObj++;
   }
-  for (i = 0; i < mods.size(); i++) {
-    mod = &mods[i];
-    mod->idLog = idObj;
-    idObj++;
-  }
+
   for (m = 0; m < mods.size(); m++) {
     mod = &mods[m];
+    // 记录module的新id
+    // 注意旧的id还有用，此时旧id不能被修改
+    mod->idLog = idObj;
+    idObj++;
     for (i = 0; i < mod->prgList.size(); i++) {
       prg = &mod->prgList[i];
       prg->idLog = idObj;
       idObj++;
-      
+
+      // 需要提前把所有的fb的新id算出来，因为后面几个子项都是关联它的
       for (j = 0; j < prg->fbs.size(); j++) {
         fb = &prg->fbs[j];
         fb->idLog = idObj;
         idObj++;
-        fb->idPrg = prg->idLog;
       }
 
       for (j = 0; j < prg->lks.size(); j++) {
         lk = &prg->lks[j];
-        lk->id = idObj;
+        lk->idLog = idObj;
         idObj++;
-        lk->idPrg = prg->idLog;
         step = 0;
         for (k = 0; k < prg->fbs.size(); k++) {
           fb = &prg->fbs[k];
+          //如果找到，则把新的fb的id赋给lk的源id
           if (lk->idFbSrc == fb->id) {
             lk->idFbSrc = fb->idLog;
             step++;
             break;
           }
         }
+        // 没有找到lk的关联的源fb
         if (step < 1) {
           return false;
         }
@@ -786,6 +789,7 @@ bool PLMainModel::extractObjsId(int &idObj, QList<PLModule> &mods,
             break;
           }
         }
+        // 没有找到lk的关联的目标fb
         if (step < 1) {
           return false;
         }
@@ -793,10 +797,9 @@ bool PLMainModel::extractObjsId(int &idObj, QList<PLModule> &mods,
 
       for (j = 0; j < prg->vis.size(); j++) {
         vlk = &prg->vis[j];
-        vlk->id = idObj;
+        vlk->idLog = idObj;
         idObj++;
         step = 0;
-        vlk->idPrg = prg->idLog;
         for (k = 0; k < prg->fbs.size(); k++) {
           fb = &prg->fbs[k];
           if (vlk->idFb == fb->id) {
@@ -805,6 +808,7 @@ bool PLMainModel::extractObjsId(int &idObj, QList<PLModule> &mods,
             break;
           }
         }
+        // 没有找到vi的关联的源fb
         if (step < 1) {
           return false;
         }
@@ -816,6 +820,7 @@ bool PLMainModel::extractObjsId(int &idObj, QList<PLModule> &mods,
             break;
           }
         }
+        // 没有找到vi的关联的EV
         if (step < 1) {
           return false;
         }
@@ -823,10 +828,9 @@ bool PLMainModel::extractObjsId(int &idObj, QList<PLModule> &mods,
 
       for (j = 0; j < prg->vos.size(); j++) {
         vlk = &prg->vos[j];
-        vlk->id = idObj;
+        vlk->idLog = idObj;
         idObj++;
         step = 0;
-        vlk->idPrg = prg->idLog;
         for (k = 0; k < prg->fbs.size(); k++) {
           fb = &prg->fbs[k];
           if (vlk->idFb == fb->id) {
@@ -835,6 +839,7 @@ bool PLMainModel::extractObjsId(int &idObj, QList<PLModule> &mods,
             break;
           }
         }
+        // 没有找到vo的关联的源fb
         if (step < 1) {
           return false;
         }
@@ -846,6 +851,7 @@ bool PLMainModel::extractObjsId(int &idObj, QList<PLModule> &mods,
             break;
           }
         }
+        // 没有找到vo的关联的EV
         if (step < 1) {
           return false;
         }
@@ -904,14 +910,37 @@ bool PLMainModel::extractObjsId(int &idObj, QList<PLModule> &mods,
     evs[i].id = evs[i].idLog;
   }
 
+  //  更新各个子项的cmdid 都赋值新id
   for (m = 0; m < mods.size(); m++) {
     mod = &mods[m];
+    mod->id = mod->idLog;
     for (i = 0; i < mod->prgList.size(); i++) {
       prg = &mod->prgList[i];
+      prg->idMod = mod->id;
       prg->id = prg->idLog;
       for (j = 0; j < prg->fbs.size(); j++) {
         fb = &prg->fbs[j];
+        fb->idMod = mod->id;
+        fb->idPrg = prg->id;
         fb->id = fb->idLog;
+      }
+      for (j = 0; j < prg->lks.size(); j++) {
+        lk = &prg->lks[j];
+        lk->idMod = mod->id;
+        lk->idPrg = prg->id;
+        lk->id = lk->idLog;
+      }
+      for (j = 0; j < prg->vis.size(); j++) {
+        vlk = &prg->vis[j];
+        vlk->idMod = mod->id;
+        vlk->idPrg = prg->id;
+        vlk->id = vlk->idLog;
+      }
+      for (j = 0; j < prg->vos.size(); j++) {
+        vlk = &prg->vos[j];
+        vlk->idMod = mod->id;
+        vlk->idPrg = prg->id;
+        vlk->id = vlk->idLog;
       }
     }
   }

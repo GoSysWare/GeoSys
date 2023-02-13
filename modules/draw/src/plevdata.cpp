@@ -18,6 +18,8 @@ PLEVData::PLEVData(const PLEVData &ev)
     initValue = ev.initValue;
     value = ev.value;
     isSelected = ev.isSelected;
+    type  = ev.type;
+
 }
 PLEVData::~PLEVData()
 {

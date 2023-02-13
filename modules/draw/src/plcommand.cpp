@@ -19,7 +19,7 @@ bool PLCommand::dispatch() {
   Bus::EditElement element = editInfo.element();
   Bus::EditType type = editInfo.edit_type();
 
-//Proj
+  // Proj
   if (element == Bus::EditElement::PROJ) {
     if (type == Bus::EditType::ADD) {
 
@@ -40,7 +40,7 @@ bool PLCommand::dispatch() {
     }
 
   }
-//Module
+  // Module
   else if (element == Bus::EditElement::MOD) {
     if (type == Bus::EditType::ADD) {
       PLModule mod;
@@ -72,7 +72,7 @@ bool PLCommand::dispatch() {
   }
 
   else if (element == Bus::EditElement::TASK) {
-    //add
+    // add
     if (type == Bus::EditType::ADD) {
       PLProgram prg;
       setProgram(&prg);
@@ -84,10 +84,10 @@ bool PLCommand::dispatch() {
       if (gMainModel->objID < prg.id) {
         gMainModel->objID = prg.id;
       }
-    //rm
+      // rm
     } else if (type == Bus::EditType::RM) {
       removeProgram(editInfo.task().mod_id(), editInfo.task().task_id());
-    //set
+      // set
     } else if (type == Bus::EditType::SET) {
       for (int i = 0; i < gMainModel->modList.size(); i++) {
         if (gMainModel->modList[i].id == editInfo.task().mod_id()) {
@@ -232,18 +232,18 @@ bool PLCommand::dispatch() {
       }
 
     } else if (type == Bus::EditType::RM) {
-        int idMod = editInfo.fb().mod_id();
-        int idPrg = editInfo.fb().task_id();
-        int idFb = editInfo.fb().fb_id();
-        PLModule *mod = getModule(idMod);
-        if(mod == NULL){
-            return false;
-        }    
-        PLProgram *prg = getProgram(mod,idPrg);
-        if(prg == NULL){
-            return false;
-        }
-        return removeFunctionBlock(prg, idFb);  
+      int idMod = editInfo.fb().mod_id();
+      int idPrg = editInfo.fb().task_id();
+      int idFb = editInfo.fb().fb_id();
+      PLModule *mod = getModule(idMod);
+      if (mod == NULL) {
+        return false;
+      }
+      PLProgram *prg = getProgram(mod, idPrg);
+      if (prg == NULL) {
+        return false;
+      }
+      return removeFunctionBlock(prg, idFb);
 
     } else if (type == Bus::EditType::SET) {
 
@@ -278,36 +278,36 @@ bool PLCommand::dispatch() {
 
   } else if (element == Bus::EditElement::LK) {
     if (type == Bus::EditType::ADD) {
-        PLLink lk;
-        setLink(&lk, false);
-        PLModule *mod = getModule(lk.idMod);
-        if (mod == NULL) {
-          return false;
-        }       
-        PLProgram *prg = getProgram(mod,lk.idPrg);
-        if(prg==NULL){
-            return false;
-        }
-        lk.isSelected = true;
-        if(!addLink(prg, &lk)){
-            return false;
-        }
-        if(gMainModel->objID < lk.id){
-            gMainModel->objID = lk.id;
-        }
+      PLLink lk;
+      setLink(&lk, false);
+      PLModule *mod = getModule(lk.idMod);
+      if (mod == NULL) {
+        return false;
+      }
+      PLProgram *prg = getProgram(mod, lk.idPrg);
+      if (prg == NULL) {
+        return false;
+      }
+      lk.isSelected = true;
+      if (!addLink(prg, &lk)) {
+        return false;
+      }
+      if (gMainModel->objID < lk.id) {
+        gMainModel->objID = lk.id;
+      }
     } else if (type == Bus::EditType::RM) {
-        int idMod = editInfo.lk().mod_id();
-        int idPrg = editInfo.lk().task_id();
-        int idLk = editInfo.lk().lk_id();
-        PLModule *mod = getModule(idMod);
-        if (mod == NULL) {
-          return false;
-        }           
-        PLProgram *prg = getProgram(mod,idPrg);
-        if(prg == NULL){
-            return false;
-        }
-        return removeLink(prg, idLk);
+      int idMod = editInfo.lk().mod_id();
+      int idPrg = editInfo.lk().task_id();
+      int idLk = editInfo.lk().lk_id();
+      PLModule *mod = getModule(idMod);
+      if (mod == NULL) {
+        return false;
+      }
+      PLProgram *prg = getProgram(mod, idPrg);
+      if (prg == NULL) {
+        return false;
+      }
+      return removeLink(prg, idLk);
     } else if (type == Bus::EditType::SET) {
 
     } else if (type == Bus::EditType::SHOW) {
@@ -343,23 +343,23 @@ bool PLCommand::dispatch() {
     } else if (type == Bus::EditType::RM) {
 
     } else if (type == Bus::EditType::SET) {
-        int idMod = editInfo.pin().mod_id();
-        int idPrg = editInfo.pin().task_id();
-        int idFb = editInfo.pin().fb_id();
-        int pin = editInfo.pin().pin_index();
-        PLModule *mod = getModule(idMod);
-        if (mod == NULL) {
-          return false;
-        }
-        PLProgram *prg = getProgram(mod,idPrg);
-        if(prg == NULL){
-            return false;
-        }
-        PLFunctionBlock *fb = getFunctionBlock(prg, idFb);
-        if(fb == NULL){
-            return false;
-        }
-        fb->input[pin].value.CopyFrom(editInfo.pin().pin_val());
+      int idMod = editInfo.pin().mod_id();
+      int idPrg = editInfo.pin().task_id();
+      int idFb = editInfo.pin().fb_id();
+      int pin = editInfo.pin().pin_index();
+      PLModule *mod = getModule(idMod);
+      if (mod == NULL) {
+        return false;
+      }
+      PLProgram *prg = getProgram(mod, idPrg);
+      if (prg == NULL) {
+        return false;
+      }
+      PLFunctionBlock *fb = getFunctionBlock(prg, idFb);
+      if (fb == NULL) {
+        return false;
+      }
+      fb->input[pin].value.CopyFrom(editInfo.pin().pin_val());
     } else if (type == Bus::EditType::SHOW) {
 
     } else if (type == Bus::EditType::MV) {
@@ -372,37 +372,37 @@ bool PLCommand::dispatch() {
     }
   } else if (element == Bus::EditElement::VI) {
     if (type == Bus::EditType::ADD) {
-        PLVLink vi;
-        setVLink(&vi);
-        PLModule *mod = getModule(vi.idMod);
-        if (mod == NULL) {
-          return false;
-        }
-        PLProgram *prg = getProgram(mod,vi.idPrg);
-        if(prg == NULL){
-            return false;
-        }
-        if(!addVLinkInput(prg, &vi)){
-            return false;
-        }
-        if(gMainModel->objID < vi.id){
-            gMainModel->objID = vi.id;
-        }
+      PLVLink vi;
+      setVLink(&vi);
+      PLModule *mod = getModule(vi.idMod);
+      if (mod == NULL) {
+        return false;
+      }
+      PLProgram *prg = getProgram(mod, vi.idPrg);
+      if (prg == NULL) {
+        return false;
+      }
+      if (!addVLinkInput(prg, &vi)) {
+        return false;
+      }
+      if (gMainModel->objID < vi.id) {
+        gMainModel->objID = vi.id;
+      }
     } else if (type == Bus::EditType::RM) {
-        int idMod = editInfo.vi().mod_id();
-        int idPrg = editInfo.vi().task_id();
-        int idVi = editInfo.vi().vi_id();
-        PLModule *mod = getModule(idMod);
-        if (mod == NULL) {
-          return false;
-        }       
-        PLProgram *prg = getProgram(mod,idPrg);
-        if(prg == NULL){
-            return false;
-        }
-        return removeVLinkInput(prg, idVi);
+      int idMod = editInfo.vi().mod_id();
+      int idPrg = editInfo.vi().task_id();
+      int idVi = editInfo.vi().vi_id();
+      PLModule *mod = getModule(idMod);
+      if (mod == NULL) {
+        return false;
+      }
+      PLProgram *prg = getProgram(mod, idPrg);
+      if (prg == NULL) {
+        return false;
+      }
+      return removeVLinkInput(prg, idVi);
     } else if (type == Bus::EditType::SET) {
-      
+
     } else if (type == Bus::EditType::SHOW) {
 
     } else if (type == Bus::EditType::MV) {
@@ -413,39 +413,39 @@ bool PLCommand::dispatch() {
 
     } else {
     }
-  }else if (element == Bus::EditElement::VO) {
+  } else if (element == Bus::EditElement::VO) {
     if (type == Bus::EditType::ADD) {
-        PLVLink vo;
-        setVLink(&vo);
-        PLModule *mod = getModule(vo.idMod);
-        if (mod == NULL) {
-          return false;
-        }
-        PLProgram *prg = getProgram(mod,vo.idPrg);
-        if(prg == NULL){
-            return false;
-        }
-        if(!addVLinkOutput(prg, &vo)){
-            return false;
-        }
-        if(gMainModel->objID < vo.id){
-            gMainModel->objID = vo.id;
-        }
+      PLVLink vo;
+      setVLink(&vo);
+      PLModule *mod = getModule(vo.idMod);
+      if (mod == NULL) {
+        return false;
+      }
+      PLProgram *prg = getProgram(mod, vo.idPrg);
+      if (prg == NULL) {
+        return false;
+      }
+      if (!addVLinkOutput(prg, &vo)) {
+        return false;
+      }
+      if (gMainModel->objID < vo.id) {
+        gMainModel->objID = vo.id;
+      }
     } else if (type == Bus::EditType::RM) {
-        int idMod = editInfo.vo().mod_id();
-        int idPrg = editInfo.vo().task_id();
-        int idVo = editInfo.vo().vo_id();
-        PLModule *mod = getModule(idMod);
-        if (mod == NULL) {
-          return false;
-        }       
-        PLProgram *prg = getProgram(mod,idPrg);
-        if(prg == NULL){
-            return false;
-        }
-        return removeVLinkOutput(prg, idVo);
+      int idMod = editInfo.vo().mod_id();
+      int idPrg = editInfo.vo().task_id();
+      int idVo = editInfo.vo().vo_id();
+      PLModule *mod = getModule(idMod);
+      if (mod == NULL) {
+        return false;
+      }
+      PLProgram *prg = getProgram(mod, idPrg);
+      if (prg == NULL) {
+        return false;
+      }
+      return removeVLinkOutput(prg, idVo);
     } else if (type == Bus::EditType::SET) {
-      
+
     } else if (type == Bus::EditType::SHOW) {
 
     } else if (type == Bus::EditType::MV) {
@@ -734,13 +734,12 @@ bool PLCommand::removeProgram(int modId, int prgId) {
   return false;
 }
 
-PLEVData *PLCommand::getEv(int id) {
+PLEVData *PLCommand::getEv(int idEv) {
   for (int i = 0; i < gMainModel->evList.size(); i++) {
-    if (gMainModel->evList[i].id == id) {
+    if (gMainModel->evList[i].id == idEv) {
       return &gMainModel->evList[i];
     }
   }
-
   return NULL;
 }
 
@@ -760,8 +759,22 @@ PLModule *PLCommand::getModule(int idMod) {
   }
   return NULL;
 }
-PLVLink *PLCommand::getVi(PLProgram *prg, int idVi) { return NULL; }
-PLVLink *PLCommand::getVo(PLProgram *prg, int idVo) { return NULL; }
+PLVLink *PLCommand::getVi(PLProgram *prg, int idVi) {
+  for (int i = 0; i < prg->vis.size(); i++) {
+    if (prg->vis[i].id == idVi) {
+      return &prg->vis[i];
+    }
+  }
+  return NULL;
+}
+PLVLink *PLCommand::getVo(PLProgram *prg, int idVo) {
+  for (int i = 0; i < prg->vos.size(); i++) {
+    if (prg->vos[i].id == idVo) {
+      return &prg->vos[i];
+    }
+  }
+  return NULL;
+}
 void PLCommand::setFunctionBlock(PLFunctionBlock *fb) {
 
   fb->idMod = editInfo.fb().mod_id();
@@ -781,7 +794,6 @@ PLFunctionBlock *PLCommand::getFunctionBlock(PLProgram *prg, int id) {
       return &prg->fbs[i];
     }
   }
-
   return NULL;
 }
 
@@ -792,7 +804,6 @@ bool PLCommand::removeFunctionBlock(PLProgram *prg, int id) {
       return true;
     }
   }
-
   return false;
 }
 
@@ -821,7 +832,6 @@ PLLink *PLCommand::getLink(PLProgram *prg, int id) {
       return &prg->lks[i];
     }
   }
-
   return NULL;
 }
 
@@ -835,7 +845,6 @@ bool PLCommand::removeLink(PLProgram *prg, int id) {
       return true;
     }
   }
-
   return false;
 }
 
