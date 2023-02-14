@@ -383,6 +383,8 @@ int prj_to_snapshot(Bus::ProjSnapshotRsp *snapshot) {
   }
 
   ev_to_snapshot(snapshot);
+  // std::cout << "prj_to_snapshot" <<std::endl;
+  // std::cout << snapshot->ShortDebugString()<<std::endl;
 
   return 0;
 }
@@ -410,7 +412,6 @@ int prj_from_snapshot(Bus::ProjSnapshotRsp *snapshot) {
   if (info_cmp(&info, snapshot->mutable_proj_info()) != 0) {
     return 1;
   }
-
   p_pn = pn_head.p_next;
   while (p_pn != &pn_head) {
     p_mn = p_pn->p_mod->mn_head.p_next;

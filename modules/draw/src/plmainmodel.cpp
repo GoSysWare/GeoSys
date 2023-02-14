@@ -683,7 +683,7 @@ void PLMainModel::extractObjsId(int &idObj, QList<PLEVData> &evs) {
     idObj++;
   }
 }
-
+// 在复制粘贴的过程中，重新关联cmdid
 bool PLMainModel::extractObjsId(int &idObj, QList<PLFunctionBlock> &fbs,
                                 QList<PLLink> &lks) {
   int i, j;

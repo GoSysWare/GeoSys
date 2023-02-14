@@ -429,7 +429,7 @@ void PLMainFrame::editCopy() {
 
   QMimeData *mimeData = new QMimeData;
   mimeData->setData("PL-copyobjs", QByteArray());
-  mimeData->setData("cmd-copyobjs", cpCmds);
+  mimeData->setData("CMD-copyobjs", cpCmds);
 
   QClipboard *clipboard = QApplication::clipboard();
   clipboard->setMimeData(mimeData);
@@ -445,10 +445,11 @@ void PLMainFrame::editPaste() {
   if (!mimeData->hasFormat("PL-copyobjs")) {
     return;
   }
-  if (!mimeData->hasFormat("cmd-copyobjs")) {
+  if (!mimeData->hasFormat("CMD-copyobjs")) {
     return;
   }
-  QByteArray cpCmds = clipboard->mimeData()->data("cmd-copyobjs");
+
+  QByteArray cpCmds = clipboard->mimeData()->data("CMD-copyobjs");
   panelProgCad->exeCopyCommands(cpCmds);
 }
 
