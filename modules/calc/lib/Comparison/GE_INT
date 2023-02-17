@@ -1,14 +1,11 @@
-static void run_GE_INT(void *p)
-{	
-	fb_t *pb = (fb_t *)p;
-	pb->d[2].v.v.b = (pb->d[0].v.v.i >= pb->d[1].v.v.i ? 1 : 0);
+static void run_GE_INT(void *p) {
+  fb_t *pb = (fb_t *)p;
+  pb->outs[1].v->mutable_v()->set_b(
+      (pb->ins[1].v->v().i() > pb->ins[2].v->v().i() ? true : false));
 }
-
-static fb_t fb_GE_INT = {
-	"GE_INT", 2, 1, 0, 0, run_GE_INT , 
-	{
-		"IN1", T_INT, 0,
-		"IN2", T_INT, 0,
-		"OUT", T_BOOL, 0
-	}
-};
+static fb_t fb_GE_INT = {{"Comparision", "GE_INT", "", 0,0,0,0, run_EQ_INT},
+                         {{"EN", PIN_NO_LINK, T_BOOL, nullptr},
+                          {"IN1", PIN_NO_LINK, T_INT32, nullptr},
+                          {"IN2", PIN_NO_LINK, T_INT32, nullptr}},
+                         {{"STATUS", PIN_NO_LINK, T_INT32, nullptr},
+                          {"OUT", PIN_NO_LINK, T_BOOL, nullptr}}};

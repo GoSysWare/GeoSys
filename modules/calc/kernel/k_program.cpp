@@ -40,13 +40,25 @@ static void en_moveafter(enode_t *p_en, enode_t *p_ref) {
   en_addafter(p_en, p_ref);
 }
 
-void prg_exec(prog_t *p_prg) {
+void prg_exec(prog_t *p_prg, proginfo_t *p_prog_info) {
   enode_t *p_en;
   /* fb to fb */
   p_en = p_prg->en_head.p_next;
   while (p_en != &p_prg->en_head) {
     if (p_en->p_fb != 0) {
+      // 为了方便Timer功能块的计算，把周期间隔给到每个功能块
+      p_en->p_fb->h.cycle_time = p_prog_info->cycle_time;
+      p_en->p_fb->h.begin_time = apollo::cyber::Time::Now().ToNanosecond();
+      // 执行核心主体 执行每个功能块定义的具体run_func
+      //
       p_en->p_fb->h.run(p_en->p_fb);
+      //
+      //
+      p_en->p_fb->h.expend_time =
+          (apollo::cyber::Time::Now() -
+           apollo::cyber::Time(p_en->p_fb->h.begin_time))
+              .ToNanosecond();
+
     } else {
       p_en->p_vtgt->v = p_en->p_vsrc->v;
     }
@@ -290,10 +302,9 @@ int prg_viadd(prog_t *p_prg, int idev, int idfb, int pin) {
 
   return 0;
 }
-int prg_viremove(prog_t *p_prg,int idfb, int pin) {
+int prg_viremove(prog_t *p_prg, int idfb, int pin) {
   fb_t *p_fb;
   pin_t *p_pin;
-
 
   p_fb = prg_fbfind(p_prg, idfb);
   if (p_fb == 0) {
@@ -303,7 +314,7 @@ int prg_viremove(prog_t *p_prg,int idfb, int pin) {
   if (p_pin == 0) {
     return -1;
   }
-  vam_init(&p_pin->v,p_pin->t);
+  vam_init(&p_pin->v, p_pin->t);
 
   return 0;
 }
@@ -344,7 +355,7 @@ int prg_voremove(prog_t *p_prg, int idfb, int pin) {
     return -1;
   }
 
-  vam_init(&p_pin->v,p_pin->t);
+  vam_init(&p_pin->v, p_pin->t);
 
   return 0;
 }
@@ -449,8 +460,8 @@ void prg_dump(prog_t *p_prg) {
                 << ", fc: " << p_en->p_fb->h.fcname << std::endl;
       fb_dump(p_en->p_fb);
     } else {
-      std::cout << "  \t\tlk: " << p_en->id << ", From.pin: " << p_en->idsrc << "."
-                << p_en->p_vsrc->pinname << " --> "
+      std::cout << "  \t\tlk: " << p_en->id << ", From.pin: " << p_en->idsrc
+                << "." << p_en->p_vsrc->pinname << " --> "
                 << " To.pin: " << p_en->idtgt << "." << p_en->p_vtgt->pinname
                 << std::endl;
     }

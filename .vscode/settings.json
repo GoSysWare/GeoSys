@@ -153,6 +153,12 @@
         "stack": "cpp",
         "filesystem": "cpp",
         "__tuple": "cpp",
-        "__locale": "cpp"
+        "__locale": "cpp",
+        "u_trig": "cpp",
+        "d_trig": "cpp",
+        "eq_int": "cpp",
+        "eq_double": "cpp",
+        "tp": "cpp",
+        "ton": "cpp"
     }
 }

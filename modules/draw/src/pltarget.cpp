@@ -13,7 +13,7 @@ void PLTarget::timerEvent(QTimerEvent *e) {
       info_res->result().code() == Bus::ResultCode::OK) {
     idCmdTarget = info_res->cmd_id();
     uuidTarget = QString::fromStdString(info_res->prj_uuid());
-    // qDebug() << "Target cmd_id:" << idCmdTarget << "uuid" << uuidTarget;
+    qDebug() << "Target cmd_id:" << idCmdTarget << "uuid" << uuidTarget;
   } else {
     online(false, NULL);
   }

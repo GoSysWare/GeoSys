@@ -24,7 +24,7 @@ static void run_TASK(void *p) {
   return;
 }
 
-static fb_t fb_TASK = {{"Task", "TASK", "",0, run_TASK},
+static fb_t fb_TASK = {{"Task", "TASK", "",0,0,0,0, run_TASK},
                        {{"EN", PIN_NO_LINK, T_BOOL, nullptr},
                         {"FIRE", PIN_NO_LINK, T_BOOL, nullptr},
                         {"NAME", PIN_NO_LINK, T_STRING, nullptr},

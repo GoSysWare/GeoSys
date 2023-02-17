@@ -70,7 +70,7 @@ static void run_REQUEST(void *p) {
   return;
 }
 
-static fb_t fb_REQUEST = {{"Task","REQUEST", "",0, run_REQUEST},
+static fb_t fb_REQUEST = {{"Task","REQUEST", "",0,0,0,0, run_REQUEST},
                         {{"EN", PIN_NO_LINK,T_BOOL, nullptr},
                         {"REQUEST", PIN_NO_LINK,T_NONE, nullptr}},
                         {{"STATUS", PIN_NO_LINK,T_INT32, nullptr},

@@ -257,13 +257,20 @@ void mod_start(mod_t *p_mod) {
       apollo::cyber::TimerOption opt;
       opt.oneshot = false;
       opt.callback = [p_mn]() {
+        p_mn->info.begin_time = apollo::cyber::Time::Now().ToNanosecond();
+        p_mn->info.cycle_time = apollo::cyber::Duration(int64_t(p_mn->info.begin_time - p_mn->info.prev_time)).ToNanosecond();
+        p_mn->info.prev_time = p_mn->info.begin_time;
 
-        prg_exec(p_mn->p_prg);
+        prg_exec(p_mn->p_prg, &p_mn->info);
         prg_dump(p_mn->p_prg);
+        p_mn->info.expend_time = (apollo::cyber::Time::Now() -
+                                  apollo::cyber::Time(p_mn->info.begin_time))
+                                     .ToNanosecond();
       };
       opt.period = ((period_node_t *)p_mn)->interval;
       ((period_node_t *)p_mn)->timer.SetTimerOption(opt);
       ((period_node_t *)p_mn)->timer.Start();
+      p_mn->info.prev_time = apollo::cyber::Time::Now().ToNanosecond();
 
     } else if (p_mn->type == Bus::TaskType::SERVICE) {
       auto f = [p_mn](const vam_t &request, vam_t &response) {
@@ -276,13 +283,15 @@ void mod_start(mod_t *p_mod) {
         if (ppfb) {
           fb_setpin(ppfb, PINOUTPUT, 1, response);
         }
-        prg_exec(p_mn->p_prg);
+        prg_exec(p_mn->p_prg,&p_mn->info);
       };
-      auto service_ = apollo::cyber::GlobalNode()->CreateService<value_tm, value_tm>(p_mn->name, f);
+      auto service_ =
+          apollo::cyber::GlobalNode()->CreateService<value_tm, value_tm>(
+              p_mn->name, f);
     } else if (p_mn->type == Bus::TaskType::FSM) {
       apollo::cyber::TimerOption opt;
       opt.oneshot = false;
-      opt.callback = [p_mn]() { prg_exec(p_mn->p_prg); };
+      opt.callback = [p_mn]() { prg_exec(p_mn->p_prg,&p_mn->info); };
       opt.period = ((fsm_node_t *)p_mn)->interval;
       ((fsm_node_t *)p_mn)->timer.SetTimerOption(opt);
       ((fsm_node_t *)p_mn)->timer.Start();
@@ -298,7 +307,7 @@ void mod_start(mod_t *p_mod) {
           fb_setpin(pqfb, PININPUT, 1, request->param());
         }
         ((task_node_t *)p_mn)->client = request->client();
-        prg_exec(p_mn->p_prg);
+        prg_exec(p_mn->p_prg,&p_mn->info);
 
         ppfb = prg_fbfind_by_lib(p_mn->p_prg, "Task", "RESPONSE");
         if (ppfb) {
@@ -350,37 +359,33 @@ int mod_lkremove(mod_t *p_mod, int idprg, int id) {
   return prg_lkremove(p_mod->p_mn_select->p_prg, id);
 }
 
-int mod_viadd(mod_t *p_mod, int idprg,int idev, int idfb, int pin)
-{
+int mod_viadd(mod_t *p_mod, int idprg, int idev, int idfb, int pin) {
   if (mod_prgselect(p_mod, idprg) != 0) {
     return -1;
   }
 
-  return prg_viadd(p_mod->p_mn_select->p_prg, idev,idfb,pin);  
+  return prg_viadd(p_mod->p_mn_select->p_prg, idev, idfb, pin);
 }
-int mod_viremove(mod_t *p_mod, int idprg, int idfb, int pin)
-{
-    if (mod_prgselect(p_mod, idprg) != 0) {
+int mod_viremove(mod_t *p_mod, int idprg, int idfb, int pin) {
+  if (mod_prgselect(p_mod, idprg) != 0) {
     return -1;
   }
 
-  return prg_viremove(p_mod->p_mn_select->p_prg,idfb,pin);  
+  return prg_viremove(p_mod->p_mn_select->p_prg, idfb, pin);
 }
-int mod_voadd(mod_t *p_mod, int idprg, int idev, int idfb, int pin)
-{
-    if (mod_prgselect(p_mod, idprg) != 0) {
+int mod_voadd(mod_t *p_mod, int idprg, int idev, int idfb, int pin) {
+  if (mod_prgselect(p_mod, idprg) != 0) {
     return -1;
   }
 
-  return prg_voadd(p_mod->p_mn_select->p_prg, idev,idfb,pin);  
+  return prg_voadd(p_mod->p_mn_select->p_prg, idev, idfb, pin);
 }
-int mod_voremove(mod_t *p_mod, int idprg, int idfb, int pin)
-{
-      if (mod_prgselect(p_mod, idprg) != 0) {
+int mod_voremove(mod_t *p_mod, int idprg, int idfb, int pin) {
+  if (mod_prgselect(p_mod, idprg) != 0) {
     return -1;
   }
 
-  return prg_voremove(p_mod->p_mn_select->p_prg,idfb,pin);  
+  return prg_voremove(p_mod->p_mn_select->p_prg, idfb, pin);
 }
 int mod_checkloop(mod_t *p_mod, int idprg, int idsrc, int idtgt) {
   if (mod_prgselect(p_mod, idprg) != 0) {
@@ -396,11 +401,10 @@ void mod_dump(mod_t *p_mod) {
   while (p_mn != &p_mod->mn_head) {
     printf("\tTask: [id]:%d - [name]:%s - [type]:%d - [enable]:%d\n", p_mn->id,
            p_mn->name.c_str(), p_mn->type, p_mn->enable);
-    mod_prgdump(p_mod,p_mn->id);
+    mod_prgdump(p_mod, p_mn->id);
     p_mn = p_mn->p_next;
   }
 }
-
 
 int mod_prgdump(mod_t *p_mod, int idprg) {
   if (mod_prgselect(p_mod, idprg) != 0) {

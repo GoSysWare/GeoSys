@@ -2,16 +2,16 @@
 #include "modules/calc/include/k_functionblock.h"
 #include "modules/calc/include/k_util.h"
 
-#include "DELAY"
-#include "SPO"
-#include "TOFF"
+// #include "DELAY"
+// #include "SPO"
+// #include "TOFF"
 #include "TON"
 #include "TP"
 
 static void *fb_table[]={
-	&fb_DELAY,
-	&fb_SPO,
-	&fb_TOFF,
+	// &fb_DELAY,
+	// &fb_SPO,
+	// &fb_TOFF,
 	&fb_TON,
 	&fb_TP,
 	};

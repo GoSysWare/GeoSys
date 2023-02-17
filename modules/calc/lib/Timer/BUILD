@@ -9,9 +9,9 @@ cc_library(
     includes = [
     ],
     hdrs = [
-        "DELAY",
-        "SPO",
-        "TOFF",
+        # "DELAY",
+        # "SPO",
+        # "TOFF",
         "TON",
         "TP",
     ],
@@ -21,5 +21,6 @@ cc_library(
     deps = [
         "//modules/calc/include:calc_include",
         "//modules/calc/include/lib:lib_include",
+        "//modules/calc/proto:bus_cc_proto",
     ],
 )

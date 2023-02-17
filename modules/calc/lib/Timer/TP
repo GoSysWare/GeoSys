@@ -1,49 +1,103 @@
-static void run_TP(void *p)
-{	
-	fb_t *pb = (fb_t *)p;
+// static void run_TP(void *p)
+// {
+// 	fb_t *pb = (fb_t *)p;
 
-	Time dt = clk_cycle();
-	Time t;
+// 	Time dt = clk_cycle();
+// 	Time t;
 
-	if(!pb->d[0].v.v.b && (pb->d[3].v.v.tm == 0)){
-		pb->d[2].v.v.b = 0;
-	}
+// 	if(!pb->d[0].v.v.b && (pb->d[3].v.v.tm == 0)){
+// 		pb->d[2].v.v.b = 0;
+// 	}
 
-	if(pb->d[0].v.v.b && (pb->d[3].v.v.tm == 0)){
-		t = pb->d[3].v.v.tm + dt;
-		pb->d[2].v.v.b = 1;
-		pb->d[3].v.v.tm = t;
-	}
+// 	if(pb->d[0].v.v.b && (pb->d[3].v.v.tm == 0)){
+// 		t = pb->d[3].v.v.tm + dt;
+// 		pb->d[2].v.v.b = 1;
+// 		pb->d[3].v.v.tm = t;
+// 	}
 
-	if(pb->d[0].v.v.b && (pb->d[3].v.v.tm != 0)){
-		if(pb->d[3].v.v.tm >= pb->d[1].v.v.tm){
-			pb->d[3].v.v.tm = pb->d[1].v.v.tm;
-			pb->d[2].v.v.b = 0;
-		}else{
-			t = pb->d[3].v.v.tm + dt;
-			pb->d[2].v.v.b = 1;
-			pb->d[3].v.v.tm = t;
-		}
-	}
+// 	if(pb->d[0].v.v.b && (pb->d[3].v.v.tm != 0)){
+// 		if(pb->d[3].v.v.tm >= pb->d[1].v.v.tm){
+// 			pb->d[3].v.v.tm = pb->d[1].v.v.tm;
+// 			pb->d[2].v.v.b = 0;
+// 		}else{
+// 			t = pb->d[3].v.v.tm + dt;
+// 			pb->d[2].v.v.b = 1;
+// 			pb->d[3].v.v.tm = t;
+// 		}
+// 	}
 
-	if(!pb->d[0].v.v.b && (pb->d[3].v.v.tm != 0)){
-		if(pb->d[3].v.v.tm >= pb->d[1].v.v.tm){
-			pb->d[3].v.v.tm = 0;
-			pb->d[2].v.v.b = 0;
-		}else{
-			t = pb->d[3].v.v.tm + dt;
-			pb->d[2].v.v.b = 1;
-			pb->d[3].v.v.tm = t;
-		}
-	}
+// 	if(!pb->d[0].v.v.b && (pb->d[3].v.v.tm != 0)){
+// 		if(pb->d[3].v.v.tm >= pb->d[1].v.v.tm){
+// 			pb->d[3].v.v.tm = 0;
+// 			pb->d[2].v.v.b = 0;
+// 		}else{
+// 			t = pb->d[3].v.v.tm + dt;
+// 			pb->d[2].v.v.b = 1;
+// 			pb->d[3].v.v.tm = t;
+// 		}
+// 	}
+// }
+
+// static fb_t fb_TP = {
+// 	"TP", 2, 2, 0, 0, run_TP,
+// 	{
+// 		"S", T_BOOL, 0,
+// 		"T", T_TIME, 0,
+// 		"Q", T_BOOL, 0,
+// 		"ET", T_TIME, 0,
+// 	}
+// };
+
+static void run_TP(void *p) {
+  fb_t *pb = (fb_t *)p;
+
+  vam_t in_S = pb->ins[1].v;
+  vam_t in_T = pb->ins[2].v;
+  vam_t &out_Q = pb->outs[1].v;
+  vam_t &out_ET = pb->outs[2].v;
+
+  // us
+  uint64_t dt = pb->h.cycle_time / 100000;
+  uint64_t t;
+
+  if (!in_S->v().b() && (out_ET->v().tm() == 0)) {
+    out_Q->mutable_v()->set_b(false);
+  }
+
+  if (in_S->v().b() && (out_ET->v().tm() == 0)) {
+    t = out_ET->v().tm()+ dt;
+    out_Q->mutable_v()->set_b(true);
+    out_ET->mutable_v()->set_tm(t);
+  }
+
+  if (in_S->v().b() && (out_ET->v().tm() != 0)) {
+    if (out_ET->v().tm() >= in_T->v().tm()) {
+      out_ET->mutable_v()->set_tm(in_T->v().tm());
+      out_Q->mutable_v()->set_b(false);
+    } else {
+      t = out_ET->v().tm() + dt;
+      out_Q->mutable_v()->set_b(true);
+      out_ET->mutable_v()->set_tm(t);
+    }
+  }
+
+  if (!in_S->v().b() && (out_ET->v().tm() != 0)) {
+    if (out_ET->v().tm() >= in_T->v().tm()) {
+      out_ET->mutable_v()->set_tm(0);
+      out_Q->mutable_v()->set_b(false);
+    } else {
+      t = out_ET->v().tm() + dt;
+      out_Q->mutable_v()->set_b(true);
+      out_ET->mutable_v()->set_tm(t);
+    }
+  }
 }
-
-static fb_t fb_TP = {
-	"TP", 2, 2, 0, 0, run_TP, 
-	{	
-		"S", T_BOOL, 0,	
-		"T", T_TIME, 0,	
-		"Q", T_BOOL, 0,	
-		"ET", T_TIME, 0,
-	}
-};
+// T ms
+// ET ms
+static fb_t fb_TP = {{"Timer", "TP", "", 0, 0, 0, 0, run_TP},
+                     {{"EN", PIN_NO_LINK, T_BOOL, nullptr},
+                      {"S", PIN_NO_LINK, T_BOOL, nullptr},
+                      {"T", PIN_NO_LINK, T_TIME, nullptr}},
+                     {{"STATUS", PIN_NO_LINK, T_INT32, nullptr},
+                      {"Q", PIN_NO_LINK, T_BOOL, nullptr},
+                      {"ET", PIN_NO_LINK, T_TIME, nullptr}}};

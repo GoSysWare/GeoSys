@@ -32,6 +32,9 @@ typedef struct FBHead{
 	std::string libname; 
 	std::string fcname;
 	std::string fbname;
+	u_int64_t cycle_time;		// 上次执行周期总时长
+	u_int64_t begin_time;		// 本次开始执行时间 = now
+	u_int64_t expend_time;		// 任务执行消耗时长
     int flag;			/* export fb */
 	fb_function run;
 } fbhead_t;

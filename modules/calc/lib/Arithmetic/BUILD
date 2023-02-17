@@ -10,8 +10,8 @@ cc_library(
     ],
     hdrs = [
         "ADD_INT",
-        # "ADD_LREAL",
-        # "ADD_REAL",
+        # "ADD_DOUBLE",
+        # "ADD_FLOAT",
         # "DIV_INT",
         # "DIV_LREAL",
         # "DIV_REAL",

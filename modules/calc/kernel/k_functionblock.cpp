@@ -93,12 +93,16 @@ fb_t *fb_new(fb_t *p_source) {
     p_dst->h = p_source->h;
     p_dst->ins = p_source->ins;
     for (auto &&pin : p_dst->ins) {
-      fb_init_pin(&pin);
+      fb_init_pin(&pin);      
     }
+    // 默认EN 管脚是true
+    p_dst->ins[0].v->mutable_v()->set_b(true);
     p_dst->outs = p_source->outs;
     for (auto &&pin : p_dst->outs) {
       fb_init_pin(&pin);
     }
+    // 默认STATUS 管脚是 0
+    p_dst->outs[0].v->mutable_v()->set_i(0);
     p_dst->props = p_source->props;
     for (auto &&pin : p_dst->props) {
       fb_init_pin(&pin);

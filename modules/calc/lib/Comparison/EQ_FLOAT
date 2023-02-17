@@ -1,0 +1,12 @@
+
+static void run_EQ_FLOAT(void *p) {
+  fb_t *pb = (fb_t *)p;
+  pb->outs[1].v->mutable_v()->set_b(
+      (pb->ins[1].v->v().f() == pb->ins[2].v->v().f() ? true : false));
+}
+static fb_t fb_EQ_FLOAT = {{"Comparision", "EQ_FLOAT", "", 0,0,0,0, run_EQ_FLOAT},
+                            {{"EN", PIN_NO_LINK, T_BOOL, nullptr},
+                             {"IN1", PIN_NO_LINK, T_FLOAT32, nullptr},
+                             {"IN2", PIN_NO_LINK, T_FLOAT32, nullptr}},
+                            {{"STATUS", PIN_NO_LINK, T_INT32, nullptr},
+                             {"OUT", PIN_NO_LINK, T_BOOL, nullptr}}};

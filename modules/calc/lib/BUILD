@@ -10,7 +10,7 @@ cc_library(
         "//modules/calc/lib/Arithmetic:Arithmetic",
         # "//modules/calc/lib/Bistable:Bistable",
         # "//modules/calc/lib/Comm:Comm",
-        # "//modules/calc/lib/Comparison:Comparison",        
+        "//modules/calc/lib/Comparison:Comparison",        
         # "//modules/calc/lib/Control:Control",
         # "//modules/calc/lib/Converter:Converter",
         "//modules/calc/lib/Counter:Counter",
@@ -24,8 +24,8 @@ cc_library(
         # "//modules/calc/lib/Opencv:Opencv",
         # "//modules/calc/lib/Selection:Selection",
         # "//modules/calc/lib/System:System",  
-        # "//modules/calc/lib/Timer:Timer",
-        # "//modules/calc/lib/Trigger:Trigger",  
+        "//modules/calc/lib/Timer:Timer",
+        "//modules/calc/lib/Trigger:Trigger",  
 
     ],
 )

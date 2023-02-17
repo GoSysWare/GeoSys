@@ -44,14 +44,35 @@ typedef struct VNode{
 	int mark;
 } vnode_t;
 
-
+/*  
+* Perioid Time  定时器耗时 
+* T1 功能块1耗时
+* T2 功能块2耗时
+* T3 功能块3耗时
+*   Perioid Time   T1    T2    T3  Perioid Time   T1    T2    T3  Perioid Time   T1    T2    T3
+* |---------------|----|-----|---|---------------|----|-----|---|---------------|----|-----|---|
+*				  |
+* 				  |begin_time
+*				  |      |
+*				  |		 |		
+*				  |------|escaped_time	
+*				  |              |
+*				  |              |
+*				  |--------------|expend_time
+*				  |								 |
+*				  |								 |
+*				  |------------------------------|cycle_time
+*/
 
 // prg的动态运行信息
 typedef struct ProgramInfo{
-	int status;
-	unsigned int thread_id;
-	u_int64_t begin_time;
-	u_int64_t expend_time;
+	int status;					// 状态
+	unsigned int thread_id;  	// 线程id
+	u_int64_t prev_time;		// 上次开始执行时间 = begin_time
+	u_int64_t cycle_time;		// 上次执行周期总时长 = timer + expend_time = begin_time - prev_time
+	u_int64_t begin_time;		// 本次开始执行时间 = now
+	u_int64_t escaped_time;		// 已执行时间      = now - begin_time
+	u_int64_t expend_time;		// 任务执行消耗时长 = T1 + T2 + T3
 } proginfo_t;
 
 
@@ -76,7 +97,7 @@ int prg_viremove(prog_t *p_prg, int idfb, int pin);
 int prg_voadd(prog_t *p_prg, int idev, int idfb, int pin);
 int prg_voremove(prog_t *p_prg, int idfb, int pin);
 
-void prg_exec(prog_t *p_prg);
+void prg_exec(prog_t *p_prg, proginfo_t * p_prog_info);
 void prg_dump(prog_t *p_prg);
 int prg_checkloop(prog_t *p_prg, int idSrc, int idTgt);
 

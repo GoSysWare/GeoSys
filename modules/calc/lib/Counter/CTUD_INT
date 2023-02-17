@@ -14,6 +14,7 @@ static void run_CTUD_INT(void *p) {
   vam_t prop2 = pb->props[2].v;
 
 
+  // 复位清0
   if (in3->v().b()) {
     out1->mutable_v()->set_b(false);
     out2->mutable_v()->set_b(false);
@@ -22,6 +23,7 @@ static void run_CTUD_INT(void *p) {
     prop2->mutable_v()->set_b(false);
     return;
   }
+  // 透传
   if (in4->v().b()) {
     out1->mutable_v()->set_b(false);
     out2->mutable_v()->set_b(false);
@@ -31,22 +33,17 @@ static void run_CTUD_INT(void *p) {
   }
 
   if (!in4->v().b()) {
-    // if (!prop1->v().b() && in1->v().b()) {
-    //   out3->mutable_v()->set_i(out3->v().i() + 1);
-    // }
-
-    // if (!prop2->v().b() && in2->v().b()) {
-    //   out3->mutable_v()->set_i(out3->v().i() - 1);
-    // }
-    // prop1->mutable_v()->set_b(in1->v().b());
-    // prop2->mutable_v()->set_b(in2->v().b());
-    if ( in1->v().b()) {
+    // 停止递增
+    if (!prop1->v().b() && in1->v().b()) {
       out3->mutable_v()->set_i(out3->v().i() + 1);
     }
-
-    if (in2->v().b()) {
+    // 停止递减
+    if (!prop2->v().b() && in2->v().b()) {
       out3->mutable_v()->set_i(out3->v().i() - 1);
     }
+    prop1->mutable_v()->set_b(in1->v().b());
+    prop2->mutable_v()->set_b(in2->v().b());
+
     if (out3->v().i() > in5->v().i()) {
       out1->mutable_v()->set_i(true);
       out2->mutable_v()->set_i(false);
@@ -60,10 +57,12 @@ static void run_CTUD_INT(void *p) {
   }
 }
 
+// CTU 增脉冲
+// CTD 减脉冲
 static fb_t fb_CTUD_INT = {
-    {"Counter","CTUD_INT","", 0,run_CTUD_INT},
-    {{"EN", PIN_NO_LINK,T_BOOL, nullptr},   // 0
-     {"CTU", PIN_NO_LINK,T_BOOL, nullptr},  // 1
+    {"Counter","CTUD_INT","", 0,0,0,0,run_CTUD_INT},
+    {{"EN", PIN_NO_LINK,T_BOOL, nullptr},   // 0   
+     {"CTU", PIN_NO_LINK,T_BOOL, nullptr},  // 1 
      {"CTD", PIN_NO_LINK,T_BOOL, nullptr},  // 2
      {"RST",PIN_NO_LINK, T_BOOL, nullptr},
      {"LD", PIN_NO_LINK,T_BOOL, nullptr},
