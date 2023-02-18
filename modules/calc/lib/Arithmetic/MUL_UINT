@@ -1,0 +1,25 @@
+static void run_MUL_UINT(void *p) {
+
+  fb_t *pb = (fb_t *)p;
+  vam_t &enable = pb->ins[0].v;
+  vam_t &status = pb->outs[0].v;
+  if (enable->v().b() == false)
+    return;
+  vam_t &out = pb->outs[1].v;
+  vam_t in1 = pb->ins[1].v;
+  vam_t in2 = pb->ins[2].v;
+  uint64_t l = in1->v().ui() * in2->v().ui();
+  if (l > UINT_MAX) {
+    status->mutable_v()->set_i(-2);
+  } else {
+    out->mutable_v()->set_ui(in1->v().ui() * in2->v().ui());
+  }
+}
+
+static fb_t fb_MUL_UINT = {
+    {"Arithmetic", "MUL_UINT", "", 0, 0, 0, 0, run_MUL_UINT},
+    {{"EN", PIN_NO_LINK, T_BOOL, "", nullptr},
+     {"IN1", PIN_NO_LINK, T_UINT32, "", nullptr},
+     {"IN2", PIN_NO_LINK, T_UINT32, "", nullptr}},
+    {{"STATUS", PIN_NO_LINK, T_INT32, "", nullptr},
+     {"OUT", PIN_NO_LINK, T_UINT32, "", nullptr}}};

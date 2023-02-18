@@ -1014,6 +1014,8 @@ void CadPanel::drawTracker(QPainter &painter, int dx, int dy) {
 
 int CadPanel::pinMatch() {
   int t1, t2;
+  std::string t1_sub;
+  std::string t2_sub;
   PLPin *pin;
 
   if (selTarget.type == PT_OUTPUT) {
@@ -1021,6 +1023,9 @@ int CadPanel::pinMatch() {
       t1 = selCurrent.fb->input.at(selCurrent.value).value.v().t();
       t2 = selTarget.fb->output.at(selTarget.value).value.v().t();
       pin = &selCurrent.fb->input[selCurrent.value];
+      if(t1 == v_type::T_ANY) t1_sub = selCurrent.fb->input.at(selCurrent.value).value.v().any().type_url();
+      if(t2 == v_type::T_ANY) t2_sub = selTarget.fb->input.at(selTarget.value).value.v().any().type_url();
+
     } else {
       return -1;
     }
@@ -1029,6 +1034,8 @@ int CadPanel::pinMatch() {
       t1 = selCurrent.fb->output.at(selCurrent.value).value.v().t();
       t2 = selTarget.fb->input.at(selTarget.value).value.v().t();
       pin = &selTarget.fb->input[selTarget.value];
+      if(t1 == v_type::T_ANY) t1_sub = selCurrent.fb->input.at(selCurrent.value).value.v().any().type_url();
+      if(t2 == v_type::T_ANY) t2_sub = selTarget.fb->input.at(selTarget.value).value.v().any().type_url();
     } else {
       return -1;
     }
@@ -1037,11 +1044,16 @@ int CadPanel::pinMatch() {
   }
 
   if (t1 == t2) {
-    if (pin->hasInputLink || pin->hasVariable) {
-      return -1;
-    } else {
-      return 1;
+    if(t1_sub == t2_sub){
+      if (pin->hasInputLink || pin->hasVariable) {
+          return -1;
+        } else {
+          return 1;
+        }
+    }else{
+      return -2;
     }
+ 
   } else {
     return -1;
   }
@@ -1057,7 +1069,13 @@ void CadPanel::hitTestTarget(int x, int y) {
 
   int m = pinMatch();
 
-  if (m < 0) {
+  // 如果两者类型不对，不让连线
+  if (m == -2) {
+    QMessageBox::warning(
+            this, "Warning",
+            tr("sub type is not match when type is any"));   
+    setCursor(Qt::ForbiddenCursor);
+  } else if (m == -1) {
     setCursor(Qt::ForbiddenCursor);
   } else if (m > 0) {
     setCursor(*cursorLk);

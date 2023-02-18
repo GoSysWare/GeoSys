@@ -25,5 +25,6 @@ cc_library(
         "Timer.h",
         "Task.h",
         "Trigger.h",
+        "Geometry.h",
     ],
 )

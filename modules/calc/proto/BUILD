@@ -16,6 +16,8 @@ cc_proto_library(
     ],
 )
 
+
+
 proto_library(
     name = "bus_proto",
     deps = [
@@ -26,6 +28,24 @@ proto_library(
         ":value_proto", 
         ":edit_proto", 
 
+    ],
+)
+
+
+cc_proto_library(
+    name = "navigation_cc_proto",
+    deps = [
+        "navigation_proto",
+    ],
+)
+
+
+
+proto_library(
+    name = "navigation_proto",
+    deps = [
+        ":nav_proto",    
+        ":geo_proto",
     ],
 )
 
@@ -122,6 +142,32 @@ cc_proto_library(
 proto_library(
     name = "image_proto",
     srcs = ["image.proto"],
+    deps = [
+    ],
+)
+
+
+cc_proto_library(
+    name = "nav_cc_proto",
+    deps = [":nav_proto"],
+)
+
+proto_library(
+    name = "nav_proto",
+    srcs = ["nav.proto"],
+    deps = [
+        ":geo_proto"
+    ],
+)
+
+cc_proto_library(
+    name = "geo_cc_proto",
+    deps = [":geo_proto"],
+)
+
+proto_library(
+    name = "geo_proto",
+    srcs = ["geo.proto"],
     deps = [
     ],
 )

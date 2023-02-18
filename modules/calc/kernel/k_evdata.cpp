@@ -13,12 +13,15 @@ static evnode_t *p_vn_select = &vn_head;
 
 std::string type2str(v_type it) { return v_type_Name(it); }
 
-void vam_init(vam_t * vam,v_type t){
+void vam_init(vam_t * vam,v_type t, std::string u){
  
   vam->reset( new value_tm );
   vam->get()->set_tm(apollo::cyber::Time::Now().ToNanosecond());
   vam->get()->mutable_v()->set_t(t); 
   vam->get()->mutable_v()->clear_var();
+  if(t == v_type::T_ANY){
+    vam->get()->mutable_v()->mutable_any()->set_type_url(u);
+  }
 }
 
 

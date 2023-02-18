@@ -1,0 +1,5 @@
+syntax = "proto3";
+package Geo;
+import "modules/calc/proto/geo.proto";
+
+message Path { repeated Geo.Pose poses = 1; }

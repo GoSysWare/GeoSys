@@ -8,7 +8,7 @@
 
 static void fb_init_pin(pin_t *pin) {
   pin->s = PIN_NO_LINK;
-  vam_init(&pin->v,pin->t);
+  vam_init(&pin->v,pin->t,pin->u);
 }
 
 // static void fb_init_pin(pin_t *pin) {

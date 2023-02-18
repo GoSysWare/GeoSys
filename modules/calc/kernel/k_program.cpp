@@ -314,7 +314,7 @@ int prg_viremove(prog_t *p_prg, int idfb, int pin) {
   if (p_pin == 0) {
     return -1;
   }
-  vam_init(&p_pin->v, p_pin->t);
+  vam_init(&p_pin->v, p_pin->t,p_pin->u);
 
   return 0;
 }
@@ -355,7 +355,7 @@ int prg_voremove(prog_t *p_prg, int idfb, int pin) {
     return -1;
   }
 
-  vam_init(&p_pin->v, p_pin->t);
+  vam_init(&p_pin->v, p_pin->t,p_pin->u);
 
   return 0;
 }

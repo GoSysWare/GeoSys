@@ -1,5 +1,5 @@
 
-static void run_DIV_INT(void *p) {
+static void run_DIV_INT64(void *p) {
 
    fb_t *pb = (fb_t *)p;
   vam_t &enable = pb->ins[0].v;
@@ -9,19 +9,19 @@ static void run_DIV_INT(void *p) {
   vam_t &out = pb->outs[1].v;
   vam_t in1 = pb->ins[1].v;
   vam_t in2 = pb->ins[2].v;
-  if(in2->v().i() != 0){
-  	out->mutable_v()->set_i(in1->v().i() / in2->v().i());
+  if(in2->v().ll() != 0){
+  	out->mutable_v()->set_ll(in1->v().ll() / in2->v().ll());
   }
   else{
 	status->mutable_v()->set_i(-1);
   }
 }
 
-static fb_t fb_DIV_INT = {
-    {"Arithmetic","DIV_INT","", 0,0,0,0, run_DIV_INT},
+static fb_t fb_DIV_INT64 = {
+    {"Arithmetic","DIV_INT64","", 0,0,0,0, run_DIV_INT64},
     {{"EN", PIN_NO_LINK,T_BOOL,"", nullptr},
-     {"IN1", PIN_NO_LINK,T_INT32, "",nullptr},
-     {"IN2", PIN_NO_LINK,T_INT32,"", nullptr}},
+     {"IN1", PIN_NO_LINK,T_INT64, "",nullptr},
+     {"IN2", PIN_NO_LINK,T_INT64,"", nullptr}},
     {{"STATUS", PIN_NO_LINK,T_INT32,"", nullptr}, 
-    {"OUT", PIN_NO_LINK,T_INT32, "",nullptr}}};
+    {"OUT", PIN_NO_LINK,T_INT64, "",nullptr}}};
 

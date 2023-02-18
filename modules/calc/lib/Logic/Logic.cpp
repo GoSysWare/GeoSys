@@ -7,6 +7,11 @@
 #include "OR4"
 #include "NOT"
 #include "XOR"
+#include "RS"
+#include "SR"
+#include "TWOSEL"
+#include "THRSEL"
+#include "SIX_SEL_N"
 
 static void *fb_table[]={
 	&fb_AND,
@@ -15,6 +20,11 @@ static void *fb_table[]={
 	&fb_OR4,
 	&fb_NOT,
 	&fb_XOR,
+	&fb_RS,
+	&fb_SR,
+	&fb_TWOSEL,
+	&fb_THRSEL,
+	&fb_SIX_SEL_N,
 	};
 
 static size_t cursor;

@@ -5,27 +5,22 @@ package(default_visibility = ["//visibility:public"])
 
 
 cc_library(
-    name = "Logic",
+    name = "Geometry",
     includes = [
     ],
     hdrs = [
-        "AND",
-        "AND4",
-        "NOT",
-        "OR",
-        "OR4",
-        "XOR",
-        "RS",
-        "SR",
-        "SIX_SEL_N",
-        "THRSEL",
-        "TWOSEL",
+        "PATH_MERGE",
+        "PATH_SPLIT",
+
     ],
     srcs = [
-        "Logic.cpp",
+        "Geometry.cpp",
     ],
     deps = [
         "//modules/calc/include:calc_include",
         "//modules/calc/include/lib:lib_include",
+        "//modules/calc/proto:bus_cc_proto",
+        "//modules/calc/proto:navigation_cc_proto",
+
     ],
 )

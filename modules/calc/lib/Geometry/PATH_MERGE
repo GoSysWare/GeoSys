@@ -1,0 +1,28 @@
+// 1 严禁直接操作管脚指针
+// 2 严禁给管脚指针赋空值 如
+// pb->d[2].v = nullptr;
+// 3 严禁给输入管脚赋值
+// pb->d[2].v = otherptr
+// 4 无需设置管脚值类型
+// 5 注意管脚索引的排序 不要弄错,输入输出分别有两个系统默认管脚
+//   用户可用管脚从1开始计数
+static void run_PATH_MERGE(void *p) {
+
+  fb_t *pb = (fb_t *)p;
+  vam_t in1 = pb->ins[1].v;
+  vam_t in2 = pb->ins[2].v;
+  vam_t &out = pb->outs[1].v;
+  Geo::Path path1;
+  Geo::Path path2;
+
+  std::string type = in1->v().any().type_url();
+  in1->v().any().UnpackTo(&path1);
+}
+
+static fb_t fb_PATH_MERGE = {
+    {"Geometry", "PATH_MERGE", "", 0, 0, 0, 0, run_PATH_MERGE},
+    {{"EN", PIN_NO_LINK, T_BOOL, "", nullptr},
+     {"IN1", PIN_NO_LINK, T_ANY, "Geo.Path", nullptr},
+     {"IN2", PIN_NO_LINK, T_ANY, "Geo.Path", nullptr}},
+    {{"STATUS", PIN_NO_LINK, T_INT32, "", nullptr},
+     {"OUT", PIN_NO_LINK, T_ANY, "Geo.Path", nullptr}}};

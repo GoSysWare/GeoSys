@@ -1,0 +1,47 @@
+syntax = "proto3";
+package Geo;
+//geometry defines
+
+message Point {
+  double x = 1;
+  double y = 2;
+  double z = 3;
+}
+
+message Point2D {
+  float x = 1;
+  float y = 2;
+  float z = 3;
+}
+
+// 四元数形式表示自由空间的方向
+message Quaternion {
+  double x = 1;
+  double y = 2;
+  double z = 3;
+  double w = 4;
+}
+// 向量
+message Vector3 {
+  float x = 1;
+  float y = 2;
+  float z = 3;
+}
+
+// 曲度
+message Twist {
+  Vector3 linear = 1;  // 线速度
+  Vector3 angular = 2; // 角速度
+}
+
+// 位置
+message Pose {
+  Point postion = 1;          //  位置
+  Quaternion orientation = 2; // 姿态
+}
+// 2D位置
+message Pose2D {
+  double x = 1;
+  double y = 2;
+  double theta = 3;
+}

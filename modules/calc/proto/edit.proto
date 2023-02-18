@@ -5,7 +5,7 @@ import "modules/calc/proto/return.proto";
 
 package Bus;
 
-message EditPosition {
+message EditCoordinate {
   uint32 x = 1;
   uint32 y = 2;
 }
@@ -170,7 +170,7 @@ message EditInfo {
     EditVI vi = 12;
     EditVO vo = 13;
   }
-  repeated EditPosition pos = 14;
+  repeated EditCoordinate pos = 14;
 }
 message EditInfos {
   string host_name = 1;

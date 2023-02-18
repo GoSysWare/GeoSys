@@ -41,9 +41,10 @@ typedef struct FBHead{
 
 typedef struct Pin{
 	std::string pinname;
-	int s;		/* signal */
-	v_type t;	/* type */
-	vam_t v;	/* value */
+	int s;		// 是否有被引用
+	v_type t;	// 内置类型
+	std::string u;	// 次级类型，主要用作Any类型限定
+	vam_t v;	// 管脚的值
 } pin_t;
 
 typedef struct FB{
