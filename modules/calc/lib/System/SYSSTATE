@@ -1,0 +1,27 @@
+
+static void run_SYSSTATE(void *p) {
+
+  fb_t *pb = (fb_t *)p;
+  vam_t &cycle = pb->outs[1].v;
+  vam_t &peroid = pb->outs[2].v;
+  vam_t &thread_id = pb->outs[3].v;
+
+  uint64_t dt = pb->h.cycle_time / 1000000;
+
+  cycle->mutable_v()->set_ui(cycle->v().ui() + 1);
+  peroid->mutable_v()->set_tm(dt);
+
+  std::thread::id thr_id = std::this_thread::get_id();
+  std::stringstream ss;
+  ss << thr_id;
+  uint32_t id;
+  ss >>id;
+  thread_id->mutable_v()->set_ui(*(uint32_t*)&id);
+}
+
+static fb_t fb_SYSSTATE = {{"System", "SYSSTATE", "", 0, 0, 0, 0, run_SYSSTATE},
+                           {{"EN", PIN_NO_LINK, T_BOOL, "", nullptr}},
+                           {{"STATUS", PIN_NO_LINK, T_INT32, "", nullptr},
+                            {"CYCLE", PIN_NO_LINK, T_UINT32, "", nullptr},
+                            {"TIME", PIN_NO_LINK, T_TIME, "", nullptr},
+                            {"THRAD", PIN_NO_LINK, T_UINT32, "", nullptr}}};

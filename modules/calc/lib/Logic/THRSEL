@@ -202,15 +202,15 @@ static void run_THRSEL(void *p)
 static fb_t fb_THRSEL = {
 	"THRSEL", 8, 2, 0, 0, run_THRSEL, 
 	{
-		"IN1", T_REAL, 0,
-		"IN2", T_REAL, 0,
-		"IN3", T_REAL, 0,
-		"IN1_ERR", T_BOOL, 0,
-		"IN2_ERR", T_BOOL, 0,
-		"IN3_ERR", T_BOOL, 0,
-		"MODE", T_INT, 0,
-		"DB", T_REAL, 0,
-		"OUT", T_REAL, 0,
-		"ERR", T_BOOL, 0,
+		"IN1", T_REAL, 0, 0
+		"IN2", T_REAL, 0,  1
+		"IN3", T_REAL, 0,  2
+		"IN1_ERR", T_BOOL, 0, 3
+		"IN2_ERR", T_BOOL, 0, 4
+		"IN3_ERR", T_BOOL, 0, 5
+		"MODE", T_INT, 0,  6
+		"DB", T_REAL, 0,  7
+		"OUT", T_REAL, 0,  8
+		"ERR", T_BOOL, 0,  9
 	}
 };

@@ -1,11 +1,13 @@
 #include <stddef.h>
+#include <thread>
+#include <sstream>
 #include "modules/calc/include/k_functionblock.h"
 #include "modules/calc/include/k_util.h"
 
-#include "SysState"
+#include "SYSSTATE"
 
 static void *fb_table[]={
-	&fb_SysState,
+	&fb_SYSSTATE,
 	};
 
 static size_t cursor;

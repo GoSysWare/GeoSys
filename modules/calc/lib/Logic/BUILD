@@ -17,8 +17,9 @@ cc_library(
         "XOR",
         "RS",
         "SR",
+        "SCALING",
         "SIX_SEL_N",
-        "THRSEL",
+        # "THRSEL",
         "TWOSEL",
     ],
     srcs = [
@@ -27,5 +28,7 @@ cc_library(
     deps = [
         "//modules/calc/include:calc_include",
         "//modules/calc/include/lib:lib_include",
+        "//modules/calc/proto:bus_cc_proto",
+
     ],
 )

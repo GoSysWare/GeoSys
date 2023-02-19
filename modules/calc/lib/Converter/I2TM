@@ -1,0 +1,19 @@
+
+static void run_I2TM(void *p) {
+  fb_t *pb = (fb_t *)p;
+  vam_t &enable = pb->ins[0].v;
+  vam_t &status = pb->outs[0].v;
+  if (enable->v().b() == false)
+    return;
+  // 强制转化溢出时会警告，但还是会执行
+  if(pb->ins[1].v->v().i() < 0 ){
+    status->mutable_v()->set_i(1);
+  }
+  pb->outs[1].v->mutable_v()->set_tm((uint64_t)pb->ins[1].v->v().i());
+}
+static fb_t fb_I2TM = {{"Converter", "I2TM", "", 0, 0, 0, 0, run_I2TM},
+                      {{"EN", PIN_NO_LINK, T_BOOL, "", nullptr},
+                       {"IN", PIN_NO_LINK, T_INT32, "", nullptr}},
+                      {{"STATUS", PIN_NO_LINK, T_INT32, "", nullptr},
+                       {"OUT", PIN_NO_LINK, T_TIME, "", nullptr}}};
+

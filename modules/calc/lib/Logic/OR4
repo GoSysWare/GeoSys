@@ -1,16 +1,25 @@
-static void run_OR4(void *p)
-{	
-	fb_t *pb = (fb_t *)p;
-	pb->d[4].v.v.b = pb->d[0].v.v.b || pb->d[1].v.v.b || pb->d[2].v.v.b || pb->d[3].v.v.b ; 
+static void run_OR4(void *p) {
+
+  fb_t *pb = (fb_t *)p;
+  vam_t &enable = pb->ins[0].v;
+  vam_t &status = pb->outs[0].v;
+  if (enable->v().b() == false)
+    return;
+  vam_t &out = pb->outs[1].v;
+  vam_t in1 = pb->ins[1].v;
+  vam_t in2 = pb->ins[2].v;
+  vam_t in3 = pb->ins[3].v;
+  vam_t in4 = pb->ins[4].v;
+
+  out->mutable_v()->set_b(in1->v().b() ||in2->v().b() || in3->v().b() ||
+                          in4->v().b());
 }
 
-static fb_t fb_OR4 = {
-	"OR4", 4, 1, 0, 0, run_OR4, 
-	{	
-		"IN1", T_BOOL, 0,
-		"IN2", T_BOOL, 0,
-		"IN3", T_BOOL, 0,
-		"IN4", T_BOOL, 0,
-		"OUT", T_BOOL, 0
-	}
-};
+static fb_t fb_OR4 = {{"Logic", "OR4", "", 0, 0, 0, 0, run_OR4},
+                       {{"EN", PIN_NO_LINK, T_BOOL, "", nullptr},
+                        {"IN1", PIN_NO_LINK, T_BOOL, "", nullptr},
+                        {"IN2", PIN_NO_LINK, T_BOOL, "", nullptr},
+                        {"IN3", PIN_NO_LINK, T_BOOL, "", nullptr},
+                        {"IN4", PIN_NO_LINK, T_BOOL, "", nullptr}},
+                       {{"STATUS", PIN_NO_LINK, T_INT32, "", nullptr},
+                        {"OUT", PIN_NO_LINK, T_BOOL, "", nullptr}}};

@@ -1,17 +1,20 @@
 #include <stddef.h>
+#include <math.h>
+
 #include "modules/calc/include/k_functionblock.h"
 
 #include "AND"
 #include "AND4"
+#include "NOT"
 #include "OR"
 #include "OR4"
-#include "NOT"
-#include "XOR"
 #include "RS"
+#include "SCALING"
+#include "SIX_SEL_N"
 #include "SR"
 #include "TWOSEL"
-#include "THRSEL"
-#include "SIX_SEL_N"
+// #include "THRSEL"
+#include "XOR"
 
 static void *fb_table[]={
 	&fb_AND,
@@ -23,7 +26,8 @@ static void *fb_table[]={
 	&fb_RS,
 	&fb_SR,
 	&fb_TWOSEL,
-	&fb_THRSEL,
+	&fb_SCALING,
+	// &fb_THRSEL,
 	&fb_SIX_SEL_N,
 	};
 

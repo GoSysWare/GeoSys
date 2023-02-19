@@ -9,7 +9,7 @@ cc_library(
     includes = [
     ],
     hdrs = [
-        "SysState",
+        "SYSSTATE",
     ],
     srcs = [
         "System.cpp",
@@ -17,5 +17,6 @@ cc_library(
     deps = [
         "//modules/calc/include:calc_include",
         "//modules/calc/include/lib:lib_include",
+        "//modules/calc/proto:bus_cc_proto",
     ],
 )

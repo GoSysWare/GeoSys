@@ -61,16 +61,16 @@ static void run_CTUD_INT(void *p) {
 // CTD 减脉冲
 static fb_t fb_CTUD_INT = {
     {"Counter","CTUD_INT","", 0,0,0,0,run_CTUD_INT},
-    {{"EN", PIN_NO_LINK,T_BOOL, nullptr},   // 0   
-     {"CTU", PIN_NO_LINK,T_BOOL, nullptr},  // 1 
-     {"CTD", PIN_NO_LINK,T_BOOL, nullptr},  // 2
-     {"RST",PIN_NO_LINK, T_BOOL, nullptr},
-     {"LD", PIN_NO_LINK,T_BOOL, nullptr},
-     {"PV", PIN_NO_LINK,T_INT32, nullptr}},
-    {{"STATUS", PIN_NO_LINK,T_INT32, nullptr},
-     {"QU", PIN_NO_LINK,T_BOOL, nullptr},
-     {"QD", PIN_NO_LINK,T_BOOL, nullptr},
-     {"OUT", PIN_NO_LINK,T_INT32, nullptr}},
-    {{"TEMP", PIN_NO_LINK,T_INT32, nullptr}, 
-      {"OLD_CTU",PIN_NO_LINK, T_BOOL, nullptr}, 
-      {"OLD_CTD", PIN_NO_LINK,T_BOOL, nullptr}}};
+    {{"EN", PIN_NO_LINK,T_BOOL, "", nullptr},   // 0   
+     {"CTU", PIN_NO_LINK,T_BOOL, "", nullptr},  // 1 
+     {"CTD", PIN_NO_LINK,T_BOOL, "", nullptr},  // 2
+     {"RST",PIN_NO_LINK, T_BOOL, "", nullptr},
+     {"LD", PIN_NO_LINK,T_BOOL, "", nullptr},
+     {"PV", PIN_NO_LINK,T_INT32, "", nullptr}},
+    {{"STATUS", PIN_NO_LINK,T_INT32, "", nullptr},
+     {"QU", PIN_NO_LINK,T_BOOL, "", nullptr},
+     {"QD", PIN_NO_LINK,T_BOOL, "", nullptr},
+     {"OUT", PIN_NO_LINK,T_INT32, "", nullptr}},
+    {{"TEMP", PIN_NO_LINK,T_INT32, "", nullptr}, 
+      {"OLD_CTU",PIN_NO_LINK, T_BOOL, "", nullptr}, 
+      {"OLD_CTD", PIN_NO_LINK,T_BOOL, "", nullptr}}};

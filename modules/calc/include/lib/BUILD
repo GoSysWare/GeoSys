@@ -8,8 +8,6 @@ cc_library(
     name = "lib_include",
     hdrs = [
         "Arithmetic.h",
-        "Bistable.h",
-        "Comm.h",
         "Comparison.h",
         "Control.h",
         "Converter.h",
@@ -20,7 +18,6 @@ cc_library(
         "Logic.h",
         "Maths.h",
         "Opencv.h",
-        "Selection.h",
         "System.h",
         "Timer.h",
         "Task.h",
