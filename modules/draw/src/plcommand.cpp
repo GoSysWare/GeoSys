@@ -457,6 +457,7 @@ bool PLCommand::dispatch() {
     } else {
     }
   }
+   gMainModel->isModified = true;
   return true;
 }
 

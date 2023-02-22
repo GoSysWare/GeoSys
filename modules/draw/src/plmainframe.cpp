@@ -343,6 +343,16 @@ void PLMainFrame::prjSave() {
 
   gMainModel->removeDualCommands(gMainModel->cmdList, false);
 
+  Bus::EditInfo *proj_info = edit_infos.add_infos();
+  proj_info->set_element(Bus::PROJ);
+  proj_info->set_edit_type(Bus::SET);
+  proj_info->mutable_proj()->set_proj_uuid(gMainModel->project.uuid.toStdString());
+  proj_info->mutable_proj()->set_proj_name(gMainModel->project.name.toStdString());
+  proj_info->mutable_proj()->set_proj_desc(gMainModel->project.desc.toStdString());
+  for (auto i = 0; i < gMainModel->cmdList.size(); i++) {
+    Bus::EditInfo *info = edit_infos.add_infos();
+    info->CopyFrom(gMainModel->cmdList.at(i).editInfo);
+  }
   apollo::cyber::common::SetProtoToASCIIFile(
       edit_infos, gMainModel->project.fileName.toStdString());
 
@@ -350,7 +360,6 @@ void PLMainFrame::prjSave() {
 }
 
 void PLMainFrame::prjSaveAs(bool holdUuid) {
-  int i;
 
   DlgSaveProj dlgSaveProj;
   if (dlgSaveProj.exec() != QDialog::Accepted) {
@@ -374,7 +383,7 @@ void PLMainFrame::prjSaveAs(bool holdUuid) {
   proj_info->mutable_proj()->set_proj_uuid(gMainModel->project.uuid.toStdString());
   proj_info->mutable_proj()->set_proj_name(gMainModel->project.name.toStdString());
   proj_info->mutable_proj()->set_proj_desc(gMainModel->project.desc.toStdString());
-  for (i = 0; i < gMainModel->cmdList.size(); i++) {
+  for (auto i = 0; i < gMainModel->cmdList.size(); i++) {
     Bus::EditInfo *info = edit_infos.add_infos();
     info->CopyFrom(gMainModel->cmdList.at(i).editInfo);
   }

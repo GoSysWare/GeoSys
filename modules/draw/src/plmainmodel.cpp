@@ -201,7 +201,7 @@ void PLMainModel::makeFbRemoveCmd(PLCommand &cmd, PLFunctionBlock &fb) {
 
   cmdID++;
   cmd.editInfo.set_cmd_id(cmdID);
-  cmd.editInfo.set_element(Bus::EditElement::LK);
+  cmd.editInfo.set_element(Bus::EditElement::FB);
   cmd.editInfo.set_edit_type(Bus::EditType::RM);
   cmd.editInfo.mutable_fb()->set_mod_id(fb.idMod);
   cmd.editInfo.mutable_fb()->set_task_id(fb.idPrg);
