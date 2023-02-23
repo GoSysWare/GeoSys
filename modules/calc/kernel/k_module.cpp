@@ -243,17 +243,21 @@ int mod_prgremove(mod_t *p_mod, int id) {
   return 0;
 }
 
+
 void mod_start(mod_t *p_mod) {
   mnode_t *p_mn;
 
   p_mn = p_mod->mn_head.p_next;
   while (p_mn != &p_mod->mn_head) {
 
+    // task的使能
     if (!p_mn->enable)
       continue;
+    // task 初始化
+    prg_init(p_mn->p_prg, &p_mn->info);
 
+    // task 分类型处理
     if (p_mn->type == Bus::TaskType::PERIODIC) {
-
       apollo::cyber::TimerOption opt;
       opt.oneshot = false;
       opt.callback = [p_mn]() {
@@ -325,6 +329,8 @@ void mod_start(mod_t *p_mod) {
     p_mn = p_mn->p_next;
   }
 }
+
+
 
 int mod_fbadd(mod_t *p_mod, int idprg, int id, std::string libname,
               std::string fcname, std::string fbname) {

@@ -97,6 +97,7 @@ int prg_viremove(prog_t *p_prg, int idfb, int pin);
 int prg_voadd(prog_t *p_prg, int idev, int idfb, int pin);
 int prg_voremove(prog_t *p_prg, int idfb, int pin);
 
+void prg_init(prog_t *p_prg, proginfo_t * p_prog_info);
 void prg_exec(prog_t *p_prg, proginfo_t * p_prog_info);
 void prg_dump(prog_t *p_prg);
 int prg_checkloop(prog_t *p_prg, int idSrc, int idTgt);

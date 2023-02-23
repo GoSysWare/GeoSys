@@ -40,12 +40,14 @@ static void en_moveafter(enode_t *p_en, enode_t *p_ref) {
   en_addafter(p_en, p_ref);
 }
 
-void prg_exec(prog_t *p_prg, proginfo_t *p_prog_info) {
+
+void prg_init(prog_t *p_prg, proginfo_t *p_prog_info) {
   enode_t *p_en;
   /* fb to fb */
   p_en = p_prg->en_head.p_next;
   while (p_en != &p_prg->en_head) {
-    if (p_en->p_fb != 0) {
+    // 当是功能块 且是初始化型功能块
+    if (p_en->p_fb != 0 && p_en->p_fb->h.flag == FB_INIT) {
       // 为了方便Timer功能块的计算，把周期间隔给到每个功能块
       p_en->p_fb->h.cycle_time = p_prog_info->cycle_time;
       p_en->p_fb->h.begin_time = apollo::cyber::Time::Now().ToNanosecond();
@@ -58,7 +60,32 @@ void prg_exec(prog_t *p_prg, proginfo_t *p_prog_info) {
           (apollo::cyber::Time::Now() -
            apollo::cyber::Time(p_en->p_fb->h.begin_time))
               .ToNanosecond();
+    } 
+    p_en = p_en->p_next;
+  }
+}
 
+
+void prg_exec(prog_t *p_prg, proginfo_t *p_prog_info) {
+  enode_t *p_en;
+  /* fb to fb */
+  p_en = p_prg->en_head.p_next;
+  while (p_en != &p_prg->en_head ) {
+    // 当是功能块时
+    if (p_en->p_fb != 0 && (p_en->p_fb->h.flag == FB_EXEC || p_en->p_fb->h.flag == FB_IO )) {
+      // 为了方便Timer功能块的计算，把周期间隔给到每个功能块
+      p_en->p_fb->h.cycle_time = p_prog_info->cycle_time;
+      p_en->p_fb->h.begin_time = apollo::cyber::Time::Now().ToNanosecond();
+      // 执行核心主体 执行每个功能块定义的具体run_func
+      //
+      p_en->p_fb->h.run(p_en->p_fb);
+      //
+      //
+      p_en->p_fb->h.expend_time =
+          (apollo::cyber::Time::Now() -
+           apollo::cyber::Time(p_en->p_fb->h.begin_time))
+              .ToNanosecond();
+    // 当是pin之间link链接时
     } else {
       p_en->p_vtgt->v = p_en->p_vsrc->v;
     }

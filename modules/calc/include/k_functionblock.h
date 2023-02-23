@@ -16,8 +16,12 @@
 #define PININPUT 1
 #define PINOUTPUT 2
 #define PINPROPERTY 3
-#define FBFLAGIO	0x00000001
-#define FBFLAGEXPORT	0x00000002
+
+
+#define FB_EXEC	0x00000000   // 一般执行的功能块
+#define FB_IO	0x00000001   // IO功能块
+#define FB_INIT	0x00000002   // 初始化才执行一次的功能块
+#define FB_AI	0x00000003   // AI功能块
 
 typedef struct  PinFlag
 {
@@ -35,7 +39,7 @@ typedef struct FBHead{
 	u_int64_t cycle_time;		// 上次执行周期总时长
 	u_int64_t begin_time;		// 本次开始执行时间 = now
 	u_int64_t expend_time;		// 任务执行消耗时长
-    int flag;			/* export fb */
+    int flag;			
 	fb_function run;
 } fbhead_t;
 
