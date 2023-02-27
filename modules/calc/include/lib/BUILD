@@ -23,5 +23,7 @@ cc_library(
         "Task.h",
         "Trigger.h",
         "Geometry.h",
+        "String.h",
+
     ],
 )

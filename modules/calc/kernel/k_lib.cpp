@@ -17,6 +17,8 @@
 #include "modules/calc/include/lib/Timer.h"
 #include "modules/calc/include/lib/Task.h"
 #include "modules/calc/include/lib/Geometry.h"
+#include "modules/calc/include/lib/String.h"
+
 #define NLIBCOUNT 32
 static size_t cursor;
 static lib_t lib_table[NLIBCOUNT]; 
@@ -51,6 +53,7 @@ void lib_init()
     lib_set_table(16, "Fsm", fsm_first, fsm_next);
 	lib_set_table(17, "Task", task_first, task_next);
 	lib_set_table(18, "Geometry", geometry_first, geometry_next);
+	lib_set_table(19, "String", string_first, string_next);
 
 
 	cursor = 0;

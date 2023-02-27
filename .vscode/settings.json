@@ -250,6 +250,18 @@
         "b2tm": "cpp",
         "b2ui": "cpp",
         "ll2ui": "cpp",
-        "ui2ull": "cpp"
+        "ui2ull": "cpp",
+        "str_append": "cpp",
+        "str_clear": "cpp",
+        "str_compare": "cpp",
+        "str_erase": "cpp",
+        "str_find": "cpp",
+        "str_find_first_of": "cpp",
+        "str_copy": "cpp",
+        "str_swap": "cpp",
+        "str_replace": "cpp",
+        "str_find_last_of": "cpp",
+        "str_insert": "cpp",
+        "str_substr": "cpp"
     }
 }
