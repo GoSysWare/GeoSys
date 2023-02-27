@@ -229,6 +229,27 @@
         "scaling": "cpp",
         "six_sel_n": "cpp",
         "xor": "cpp",
-        "twosel": "cpp"
+        "twosel": "cpp",
+        "str_eq": "cpp",
+        "b2str": "cpp",
+        "f2str": "cpp",
+        "d2str": "cpp",
+        "ui2ll": "cpp",
+        "b2ll": "cpp",
+        "i2ui": "cpp",
+        "tm2ui": "cpp",
+        "tm2str": "cpp",
+        "ui2tm": "cpp",
+        "str2b": "cpp",
+        "ull2d": "cpp",
+        "ull2f": "cpp",
+        "ull2i": "cpp",
+        "str2ui": "cpp",
+        "b2f": "cpp",
+        "str2d": "cpp",
+        "b2tm": "cpp",
+        "b2ui": "cpp",
+        "ll2ui": "cpp",
+        "ui2ull": "cpp"
     }
 }
