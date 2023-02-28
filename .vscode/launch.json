@@ -14,19 +14,6 @@
             "console": "integratedTerminal"
         },
         {
-            "name": "Test Calc",
-            "type": "cppdbg",
-            "request": "launch",
-            "program": "${workspaceFolder}/bazel-bin/modules/calc/test_calc",
-            "args": [],
-            "stopAtEntry": false,
-            "cwd": "${workspaceFolder}",
-            "env":  {
-                "CYBER_PATH":"/home/shuimujie/Works/GeoSys/cyber",
-                "GLOG_log_dir":"/home/shuimujie/Works/GeoSys/cyber",
-            },
-        },
-        {
             "name": "Test Engine",
             "type": "cppdbg",
             "request": "launch",

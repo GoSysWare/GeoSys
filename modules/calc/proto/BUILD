@@ -31,6 +31,20 @@ proto_library(
     ],
 )
 
+cc_proto_library(
+    name = "ioss_cc_proto",
+    deps = [
+        "ioss_proto",
+    ],
+)
+
+proto_library(
+    name = "ioss_proto",
+    deps = [
+        ":device_proto",     
+    ],
+)
+
 
 cc_proto_library(
     name = "navigation_cc_proto",
@@ -168,6 +182,19 @@ cc_proto_library(
 proto_library(
     name = "geo_proto",
     srcs = ["geo.proto"],
+    deps = [
+    ],
+)
+
+
+cc_proto_library(
+    name = "device_cc_proto",
+    deps = [":device_proto"],
+)
+
+proto_library(
+    name = "device_proto",
+    srcs = ["device.proto"],
     deps = [
     ],
 )

@@ -1,23 +1,43 @@
 #ifndef ioss_h
 #define ioss_h
+#include <list>
+
+#include "cyber/cyber.h"
 #include "ddk.h"
+#include "modules/calc/proto/device.pb.h"
 
 bool ioss_init();
 void ioss_uninit();
 
-
-driver_t * io_load_driver(vendor_t v,device_type_t t);
-bool io_load_driver(driver_t * dirver);
-
-device_t * io_create_device(driver_t * dirver,std::string device_name);
-bool io_delete_device(device_t *);
-bool io_start_device(device_t *);
-bool io_stop_device(device_t *);
-
-device_t * io_open_device(std::string device_name);
-std::vector<device_t> io_get_devices();
+bool io_pnp_devices();
+bool io_pnp_stop_devices();
 
 
+driver_t *io_load_driver(std::string vendor_name, std::string driver_name);
 
+bool io_unload_driver(driver_t *driver);
+
+device_t *io_create_device(driver_t *driver, std::string device_name);
+
+bool io_delete_device(device_t *dev);
+
+std::vector<device_t *> io_get_devices();
+
+device_t *io_get_devices(std::string dev_name);
+
+device_t *io_open_device(std::string device_name);
+
+bool io_start_device(device_t *dev);
+
+bool io_stop_device(device_t *dev);
+
+bool io_update_tag(std::string tag, std::string device_name, vam_t new_value);
+bool io_write_device(std::string tag, std::string device_name, vam_t new_value);
+
+typedef std::list<driver_t> DRIVER_LIST;
+extern DRIVER_LIST g_Drivers;
+
+typedef std::map<std::string, device_t *> DEVICE_LIST;
+extern DEVICE_LIST g_Devices;
 
 #endif

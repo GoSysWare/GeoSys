@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+
+package IOSS;
+
+message Device{
+    string name = 1;
+    string description = 2;
+    string address =3;   
+    string parameter =4;
+}
+
+message Driver{
+    string name = 1;
+    string description = 2;
+    string dllname = 3;
+    uint64 version = 4;
+    repeated Device devices = 5;
+}
+message Vendors{
+    string name = 1;
+    string description = 2;
+    repeated Driver drivers = 3;
+
+}
+message DevicesInfo{
+    repeated Vendors vendors =1;
+}
