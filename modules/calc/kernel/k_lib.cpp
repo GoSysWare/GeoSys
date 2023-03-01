@@ -6,7 +6,7 @@
 #include "modules/calc/include/lib/Converter.h"
 #include "modules/calc/include/lib/Control.h"
 #include "modules/calc/include/lib/Counter.h"
-#include "modules/calc/include/lib/Driver.h"
+#include "modules/calc/include/lib/Devices.h"
 #include "modules/calc/include/lib/Fsm.h"
 #include "modules/calc/include/lib/IO.h"
 #include "modules/calc/include/lib/Logic.h"
@@ -42,7 +42,7 @@ void lib_init()
 	lib_set_table(4, "Converter", converter_first, converter_next);
 // 	// lib_set_table(5, "Control", control_first, control_next);
 	lib_set_table(6, "Counter", counter_first, counter_next);
-// 	// lib_set_table(7, "Driver", driver_first, driver_next);
+	lib_set_table(7, "Devices", devices_first, devices_next);
 // 	// lib_set_table(8, "IO", io_first, io_next);
 	lib_set_table(9, "Logic", logic_first, logic_next);
 // 	// lib_set_table(10, "Maths", maths_first, maths_next);

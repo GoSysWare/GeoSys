@@ -5,20 +5,19 @@ package(default_visibility = ["//visibility:public"])
 
 
 cc_library(
-    name = "IO",
+    name = "Devices",
     includes = [
     ],
     hdrs = [
-        "DM1x1",
-        "DM2x1",
-        "DM3x1",
-        "DM4x1",
+        "SIM_READ",
     ],
     srcs = [
-        "IO.cpp",
+        "Devices.cpp",
     ],
     deps = [
         "//modules/calc/include:calc_include",
         "//modules/calc/include/lib:lib_include",
+        "//modules/calc/proto:bus_cc_proto",
+        "//modules/calc/devices/sim:device_sim",    
     ],
 )

@@ -43,10 +43,10 @@
         },
       
         {
-            "name": "Test V",
+            "name": "Test IOSS",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/bazel-bin/modules/calc/test_calc",
+            "program": "${workspaceFolder}/bazel-bin/modules/calc/test/test_ioss",
             "args": [],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
@@ -106,25 +106,6 @@
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceFolder}/bazel-bin/modules/calc/test_comm",
-            "args": [],
-            "stopAtEntry": false,
-            "cwd": "${workspaceFolder}",
-            "environment": [],
-            "externalConsole": false,
-            "MIMode": "gdb",
-            "setupCommands": [
-                {
-                    "description": "为 gdb 启用整齐打印",
-                    "text": "-enable-pretty-printing",
-                    "ignoreFailures": true
-                }
-            ]
-        },
-        {
-            "name": "Test DFS",
-            "type": "cppdbg",
-            "request": "launch",
-            "program": "${workspaceFolder}/bazel-bin/modules/calc/test_DFS",
             "args": [],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",

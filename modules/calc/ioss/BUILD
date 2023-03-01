@@ -7,7 +7,7 @@ package(default_visibility = ["//visibility:public"])
 
 
 cc_library(
-    name = "driver",
+    name = "ioss",
     includes = [
     ],
     hdrs = [

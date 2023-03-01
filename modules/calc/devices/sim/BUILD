@@ -19,6 +19,7 @@ cc_library(
         "device.cpp"
     ],
     deps = [
+        "//modules/calc/ioss:ioss",
         "//modules/calc/proto:ioss_cc_proto",
         "//modules/calc/include:calc_include",
         "//modules/calc/proto:bus_cc_proto",

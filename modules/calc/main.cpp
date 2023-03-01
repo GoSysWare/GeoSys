@@ -2,6 +2,7 @@
 #include "modules/calc/include/k_lib.h"
 #include "modules/calc/include/k_project.h"
 #include "modules/calc/include/k_bus.h"
+#include "modules/calc/ioss/ioss.h"
 
 #include "cyber/cyber.h"
 #include "cyber/timer/timer.h"
@@ -17,6 +18,7 @@ int main(int argc, char *argv[]) {
   apollo::cyber::Init(argv[0]);
   // create talker node
   auto engine_node = apollo::cyber::CreateNode("robot_engine");
+  ioss_init();
   prj_init(0);
   lib_init();
   bus_init(std::move(engine_node));

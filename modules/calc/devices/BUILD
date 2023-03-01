@@ -23,6 +23,7 @@ cc_library(
         "//modules/calc/proto:ioss_cc_proto",
         "//modules/calc/include:calc_include",
         "//modules/calc/proto:bus_cc_proto",
+        "//modules/calc/ioss:ioss",
         "//cyber"
 
     ],

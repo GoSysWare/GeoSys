@@ -15,7 +15,7 @@ DRIVER_LIST g_drivers;
 extern IOSS::DevicesInfo g_devices_info;
 
 #ifndef _WIN32
-#define LoadLibrary(name) dlopen(name, 0)
+#define LoadLibrary(name, flag) dlopen(name, flag)
 #define HINSTANCE void *
 #define GetProcAddress(handle, name) dlsym(handle, name)
 #define FARPROC void *
@@ -28,16 +28,23 @@ extern IOSS::DevicesInfo g_devices_info;
 #define DLL_SUFFIX ".so"
 #endif
 
+
+template<class T>
+T* dlsym_ptr(void* handle, char const* name) {
+  return static_cast<T*>( dlsym( handle, name ) );
+}
+
 bool _load_module(driver_t &driver) {
   HINSTANCE h;
 
   driver.flags &= ~DRIVER_FLAG_LOADED;
-
-  h = LoadLibrary(driver.dllname.c_str());
+  int real_flag = RTLD_LAZY;
+  h = LoadLibrary(driver.dllname.c_str(), real_flag);
 
   if (!h) {
+    std::cout << "dlopen " << dlerror() << std::endl;
     driver.dllname += DLL_SUFFIX;
-    h = LoadLibrary(driver.dllname.c_str());
+    h = LoadLibrary(driver.dllname.c_str(), real_flag);
   }
 
   if (!h) {
@@ -56,6 +63,8 @@ bool _load_module(driver_t &driver) {
   (FARPROC &)driver.address_translate = GetProcAddress(h, "address_translate");
   (FARPROC &)driver.update_value = GetProcAddress(h, "update_value");
   (FARPROC &)driver.write_value = GetProcAddress(h, "write_value");
+
+
 
   return true;
 }
@@ -78,7 +87,7 @@ driver_t *io_load_driver(std::string vendor_name, std::string driver_name) {
     if (g_devices_info.vendors(i).name() == vendor_name) {
       IOSS::Vendors v = g_devices_info.vendors(i);
       for (auto j = 0; j < v.drivers().size(); j++) {
-        if (v.drivers(j).name() == vendor_name) {
+        if (v.drivers(j).name() == driver_name) {
           driver.dllname = v.drivers(j).dllname();
         }
       }

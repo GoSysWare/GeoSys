@@ -31,13 +31,13 @@ bool io_start_device(device_t *dev);
 
 bool io_stop_device(device_t *dev);
 
-bool io_update_tag(std::string tag, std::string device_name, vam_t new_value);
-bool io_write_device(std::string tag, std::string device_name, vam_t new_value);
+bool io_update_tag(std::string device_name, std::string tag, vam_t value);
+bool io_write_device(std::string device_name, std::string tag, vam_t value);
 
 typedef std::list<driver_t> DRIVER_LIST;
-extern DRIVER_LIST g_Drivers;
+extern DRIVER_LIST g_drivers;
 
 typedef std::map<std::string, device_t *> DEVICE_LIST;
-extern DEVICE_LIST g_Devices;
+extern DEVICE_LIST g_devices;
 
 #endif

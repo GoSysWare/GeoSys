@@ -9,15 +9,13 @@ cc_library(
     deps = [
         "//modules/calc/lib/Arithmetic:Arithmetic",
         "//modules/calc/lib/Comparison:Comparison",        
-        # "//modules/calc/lib/Control:Control",
         "//modules/calc/lib/Converter:Converter",
         "//modules/calc/lib/Counter:Counter",
-        # "//modules/calc/lib/Driver:Driver",
+        "//modules/calc/lib/Devices:Devices",
         "//modules/calc/lib/Fsm:Fsm",
         "//modules/calc/lib/Geometry:Geometry",
 
         "//modules/calc/lib/Task:Task",
-        # "//modules/calc/lib/IO:IO",  
         "//modules/calc/lib/Logic:Logic",
         # "//modules/calc/lib/Maths:Maths",
         # "//modules/calc/lib/Opencv:Opencv",

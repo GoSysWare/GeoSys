@@ -11,6 +11,7 @@ cc_binary(
     ],
 
     linkopts = [
+        "-ldl",
     ],
     deps = [
         "//modules/draw/src:draw",

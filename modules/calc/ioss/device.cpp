@@ -66,7 +66,7 @@ device_t *io_get_devices(std::string dev_name) {
 device_t *io_open_device(std::string device_name) {
   DEVICE_LIST::iterator it;
   it = g_devices.find(device_name);
-  if (it == g_Devices.end()) {
+  if (it == g_devices.end()) {
     return 0;
   }
   return it->second;

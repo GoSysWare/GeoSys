@@ -4,22 +4,22 @@ load("//tools:cpplint.bzl", "cpplint")
 package(default_visibility = ["//visibility:public"])
 
 cc_binary(
-    name = "robot_engine",
+    name = "test_ioss",
     srcs = [
-        "main.cpp",
+        "test_ioss.cpp",
     ],
     linkopts = [
         "-lpthread",
         "-ldl",
-
     ],
     linkstatic = False,
     deps = [
         "//cyber",
-        "//modules/calc/include/lib:lib_include",
+        "//modules/calc/devices/sim:device_sim",
+        "//modules/calc/include:calc_include",
         "//modules/calc/ioss",
-        "//modules/calc/kernel:calc_kernel",
-        "//modules/calc/lib:calc_library",
+        "//modules/calc/proto:bus_cc_proto",
+        "//modules/calc/proto:ioss_cc_proto",
     ],
 )
 

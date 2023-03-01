@@ -3,10 +3,12 @@
 
 IOSS::DevicesInfo g_devices_info;
 
-extern DEVICE_LIST g_devices;
 
 bool ioss_init() {
-  apollo::cyber::common::GetProtoFromFile("device_info.conf", &g_devices_info);
+  //apollo::cyber::common::GetProtoFromFile("device_info.conf", &g_devices_info);
+  apollo::cyber::common::GetProtoFromFile("/home/shuimujie/Works/GeoSys/modules/calc/ioss/device_info.conf", &g_devices_info);
+
+  std::cout << g_devices_info.DebugString() <<std::endl;
   io_pnp_devices();
   return true;
 }
@@ -57,7 +59,7 @@ bool io_pnp_stop_devices() {
   }
   return true;
 }
-bool io_update_tag(std::string tag, std::string device_name, vam_t new_value) {
+bool io_update_tag(std::string device_name, std::string tag, vam_t value) {
   device_t *dev;
   dev = io_get_devices(device_name);
   if (!dev) {
@@ -73,14 +75,13 @@ bool io_update_tag(std::string tag, std::string device_name, vam_t new_value) {
   }
 
   if (dev->drv->update_value) {
-    dev->drv->update_value(tag, new_value);
+    dev->drv->update_value(tag, value);
   }
 
   return true;
 }
 
-bool io_write_device(std::string tag, std::string device_name,
-                     vam_t new_value) {
+bool io_write_device(std::string device_name, std::string tag, vam_t value) {
   bool ret = false;
 
   device_t *dev;
@@ -98,7 +99,7 @@ bool io_write_device(std::string tag, std::string device_name,
   }
 
   if (dev->drv->write_value) {
-    ret = dev->drv->write_value(tag, new_value);
+    ret = dev->drv->write_value(tag, value);
   }
 
   return ret;

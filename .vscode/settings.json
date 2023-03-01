@@ -262,6 +262,8 @@
         "str_replace": "cpp",
         "str_find_last_of": "cpp",
         "str_insert": "cpp",
-        "str_substr": "cpp"
+        "str_substr": "cpp",
+        "sim": "cpp",
+        "sim_read": "cpp"
     }
 }

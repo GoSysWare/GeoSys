@@ -12,7 +12,7 @@ cc_library(
         "Control.h",
         "Converter.h",
         "Counter.h",
-        "Driver.h",
+        "Devices.h",
         "Fsm.h",
         "IO.h",
         "Logic.h",
