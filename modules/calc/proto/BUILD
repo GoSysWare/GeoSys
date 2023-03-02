@@ -35,13 +35,15 @@ cc_proto_library(
     name = "ioss_cc_proto",
     deps = [
         "ioss_proto",
+
     ],
 )
 
 proto_library(
     name = "ioss_proto",
     deps = [
-        ":device_proto",     
+        ":device_proto",
+
     ],
 )
 
@@ -196,5 +198,6 @@ proto_library(
     name = "device_proto",
     srcs = ["device.proto"],
     deps = [
+
     ],
 )

@@ -11,6 +11,7 @@
 using namespace std;
 int main(int argc, char *argv[])
 {
+  apollo::cyber::Init(argv[0]);
 
 
     ioss_init();
@@ -19,6 +20,7 @@ int main(int argc, char *argv[])
     v->mutable_v()->set_t(v_type::T_FLOAT64);
     io_update_tag("SIM","OUT1",v);
 
+  apollo::cyber::WaitForShutdown();
 
     return 0;
 }

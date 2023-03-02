@@ -71,6 +71,7 @@ load("//third_party/bluez:workspace.bzl", bluez = "repo")
 # 其他工具和框架
 #########################################################################################
 
+load("//third_party/ffmpeg:workspace.bzl", ffmpeg = "repo")
 
 
 
@@ -90,6 +91,7 @@ def initialize_third_party():
     cpplint()
     # civetweb()
     fastrtps()
+    ffmpeg()
     gflags()
     glog()
     # gtest()

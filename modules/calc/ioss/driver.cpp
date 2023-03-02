@@ -38,7 +38,7 @@ bool _load_module(driver_t &driver) {
   HINSTANCE h;
 
   driver.flags &= ~DRIVER_FLAG_LOADED;
-  int real_flag = RTLD_LAZY;
+  int real_flag = RTLD_LAZY|RTLD_GLOBAL;
   h = LoadLibrary(driver.dllname.c_str(), real_flag);
 
   if (!h) {

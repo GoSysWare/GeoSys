@@ -11,6 +11,7 @@ cc_binary(
     linkopts = [
         "-lpthread",
         "-ldl",
+
     ],
     linkstatic = False,
     deps = [

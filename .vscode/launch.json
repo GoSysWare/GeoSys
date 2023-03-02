@@ -58,6 +58,10 @@
                 {
                     "name": "GLOG_log_dir",
                     "value": "/home/shuimujie/Works/logs"
+                },
+                {
+                    "name": "LD_LIBRARY_PATH",
+                    "value": ":/usr/local/fast-rtps/lib:/usr/local/fast-rtps/lib:/home/shuimujie/Works/GeoSys/bazel-bin/external/com_google_protobuf"
                 }
             ],
             "externalConsole": false,

@@ -11,7 +11,7 @@ static uint64_t MonoTime() {
   return now_nano;
 }
 
-bool update_value(std::string tag_name, vam_t value)
+bool update_value(device_t *device,std::string tag_name, vam_t value)
 {
     double val;
     std::string sim_exp;

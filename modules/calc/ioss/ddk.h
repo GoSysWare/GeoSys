@@ -19,6 +19,7 @@ typedef struct DeviceInfo {
   std::string name;
   std::string address;
   std::string parameter;
+  void	*owner_field{0};
   unsigned int flags{0};
   int error{0};
 
@@ -36,9 +37,9 @@ typedef bool (*IO_LOAD_PROC)(struct DriverInfo *driver);
 typedef bool (*IO_UNLOAD_PROC)();
 typedef bool (*IO_START_DEVICE_PROC)(device_t *dev);
 typedef bool (*IO_STOP_DEVICE_PROC)(device_t *dev);
-typedef bool (*IO_ADDRESS_TRANSLATE_PROC)(std::string tte);
-typedef void (*IO_UPDATE_VALUE_PROC)(std::string tag_name, vam_t v);
-typedef bool (*IO_WRITE_VALUE_PROC)(std::string tag_name, vam_t v);
+typedef bool (*IO_ADDRESS_TRANSLATE_PROC)(device_t *dev,std::string tte);
+typedef void (*IO_UPDATE_VALUE_PROC)(device_t *dev,std::string tag_name, vam_t v);
+typedef bool (*IO_WRITE_VALUE_PROC)(device_t *dev,std::string tag_name, vam_t v);
 
 typedef struct DriverInfo {
   void *plugin_handle{0};
@@ -62,9 +63,9 @@ bool load(driver_t *dirver);
 bool unload();
 bool start_device(device_t *device);
 bool stop_device(device_t *device);
-bool address_translate(std::string tag_name);
-bool update_value(std::string tag_name, vam_t value);
-bool write_value(std::string tag_name, vam_t vaule);
+bool address_translate(device_t *device,std::string tag_name);
+bool update_value(device_t *device,std::string tag_name, vam_t value);
+bool write_value(device_t *device,std::string tag_name, vam_t vaule);
 }
 
 #endif

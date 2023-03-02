@@ -9,7 +9,6 @@ package(default_visibility = ["//visibility:public"])
 cc_library(
     name = "device_sim",
     includes = [
-        "../../ioss/ddk.h",
     ],
     hdrs = [
         "expression.h",
