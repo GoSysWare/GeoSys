@@ -15,7 +15,7 @@
  *****************************************************************************/
 
 #include "modules/calc/devices/camera/camera_component.h"
-
+#include "opencv2/opencv.hpp"
 
 bool CameraComponent::Init(std::string config) {
   camera_config_ = std::make_shared<Config>();
@@ -93,7 +93,10 @@ void CameraComponent::run() {
     }
     auto cam_image = raw_image_buffer_.at(index_++);
     memcpy(cam_image->image, raw_image_->image, raw_image_->image_size);
-
+    // raw_image_->image 里是RGB
+    // cv::Mat 是BGR
+    cv::Mat v(raw_image_->height,raw_image_->width,CV_8UC3,raw_image_->image);
+    cv::imwrite("/home/shuimujie/Works/GeoSys/modules/calc/devices/camera/proto/lgo.jpg",v);
     apollo::cyber::SleepFor(std::chrono::microseconds(spin_rate_));
   }
 }

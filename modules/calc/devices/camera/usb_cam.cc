@@ -45,6 +45,8 @@ bool UsbCam::init(const std::shared_ptr<Config>& cameraconfig) {
     config_->set_monochrome(true);
   } else if (config_->pixel_format() == "rgb24") {
     pixel_format_ = V4L2_PIX_FMT_RGB24;
+  } else if (config_->pixel_format() == "NV12") {
+    pixel_format_ = V4L2_PIX_FMT_NV12;
   } else {
     pixel_format_ = V4L2_PIX_FMT_YUYV;
     AERROR << "Wrong pixel fromat:" << config_->pixel_format()
@@ -203,7 +205,7 @@ bool UsbCam::poll(const CameraImagePtr& raw_image) {
   FD_SET(fd_, &fds);
 
   /* Timeout. */
-  tv.tv_sec = 2;
+  tv.tv_sec = 10;
   tv.tv_usec = 0;
 
   r = select(fd_ + 1, &fds, nullptr, nullptr, &tv);
@@ -891,6 +893,60 @@ bool UsbCam::read_frame(CameraImagePtr raw_image) {
   return true;
 }
 
+#undef clamp_g
+#define clamp_g(x, minValue, maxValue) ((x) < (minValue) ? (minValue) : ((x) > (maxValue) ? (maxValue) : (x)))
+int nv122bgr(unsigned char * yuv_img, unsigned char *rgb_img,int width, int height)
+{
+
+    unsigned char * ydata = yuv_img;
+    unsigned char *uvdata = ydata + width * height;
+    int indexY, indexU, indexV;
+    unsigned char Y, U, V;
+    int B, G, R;
+
+    for (int i = 0; i < height; i++)
+    {
+        for (int j = 0; j < width; j++)
+        {
+            indexY = i * width + j;
+            Y = ydata[indexY];
+
+            if (j % 2 == 0)
+            {
+                indexU = i / 2 * width + j;
+                indexV = indexU + 1;
+                U = uvdata[indexU];
+                V = uvdata[indexV];
+            }
+            else
+            {
+                indexV = i / 2 * width + j;
+                indexU = indexV - 1;
+                U = uvdata[indexU];
+                V = uvdata[indexV];
+            }
+            //nv21
+            // R = (unsigned char)(Y + 1.4075 * (U - 128));
+            // G = (unsigned char)(Y - 0.3455 * (V - 128) - 0.7169 * (U - 128));
+            // B = (unsigned char)(Y + 1.779 * (V - 128));
+            //nv12
+            R = (unsigned char)(Y + 1.4075 * (V - 128));
+            G = (unsigned char)(Y - 0.3455 * (U - 128) - 0.7169 * (V - 128));
+            B = (unsigned char)(Y + 1.779 * (U - 128));
+            
+            // rgb_img[indexY * 3 + 0] = clamp_g(B, 0, 255);
+            // rgb_img[indexY * 3 + 1] = clamp_g(G, 0, 255);
+            // rgb_img[indexY * 3 + 2] = clamp_g(R, 0, 255);
+            rgb_img[indexY * 3 + 0] = clamp_g(R, 0, 255);
+            rgb_img[indexY * 3 + 1] = clamp_g(G, 0, 255);
+            rgb_img[indexY * 3 + 2] = clamp_g(B, 0, 255);
+
+        }
+    }
+    return 0;
+}
+
+
 bool UsbCam::process_image(void* src, int len, CameraImagePtr dest) {
   if (src == nullptr || dest == nullptr) {
     AERROR << "process image error. src or dest is null";
@@ -923,7 +979,15 @@ bool UsbCam::process_image(void* src, int len, CameraImagePtr dest) {
       AERROR << "unsupported output format:" << config_->output_type();
       return false;
     }
-  } else {
+  } else if(pixel_format_ == V4L2_PIX_FMT_NV12){
+    if (config_->output_type() == RGB){
+        nv122bgr((unsigned char*)src,(unsigned char*)dest->image, dest->width,dest->height);
+    }else{
+        AERROR << "unsupported output format:" << config_->output_type();
+      return false;
+    }
+
+  }else {
     AERROR << "unsupported pixel format:" << pixel_format_;
     return false;
   }

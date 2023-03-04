@@ -7,16 +7,6 @@
 
 bool load(driver_t *dirver)
 {
-  apollo::drivers::camera::config::Config config;
-  config.set_camera_dev("front");
-  config.set_frame_id("frame");
-  config.set_pixel_format("yuyv");
-  config.set_io_method(IO_METHOD_MMAP);
-  config.set_width(1048);
-    apollo::cyber::common::SetProtoToASCIIFile(config,
-      "/home/shuimujie/Works/GeoSys/modules/calc/ioss/device_info_out.conf");
-
-
 
 }
 bool unload()

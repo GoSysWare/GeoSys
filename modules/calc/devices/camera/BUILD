@@ -42,7 +42,7 @@ cc_library(
         "//modules/calc/ioss:ioss",
         "//modules/calc/devices/camera/proto:config_cc_proto",
         "//cyber",
-        # "@com_google_protobuf//:protobuf",
+        "@opencv",
 
     ],
 )
