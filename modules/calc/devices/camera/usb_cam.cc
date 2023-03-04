@@ -193,6 +193,8 @@ void UsbCam::mjpeg2rgb(char* mjpeg_buffer, int len, char* rgb_buffer,
 }
 
 bool UsbCam::poll(const CameraImagePtr& raw_image) {
+  AERROR << "webcam: poll enter ";
+
   raw_image->is_new = 0;
   // free memory in this struct desturctor
   memset(raw_image->image, 0, raw_image->image_size * sizeof(char));
@@ -231,6 +233,7 @@ bool UsbCam::poll(const CameraImagePtr& raw_image) {
   }
 
   raw_image->is_new = 1;
+  AERROR << "webcam: poll true ";
   return true;
 }
 

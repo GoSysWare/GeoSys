@@ -86,7 +86,7 @@ void CameraComponent::run() {
       AERROR << "camera device poll failed";
       continue;
     }
-      AERROR << "camera device poll succ";
+      AERROR << "camera device poll succ spin_rate_" << spin_rate_;
 
     if (index_ >= buffer_size_) {
       index_ = 0;
@@ -97,6 +97,7 @@ void CameraComponent::run() {
     // cv::Mat 是BGR
     cv::Mat v(raw_image_->height,raw_image_->width,CV_8UC3,raw_image_->image);
     cv::imwrite("/home/shuimujie/Works/GeoSys/modules/calc/devices/camera/proto/lgo.jpg",v);
+
     apollo::cyber::SleepFor(std::chrono::microseconds(spin_rate_));
   }
 }

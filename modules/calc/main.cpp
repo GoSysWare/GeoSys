@@ -23,7 +23,7 @@ int main(int argc, char *argv[]) {
   lib_init();
   bus_init(std::move(engine_node));
   // Bus::EditInfos edit_infos;
-  // apollo::cyber::common::GetProtoFromFile("/home/shuimujie/Works/GeoSys/0217.timer.logic.cl",&edit_infos);
+  // apollo::cyber::common::GetProtoFromFile("/home/shuimujie/Works/GeoSys/0304.cam.logic.cl",&edit_infos);
   // cmds_dispatch(edit_infos);
 
   

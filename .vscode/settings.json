@@ -264,6 +264,7 @@
         "str_insert": "cpp",
         "str_substr": "cpp",
         "sim": "cpp",
-        "sim_read": "cpp"
+        "sim_read": "cpp",
+        "camera": "cpp"
     }
 }

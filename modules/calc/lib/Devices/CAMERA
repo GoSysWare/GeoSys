@@ -1,0 +1,43 @@
+static void run_CAMERA(void *p) {
+
+  fb_t *pb = (fb_t *)p;
+  vam_t &enable = pb->ins[0].v;
+  vam_t &status = pb->outs[0].v;
+  if (enable->v().b() == false)
+    return;
+  vam_t &out1 = pb->outs[1].v;
+  vam_t &out2 = pb->outs[2].v;
+  vam_t &out3 = pb->outs[3].v;
+  vam_t &out4 = pb->outs[4].v;
+  vam_t &out5 = pb->outs[5].v;
+  vam_t &out6 = pb->outs[6].v;
+  std::string pin_nmae_1 = pb->outs[1].pinname;
+  std::string pin_nmae_2 = pb->outs[2].pinname;
+  std::string pin_nmae_3 = pb->outs[3].pinname;
+  std::string pin_nmae_4 = pb->outs[4].pinname;
+  std::string pin_nmae_5 = pb->outs[5].pinname;
+  std::string pin_nmae_6 = pb->outs[6].pinname;
+  vam_t in1 = pb->ins[1].v;
+  io_update_tag(in1->v().str(),pin_nmae_1,out1);
+  io_update_tag(in1->v().str(),pin_nmae_2,out2);
+  io_update_tag(in1->v().str(),pin_nmae_3,out3);
+  io_update_tag(in1->v().str(),pin_nmae_4,out4);
+  io_update_tag(in1->v().str(),pin_nmae_5,out5);
+  io_update_tag(in1->v().str(),pin_nmae_6,out6);
+
+
+
+  
+  return;
+}
+
+static fb_t fb_CAMERA = {{"Devices","CAMERA", "",0,0,0,0,run_CAMERA},
+                        {{"EN",PIN_NO_LINK, T_BOOL, "", nullptr},
+                         {"NAME", PIN_NO_LINK,T_STRING, "", nullptr}},
+                        {{"STATUS", PIN_NO_LINK,T_INT32, "", nullptr},
+                         {"IMAG", PIN_NO_LINK,T_IMAGE, "", nullptr},
+                         {"HEIGHT", PIN_NO_LINK,T_UINT32, "", nullptr},
+                         {"WIDTH", PIN_NO_LINK,T_UINT32, "", nullptr},
+                         {"ISNEW", PIN_NO_LINK,T_BOOL, "", nullptr},
+                         {"SEC", PIN_NO_LINK,T_UINT32, "", nullptr},
+                         {"USEC", PIN_NO_LINK,T_UINT32, "", nullptr}}};

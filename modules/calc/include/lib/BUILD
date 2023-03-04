@@ -9,12 +9,10 @@ cc_library(
     hdrs = [
         "Arithmetic.h",
         "Comparison.h",
-        "Control.h",
         "Converter.h",
         "Counter.h",
         "Devices.h",
         "Fsm.h",
-        "IO.h",
         "Logic.h",
         "Maths.h",
         "Opencv.h",

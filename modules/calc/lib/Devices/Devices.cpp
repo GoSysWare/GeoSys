@@ -4,9 +4,12 @@
 #include "modules/calc/ioss/ioss.h"
 
 #include "SIM_READ"
+#include "CAMERA"
 
 static void *fb_table[]={
 	&fb_SIM_READ,
+	&fb_CAMERA,
+
 	};
 
 static size_t cursor;

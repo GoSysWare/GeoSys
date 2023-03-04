@@ -10,6 +10,7 @@ cc_library(
     ],
     hdrs = [
         "SIM_READ",
+        "CAMERA",
     ],
     srcs = [
         "Devices.cpp",
