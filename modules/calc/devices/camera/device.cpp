@@ -29,7 +29,7 @@ bool update_value(device_t *device, std::string tag_name, vam_t value) {
   camera = (CameraComponent *)device->owner_field;
   if (tag_name == "IMG") {
     value->mutable_v()->set_t(v_type::T_IMAGE);
-    value->mutable_v()->set_img(camera->raw_image_->image);
+    value->mutable_v()->set_img(camera->raw_image_->image,camera->raw_image_->image_size);
   } else if (tag_name == "HEIGHT") {
     value->mutable_v()->set_ui(camera->raw_image_->height);
   } else if (tag_name == "WIDTH") {
