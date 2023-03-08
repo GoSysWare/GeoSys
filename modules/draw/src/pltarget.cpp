@@ -13,7 +13,7 @@ void PLTarget::timerEvent(QTimerEvent *e) {
       info_res->result().code() == Bus::ResultCode::OK) {
     idCmdTarget = info_res->cmd_id();
     uuidTarget = QString::fromStdString(info_res->prj_uuid());
-    qDebug() << "Target cmd_id:" << idCmdTarget << "uuid" << uuidTarget;
+    // qDebug() << "Target cmd_id:" << idCmdTarget << "uuid" << uuidTarget;
   } else {
     online(false, NULL);
   }
@@ -27,7 +27,7 @@ void PLTarget::timerEvent(QTimerEvent *e) {
         sp_res->result().code() == Bus::ResultCode::OK) {
 
       prj_from_snapshot(sp_res.get());
-      prj_dump();
+      // prj_dump();
       int i, j, k, n, m;
       // load fbs value
       PLModule *mod;
@@ -50,8 +50,8 @@ void PLTarget::timerEvent(QTimerEvent *e) {
             // output
             for (k = 0; k < fb->output.size(); k++) {
               fb->output[k].value = *(p_fb->outs[k].v);
-              qDebug() << "fb" << fb->id << "pin" << k << "val"
-                       << fb->output[k].value.v().i();
+              // qDebug() << "fb" << fb->id << "pin" << k << "val"
+              //          << fb->output[k].value.v().i();
             }
             // property
             for (k = 0; k < fb->property.size(); k++) {

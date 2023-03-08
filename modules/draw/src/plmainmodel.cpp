@@ -95,7 +95,7 @@ void PLMainModel::updateProgList(int modIndex) {
 bool PLMainModel::exeCommand(PLCommand &cmd) {
   if (cmdID < cmd.editInfo.cmd_id()) {
     cmdID = cmd.editInfo.cmd_id();
-    qDebug() << "command id:" << cmdID;
+    // qDebug() << "command id:" << cmdID;
   }
 
   cmd_dispatch(cmd.editInfo);
@@ -670,8 +670,8 @@ void PLMainModel::removeDualCommands(QList<PLCommand> &cmdList, bool all) {
 
   for (i = cmdList.size() - 1; i >= 0; i--) {
     if (cmdList.at(i).mark) {
-      qDebug() << "remove cmd_id:"
-               << QString::fromStdString(cmdList.at(i).editInfo.DebugString());
+      // qDebug() << "remove cmd_id:"
+      //          << QString::fromStdString(cmdList.at(i).editInfo.DebugString());
       cmdList.removeAt(i);
     }
   }

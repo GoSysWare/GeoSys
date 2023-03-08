@@ -1537,8 +1537,8 @@ void CadPanel::exeCopyCommands(QByteArray &cpCmds) {
   }
   for (i = 0; i < lkList.size(); i++) {
     gMainModel->makeLkNewCmd(cmd, lkList[i], false);
-    qDebug() << "cmd:"
-             << QString::fromStdString(cmd.editInfo.ShortDebugString());
+    // qDebug() << "cmd:"
+    //          << QString::fromStdString(cmd.editInfo.ShortDebugString());
     if (!gMainModel->exeCommand(cmd)) {
       QMessageBox::critical(
           this, "Error",

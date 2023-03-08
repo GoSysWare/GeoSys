@@ -12,6 +12,7 @@ public:
     ~PLEVData();
 
     QString getStrValue();
+    QString getStrInitValue();
 
     int id;
     int idLog;

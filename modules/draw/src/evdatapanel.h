@@ -5,6 +5,8 @@
 #include <QTableView>
 #include <QPushButton>
 #include <QBoxLayout>
+#include <QByteArray>
+
 #include "plevdata.h"
 
 class TableEVData : public QTableView
@@ -26,12 +28,13 @@ private slots:
     void editEVData(bool check);
     void removeEVData(bool check);
     void tableDoubleClicked(const QModelIndex & index);
-
+    void showEVData(bool check);
 private:
     TableEVData *tableData;
     QPushButton *buttonAddData;
     QPushButton *buttonEditData;
     QPushButton *buttonRemoveData;
+    QPushButton *buttonShowValue;
     QHBoxLayout *layoutButton;
     QVBoxLayout *layout;
     PLEVData evLast;

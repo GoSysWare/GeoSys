@@ -2,6 +2,7 @@
 #include "dlgevdata.h"
 #include<QMessageBox>
 #include "gdefine.h"
+#include "dlgevshow.h"
 #include "cyber/time/time.h"
 
 TableEVData::TableEVData()
@@ -43,11 +44,15 @@ EVDataPanel::EVDataPanel()
     buttonAddData = new QPushButton(tr("Add"));
     buttonEditData = new QPushButton(tr("Edit"));
     buttonRemoveData = new QPushButton(tr("Remove"));
+    buttonShowValue = new QPushButton(tr("Show"));
+
     layoutButton = new QHBoxLayout;
     layoutButton->setAlignment(Qt::AlignLeft);
     layoutButton->addWidget(buttonAddData);
     layoutButton->addWidget(buttonEditData);
     layoutButton->addWidget(buttonRemoveData);
+    layoutButton->addWidget(buttonShowValue);
+
     layout = new QVBoxLayout;
     layout->addWidget(tableData);
     layout->addLayout(layoutButton);
@@ -56,6 +61,8 @@ EVDataPanel::EVDataPanel()
     connect(buttonAddData, SIGNAL(clicked(bool)), this, SLOT(addEVData(bool)));
     connect(buttonEditData, SIGNAL(clicked(bool)), this, SLOT(editEVData(bool)));
     connect(buttonRemoveData, SIGNAL(clicked(bool)), this, SLOT(removeEVData(bool)));
+    connect(buttonShowValue, SIGNAL(clicked(bool)), this, SLOT(showEVData(bool)));
+
     connect(tableData, SIGNAL(doubleClicked(const QModelIndex&)), this, SLOT(tableDoubleClicked(const QModelIndex &)));
 
     evLast.name = "EV";
@@ -137,6 +144,30 @@ void EVDataPanel::editEVData(bool check)
     gMainModel->modelEVData.endReset();
 }
 
+void EVDataPanel::showEVData(bool check)
+{
+
+    if(tableData->selectionModel()->selectedIndexes().isEmpty()){
+        return;
+    }
+
+    PLEVData evCur = gMainModel->evList.at(tableData->currentIndex().row());
+
+    DlgEvShow dlgShow(this);
+    dlgShow.setTitle(evCur.name);
+    QByteArray  img_bytes;
+    int len = evCur.value.v().img().length();
+    img_bytes.resize(len);
+    memcpy(img_bytes.data(), evCur.value.v().img().data(), len);//copy数据
+    dlgShow.setValueData(img_bytes);
+
+    if (dlgShow.exec() != QDialog::Accepted) {
+
+    }
+
+    // gMainModel->modelEVData.beginReset();
+    // gMainModel->modelEVData.endReset();
+}
 void EVDataPanel::tableDoubleClicked(const QModelIndex & index)
 {
     editEVData(true);
