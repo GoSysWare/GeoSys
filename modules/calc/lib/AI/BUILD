@@ -5,19 +5,20 @@ package(default_visibility = ["//visibility:public"])
 
 
 cc_library(
-    name = "System",
+    name = "AI",
     includes = [
     ],
     hdrs = [
-        "SYSSTATE",
-        "FILE_READ_ONCE",
+        "DLIB_FACE_DETECT",
     ],
     srcs = [
-        "System.cpp",
+        "AI.cpp",
     ],
     deps = [
         "//modules/calc/include:calc_include",
         "//modules/calc/include/lib:lib_include",
         "//modules/calc/proto:bus_cc_proto",
+        "//modules/calc/devices/sim:device_sim",
+        "@dlib"
     ],
 )

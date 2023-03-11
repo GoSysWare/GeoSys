@@ -33,7 +33,7 @@ DlgEVData::DlgEVData(QWidget *parent, Qt::WindowFlags f)
     listType->setMaximumHeight(120);
     listType->setBatchSize(5);
     textValue = new QLineEdit;
-    textValue->setMaxLength(32);
+    // textValue->setMaxLength(32);
     //textValue->setInputMask("################################");
     textComment = new QLineEdit;
     textComment->setMaxLength(32);

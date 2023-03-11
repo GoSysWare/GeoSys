@@ -7,6 +7,7 @@ package(default_visibility = ["//visibility:public"])
 cc_library(
     name = "lib_include",
     hdrs = [
+        "Ai.h",
         "Arithmetic.h",
         "Comparison.h",
         "Converter.h",

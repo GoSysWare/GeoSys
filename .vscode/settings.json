@@ -265,6 +265,10 @@
         "str_substr": "cpp",
         "sim": "cpp",
         "sim_read": "cpp",
-        "camera": "cpp"
+        "camera": "cpp",
+        "dlib_face_init": "cpp",
+        "dlib_face_detect": "cpp",
+        "file_open_once": "cpp",
+        "file_read_once": "cpp"
     }
 }

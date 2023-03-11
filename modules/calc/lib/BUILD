@@ -7,6 +7,7 @@ package(default_visibility = ["//visibility:public"])
 cc_library(
     name = "calc_library",
     deps = [
+        "//modules/calc/lib/AI:AI",
         "//modules/calc/lib/Arithmetic:Arithmetic",
         "//modules/calc/lib/Comparison:Comparison",        
         "//modules/calc/lib/Converter:Converter",

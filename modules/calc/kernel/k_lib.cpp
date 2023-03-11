@@ -1,6 +1,7 @@
 #include <stddef.h>
 #include <string.h>
 #include "modules/calc/include/k_lib.h"
+#include "modules/calc/include/lib/Ai.h"
 #include "modules/calc/include/lib/Arithmetic.h"
 #include "modules/calc/include/lib/Comparison.h"
 #include "modules/calc/include/lib/Converter.h"
@@ -33,9 +34,8 @@ static void lib_set_table(unsigned int id,  std::string  name, fbget first, fbge
 
 void lib_init()
 {
-	lib_set_table(0, "Arithmetic", arithmetic_first, arithmetic_next);
-// 	// lib_set_table(1, "Bistable", bistable_first, bistable_next);
-// 	// lib_set_table(2, "Comm", comm_first, comm_next);
+	lib_set_table(0, "AI", ai_first, ai_next);
+	lib_set_table(1, "Arithmetic", arithmetic_first, arithmetic_next);
 	lib_set_table(3, "Comparison", comparison_first, comparison_next);
 	lib_set_table(4, "Converter", converter_first, converter_next);
 // 	// lib_set_table(5, "Control", control_first, control_next);

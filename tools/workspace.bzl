@@ -59,6 +59,7 @@ load("//third_party/proj4:workspace.bzl", proj4 = "repo")
 #########################################################################################
 load("//third_party/gpus:cuda_configure.bzl", "cuda_configure")
 # load("//third_party/tensorrt:tensorrt_configure.bzl", "tensorrt_configure")
+load("//third_party/dlib:workspace.bzl", dlib = "repo")
 
 
 #########################################################################################
@@ -90,6 +91,7 @@ def initialize_third_party():
     # mq()
     cpplint()
     # civetweb()
+    dlib()
     fastrtps()
     ffmpeg()
     gflags()
