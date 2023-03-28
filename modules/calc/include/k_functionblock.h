@@ -18,10 +18,12 @@
 #define PINPROPERTY 3
 
 
-#define FB_EXEC	0x00000000   // 一般执行的功能块
-#define FB_IO	0x00000001   // IO功能块
-#define FB_INIT	0x00000002   // 初始化才执行一次的功能块
-#define FB_AI	0x00000003   // AI功能块
+#define FB_EXEC		0x00000000   // 一般执行的功能块
+#define FB_IO		0x00000001   // IO功能块
+#define FB_INIT		0x00000002   // 初始化才执行一次的功能块
+#define FB_UINIT 	0x00000003   // 初始化才执行一次的功能块
+
+#define FB_AI	0x00000001 << 8   // AI功能块
 
 typedef struct  PinFlag
 {

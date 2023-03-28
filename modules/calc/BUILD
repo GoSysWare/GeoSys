@@ -11,6 +11,8 @@ cc_binary(
     linkopts = [
         "-lpthread",
         "-ldl",
+        "-lpng",
+        "-ljpeg",
 
     ],
     linkstatic = False,

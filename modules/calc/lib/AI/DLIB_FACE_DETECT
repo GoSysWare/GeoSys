@@ -1,8 +1,58 @@
-#include <dlib/dnn.h>
 #include <dlib/clustering.h>
-#include <dlib/string.h>
+#include <dlib/dnn.h>
 #include <dlib/image_io.h>
 #include <dlib/image_processing/frontal_face_detector.h>
+#include <dlib/string.h>
+
+using namespace dlib;
+using namespace std;
+
+// ----------------------------------------------------------------------------------------
+
+// The next bit of code defines a ResNet network.  It's basically copied
+// and pasted from the dnn_imagenet_ex.cpp example, except we replaced the loss
+// layer with loss_metric and made the network somewhat smaller.  Go read the
+// introductory dlib DNN examples to learn what all this stuff means.
+//
+// Also, the dnn_metric_learning_on_images_ex.cpp example shows how to train
+// this network. The dlib_face_recognition_resnet_model_v1 model used by this
+// example was trained using essentially the code shown in
+// dnn_metric_learning_on_images_ex.cpp except the mini-batches were made larger
+// (35x15 instead of 5x5), the iterations without progress was set to 10000, and
+// the training dataset consisted of about 3 million images instead of
+// 55.  Also, the input layer was locked to images of size 150.
+template <template <int, template <typename> class, int, typename> class block,
+          int N, template <typename> class BN, typename SUBNET>
+using residual = add_prev1<block<N, BN, 1, tag1<SUBNET>>>;
+
+template <template <int, template <typename> class, int, typename> class block,
+          int N, template <typename> class BN, typename SUBNET>
+using residual_down =
+    add_prev2<avg_pool<2, 2, 2, 2, skip1<tag2<block<N, BN, 2, tag1<SUBNET>>>>>>;
+
+template <int N, template <typename> class BN, int stride, typename SUBNET>
+using block =
+    BN<con<N, 3, 3, 1, 1, relu<BN<con<N, 3, 3, stride, stride, SUBNET>>>>>;
+
+template <int N, typename SUBNET>
+using ares = relu<residual<block, N, affine, SUBNET>>;
+template <int N, typename SUBNET>
+using ares_down = relu<residual_down<block, N, affine, SUBNET>>;
+
+template <typename SUBNET> using alevel0 = ares_down<256, SUBNET>;
+template <typename SUBNET>
+using alevel1 = ares<256, ares<256, ares_down<256, SUBNET>>>;
+template <typename SUBNET>
+using alevel2 = ares<128, ares<128, ares_down<128, SUBNET>>>;
+template <typename SUBNET>
+using alevel3 = ares<64, ares<64, ares<64, ares_down<64, SUBNET>>>>;
+template <typename SUBNET> using alevel4 = ares<32, ares<32, ares<32, SUBNET>>>;
+
+using anet_type = loss_metric<fc_no_bias<
+    128,
+    avg_pool_everything<alevel0<alevel1<alevel2<alevel3<alevel4<max_pool<
+        3, 3, 2, 2,
+        relu<affine<con<32, 7, 7, 2, 2, input_rgb_image_sized<150>>>>>>>>>>>>>;
 
 static void run_DLIB_FACE_DETECT(void *p) {
 
@@ -20,53 +70,59 @@ static void run_DLIB_FACE_DETECT(void *p) {
   vam_t &out1 = pb->outs[1].v;
   vam_t &out2 = pb->outs[2].v;
 
-  uint32_t width = width->v().ui();
+  uint32_t width = in_width->v().ui();
   uint32_t height = in_height->v().ui();
 
   std::string value = in_img->v().img();
-
+  dlib::shape_predictor sp;
   dlib::frontal_face_detector detector = dlib::get_frontal_face_detector();
-  dlib::deserialize(sp_file->v().file()) >> sp;
-   dlib:: anet_type net;
-  dlib::deserialize(anet_file->v().file()) >> net;
-   dlib::matrix<rgb_pixel> dlib_img;
-   dlib_img.resize(height,width);
+  dlib::deserialize(sp_file->v().str()) >> sp;
+  anet_type net;
+  dlib::deserialize(anet_file->v().str()) >> net;
+  dlib::matrix<rgb_pixel> dlib_img;
+  dlib_img.set_size(height, width);
 
   int index;
   for (int i = 0; i < height; i++) {
     for (int j = 0; j < width; j++) {
       index = i * width + j;
-      dlib::rgb_pixel  pix = dlib_img(i,j);
+      dlib::rgb_pixel &pix = dlib_img(i, j);
       pix.red = value[index * 3 + 0];
       pix.green = value[index * 3 + 1];
       pix.blue = value[index * 3 + 2];
     }
   }
-   std::vector<dlib::matrix<dlib::rgb_pixel>> faces;
-    int count = 1;
-    for (auto face : detector(dlib_img))
-    {
-        auto shape = sp(dlib_img, face);
-        dlib::matrix<dlib::rgb_pixel> face_chip;
-        dlib::extract_image_chip(dlib_img, get_face_chip_details(shape,150,0.25), face_chip);
-        dlib::save_jpeg(face_chip,"/home/shuimujie/Works/bamboo_ws/out_"+std::to_string(count++)+".jpeg");
-        faces.push_back(move(face_chip));
-    }
-    if (faces.size() == 0)
-    {
-        cout << "No faces found in image!" << endl;
-        return 1;
-    }
+  std::vector<dlib::matrix<dlib::rgb_pixel>> faces;
+  int count = 0;
+  for (auto face : detector(dlib_img)) {
+    auto shape = sp(dlib_img, face);
+    dlib::matrix<dlib::rgb_pixel> face_chip;
+    dlib::extract_image_chip(dlib_img, get_face_chip_details(shape, 150, 0.25),
+                             face_chip);
+    dlib::save_jpeg(face_chip, "/home/shuimujie/Works/bamboo_ws/out_" +
+                                   std::to_string(count++) + ".jpeg");
+    faces.push_back(move(face_chip));
+  }
+  if (faces.size() == 0) {
+    cout << "No faces found in image!" << endl;
+    out2->mutable_v()->set_i(0);
+    status->mutable_v()->set_i(1);
+    return ;
+  }
+  status->mutable_v()->set_i(0);
+  out2->mutable_v()->set_i(count);
+
   return;
 }
 
-static fb_t fb_DLIB_FACE_DETECT = {{"AI","DLIB_FACE_DETECT", "",0,0,0,FB_INIT,run_DLIB_FACE_DETECT},
-                        {{"EN",PIN_NO_LINK, T_BOOL, "", nullptr},
-                         {"IMG", PIN_NO_LINK,T_IMAGE, "", nullptr},
-                         {"WIDTH", PIN_NO_LINK,T_UINT32, "", nullptr},
-                         {"HEIGHT", PIN_NO_LINK,T_UINT32, "", nullptr},
-                         {"SP_MOD", PIN_NO_LINK,T_FILE, "", nullptr},
-                        {"ANET_MOD", PIN_NO_LINK,T_FILE, "", nullptr}},
-                        {{"STATUS", PIN_NO_LINK,T_INT32, "", nullptr},
-                         {"IMG_OUT", PIN_NO_LINK,T_FILE, "", nullptr},
-                         {"FACE_COUNT", PIN_NO_LINK,T_FILE, "", nullptr}}};
+static fb_t fb_DLIB_FACE_DETECT = {
+    {"AI", "DLIB_FACE_DETECT", "", 0, 0, 0, FB_EXEC, run_DLIB_FACE_DETECT},
+    {{"EN", PIN_NO_LINK, T_BOOL, "", nullptr},
+     {"IMG", PIN_NO_LINK, T_IMAGE, "", nullptr},
+     {"WIDTH", PIN_NO_LINK, T_UINT32, "", nullptr},
+     {"HEIGHT", PIN_NO_LINK, T_UINT32, "", nullptr},
+     {"SP_MOD", PIN_NO_LINK, T_STRING, "", nullptr},
+     {"ANET_MOD", PIN_NO_LINK, T_STRING, "", nullptr}},
+    {{"STATUS", PIN_NO_LINK, T_INT32, "", nullptr},
+     {"IMG_OUT", PIN_NO_LINK, T_FILE, "", nullptr},
+     {"FACE_COUNT", PIN_NO_LINK, T_UINT32, "", nullptr}}};
