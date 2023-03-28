@@ -2,7 +2,7 @@ infos {
   edit_type: SET
   proj {
     proj_name: "rotbot-engine-project"
-    proj_uuid: "{d3f0189b-ebe0-4af8-aad2-15a7c25c859a}"
+    proj_uuid: "{f8054039-9b83-4de6-b961-65139c0de4e4}"
   }
 }
 infos {
@@ -749,6 +749,71 @@ infos {
         ui: 5
       }
       tm: 1679923642673344101
+    }
+  }
+}
+infos {
+  cmd_id: 48
+  element: FB
+  edit_type: ADD
+  fb {
+    mod_id: 7
+    task_id: 8
+    fb_id: 31
+    flib_name: "System"
+    fc_name: "FILE_OPEN_ONCE"
+  }
+  pos {
+    x: 128
+    y: 128
+  }
+}
+infos {
+  cmd_id: 49
+  element: VI
+  edit_type: ADD
+  vi {
+    mod_id: 7
+    task_id: 8
+    fb_id: 31
+    pin_index: 1
+    ev_id: 2
+    vi_id: 32
+  }
+}
+infos {
+  cmd_id: 50
+  element: PIN
+  edit_type: SET
+  pin {
+    mod_id: 7
+    task_id: 8
+    fb_id: 31
+    pin_index: 2
+    pin_val {
+      v {
+        t: T_UINT32
+        ui: 0
+      }
+      tm: 1679974249609080470
+    }
+  }
+}
+infos {
+  cmd_id: 51
+  element: PIN
+  edit_type: SET
+  pin {
+    mod_id: 7
+    task_id: 8
+    fb_id: 31
+    pin_index: 3
+    pin_val {
+      v {
+        t: T_BOOL
+        b: true
+      }
+      tm: 1679974261167405742
     }
   }
 }
