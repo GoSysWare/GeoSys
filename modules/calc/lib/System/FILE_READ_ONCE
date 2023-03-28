@@ -1,21 +1,25 @@
 
-#include <iostream>
 #include <fstream>
+#include <iostream>
 
 // ios::in		打开文件用于读取数据。如果文件不存在，则打开出错。
-// ios::out	打开文件用于写入数据。如果文件不存在，则新建该文件；如果文件原来就存在，则打开时清除原来的内容。
-// ios::app		打开文件，用于在其尾部添加数据。如果文件不存在，则新建该文件。
-// ios::ate		打开一个已有的文件，并将文件读指针指向文件末尾（读写指 的概念后面解释）。如果文件不存在，则打开出错。
-// ios:: trunc		打开文件时会清空内部存储的所有数据，单独使用时与 ios::out 相同。
-// ios::binary		以二进制方式打开文件。若不指定此模式，则以文本模式打开。
-// ios::in | ios::out		打开已存在的文件，既可读取其内容，也可向其写入数据。文件刚打开时，原有内容保持不变。如果文件不存在，则打开出错。
-// ios::in | ios::out		打开已存在的文件，可以向其写入数据。文件刚打开时，原有内容保持不变。如果文件不存在，则打开出错。
-// ios::in | ios::out | ios::trunc		打开文件，既可读取其内容，也可向其写入数据。如果文件本来就存在，则打开时清除原来的内容；如果文件不存
-
+// ios::out
+// 打开文件用于写入数据。如果文件不存在，则新建该文件；如果文件原来就存在，则打开时清除原来的内容。
+// ios::app
+// 打开文件，用于在其尾部添加数据。如果文件不存在，则新建该文件。 ios::ate
+// 打开一个已有的文件，并将文件读指针指向文件末尾（读写指
+// 的概念后面解释）。如果文件不存在，则打开出错。 ios:: trunc
+// 打开文件时会清空内部存储的所有数据，单独使用时与 ios::out 相同。 ios::binary
+// 以二进制方式打开文件。若不指定此模式，则以文本模式打开。 ios::in | ios::out
+// 打开已存在的文件，既可读取其内容，也可向其写入数据。文件刚打开时，原有内容保持不变。如果文件不存在，则打开出错。
+// ios::in | ios::out
+// 打开已存在的文件，可以向其写入数据。文件刚打开时，原有内容保持不变。如果文件不存在，则打开出错。
+// ios::in | ios::out | ios::trunc
+// 打开文件，既可读取其内容，也可向其写入数据。如果文件本来就存在，则打开时清除原来的内容；如果文件不存
 
 static void run_FILE_OPEN_ONCE(void *p) {
 
- fb_t *pb = (fb_t *)p;
+  fb_t *pb = (fb_t *)p;
   vam_t &enable = pb->ins[0].v;
   vam_t &status = pb->outs[0].v;
   if (enable->v().b() == false)
@@ -26,41 +30,38 @@ static void run_FILE_OPEN_ONCE(void *p) {
   vam_t in1 = pb->ins[1].v;
   vam_t in2 = pb->ins[2].v;
   vam_t in3 = pb->ins[3].v;
-  std::ios_base::openmode  mode = std::ios::in;
-  // 
-  if(in2->v().ui() == 0){
-      mode = std::ios::in;
-  }else if(in2->v().ui() == 1)
-  {
+  std::ios_base::openmode mode = std::ios::in;
+  //
+  if (in2->v().ui() == 0) {
+    mode = std::ios::in;
+  } else if (in2->v().ui() == 1) {
     mode = std::ios::ate;
- 
   }
-  if(in3->v().b()){
+  if (in3->v().b()) {
     mode = std::ios::binary | mode;
   }
 
   std::ifstream in_file;
   in_file.open(in1->v().str(), mode);
-  if(!in_file.is_open()){
-      status->mutable_v()->set_i(-1);
-      return;
+  if (!in_file.is_open()) {
+    status->mutable_v()->set_i(-1);
+    return;
   }
-  std::string str((std::istreambuf_iterator<char>(in_file)),  
-                 std::istreambuf_iterator<char>());
-  
+  std::string str((std::istreambuf_iterator<char>(in_file)),
+                  std::istreambuf_iterator<char>());
 
   out1->mutable_v()->set_file(std::move(str));
 
   out2->mutable_v()->set_ui(out1->v().file().size());
   in_file.close();
-
 }
 
-static fb_t fb_FILE_OPEN_ONCE = {{"System", "FILE_OPEN_ONCE", "", 0, 0, 0, 0, run_FILE_OPEN_ONCE},
-                           {{"EN", PIN_NO_LINK, T_BOOL, "", nullptr},
-                           {"F_NAME", PIN_NO_LINK, T_STRING, "", nullptr},
-                           {"MODE", PIN_NO_LINK, T_UINT32, "", nullptr},
-                           {"IS_BIN", PIN_NO_LINK, T_BOOL, "", nullptr}},
-                           {{"STATUS", PIN_NO_LINK, T_INT32, "", nullptr},
-                            {"FILE", PIN_NO_LINK, T_FILE, "", nullptr},
-                            {"LENGTH", PIN_NO_LINK, T_UINT32, "", nullptr}}};
+static fb_t fb_FILE_OPEN_ONCE = {
+    {"System", "FILE_OPEN_ONCE", "", 0, 0, 0, 0, run_FILE_OPEN_ONCE},
+    {{"EN", PIN_NO_LINK, T_BOOL, "", nullptr},
+     {"F_NAME", PIN_NO_LINK, T_STRING, "", nullptr},
+     {"MODE", PIN_NO_LINK, T_UINT32, "", nullptr},
+     {"IS_BIN", PIN_NO_LINK, T_BOOL, "", nullptr}},
+    {{"STATUS", PIN_NO_LINK, T_INT32, "", nullptr},
+     {"FILE", PIN_NO_LINK, T_FILE, "", nullptr},
+     {"LENGTH", PIN_NO_LINK, T_UINT32, "", nullptr}}};
