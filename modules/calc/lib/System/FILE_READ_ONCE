@@ -57,7 +57,7 @@ static void run_FILE_OPEN_ONCE(void *p) {
 }
 
 static fb_t fb_FILE_OPEN_ONCE = {
-    {"System", "FILE_OPEN_ONCE", "", 0, 0, 0, 0, run_FILE_OPEN_ONCE},
+    {"System", "FILE_OPEN_ONCE", "", 0, 0, 0, FB_INIT, run_FILE_OPEN_ONCE},
     {{"EN", PIN_NO_LINK, T_BOOL, "", nullptr},
      {"F_NAME", PIN_NO_LINK, T_STRING, "", nullptr},
      {"MODE", PIN_NO_LINK, T_UINT32, "", nullptr},

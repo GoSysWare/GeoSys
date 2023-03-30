@@ -74,11 +74,13 @@ static void run_DLIB_FACE_DETECT(void *p) {
   uint32_t height = in_height->v().ui();
 
   std::string value = in_img->v().img();
+  std::istringstream si_sp(sp_file->v().file()) ;
+  std::istringstream si_anet(anet_file->v().file()) ;
   dlib::shape_predictor sp;
   dlib::frontal_face_detector detector = dlib::get_frontal_face_detector();
-  dlib::deserialize(sp_file->v().str()) >> sp;
+  dlib::deserialize(si_sp) >> sp;
   anet_type net;
-  dlib::deserialize(anet_file->v().str()) >> net;
+  dlib::deserialize(si_anet) >> net;
   dlib::matrix<rgb_pixel> dlib_img;
   dlib_img.set_size(height, width);
 
@@ -121,8 +123,8 @@ static fb_t fb_DLIB_FACE_DETECT = {
      {"IMG", PIN_NO_LINK, T_IMAGE, "", nullptr},
      {"WIDTH", PIN_NO_LINK, T_UINT32, "", nullptr},
      {"HEIGHT", PIN_NO_LINK, T_UINT32, "", nullptr},
-     {"SP_MOD", PIN_NO_LINK, T_STRING, "", nullptr},
-     {"ANET_MOD", PIN_NO_LINK, T_STRING, "", nullptr}},
+     {"SP_MOD", PIN_NO_LINK, T_FILE, "", nullptr},
+     {"ANET_MOD", PIN_NO_LINK, T_FILE, "", nullptr}},
     {{"STATUS", PIN_NO_LINK, T_INT32, "", nullptr},
      {"IMG_OUT", PIN_NO_LINK, T_FILE, "", nullptr},
      {"FACE_COUNT", PIN_NO_LINK, T_UINT32, "", nullptr}}};
