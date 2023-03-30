@@ -14,6 +14,9 @@ public:
     int id;
     int idLog;
     int flag;
+    unsigned long long cycle_time;
+    unsigned long long begin_time;
+    unsigned long long expend_time;
     QString libName;
     QString funName;
     QString blkName;

@@ -43,6 +43,12 @@ void PLTarget::timerEvent(QTimerEvent *e) {
           for (j = 0; j < prg->fbs.size(); j++) {
             fb = &prg->fbs[j];
             p_fb = prj_fbfind(fb->idMod, fb->idPrg, fb->id);
+            //header
+            fb->flag = p_fb->h.flag;
+            fb->cycle_time = p_fb->h.cycle_time;
+            fb->begin_time = p_fb->h.begin_time;
+            fb->expend_time = p_fb->h.expend_time;
+           
             // input
             for (k = 0; k < fb->input.size(); k++) {
               fb->input[k].value = *(p_fb->ins[k].v);

@@ -174,7 +174,11 @@ void CadPanel::drawFunctionBlock(QPainter &painter, PLFunctionBlock &fb) {
   QColor fColor = Qt::black;
   QColor bColor = Qt::white;
   if (gTarget->isMonitor()) {
-    bColor = Qt::lightGray;
+    if(fb.flag & 0xFF == FB_INIT){
+      bColor = Qt::blue;
+    }else{
+      bColor = Qt::lightGray;
+    }
   }
 
   // fb name

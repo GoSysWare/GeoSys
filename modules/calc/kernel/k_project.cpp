@@ -362,16 +362,30 @@ int prj_to_snapshot(Bus::ProjSnapshotRsp *snapshot) {
       while (p_en != &p_mn->p_prg->en_head) {
         if (p_en->p_fb != ((void *)0)) {
           p_fb = p_en->p_fb;
+          //解析fb的header
+          value_tm *val_sp = task_sp->add_vals();
+          val_sp->mutable_v()->set_t(v_type::T_UINT64);
+          val_sp->mutable_v()->set_ull(p_fb->h.cycle_time);
+          val_sp = task_sp->add_vals();
+          val_sp->mutable_v()->set_t(v_type::T_UINT64);
+          val_sp->mutable_v()->set_ull(p_fb->h.begin_time);
+          val_sp = task_sp->add_vals();
+          val_sp->mutable_v()->set_t(v_type::T_UINT64);
+          val_sp->mutable_v()->set_ull(p_fb->h.expend_time);
+          val_sp = task_sp->add_vals();
+          val_sp->mutable_v()->set_t(v_type::T_INT32);
+          val_sp->mutable_v()->set_ull(p_fb->h.flag);
+
           for (i = 0; i < p_fb->ins.size(); i++) {
-            value_tm *val_sp = task_sp->add_vals();
+            val_sp = task_sp->add_vals();
             val_sp->CopyFrom(*(p_fb->ins[i].v));
           }
           for (i = 0; i < p_fb->outs.size(); i++) {
-            value_tm *val_sp = task_sp->add_vals();
+            val_sp = task_sp->add_vals();
             val_sp->CopyFrom(*(p_fb->outs[i].v));
           }
           for (i = 0; i < p_fb->props.size(); i++) {
-            value_tm *val_sp = task_sp->add_vals();
+            val_sp = task_sp->add_vals();
             val_sp->CopyFrom(*(p_fb->props[i].v));
           }
         }
@@ -426,6 +440,10 @@ int prj_from_snapshot(Bus::ProjSnapshotRsp *snapshot) {
       while (p_en != &p_mn->p_prg->en_head) {
         if (p_en->p_fb != ((void *)0)) {
           p_fb = p_en->p_fb;
+          p_fb->h.cycle_time = task_sp.vals(k++).v().ull();
+          p_fb->h.begin_time = task_sp.vals(k++).v().ull();
+          p_fb->h.expend_time = task_sp.vals(k++).v().ull();
+          p_fb->h.flag = task_sp.vals(k++).v().i();
           for (i = 0; i < p_fb->ins.size(); i++) {
             p_fb->ins[i].v->CopyFrom(task_sp.vals(k++));
           }
