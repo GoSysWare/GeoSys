@@ -30,14 +30,18 @@ static int on_bus_stop() {
   return 0;
 }
 static int on_bus_download(Bus::EditInfos infos) {
+  int ret = -1;
   std::cout << "on_bus_download " << infos.ShortDebugString() << std::endl;
-  cmds_dispatch(infos);
-  return 0;
+  ret = cmds_dispatch(infos);
+  // archive logic
+  if(ret == 0){
+     cmds_append(infos);
+  }
+  return ret;
 }
-static int on_bus_upload() {
+static int on_bus_upload(Bus::EditInfos *infos) {
   std::cout << "on_bus_upload " << std::endl;
-
-  return 0;
+  return cmds_load(infos);
 }
 static int on_bus_sync() {
   std::cout << "on_bus_sync " << std::endl;
@@ -89,6 +93,7 @@ int bus_init(std::shared_ptr<apollo::cyber::Node> node) {
                              std::shared_ptr<Bus::ProjectCmdRsp> &response) {
         std::cout << "prject  cmd:" << std::endl;
         std::cout << "request:" << request->DebugString() << std::endl;
+        Bus::EditInfos info;
 
         switch (request->cmd_type()) {
         case Bus::RunType::ONLINE:
@@ -116,12 +121,18 @@ int bus_init(std::shared_ptr<apollo::cyber::Node> node) {
           response->mutable_result()->set_code((int)Bus::ResultCode::OK);
           break;
         case Bus::RunType::DOWNLOAD:
-          on_bus_download(request->req_infos());
-          response->mutable_result()->set_code((int)Bus::ResultCode::OK);
+          if(on_bus_download(request->req_infos()) == 0){
+            response->mutable_result()->set_code((int)Bus::ResultCode::OK);
+          }else{
+            response->mutable_result()->set_code((int)Bus::ResultCode::FAIL);
+          }
           break;
         case Bus::RunType::UPLOAD:
-          on_bus_upload();
-          response->mutable_result()->set_code((int)Bus::ResultCode::OK);
+          if(on_bus_upload(response->mutable_rsp_infos()) == 0){
+            response->mutable_result()->set_code((int)Bus::ResultCode::OK);
+          }else{
+            response->mutable_result()->set_code((int)Bus::ResultCode::FAIL);
+          }
           break;
         default:
           break;

@@ -36,6 +36,6 @@ message ProjectCmdRsp{
   string process_id = 4;
   string prj_name = 5;
   RunType cmd_type =6;
-  EditInfos req_infos = 7;
+  EditInfos rsp_infos = 7;
 
 }

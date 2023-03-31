@@ -43,12 +43,12 @@ void PLTarget::timerEvent(QTimerEvent *e) {
           for (j = 0; j < prg->fbs.size(); j++) {
             fb = &prg->fbs[j];
             p_fb = prj_fbfind(fb->idMod, fb->idPrg, fb->id);
-            //header
+            // header
             fb->flag = p_fb->h.flag;
             fb->cycle_time = p_fb->h.cycle_time;
             fb->begin_time = p_fb->h.begin_time;
             fb->expend_time = p_fb->h.expend_time;
-           
+
             // input
             for (k = 0; k < fb->input.size(); k++) {
               fb->input[k].value = *(p_fb->ins[k].v);
@@ -253,15 +253,16 @@ bool PLTarget::download() {
 }
 
 bool PLTarget::upload(Bus::EditInfos &edit) {
-  std::shared_ptr<Bus::ProjectCmdRsp> online_res =
+  std::shared_ptr<Bus::ProjectCmdRsp> upload_res =
       bus_upload_send(gNode, gclient_proj_cmd);
 
-  if (online_res == nullptr || online_res->has_result() == false ||
-      online_res->result().code() != Bus::ResultCode::OK) {
+  if (upload_res == nullptr || upload_res->has_result() == false ||
+      upload_res->result().code() != Bus::ResultCode::OK) {
     online(false, NULL);
     return false;
   }
   // edit 需要赋值
+  edit = upload_res->rsp_infos();
 
   return true;
 }

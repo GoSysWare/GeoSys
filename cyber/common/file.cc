@@ -62,7 +62,6 @@ bool SetProtoToASCIIFile(const google::protobuf::Message &message,
   }
   return SetProtoToASCIIFile(message, fd);
 }
-
 bool GetProtoFromASCIIFile(const std::string &file_name,
                            google::protobuf::Message *message) {
   using google::protobuf::TextFormat;
