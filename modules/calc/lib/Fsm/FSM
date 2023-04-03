@@ -8,40 +8,35 @@ static void run_FSM(void *p) {
   vam_t &to_singal = pb->outs[1].v;
   vam_t &action_singal = pb->outs[2].v;
 
-  if(from_singal->v().b() == false)
-  {
-    if(cur_state->v().i() == targe_state->v().i())
-    {
-      to_singal->mutable_v()->set_b(true);
+  if (cur_state->v().i() == targe_state->v().i()) {
+    to_singal->mutable_v()->set_b(true);
+  } else {
+    to_singal->mutable_v()->set_b(false);
+  }
+
+  if (from_singal->v().b() == false) {
+    if (cur_state->v().i() == targe_state->v().i()) {
       action_singal->mutable_v()->set_b(true);
-    }
-    else{
-      to_singal->mutable_v()->set_b(false);
+    } else {
       action_singal->mutable_v()->set_b(false);
     }
-  }
-  else{
-    if(condition->v().b() == false)
-    {
-      to_singal->mutable_v()->set_b(false);
-      action_singal->mutable_v()->set_b(false);     
-    }
-    else{
-      to_singal->mutable_v()->set_b(true);
+  } else {
+    if (condition->v().b() == false) {
+      action_singal->mutable_v()->set_b(false);
+    } else {
       action_singal->mutable_v()->set_b(true);
       cur_state->mutable_v()->set_i(targe_state->v().i());
-      
     }
   }
   return;
 }
 
-static fb_t fb_FSM = {{"Fsm","FSM", "",0,0,0,0,run_FSM},
-                        {{"EN",PIN_NO_LINK, T_BOOL, "", nullptr},
-                         {"COND", PIN_NO_LINK,T_BOOL, "", nullptr},
-                         {"FROM", PIN_NO_LINK,T_BOOL, "", nullptr},
-                         {"STATE", PIN_NO_LINK,T_INT32, "", nullptr},
-                         {"SET", PIN_NO_LINK,T_INT32, "", nullptr}},
-                        {{"STATUS", PIN_NO_LINK,T_INT32, "", nullptr},
-                         {"TO", PIN_NO_LINK,T_BOOL, "", nullptr},
-                         {"ACTION", PIN_NO_LINK,T_BOOL, "", nullptr}}};
+static fb_t fb_FSM = {{"Fsm", "FSM", "", 0, 0, 0, 0, run_FSM},
+                      {{"EN", PIN_NO_LINK, T_BOOL, "", nullptr},
+                       {"COND", PIN_NO_LINK, T_BOOL, "", nullptr},
+                       {"FROM", PIN_NO_LINK, T_BOOL, "", nullptr},
+                       {"STATE", PIN_NO_LINK, T_INT32, "", nullptr},
+                       {"SET", PIN_NO_LINK, T_INT32, "", nullptr}},
+                      {{"STATUS", PIN_NO_LINK, T_INT32, "", nullptr},
+                       {"TO", PIN_NO_LINK, T_BOOL, "", nullptr},
+                       {"ACTION", PIN_NO_LINK, T_BOOL, "", nullptr}}};

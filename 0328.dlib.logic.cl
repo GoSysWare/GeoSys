@@ -2,7 +2,7 @@ infos {
   edit_type: SET
   proj {
     proj_name: "rotbot-engine-project"
-    proj_uuid: "{c10ba88e-bea3-4b2a-8659-42455164407e}"
+    proj_uuid: "{80dd312a-7c4b-4264-bca3-04887be4880f}"
   }
 }
 infos {
@@ -564,5 +564,70 @@ infos {
   pos {
     x: 29
     y: 41
+  }
+}
+infos {
+  cmd_id: 31
+  element: EV
+  edit_type: ADD
+  ev {
+    ev_id: 18
+    ev_name: "IMG"
+    ev_type: 2
+    ev_desc: "Desc"
+    init_val {
+      v {
+        t: T_IMAGE
+        img: "0"
+      }
+      tm: 1680260370672544270
+    }
+  }
+}
+infos {
+  cmd_id: 32
+  element: EV
+  edit_type: SET
+  ev {
+    ev_id: 18
+    ev_name: "cam1"
+    ev_type: 2
+    ev_desc: "Desc"
+    init_val {
+      v {
+        t: T_IMAGE
+        img: "0"
+      }
+      tm: 1680260381368684012
+    }
+  }
+}
+infos {
+  cmd_id: 33
+  element: VO
+  edit_type: ADD
+  vo {
+    mod_id: 1
+    task_id: 2
+    fb_id: 4
+    pin_index: 1
+    ev_id: 18
+    vo_id: 19
+  }
+}
+infos {
+  cmd_id: 34
+  element: FB
+  edit_type: ADD
+  fb {
+    mod_id: 1
+    task_id: 2
+    fb_id: 20
+    flib_name: "Fsm"
+    fc_name: "FSM"
+  }
+  pos {
+    x: 83
+    y: 38
   }
 }

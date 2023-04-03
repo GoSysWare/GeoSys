@@ -1964,3 +1964,21 @@ infos {
     y: 161
   }
 }
+infos {
+  cmd_id: 117
+  element: PIN
+  edit_type: SET
+  pin {
+    mod_id: 11
+    task_id: 25
+    fb_id: 30
+    pin_index: 4
+    pin_val {
+      v {
+        t: T_UINT32
+        ui: 5
+      }
+      tm: 1680261537714398961
+    }
+  }
+}
