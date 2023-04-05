@@ -2,7 +2,7 @@ infos {
   edit_type: SET
   proj {
     proj_name: "rotbot-engine-project"
-    proj_uuid: "{790b6f91-e5de-4a18-afbc-417af2ae8008}"
+    proj_uuid: "{fd74a27d-e2d5-4d8a-ba20-625a54099819}"
   }
 }
 infos {
@@ -73,8 +73,8 @@ infos {
     fc_name: "UI2I"
   }
   pos {
-    x: 60
-    y: 4
+    x: 50
+    y: 16
   }
 }
 infos {
@@ -89,8 +89,8 @@ infos {
     fc_name: "FSM"
   }
   pos {
-    x: 37
-    y: 62
+    x: 30
+    y: 69
   }
 }
 infos {
@@ -185,8 +185,8 @@ infos {
     fc_name: "EQ_INT"
   }
   pos {
-    x: 79
-    y: 44
+    x: 95
+    y: 46
   }
 }
 infos {
@@ -217,8 +217,8 @@ infos {
     fc_name: "LE_INT"
   }
   pos {
-    x: 14
-    y: 36
+    x: 9
+    y: 46
   }
 }
 infos {
@@ -261,12 +261,12 @@ infos {
     mod_id: 3
     task_id: 4
     fb_id: 17
-    flib_name: "Fsm"
-    fc_name: "FSM"
+    flib_name: "Devices"
+    fc_name: "SIM_READ"
   }
   pos {
-    x: 110
-    y: 117
+    x: 14
+    y: 4
   }
 }
 infos {
@@ -277,12 +277,12 @@ infos {
     mod_id: 3
     task_id: 4
     fb_id: 18
-    flib_name: "Devices"
-    fc_name: "SIM_READ"
+    flib_name: "Converter"
+    fc_name: "D2UI"
   }
   pos {
-    x: 13
-    y: 8
+    x: 35
+    y: 1
   }
 }
 infos {
@@ -293,12 +293,12 @@ infos {
     mod_id: 3
     task_id: 4
     fb_id: 19
-    flib_name: "Converter"
-    fc_name: "D2UI"
+    flib_name: "System"
+    fc_name: "SYSSTATE"
   }
   pos {
-    x: 40
-    y: 14
+    x: 16
+    y: 105
   }
 }
 infos {
@@ -315,12 +315,12 @@ infos {
     target_pin_index: 2
   }
   pos {
-    x: 54
-    y: 69
+    x: 47
+    y: 76
   }
   pos {
     x: 60
-    y: 69
+    y: 76
   }
   pos {
     x: 60
@@ -367,15 +367,15 @@ infos {
     target_pin_index: 1
   }
   pos {
-    x: 54
-    y: 71
+    x: 47
+    y: 78
   }
   pos {
-    x: 57
-    y: 71
+    x: 55
+    y: 78
   }
   pos {
-    x: 57
+    x: 55
     y: 95
   }
   pos {
@@ -453,12 +453,12 @@ infos {
     target_pin_index: 1
   }
   pos {
-    x: 94
-    y: 51
+    x: 110
+    y: 53
   }
   pos {
     x: 99
-    y: 51
+    y: 53
   }
   pos {
     x: 99
@@ -483,20 +483,20 @@ infos {
     target_pin_index: 1
   }
   pos {
-    x: 74
-    y: 11
+    x: 64
+    y: 23
   }
   pos {
-    x: 77
-    y: 11
+    x: 80
+    y: 23
   }
   pos {
-    x: 77
-    y: 51
+    x: 80
+    y: 53
   }
   pos {
-    x: 79
-    y: 51
+    x: 95
+    y: 53
   }
 }
 infos {
@@ -543,15 +543,15 @@ infos {
     target_pin_index: 1
   }
   pos {
-    x: 74
-    y: 11
+    x: 64
+    y: 23
   }
   pos {
-    x: 93
-    y: 11
+    x: 115
+    y: 23
   }
   pos {
-    x: 93
+    x: 115
     y: 51
   }
   pos {
@@ -573,28 +573,28 @@ infos {
     target_pin_index: 1
   }
   pos {
-    x: 74
-    y: 11
+    x: 64
+    y: 23
   }
   pos {
-    x: 73
-    y: 11
+    x: 80
+    y: 23
   }
   pos {
-    x: 73
-    y: 30
+    x: 80
+    y: 37
   }
   pos {
-    x: 8
-    y: 30
+    x: 1
+    y: 37
   }
   pos {
-    x: 8
-    y: 43
+    x: 1
+    y: 53
   }
   pos {
-    x: 14
-    y: 43
+    x: 9
+    y: 53
   }
 }
 infos {
@@ -611,20 +611,20 @@ infos {
     target_pin_index: 1
   }
   pos {
-    x: 29
-    y: 43
+    x: 24
+    y: 53
   }
   pos {
-    x: 35
-    y: 43
+    x: 25
+    y: 53
   }
   pos {
-    x: 35
-    y: 69
+    x: 25
+    y: 76
   }
   pos {
-    x: 37
-    y: 69
+    x: 30
+    y: 76
   }
 }
 infos {
@@ -671,12 +671,20 @@ infos {
     target_pin_index: 1
   }
   pos {
-    x: 74
-    y: 11
+    x: 64
+    y: 23
+  }
+  pos {
+    x: 80
+    y: 23
+  }
+  pos {
+    x: 80
+    y: 7
   }
   pos {
     x: 129
-    y: 11
+    y: 7
   }
   pos {
     x: 129
@@ -726,25 +734,25 @@ infos {
     task_id: 4
     lk_id: 34
     src_fb_id: 18
-    src_pin_index: 2
-    target_fb_id: 19
+    src_pin_index: 1
+    target_fb_id: 5
     target_pin_index: 1
   }
   pos {
-    x: 29
-    y: 17
+    x: 49
+    y: 8
   }
   pos {
-    x: 34
-    y: 17
+    x: 46
+    y: 8
   }
   pos {
-    x: 34
-    y: 21
+    x: 46
+    y: 23
   }
   pos {
-    x: 40
-    y: 21
+    x: 50
+    y: 23
   }
 }
 infos {
@@ -755,26 +763,26 @@ infos {
     mod_id: 3
     task_id: 4
     lk_id: 35
-    src_fb_id: 19
-    src_pin_index: 1
-    target_fb_id: 5
+    src_fb_id: 17
+    src_pin_index: 9
+    target_fb_id: 18
     target_pin_index: 1
   }
   pos {
-    x: 54
-    y: 21
+    x: 30
+    y: 27
   }
   pos {
-    x: 57
-    y: 21
+    x: 36
+    y: 27
   }
   pos {
-    x: 57
-    y: 11
+    x: 36
+    y: 8
   }
   pos {
-    x: 60
-    y: 11
+    x: 35
+    y: 8
   }
 }
 infos {
@@ -831,19 +839,6 @@ infos {
 }
 infos {
   cmd_id: 40
-  element: VI
-  edit_type: ADD
-  vi {
-    mod_id: 3
-    task_id: 4
-    fb_id: 17
-    pin_index: 3
-    ev_id: 2
-    vi_id: 40
-  }
-}
-infos {
-  cmd_id: 41
   element: VO
   edit_type: ADD
   vo {
@@ -852,11 +847,11 @@ infos {
     fb_id: 5
     pin_index: 1
     ev_id: 1
-    vo_id: 41
+    vo_id: 40
   }
 }
 infos {
-  cmd_id: 42
+  cmd_id: 41
   element: PIN
   edit_type: SET
   pin {
@@ -874,7 +869,7 @@ infos {
   }
 }
 infos {
-  cmd_id: 43
+  cmd_id: 42
   element: PIN
   edit_type: SET
   pin {
@@ -892,7 +887,7 @@ infos {
   }
 }
 infos {
-  cmd_id: 44
+  cmd_id: 43
   element: PIN
   edit_type: SET
   pin {
@@ -910,7 +905,7 @@ infos {
   }
 }
 infos {
-  cmd_id: 45
+  cmd_id: 44
   element: PIN
   edit_type: SET
   pin {
@@ -928,7 +923,7 @@ infos {
   }
 }
 infos {
-  cmd_id: 46
+  cmd_id: 45
   element: PIN
   edit_type: SET
   pin {
@@ -946,7 +941,7 @@ infos {
   }
 }
 infos {
-  cmd_id: 47
+  cmd_id: 46
   element: PIN
   edit_type: SET
   pin {
@@ -964,7 +959,7 @@ infos {
   }
 }
 infos {
-  cmd_id: 48
+  cmd_id: 47
   element: PIN
   edit_type: SET
   pin {
@@ -982,7 +977,7 @@ infos {
   }
 }
 infos {
-  cmd_id: 49
+  cmd_id: 48
   element: PIN
   edit_type: SET
   pin {
@@ -1000,7 +995,7 @@ infos {
   }
 }
 infos {
-  cmd_id: 50
+  cmd_id: 49
   element: PIN
   edit_type: SET
   pin {
@@ -1018,7 +1013,7 @@ infos {
   }
 }
 infos {
-  cmd_id: 51
+  cmd_id: 50
   element: PIN
   edit_type: SET
   pin {
@@ -1036,7 +1031,7 @@ infos {
   }
 }
 infos {
-  cmd_id: 52
+  cmd_id: 51
   element: PIN
   edit_type: SET
   pin {
@@ -1054,7 +1049,7 @@ infos {
   }
 }
 infos {
-  cmd_id: 53
+  cmd_id: 52
   element: PIN
   edit_type: SET
   pin {
@@ -1072,7 +1067,7 @@ infos {
   }
 }
 infos {
-  cmd_id: 54
+  cmd_id: 53
   element: PIN
   edit_type: SET
   pin {
@@ -1090,7 +1085,7 @@ infos {
   }
 }
 infos {
-  cmd_id: 55
+  cmd_id: 54
   element: PIN
   edit_type: SET
   pin {
@@ -1108,7 +1103,7 @@ infos {
   }
 }
 infos {
-  cmd_id: 56
+  cmd_id: 55
   element: PIN
   edit_type: SET
   pin {
@@ -1126,7 +1121,7 @@ infos {
   }
 }
 infos {
-  cmd_id: 57
+  cmd_id: 56
   element: PIN
   edit_type: SET
   pin {
@@ -1144,7 +1139,7 @@ infos {
   }
 }
 infos {
-  cmd_id: 58
+  cmd_id: 57
   element: PIN
   edit_type: SET
   pin {
@@ -1162,7 +1157,7 @@ infos {
   }
 }
 infos {
-  cmd_id: 59
+  cmd_id: 58
   element: PIN
   edit_type: SET
   pin {
@@ -1180,7 +1175,7 @@ infos {
   }
 }
 infos {
-  cmd_id: 60
+  cmd_id: 59
   element: PIN
   edit_type: SET
   pin {
@@ -1198,7 +1193,543 @@ infos {
   }
 }
 infos {
+  cmd_id: 60
+  element: PIN
+  edit_type: SET
+  pin {
+    mod_id: 3
+    task_id: 4
+    fb_id: 17
+    pin_index: 1
+    pin_val {
+      v {
+        t: T_STRING
+        str: "SIM"
+      }
+      tm: 1680514505435611224
+    }
+  }
+}
+infos {
   cmd_id: 61
+  element: PIN
+  edit_type: SET
+  pin {
+    mod_id: 3
+    task_id: 4
+    fb_id: 17
+    pin_index: 10
+    pin_val {
+      v {
+        t: T_STRING
+        str: "$SECOND"
+      }
+      tm: 1680576129920733721
+    }
+  }
+}
+infos {
+  cmd_id: 62
+  element: EV
+  edit_type: SET
+  ev {
+    ev_id: 2
+    ev_name: "FSM_State"
+    ev_type: 2
+    ev_desc: "Desc"
+    init_val {
+      v {
+        t: T_INT32
+        i: 30
+      }
+      tm: 1680576645276970404
+    }
+  }
+}
+infos {
+  cmd_id: 63
+  element: EV
+  edit_type: SET
+  ev {
+    ev_id: 2
+    ev_name: "FSM_State"
+    ev_type: 2
+    ev_desc: "Desc"
+    init_val {
+      v {
+        t: T_INT32
+        i: 0
+      }
+      tm: 1680576713837643045
+    }
+  }
+}
+infos {
+  cmd_id: 64
+  element: FB
+  edit_type: MV
+  fb {
+    mod_id: 3
+    task_id: 4
+    fb_id: 19
+  }
+  pos {
+    x: 20
+    y: 113
+  }
+}
+infos {
+  cmd_id: 65
+  element: FB
+  edit_type: ADD
+  fb {
+    mod_id: 3
+    task_id: 4
+    fb_id: 41
+    flib_name: "Task"
+    fc_name: "TASK"
+  }
+  pos {
+    x: 95
+    y: 111
+  }
+}
+infos {
+  cmd_id: 66
+  element: LK
+  edit_type: ADD
+  lk {
+    mod_id: 3
+    task_id: 4
+    lk_id: 42
+    src_fb_id: 9
+    src_pin_index: 1
+    target_fb_id: 41
+    target_pin_index: 1
+  }
+  pos {
+    x: 85
+    y: 95
+  }
+  pos {
+    x: 90
+    y: 95
+  }
+  pos {
+    x: 90
+    y: 118
+  }
+  pos {
+    x: 95
+    y: 118
+  }
+}
+infos {
+  cmd_id: 67
+  element: PIN
+  edit_type: SET
+  pin {
+    mod_id: 3
+    task_id: 4
+    fb_id: 41
+    pin_index: 2
+    pin_val {
+      v {
+        t: T_STRING
+        str: "P1"
+      }
+      tm: 1680588560306520240
+    }
+  }
+}
+infos {
+  cmd_id: 68
+  element: PIN
+  edit_type: SET
+  pin {
+    mod_id: 3
+    task_id: 4
+    fb_id: 41
+    pin_index: 2
+    pin_val {
+      v {
+        t: T_STRING
+        str: "P1"
+      }
+      tm: 1680589069912191054
+    }
+  }
+}
+infos {
+  cmd_id: 69
+  element: PIN
+  edit_type: SET
+  pin {
+    mod_id: 3
+    task_id: 4
+    fb_id: 41
+    pin_index: 3
+    pin_val {
+      v {
+        t: T_STRING
+        str: "T1"
+      }
+      tm: 1680589077286769385
+    }
+  }
+}
+infos {
+  cmd_id: 70
+  element: PIN
+  edit_type: SET
+  pin {
+    mod_id: 3
+    task_id: 4
+    fb_id: 41
+    pin_index: 5
+    pin_val {
+      v {
+        t: T_INT32
+        i: 1
+      }
+      tm: 1680589084310666416
+    }
+  }
+}
+infos {
+  cmd_id: 71
+  element: MOD
+  edit_type: ADD
+  mod {
+    mod_id: 43
+    mod_name: "P1"
+  }
+}
+infos {
+  cmd_id: 72
+  element: TASK
+  edit_type: ADD
+  task {
+    mod_id: 43
+    task_id: 44
+    task_name: "T1"
+    interval: 1000
+  }
+}
+infos {
+  cmd_id: 73
+  element: FB
+  edit_type: ADD
+  fb {
+    mod_id: 43
+    task_id: 44
+    fb_id: 45
+    flib_name: "Counter"
+    fc_name: "CTUD_INT"
+  }
+  pos {
+    x: 59
+    y: 36
+  }
+}
+infos {
+  cmd_id: 74
+  element: PIN
+  edit_type: SET
+  pin {
+    mod_id: 43
+    task_id: 44
+    fb_id: 45
+    pin_index: 1
+    pin_val {
+      v {
+        t: T_BOOL
+        b: true
+      }
+      tm: 1680591547991959940
+    }
+  }
+}
+infos {
+  cmd_id: 75
+  element: PIN
+  edit_type: SET
+  pin {
+    mod_id: 43
+    task_id: 44
+    fb_id: 45
+    pin_index: 5
+    pin_val {
+      v {
+        t: T_INT32
+        i: 1000
+      }
+      tm: 1680591553383544350
+    }
+  }
+}
+infos {
+  cmd_id: 76
+  element: FB
+  edit_type: ADD
+  fb {
+    mod_id: 43
+    task_id: 44
+    fb_id: 46
+    flib_name: "System"
+    fc_name: "SYSSTATE"
+  }
+  pos {
+    x: 24
+    y: 17
+  }
+}
+infos {
+  cmd_id: 77
+  element: TASK
+  edit_type: ADD
+  task {
+    task_type: ASYNC
+    mod_id: 43
+    task_id: 47
+    task_name: "T2"
+    interval: 1000
+  }
+}
+infos {
+  cmd_id: 78
+  element: FB
+  edit_type: ADD
+  fb {
+    mod_id: 43
+    task_id: 47
+    fb_id: 48
+    flib_name: "Counter"
+    fc_name: "CTUD_INT"
+  }
+  pos {
+    x: 32
+    y: 36
+  }
+}
+infos {
+  cmd_id: 79
+  element: PIN
+  edit_type: SET
+  pin {
+    mod_id: 43
+    task_id: 47
+    fb_id: 48
+    pin_index: 1
+    pin_val {
+      v {
+        t: T_BOOL
+        b: true
+      }
+      tm: 1680593241140102039
+    }
+  }
+}
+infos {
+  cmd_id: 80
+  element: PIN
+  edit_type: SET
+  pin {
+    mod_id: 43
+    task_id: 47
+    fb_id: 48
+    pin_index: 5
+    pin_val {
+      v {
+        t: T_INT32
+        i: 1000
+      }
+      tm: 1680593256428231139
+    }
+  }
+}
+infos {
+  cmd_id: 81
+  element: FB
+  edit_type: ADD
+  fb {
+    mod_id: 43
+    task_id: 47
+    fb_id: 49
+    flib_name: "System"
+    fc_name: "SYSSTATE"
+  }
+  pos {
+    x: 27
+    y: 15
+  }
+}
+infos {
+  cmd_id: 83
+  element: FB
+  edit_type: MV
+  fb {
+    mod_id: 43
+    task_id: 47
+    fb_id: 49
+  }
+  pos {
+    x: 21
+    y: 18
+  }
+}
+infos {
+  cmd_id: 84
+  element: FB
+  edit_type: MV
+  fb {
+    mod_id: 43
+    task_id: 47
+    fb_id: 48
+  }
+  pos {
+    x: 53
+    y: 44
+  }
+}
+infos {
+  cmd_id: 85
+  element: PIN
+  edit_type: SET
+  pin {
+    mod_id: 3
+    task_id: 4
+    fb_id: 41
+    pin_index: 3
+    pin_val {
+      v {
+        t: T_STRING
+        str: "T2"
+      }
+      tm: 1680593359915593727
+    }
+  }
+}
+infos {
+  cmd_id: 86
+  element: FB
+  edit_type: ADD
+  fb {
+    mod_id: 43
+    task_id: 47
+    fb_id: 50
+    flib_name: "Arithmetic"
+    fc_name: "ADD_INT"
+  }
+  pos {
+    x: 37
+    y: 79
+  }
+}
+infos {
+  cmd_id: 87
+  element: EV
+  edit_type: ADD
+  ev {
+    ev_id: 51
+    ev_name: "I1"
+    ev_type: 2
+    ev_desc: "Desc"
+    init_val {
+      v {
+        t: T_INT32
+        i: 0
+      }
+      tm: 1680593903487471138
+    }
+  }
+}
+infos {
+  cmd_id: 88
+  element: VI
+  edit_type: ADD
+  vi {
+    mod_id: 43
+    task_id: 47
+    fb_id: 50
+    pin_index: 1
+    ev_id: 51
+    vi_id: 52
+  }
+}
+infos {
+  cmd_id: 89
+  element: VO
+  edit_type: ADD
+  vo {
+    mod_id: 43
+    task_id: 47
+    fb_id: 50
+    pin_index: 1
+    ev_id: 51
+    vo_id: 53
+  }
+}
+infos {
+  cmd_id: 90
+  element: PIN
+  edit_type: SET
+  pin {
+    mod_id: 43
+    task_id: 47
+    fb_id: 50
+    pin_index: 2
+    pin_val {
+      v {
+        t: T_INT32
+        i: 1
+      }
+      tm: 1680593914439416630
+    }
+  }
+}
+infos {
+  cmd_id: 103
+  element: FB
+  edit_type: MV
+  fb {
+    mod_id: 3
+    task_id: 4
+    fb_id: 18
+  }
+  pos {
+    x: 43
+    y: 17
+  }
+}
+infos {
+  cmd_id: 105
+  element: LK
+  edit_type: MV
+  lk {
+    mod_id: 3
+    task_id: 4
+    lk_id: 35
+  }
+  pos {
+    x: 30
+    y: 27
+  }
+  pos {
+    x: 36
+    y: 27
+  }
+  pos {
+    x: 36
+    y: 24
+  }
+  pos {
+    x: 43
+    y: 24
+  }
+}
+infos {
+  cmd_id: 107
   element: FB
   edit_type: MV
   fb {
@@ -1207,12 +1738,12 @@ infos {
     fb_id: 5
   }
   pos {
-    x: 71
+    x: 64
     y: 2
   }
 }
 infos {
-  cmd_id: 62
+  cmd_id: 108
   element: LK
   edit_type: MV
   lk {
@@ -1221,24 +1752,24 @@ infos {
     lk_id: 26
   }
   pos {
-    x: 85
+    x: 78
     y: 9
   }
   pos {
-    x: 77
+    x: 80
     y: 9
   }
   pos {
-    x: 77
-    y: 51
+    x: 80
+    y: 53
   }
   pos {
-    x: 79
-    y: 51
+    x: 95
+    y: 53
   }
 }
 infos {
-  cmd_id: 63
+  cmd_id: 109
   element: LK
   edit_type: MV
   lk {
@@ -1247,15 +1778,15 @@ infos {
     lk_id: 28
   }
   pos {
-    x: 85
+    x: 78
     y: 9
   }
   pos {
-    x: 93
+    x: 115
     y: 9
   }
   pos {
-    x: 93
+    x: 115
     y: 51
   }
   pos {
@@ -1264,41 +1795,7 @@ infos {
   }
 }
 infos {
-  cmd_id: 64
-  element: LK
-  edit_type: MV
-  lk {
-    mod_id: 3
-    task_id: 4
-    lk_id: 29
-  }
-  pos {
-    x: 85
-    y: 9
-  }
-  pos {
-    x: 73
-    y: 9
-  }
-  pos {
-    x: 73
-    y: 30
-  }
-  pos {
-    x: 8
-    y: 30
-  }
-  pos {
-    x: 8
-    y: 43
-  }
-  pos {
-    x: 14
-    y: 43
-  }
-}
-infos {
-  cmd_id: 65
+  cmd_id: 111
   element: LK
   edit_type: MV
   lk {
@@ -1307,12 +1804,20 @@ infos {
     lk_id: 32
   }
   pos {
-    x: 85
+    x: 78
     y: 9
   }
   pos {
-    x: 129
+    x: 80
     y: 9
+  }
+  pos {
+    x: 80
+    y: 7
+  }
+  pos {
+    x: 129
+    y: 7
   }
   pos {
     x: 129
@@ -1324,21 +1829,7 @@ infos {
   }
 }
 infos {
-  cmd_id: 67
-  element: FB
-  edit_type: MV
-  fb {
-    mod_id: 3
-    task_id: 4
-    fb_id: 19
-  }
-  pos {
-    x: 43
-    y: 7
-  }
-}
-infos {
-  cmd_id: 68
+  cmd_id: 112
   element: LK
   edit_type: MV
   lk {
@@ -1347,59 +1838,89 @@ infos {
     lk_id: 34
   }
   pos {
-    x: 29
-    y: 17
+    x: 57
+    y: 24
   }
   pos {
-    x: 34
-    y: 17
+    x: 62
+    y: 24
   }
   pos {
-    x: 34
-    y: 14
+    x: 62
+    y: 9
   }
   pos {
-    x: 43
-    y: 14
+    x: 64
+    y: 9
   }
 }
 infos {
-  cmd_id: 69
+  cmd_id: 117
+  element: FB
+  edit_type: MV
+  fb {
+    mod_id: 3
+    task_id: 4
+    fb_id: 14
+  }
+  pos {
+    x: 12
+    y: 45
+  }
+}
+infos {
+  cmd_id: 118
   element: LK
   edit_type: MV
   lk {
     mod_id: 3
     task_id: 4
-    lk_id: 35
+    lk_id: 29
   }
   pos {
-    x: 57
-    y: 14
-  }
-  pos {
-    x: 57
+    x: 78
     y: 9
   }
   pos {
-    x: 71
+    x: 80
     y: 9
+  }
+  pos {
+    x: 80
+    y: 37
+  }
+  pos {
+    x: 1
+    y: 37
+  }
+  pos {
+    x: 1
+    y: 52
+  }
+  pos {
+    x: 12
+    y: 52
   }
 }
 infos {
-  cmd_id: 70
-  element: PIN
-  edit_type: SET
-  pin {
+  cmd_id: 120
+  element: LK
+  edit_type: MV
+  lk {
     mod_id: 3
     task_id: 4
-    fb_id: 18
-    pin_index: 1
-    pin_val {
-      v {
-        t: T_STRING
-        str: "SIM"
-      }
-      tm: 1680514505435611224
-    }
+    lk_id: 30
+  }
+  pos {
+    x: 27
+    y: 52
+  }
+  pos {
+    x: 27
+    y: 76
+  }
+  pos {
+    x: 30
+    y: 76
   }
 }
