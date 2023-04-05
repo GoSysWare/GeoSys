@@ -73,11 +73,6 @@ typedef struct MFsmNode : MNode {
   apollo::cyber::Timer timer;
 } fsm_node_t;
 
-typedef struct MTimerNode : MNode {
-  std::string client;
-  int interval;
-  apollo::cyber::Timer timer;
-} timer_node_t;
 
 typedef struct Module {
   mnode_t mn_head;
@@ -86,14 +81,12 @@ typedef struct Module {
   period_node_t mn_period_head;
   action_node_t mn_action_head;
   fsm_node_t mn_fsm_head;
-  timer_node_t mn_timer_head;
   mnode_t *p_mn_select;
   task_node_t *p_mn_task;
   service_node_t *p_mn_service;
   period_node_t *p_mn_period;
   action_node_t *p_mn_action;
   fsm_node_t *p_mn_fsm;
-  timer_node_t *p_mn_timer;
 } mod_t;
 
 void *mod_main_loop(void *sth);

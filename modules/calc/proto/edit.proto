@@ -36,9 +36,8 @@ enum TaskType {
   PERIODIC = 0; // 周期任务
   ASYNC = 1;    // 异步任务
   SERVICE = 2;  // 服务
-  TIMER = 3;    // 定时器
-  FSM = 4;      // 状态机
-  ACTION = 5;   // action
+  FSM = 3;      // 状态机
+  ACTION = 4;   // action
 }
 
 

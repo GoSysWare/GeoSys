@@ -64,8 +64,9 @@ int prj_fbdump(int idmod, int idprg, int idfb);
 fb_t *prj_fbfind(int idmod, int idprg, int idfb);
 prog_t *prj_prgfind(int idmod, int idprg);
 prog_t *prj_prgfind(int idmod, std::string prog_name);
+prog_t *prj_prgfind(std::string mod_name,std::string prog_name);
 mod_t *prj_modfind(int idmod);
-mod_t *mod_modfind(std::string mod_name);
+mod_t *prj_modfind(std::string mod_name);
 
 
 int prj_to_snapshot(Bus::ProjSnapshotRsp * snapshot);

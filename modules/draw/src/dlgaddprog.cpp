@@ -11,6 +11,14 @@ DlgAddProg::DlgAddProg(QWidget *parent, Qt::WindowFlags f)
     lblProgNmae = new QLabel(tr("Program name:"));
     txtProgName = new QLineEdit;
 
+    lblProgType = new QLabel(tr("Program Type:"));
+    listProgType = new QListWidget;
+    // listProgType->addItem(QString::fromStdString(v_type_Name(Bus::TaskType::PERIODIC)));
+    // listProgType->addItem(QString::fromStdString(v_type_Name(Bus::TaskType::ASYNC)));
+
+    listProgType->addItem("PERIODIC");
+    listProgType->addItem("ASYNC");
+
     lblInterval = new QLabel(tr("Interval"));
     txtInterval = new QLineEdit;
 
@@ -22,6 +30,8 @@ DlgAddProg::DlgAddProg(QWidget *parent, Qt::WindowFlags f)
     layout = new QVBoxLayout;
     layout->addWidget(lblProgNmae);
     layout->addWidget(txtProgName);
+    layout->addWidget(lblProgType);
+    layout->addWidget(listProgType);
     layout->addWidget(lblInterval);
     layout->addWidget(txtInterval);
     layout->addWidget(buttonBox);
@@ -42,6 +52,8 @@ DlgAddProg::~DlgAddProg()
     delete txtInterval;
     delete buttonBox;
     delete layout;
+    delete lblProgType;
+    delete listProgType;
 }
 
 void DlgAddProg::ok(bool check)
@@ -56,6 +68,14 @@ void DlgAddProg::ok(bool check)
         interval = 1000;
     }else{
         interval = txtInterval->text().toInt();
+    }
+    switch(listProgType->currentIndex().row()){
+    case 0:
+        prgType = 0;
+        break;
+    case 1:
+        prgType = 1;
+        break;
     }
     if(prgName.indexOf(";") != -1){
         QMessageBox::warning(this, "Warining", tr("Program name can't contains ';'"));

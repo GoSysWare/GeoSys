@@ -1,10 +1,51 @@
 
+#include <ctime>
+#include <chrono>
+#include <iomanip>
+#include <limits>
+#include <sstream>
+
+static uint64_t MonoTime() {
+  auto now = std::chrono::system_clock::now();
+  auto nano_time_point =
+      std::chrono::time_point_cast<std::chrono::nanoseconds>(now);
+  auto epoch = nano_time_point.time_since_epoch();
+  uint64_t now_nano =
+      std::chrono::duration_cast<std::chrono::nanoseconds>(epoch).count();
+  return now_nano;
+}
+
+
+static std::string ToString(uint64_t nanoseconds)  {
+  auto nano = std::chrono::nanoseconds(nanoseconds);
+  std::chrono::system_clock::time_point tp(nano);
+  auto time = std::chrono::system_clock::to_time_t(tp);
+  struct tm stm;
+  auto ret = localtime_r(&time, &stm);
+  if (ret == nullptr) {
+    return std::to_string(static_cast<double>(nanoseconds) / 1000000000.0);
+  }
+
+  std::stringstream ss;
+#if __GNUC__ >= 5
+  ss << std::put_time(ret, "%F %T");
+  ss << "." << std::setw(9) << std::setfill('0') << nanoseconds % 1000000000UL;
+#else
+  char date_time[128];
+  std::strftime(date_time, sizeof(date_time), "%F %T", ret);
+  ss << std::string(date_time) << "." << std::setw(9) << std::setfill('0')
+     << nanoseconds % 1000000000UL;
+#endif
+  return ss.str();
+}
+
 static void run_SYSSTATE(void *p) {
 
   fb_t *pb = (fb_t *)p;
   vam_t &cycle = pb->outs[1].v;
   vam_t &peroid = pb->outs[2].v;
   vam_t &thread_id = pb->outs[3].v;
+  vam_t &datetime = pb->outs[4].v;
 
   uint64_t dt = pb->h.cycle_time / 1000000;
 
@@ -17,6 +58,9 @@ static void run_SYSSTATE(void *p) {
   uint32_t id;
   ss >>id;
   thread_id->mutable_v()->set_ui(*(uint32_t*)&id);
+
+  datetime->mutable_v()->set_str(ToString(MonoTime()));
+
 }
 
 static fb_t fb_SYSSTATE = {{"System", "SYSSTATE", "", 0, 0, 0, 0, run_SYSSTATE},
@@ -24,4 +68,5 @@ static fb_t fb_SYSSTATE = {{"System", "SYSSTATE", "", 0, 0, 0, 0, run_SYSSTATE},
                            {{"STATUS", PIN_NO_LINK, T_INT32, "", nullptr},
                             {"CYCLE", PIN_NO_LINK, T_UINT32, "", nullptr},
                             {"TIME", PIN_NO_LINK, T_TIME, "", nullptr},
-                            {"THRAD", PIN_NO_LINK, T_UINT32, "", nullptr}}};
+                            {"THRAD", PIN_NO_LINK, T_UINT32, "", nullptr},
+                            {"DATETIME", PIN_NO_LINK, T_STRING, "", nullptr}}};

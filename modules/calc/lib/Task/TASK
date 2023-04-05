@@ -1,27 +1,79 @@
+static uint64_t MonoTime() {
+  auto now = std::chrono::system_clock::now();
+  auto nano_time_point =
+      std::chrono::time_point_cast<std::chrono::nanoseconds>(now);
+  auto epoch = nano_time_point.time_since_epoch();
+  uint64_t now_nano =
+      std::chrono::duration_cast<std::chrono::nanoseconds>(epoch).count();
+  return now_nano;
+}
 static void run_TASK(void *p) {
 
   fb_t *pb = (fb_t *)p;
-  vam_t fire = pb->ins[1].v;
-  vam_t task_name = pb->ins[2].v;
-  vam_t timeout = pb->ins[3].v;
-  vam_t param_req = pb->ins[4].v;
-  vam_t &next_task = pb->outs[1].v;
-  vam_t &req_time = pb->outs[2].v;
-  vam_t &param_rsp = pb->outs[3].v;
-  auto client = apollo::cyber::GlobalNode()
-                    ->CreateAsyncTaskClient<TaskReqParam, TaskRspParam>(
-                        task_name->v().str());
-
-  std::shared_ptr<TaskReqParam> request = std::make_shared<TaskReqParam>();
-  request->mutable_param()->CopyFrom(*param_req);
-  request->set_client(pb->h.fbname);
-
-  auto response =
-      client->SendRequest(request, std::chrono::seconds(timeout->v().tm()));
-  if (response ==  nullptr)
+  vam_t &enable = pb->ins[0].v;
+  vam_t &status = pb->outs[0].v;
+  if (enable->v().b() == false)
     return;
 
-  param_rsp->CopyFrom(response->param());
+  vam_t fire = pb->ins[1].v;
+  vam_t mod_name = pb->ins[2].v;
+  vam_t task_name = pb->ins[3].v;
+  vam_t timeout = pb->ins[3].v;
+  vam_t is_asyc = pb->ins[4].v;
+  vam_t &next_task = pb->outs[1].v;
+  vam_t &req_time = pb->outs[2].v;
+  vam_t &rsp_time = pb->outs[3].v;
+  if (fire->v().b()) {
+    prog_t *prg = prj_prgfind(mod_name->v().str(), task_name->v().str());
+    if (!prg) {
+      status->mutable_v()->set_i(1);
+      return;
+    }
+    // asyc
+    if (is_asyc->v().b() == true) {
+      //
+      auto client = apollo::cyber::GlobalNode()
+                        ->CreateAsyncTaskClient<TaskReqParam, TaskRspParam>(
+                            mod_name->v().str() + "." + task_name->v().str());
+      if (client == nullptr) {
+        status->mutable_v()->set_i(2);
+        return;
+      }
+
+      std::shared_ptr<TaskReqParam> request = std::make_shared<TaskReqParam>();
+      request->set_client(pb->h.fbname);
+
+      req_time->mutable_v()->set_tm(MonoTime());
+
+      auto response =
+          client->SendRequest(request, std::chrono::seconds(timeout->v().tm()));
+      if (response == nullptr) {
+        status->mutable_v()->set_i(3);
+        next_task->mutable_v()->set_b(false);
+        return;
+      }
+      rsp_time->mutable_v()->set_tm(response->timestamp());
+      next_task->mutable_v()->set_b(true);
+
+    } else { // sync
+      prog_t *prg = prj_prgfind(mod_name->v().str(), task_name->v().str());
+      if (!prg) {
+        status->mutable_v()->set_i(1);
+        next_task->mutable_v()->set_b(false);
+        return;
+      }
+      req_time->mutable_v()->set_tm(MonoTime());
+      proginfo_t info;
+      info.cycle_time = pb->h.cycle_time;
+      prg_exec(prg, &info);
+      rsp_time->mutable_v()->set_tm(MonoTime());
+      next_task->mutable_v()->set_b(true);
+    }
+
+  } else {
+    status->mutable_v()->set_i(0);
+    next_task->mutable_v()->set_b(false);
+  }
 
   return;
 }
@@ -29,13 +81,11 @@ static void run_TASK(void *p) {
 static fb_t fb_TASK = {{"Task", "TASK", "", 0, 0, 0, 0, run_TASK},
                        {{"EN", PIN_NO_LINK, T_BOOL, "", nullptr},
                         {"FIRE", PIN_NO_LINK, T_BOOL, "", nullptr},
-                        {"NAME", PIN_NO_LINK, T_STRING, "", nullptr},
+                        {"MOD_NAME", PIN_NO_LINK, T_STRING, "", nullptr},
+                        {"TASK_NAME", PIN_NO_LINK, T_STRING, "", nullptr},
                         {"TIMEOUT", PIN_NO_LINK, T_TIME, "", nullptr},
-                        {"REQ", PIN_NO_LINK, T_INT32, "", nullptr}},
+                        {"IS_ASYC", PIN_NO_LINK, T_INT32, "", nullptr}},
                        {{"STATUS", PIN_NO_LINK, T_INT32, "", nullptr},
                         {"NEXT", PIN_NO_LINK, T_BOOL, "", nullptr},
                         {"REQ_TIME", PIN_NO_LINK, T_TIME, "", nullptr},
-                        {"RSP", PIN_NO_LINK, T_INT32, "", nullptr},
-                        {"RSP_TIME", PIN_NO_LINK, T_TIME, "", nullptr}
-
-                       }};
+                        {"RSP_TIME", PIN_NO_LINK, T_TIME, "", nullptr}}};

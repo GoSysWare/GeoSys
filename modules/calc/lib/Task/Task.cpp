@@ -1,5 +1,6 @@
 #include <stddef.h>
 #include <chrono>
+#include "modules/calc/include/k_project.h"
 #include "modules/calc/include/k_functionblock.h"
 #include "modules/calc/include/k_module.h"
 #include "modules/calc/proto/cmd.pb.h"

@@ -7,6 +7,7 @@
 #include <QLabel>
 #include <QLineEdit>
 #include <QDialogButtonBox>
+#include <QListWidget>
 
 class DlgAddProg : public QDialog
 {
@@ -29,6 +30,9 @@ private:
     QLineEdit * txtProgName;
     QLabel *lblInterval;
     QLineEdit *txtInterval;
+
+    QLabel *lblProgType;
+    QListWidget* listProgType;
     QDialogButtonBox *buttonBox;
     QVBoxLayout *layout;
 };

@@ -317,9 +317,15 @@ prog_t *prj_prgfind(int idmod, int idprg) {
   }
   return mod_prgfind(p_pn_select->p_mod, idprg);
 }
+prog_t *prj_prgfind(int idmod, std::string prog_name) {
+  if (prj_modselect(idmod) != 0) {
+    return 0;
+  }
+  return mod_prgfind(p_pn_select->p_mod, prog_name);
+}
 
-prog_t *prj_prgfind(std::string prog_name) {
-  if (prj_modselect(prog_name) != 0) {
+prog_t *prj_prgfind(std::string mod_name,std::string prog_name) {
+  if (prj_modselect(mod_name) != 0) {
     return 0;
   }
   return mod_prgfind(p_pn_select->p_mod, prog_name);

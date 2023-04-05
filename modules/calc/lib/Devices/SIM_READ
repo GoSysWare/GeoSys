@@ -9,18 +9,42 @@ static void run_SIM_READ(void *p) {
   vam_t &out2 = pb->outs[2].v;
   vam_t &out3 = pb->outs[3].v;
   vam_t &out4 = pb->outs[4].v;
+  vam_t &out5 = pb->outs[5].v;
+  vam_t &out6 = pb->outs[6].v;
+  vam_t &out7 = pb->outs[7].v;
+  vam_t &out8 = pb->outs[8].v;
+  vam_t &out9 = pb->outs[9].v;
 
-  std::string pin_nmae_1 = pb->outs[1].pinname;
-  std::string pin_nmae_2 = pb->outs[2].pinname;
-  std::string pin_nmae_3 = pb->outs[3].pinname;
-  std::string pin_nmae_4 = pb->outs[4].pinname;
+  vam_t in1 = pb->ins[2].v;
+  vam_t in2 = pb->ins[3].v;
+  vam_t in3 = pb->ins[4].v;
+  vam_t in4 = pb->ins[5].v;
+  vam_t in5 = pb->ins[6].v;
+  vam_t in6 = pb->ins[7].v;
+  vam_t in7 = pb->ins[8].v;
+  vam_t in8 = pb->ins[9].v;
+  vam_t in9 = pb->ins[10].v;
 
-  vam_t in1 = pb->ins[1].v;
-  io_update_tag(in1->v().str(),pin_nmae_1,out1);
-  io_update_tag(in1->v().str(),pin_nmae_2,out2);
-  io_update_tag(in1->v().str(),pin_nmae_3,out3);
-  io_update_tag(in1->v().str(),pin_nmae_4,out4);
+  std::string sim_desc_1 = in1->v().str();
+  std::string sim_desc_2 = in2->v().str();
+  std::string sim_desc_3 = in3->v().str();
+  std::string sim_desc_4 = in4->v().str();
+  std::string sim_desc_5 = in5->v().str();
+  std::string sim_desc_6 = in6->v().str();
+  std::string sim_desc_7 = in7->v().str();
+  std::string sim_desc_8 = in8->v().str();
+  std::string sim_desc_9 = in9->v().str();
 
+  vam_t device_name = pb->ins[1].v;
+  io_update_tag(device_name->v().str(),sim_desc_1,out1);
+  io_update_tag(device_name->v().str(),sim_desc_2,out2);
+  io_update_tag(device_name->v().str(),sim_desc_3,out3);
+  io_update_tag(device_name->v().str(),sim_desc_4,out4);
+  io_update_tag(device_name->v().str(),sim_desc_5,out5);
+  io_update_tag(device_name->v().str(),sim_desc_6,out6);
+  io_update_tag(device_name->v().str(),sim_desc_7,out7);
+  io_update_tag(device_name->v().str(),sim_desc_8,out8);
+  io_update_tag(device_name->v().str(),sim_desc_9,out9);
 
 
   
@@ -29,9 +53,23 @@ static void run_SIM_READ(void *p) {
 
 static fb_t fb_SIM_READ = {{"Devices","SIM_READ", "",0,0,0,0,run_SIM_READ},
                         {{"EN",PIN_NO_LINK, T_BOOL, "", nullptr},
-                         {"NAME", PIN_NO_LINK,T_STRING, "", nullptr}},
+                         {"NAME", PIN_NO_LINK,T_STRING, "", nullptr},
+                         {"IN1", PIN_NO_LINK,T_STRING, "", nullptr},
+                         {"IN2", PIN_NO_LINK,T_STRING, "", nullptr},
+                         {"IN3", PIN_NO_LINK,T_STRING, "", nullptr},
+                         {"IN4", PIN_NO_LINK,T_STRING, "", nullptr},
+                         {"IN5", PIN_NO_LINK,T_STRING, "", nullptr},
+                         {"IN6", PIN_NO_LINK,T_STRING, "", nullptr},
+                         {"IN7", PIN_NO_LINK,T_STRING, "", nullptr},
+                         {"IN8", PIN_NO_LINK,T_STRING, "", nullptr},
+                         {"IN9", PIN_NO_LINK,T_STRING, "", nullptr}},
                         {{"STATUS", PIN_NO_LINK,T_INT32, "", nullptr},
                          {"OUT1", PIN_NO_LINK,T_FLOAT64, "", nullptr},
                          {"OUT2", PIN_NO_LINK,T_FLOAT64, "", nullptr},
                          {"OUT3", PIN_NO_LINK,T_FLOAT64, "", nullptr},
-                         {"OUT4", PIN_NO_LINK,T_STRING, "", nullptr}}};
+                         {"OUT4", PIN_NO_LINK,T_FLOAT64, "", nullptr},
+                         {"OUT5", PIN_NO_LINK,T_FLOAT64, "", nullptr},
+                         {"OUT6", PIN_NO_LINK,T_FLOAT64, "", nullptr},
+                         {"OUT7", PIN_NO_LINK,T_FLOAT64, "", nullptr},
+                         {"OUT8", PIN_NO_LINK,T_FLOAT64, "", nullptr},
+                         {"OUT9", PIN_NO_LINK,T_FLOAT64, "", nullptr}}};

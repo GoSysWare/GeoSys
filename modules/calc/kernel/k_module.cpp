@@ -17,9 +17,7 @@ static mnode_t *mn_new(int type) {
     return new action_node_t;
   } else if (type == Bus::TaskType::ASYNC) {
     return new task_node_t;
-  } else if (type == Bus::TaskType::TIMER) {
-    return new timer_node_t;
-  } else {
+  }  else {
     return 0;
   }
 }
@@ -55,8 +53,6 @@ static void mod_init(mnode_t *p_mnode, int id, std::string name, int type,
     ((fsm_node_t *)p_mnode)->interval = interval;
   } else if (type == Bus::TaskType::ACTION) {
   } else if (type == Bus::TaskType::ASYNC) {
-  } else if (type == Bus::TaskType::TIMER) {
-    ((timer_node_t *)p_mnode)->interval = interval;
   } else {
     return;
   }
@@ -129,7 +125,7 @@ void mod_stop(mod_t *p_mod) {
       ((fsm_node_t *)p_mn)->timer.Stop();
     } else if (p_mn->type == Bus::TaskType::ACTION) {
       /* code */
-    } else if (p_mn->type == Bus::TaskType::TIMER) {
+    } else if (p_mn->type == Bus::TaskType::ASYNC) {
       /* code */
     }
     p_mn = p_mn->p_next;
@@ -178,9 +174,6 @@ mod_t *mod_new() {
     p_new->mn_fsm_head.p_next = &p_new->mn_fsm_head;
     p_new->p_mn_fsm = &p_new->mn_fsm_head;
 
-    p_new->mn_timer_head.p_prev = &p_new->mn_timer_head;
-    p_new->mn_timer_head.p_next = &p_new->mn_timer_head;
-    p_new->p_mn_timer = &p_new->mn_timer_head;
   }
 
   return p_new;
@@ -305,22 +298,22 @@ void mod_start(mod_t *p_mod) {
 
       auto f = [p_mn](const std::shared_ptr<TaskReqParam> &request,
                       std::shared_ptr<TaskRspParam> &response) {
-        fb_t *pqfb, *ppfb;
-        pqfb = prg_fbfind_by_lib(p_mn->p_prg, "Task", "REQUEST");
-        if (pqfb) {
-          fb_setpin(pqfb, PININPUT, 1, request->param());
-        }
+        // fb_t *pqfb, *ppfb;
+        // pqfb = prg_fbfind_by_lib(p_mn->p_prg, "Task", "REQUEST");
+        // if (pqfb) {
+        //   fb_setpin(pqfb, PININPUT, 1, request->param());
+        // }
         ((task_node_t *)p_mn)->client = request->client();
         prg_exec(p_mn->p_prg,&p_mn->info);
 
-        ppfb = prg_fbfind_by_lib(p_mn->p_prg, "Task", "RESPONSE");
-        if (ppfb) {
-          pin_t *pin = fb_getpin(ppfb, PINOUTPUT, 1);
-          if (pin) {
-            response->mutable_param()->CopyFrom(*(pin->v));
-          }
+        // ppfb = prg_fbfind_by_lib(p_mn->p_prg, "Task", "RESPONSE");
+        // if (ppfb) {
+        //   pin_t *pin = fb_getpin(ppfb, PINOUTPUT, 1);
+        //   if (pin) {
+        //     response->mutable_param()->CopyFrom(*(pin->v));
+        //   }
           response->set_timestamp(apollo::cyber::Time::Now().ToNanosecond());
-        }
+        // }
       };
       ((task_node_t *)p_mn)->task_server =
           apollo::cyber::GlobalNode()

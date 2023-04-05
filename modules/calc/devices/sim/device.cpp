@@ -8,7 +8,7 @@
 #include <sstream>
 
 static uint64_t MonoTime() {
-  auto now = std::chrono::steady_clock::now();
+  auto now = std::chrono::system_clock::now();
   auto nano_time_point =
       std::chrono::time_point_cast<std::chrono::nanoseconds>(now);
   auto epoch = nano_time_point.time_since_epoch();
@@ -18,7 +18,7 @@ static uint64_t MonoTime() {
 }
 
 
-std::string ToString(uint64_t nanoseconds)  {
+static std::string ToString(uint64_t nanoseconds)  {
   auto nano = std::chrono::nanoseconds(nanoseconds);
   std::chrono::system_clock::time_point tp(nano);
   auto time = std::chrono::system_clock::to_time_t(tp);
@@ -44,22 +44,10 @@ std::string ToString(uint64_t nanoseconds)  {
 bool update_value(device_t *device,std::string tag_name, vam_t value)
 {
     double val;
-    std::string sim_exp;
-    if(tag_name == "OUT1"){
-        sim_exp = "RANDOM(100)";
-    }else if(tag_name == "OUT2"){
-        sim_exp = "$SECOND";
-    }else if(tag_name == "OUT3"){
-        sim_exp = "$NOW";
-    }else if(tag_name == "OUT4"){
-        sim_exp = ToString(MonoTime());
-        value->mutable_v()->set_str(sim_exp);
-        value->set_tm(MonoTime());
-        return true; 
+    if(!tag_name.empty()){
+      evaluate(tag_name, &val);
+      value->mutable_v()->set_d(val);
+      value->set_tm(MonoTime());
     }
-	evaluate(sim_exp, &val);
-    value->mutable_v()->set_d(val);
-    value->set_tm(MonoTime());
     return true;
-
 }
