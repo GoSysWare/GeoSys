@@ -33,6 +33,10 @@ PLMainFrame::PLMainFrame() {
   createToolBar();
   createDockWindows();
 
+  connect(panelProgCad,
+          SIGNAL(setOnlineValueSignal(int, int, int, int, value_tm)), gTarget,
+          SLOT(setOnlineValueSlot(int, int, int, int, value_tm)));
+
   ActStatTimer *actStatTimer = new ActStatTimer(this);
   actStatTimer->start();
 }
@@ -346,9 +350,12 @@ void PLMainFrame::prjSave() {
   Bus::EditInfo *proj_info = edit_infos.add_infos();
   proj_info->set_element(Bus::PROJ);
   proj_info->set_edit_type(Bus::SET);
-  proj_info->mutable_proj()->set_proj_uuid(gMainModel->project.uuid.toStdString());
-  proj_info->mutable_proj()->set_proj_name(gMainModel->project.name.toStdString());
-  proj_info->mutable_proj()->set_proj_desc(gMainModel->project.desc.toStdString());
+  proj_info->mutable_proj()->set_proj_uuid(
+      gMainModel->project.uuid.toStdString());
+  proj_info->mutable_proj()->set_proj_name(
+      gMainModel->project.name.toStdString());
+  proj_info->mutable_proj()->set_proj_desc(
+      gMainModel->project.desc.toStdString());
   for (auto i = 0; i < gMainModel->cmdList.size(); i++) {
     Bus::EditInfo *info = edit_infos.add_infos();
     info->CopyFrom(gMainModel->cmdList.at(i).editInfo);
@@ -380,15 +387,19 @@ void PLMainFrame::prjSaveAs(bool holdUuid) {
   Bus::EditInfo *proj_info = edit_infos.add_infos();
   proj_info->set_element(Bus::PROJ);
   proj_info->set_edit_type(Bus::SET);
-  proj_info->mutable_proj()->set_proj_uuid(gMainModel->project.uuid.toStdString());
-  proj_info->mutable_proj()->set_proj_name(gMainModel->project.name.toStdString());
-  proj_info->mutable_proj()->set_proj_desc(gMainModel->project.desc.toStdString());
+  proj_info->mutable_proj()->set_proj_uuid(
+      gMainModel->project.uuid.toStdString());
+  proj_info->mutable_proj()->set_proj_name(
+      gMainModel->project.name.toStdString());
+  proj_info->mutable_proj()->set_proj_desc(
+      gMainModel->project.desc.toStdString());
   for (auto i = 0; i < gMainModel->cmdList.size(); i++) {
     Bus::EditInfo *info = edit_infos.add_infos();
     info->CopyFrom(gMainModel->cmdList.at(i).editInfo);
   }
   cmds_dispatch(edit_infos);
-  apollo::cyber::common::SetProtoToASCIIFile(edit_infos, dlgSaveProj.fileName.toStdString());
+  apollo::cyber::common::SetProtoToASCIIFile(
+      edit_infos, dlgSaveProj.fileName.toStdString());
 
   gMainModel->isModified = false;
   QString title = "Robot Engine - ";
@@ -555,9 +566,8 @@ void PLMainFrame::tgtUpload() {
     QMessageBox::critical(this, tr("Error"), tr("Upload fail"));
   }
 
-
-  apollo::cyber::common::SetProtoToASCIIFile(edit_infos, fileName.toStdString());
-
+  apollo::cyber::common::SetProtoToASCIIFile(edit_infos,
+                                             fileName.toStdString());
 }
 
 void PLMainFrame::showProj() { dockProj->show(); }

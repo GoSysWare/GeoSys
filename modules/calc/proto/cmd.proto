@@ -16,6 +16,7 @@ enum RunType {
   SYNC = 5;
   DOWNLOAD = 6;
   UPLOAD = 7;
+  SETVAL = 8;
 }
 
 

@@ -15,6 +15,8 @@
 int main(int argc, char *argv[]) {
   std::cout<< "enter" << std::endl;
 
+  bool r = apollo::cyber::GlobalData::Instance()->IsRealityMode();
+
   apollo::cyber::Init(argv[0]);
   // create talker node
   auto engine_node = apollo::cyber::CreateNode("robot_engine");

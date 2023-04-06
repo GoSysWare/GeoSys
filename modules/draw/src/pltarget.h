@@ -5,6 +5,7 @@
 #include "modules/calc/proto/cmd.pb.h"
 class PLTarget : public QTimer
 {
+    Q_OBJECT
 public:
     PLTarget(QObject *parent = 0);
     ~PLTarget();
@@ -20,7 +21,8 @@ public:
 
     void timerEvent(QTimerEvent *e);
 
-
+public slots:
+   void setOnlineValueSlot(int idMod,int idPrg,int idFb,int idPin, value_tm val);
 private:
     bool bOnline;
     bool bMonitor;

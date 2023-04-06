@@ -2,7 +2,7 @@ infos {
   edit_type: SET
   proj {
     proj_name: "rotbot-engine-project"
-    proj_uuid: "{fd74a27d-e2d5-4d8a-ba20-625a54099819}"
+    proj_uuid: "{37c38a35-2192-4596-b25d-c84e936f78a9}"
   }
 }
 infos {
@@ -1922,5 +1922,142 @@ infos {
   pos {
     x: 30
     y: 76
+  }
+}
+infos {
+  cmd_id: 121
+  element: FB
+  edit_type: ADD
+  fb {
+    mod_id: 3
+    task_id: 4
+    fb_id: 54
+    flib_name: "Arithmetic"
+    fc_name: "ADD_INT"
+  }
+  pos {
+    x: 55
+    y: 135
+  }
+}
+infos {
+  cmd_id: 122
+  element: FB
+  edit_type: MV
+  fb {
+    mod_id: 3
+    task_id: 4
+    fb_id: 54
+  }
+  pos {
+    x: 101
+    y: 175
+  }
+}
+infos {
+  cmd_id: 123
+  element: PIN
+  edit_type: SET
+  pin {
+    mod_id: 3
+    task_id: 4
+    fb_id: 54
+    pin_index: 1
+    pin_val {
+      v {
+        t: T_INT32
+        i: 12
+      }
+      tm: 1680782281906390549
+    }
+  }
+}
+infos {
+  cmd_id: 124
+  element: PIN
+  edit_type: SET
+  pin {
+    mod_id: 3
+    task_id: 4
+    fb_id: 54
+    pin_index: 2
+    pin_val {
+      v {
+        t: T_INT32
+        i: 32
+      }
+      tm: 1680782288267285068
+    }
+  }
+}
+infos {
+  cmd_id: 125
+  element: TASK
+  edit_type: ADD
+  task {
+    mod_id: 3
+    task_id: 55
+    task_name: "FSM2"
+    interval: 2000
+  }
+}
+infos {
+  cmd_id: 126
+  element: FB
+  edit_type: ADD
+  fb {
+    mod_id: 3
+    task_id: 55
+    fb_id: 56
+    flib_name: "System"
+    fc_name: "SYSSTATE"
+  }
+  pos {
+    x: 20
+    y: 113
+  }
+}
+infos {
+  cmd_id: 127
+  element: FB
+  edit_type: MV
+  fb {
+    mod_id: 3
+    task_id: 55
+    fb_id: 56
+  }
+  pos {
+    x: 19
+    y: 77
+  }
+}
+infos {
+  cmd_id: 128
+  element: FB
+  edit_type: ADD
+  fb {
+    mod_id: 43
+    task_id: 44
+    fb_id: 57
+    flib_name: "System"
+    fc_name: "SYSSTATE"
+  }
+  pos {
+    x: 20
+    y: 113
+  }
+}
+infos {
+  cmd_id: 129
+  element: FB
+  edit_type: MV
+  fb {
+    mod_id: 43
+    task_id: 44
+    fb_id: 57
+  }
+  pos {
+    x: 13
+    y: 51
   }
 }

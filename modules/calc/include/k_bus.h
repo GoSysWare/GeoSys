@@ -52,6 +52,11 @@ std::shared_ptr<Bus::ProjectCmdRsp> bus_download_send(
     std::shared_ptr<apollo::cyber::Client<Bus::ProjectCmdReq, Bus::ProjectCmdRsp>> bus_cmd,
     Bus::EditInfos edit_infos);
 
+std::shared_ptr<Bus::ProjectCmdRsp> bus_set_val_send(
+    std::shared_ptr<apollo::cyber::Node> node,
+    std::shared_ptr<apollo::cyber::Client<Bus::ProjectCmdReq, Bus::ProjectCmdRsp>> bus_cmd,
+    Bus::EditInfos edit_infos);
+
 std::shared_ptr<Bus::ProjectCmdRsp> bus_upload_send(
     std::shared_ptr<apollo::cyber::Node> node,
     std::shared_ptr<apollo::cyber::Client<Bus::ProjectCmdReq, Bus::ProjectCmdRsp>> bus_cmd);

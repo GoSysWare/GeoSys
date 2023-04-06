@@ -590,7 +590,41 @@ void CadPanel::mouseReleaseEvent(QMouseEvent *event) {
 }
 
 void CadPanel::mouseDoubleClickEvent(QMouseEvent *event) {
+
+
+  int x, y;
+  x = event->x() - step;
+  y = event->y() - step;
+  hitTest(x, y);
+
   if (gTarget->isMonitor()) {
+
+    if (selCurrent.type == PT_INPUT) {
+        if (selCurrent.fb->input.at(selCurrent.value).hasVariable) {
+          return;
+        }
+        if (selCurrent.fb->input.at(selCurrent.value).hasInputLink) {
+          return;
+        }
+        PLEVData ev;
+        QString constValue = "0";
+        bool isConst = true;
+        DlgPinSet dlgPinSet(this);
+        dlgPinSet.exchangeValue(constValue, ev, isConst, true, true);
+        if (dlgPinSet.exec() != QDialog::Accepted) {
+          return;
+        }
+        dlgPinSet.exchangeValue(constValue, ev, isConst, true, false);
+        if (isConst) {
+            value_tm val;
+            val = setvar(selCurrent.fb->input[selCurrent.value].type,
+                        constValue.toStdString());
+	        emit  setOnlineValueSignal(gMainModel->prgCurrent->idMod,gMainModel->prgCurrent->id,selCurrent.fb->id, selCurrent.value,val);
+
+          update();
+        } 
+      }
+
     return;
   }
 
@@ -598,10 +632,7 @@ void CadPanel::mouseDoubleClickEvent(QMouseEvent *event) {
     return;
   }
 
-  int x, y;
-  x = event->x() - step;
-  y = event->y() - step;
-  hitTest(x, y);
+
 
   if (selCurrent.type == PT_FB) {
     DlgObjName dlgObjName(this);

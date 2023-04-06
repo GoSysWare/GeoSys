@@ -17,6 +17,7 @@ const QString DEF_FONT_FAMILY = "Monospaced";
 
 class CadPanel : public QWidget
 {
+    Q_OBJECT
 public:
     CadPanel();
     ~CadPanel();
@@ -35,6 +36,10 @@ protected:
     void dragEnterEvent(QDragEnterEvent * event);
     void dropEvent(QDropEvent * event);
     void mouseDoubleClickEvent(QMouseEvent * event);
+
+signals:
+	void setOnlineValueSignal(int idMod,int idPrg,int idFb,int idPin, value_tm val);
+
 
 private:
     int step;

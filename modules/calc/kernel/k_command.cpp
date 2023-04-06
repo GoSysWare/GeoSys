@@ -237,6 +237,16 @@ int cmds_dispatch(const Bus::EditInfos &edit_infos) {
 
   return 0;
 }
+int cmds_set_val(const Bus::EditInfos &edit_infos) {
+
+  int info_size = edit_infos.infos_size();
+  for (auto i = 0; i < info_size; i++) {
+    if (cmd_dispatch(edit_infos.infos(i)) != 0) {
+      return -1;
+    }
+  }
+  return 0;
+}
 
 int cmds_load(Bus::EditInfos *infos) {
   return apollo::cyber::common::GetProtoFromFile(DEFCTRLFILE, infos) ? 0 : -1;

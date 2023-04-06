@@ -118,6 +118,39 @@ bool PLTarget::online(bool mode, char *ip) {
 
   return bOnline;
 }
+void PLTarget::setOnlineValueSlot(int idMod, int idPrg, int idFb, int idPin,
+                                  value_tm val) {
+  qDebug() << "set value mod:" << idMod << " prg:" << idPrg << " fb:" << idFb
+           << " input pin:" << idPin
+           << " val:" << QString::fromStdString(val.ShortDebugString());
+  if (!bOnline) {
+    return;
+  }
+  if (!bMonitor) {
+    return;
+  }
+  Bus::EditInfos edit_infos;
+
+  Bus::EditInfo *set_pin_val_info = edit_infos.add_infos();
+  set_pin_val_info->set_element(Bus::PIN);
+  set_pin_val_info->set_edit_type(Bus::SET);
+  set_pin_val_info->mutable_pin()->set_mod_id(idMod);
+  set_pin_val_info->mutable_pin()->set_task_id(idPrg);
+  set_pin_val_info->mutable_pin()->set_fb_id(idFb);
+  set_pin_val_info->mutable_pin()->set_pin_index(idPin);
+  set_pin_val_info->mutable_pin()->mutable_pin_val()->CopyFrom(val);
+
+  std::shared_ptr<Bus::ProjectCmdRsp> set_val_res =
+      bus_set_val_send(gNode, gclient_proj_cmd, edit_infos);
+
+  if (set_val_res != nullptr && set_val_res->has_result() == true &&
+      set_val_res->result().code() == Bus::ResultCode::OK) {
+    qDebug() << "set value succ";
+
+  } else {
+    qDebug() << "set value fail";
+  }
+}
 
 bool PLTarget::sync() {
   if (!bOnline) {

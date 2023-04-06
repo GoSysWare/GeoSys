@@ -39,10 +39,17 @@ static int on_bus_download(Bus::EditInfos infos) {
   }
   return ret;
 }
+
 static int on_bus_upload(Bus::EditInfos *infos) {
   std::cout << "on_bus_upload " << std::endl;
   return cmds_load(infos);
 }
+
+static int on_bus_set_val(Bus::EditInfos infos) {
+  std::cout << "on_bus_set_val " << std::endl;
+  return cmds_set_val(infos);
+}
+
 static int on_bus_sync() {
   std::cout << "on_bus_sync " << std::endl;
 
@@ -129,6 +136,12 @@ int bus_init(std::shared_ptr<apollo::cyber::Node> node) {
           break;
         case Bus::RunType::UPLOAD:
           if(on_bus_upload(response->mutable_rsp_infos()) == 0){
+            response->mutable_result()->set_code((int)Bus::ResultCode::OK);
+          }else{
+            response->mutable_result()->set_code((int)Bus::ResultCode::FAIL);
+          }
+        case Bus::RunType::SETVAL:
+          if(on_bus_set_val(request->req_infos()) == 0){
             response->mutable_result()->set_code((int)Bus::ResultCode::OK);
           }else{
             response->mutable_result()->set_code((int)Bus::ResultCode::FAIL);
@@ -240,6 +253,22 @@ std::shared_ptr<Bus::ProjectCmdRsp> bus_download_send(
   std::shared_ptr<Bus::ProjectCmdReq> req =
       std::make_shared<Bus::ProjectCmdReq>();
   req->set_cmd_type(Bus::RunType::DOWNLOAD);
+  req->set_host_name("test host name");
+  req->set_host_ip("test host ip");
+  req->set_process_id("test process id");
+  req->set_prj_name("test proj name");
+  req->mutable_req_infos()->CopyFrom(edit_infos);
+  return bus_cmd->SendRequest(req);
+}
+std::shared_ptr<Bus::ProjectCmdRsp> bus_set_val_send(
+    std::shared_ptr<apollo::cyber::Node> node,
+    std::shared_ptr<
+        apollo::cyber::Client<Bus::ProjectCmdReq, Bus::ProjectCmdRsp>>
+        bus_cmd,
+    Bus::EditInfos edit_infos) {
+  std::shared_ptr<Bus::ProjectCmdReq> req =
+      std::make_shared<Bus::ProjectCmdReq>();
+  req->set_cmd_type(Bus::RunType::SETVAL);
   req->set_host_name("test host name");
   req->set_host_ip("test host ip");
   req->set_process_id("test process id");
