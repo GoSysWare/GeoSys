@@ -2,7 +2,7 @@ infos {
   edit_type: SET
   proj {
     proj_name: "rotbot-engine-project"
-    proj_uuid: "{37c38a35-2192-4596-b25d-c84e936f78a9}"
+    proj_uuid: "{3181f287-0cee-4542-b7ba-643c95746bad}"
   }
 }
 infos {
@@ -2059,5 +2059,21 @@ infos {
   pos {
     x: 13
     y: 51
+  }
+}
+infos {
+  cmd_id: 130
+  element: FB
+  edit_type: ADD
+  fb {
+    mod_id: 3
+    task_id: 4
+    fb_id: 58
+    flib_name: "Arithmetic"
+    fc_name: "ADD_INT"
+  }
+  pos {
+    x: 154
+    y: 20
   }
 }
