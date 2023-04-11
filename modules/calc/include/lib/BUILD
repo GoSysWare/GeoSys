@@ -11,6 +11,7 @@ cc_library(
         "Arithmetic.h",
         "Comparison.h",
         "Converter.h",
+        "Control.h",       
         "Counter.h",
         "Devices.h",
         "Fsm.h",

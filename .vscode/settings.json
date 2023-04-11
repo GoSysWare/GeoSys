@@ -269,6 +269,9 @@
         "dlib_face_init": "cpp",
         "dlib_face_detect": "cpp",
         "file_open_once": "cpp",
-        "file_read_once": "cpp"
+        "file_read_once": "cpp",
+        "pid copy": "cpp",
+        "modules": "cpp",
+        "pid": "cpp"
     }
 }

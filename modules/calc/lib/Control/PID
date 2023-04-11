@@ -1,152 +1,169 @@
-static void run_PID(void *p)
-{	
-	fb_t *pb = (fb_t *)p;
+static void run_PID(void *p) {
 
-	Time t = clk_cycle();
-	Real dt = (Real)t;
+  fb_t *pb = (fb_t *)p;
+  vam_t enable = pb->ins[0].v;
+  vam_t &status = pb->outs[0].v;
+  if (enable->v().b() == false)
+    return;
+  uint64_t dt = pb->h.cycle_time / 1000000;
 
-	Bool MAN = pb->d[0].v.v.b;
-	Bool HALT = pb->d[1].v.v.b;
-	Real SP = pb->d[2].v.v.f;
-	Real PV = pb->d[3].v.v.f;
-	Real BIAS = pb->d[4].v.v.f;
-	Bool EN_P = pb->d[5].v.v.b;
-	Bool EN_I = pb->d[6].v.v.b;
-	Bool EN_D = pb->d[7].v.v.b;
-	Bool D_ON_X = pb->d[8].v.v.b;
-	Real GAIN = pb->d[9].v.v.f;
-	Time TI = pb->d[10].v.v.tm;
-	Time TD = pb->d[11].v.v.tm;
-	Time TD_LAG = pb->d[12].v.v.tm;
-	Real YMAX = pb->d[13].v.v.f;
-	Real YMIN = pb->d[14].v.v.f;
-	Real YMAN = pb->d[15].v.v.f;
+  bool MAN = pb->ins[1].v->v().b();
+  bool HALT = pb->ins[2].v->v().b();
+  double SP = pb->ins[3].v->v().d();
+  double PV = pb->ins[4].v->v().d();
+  double BIAS = pb->ins[5].v->v().d();
+  bool EN_P = pb->ins[6].v->v().b();
+  bool EN_I = pb->ins[7].v->v().b();
+  bool EN_D = pb->ins[8].v->v().b();
+  bool D_ON_X = pb->ins[9].v->v().b();
+  double GAIN = pb->ins[10].v->v().d();
+  double TI = pb->ins[11].v->v().d();
+  double TD = pb->ins[12].v->v().d();
+  double TD_LAG = pb->ins[13].v->v().d();
+  double YMAX = pb->ins[14].v->v().d();
+  double YMIN = pb->ins[15].v->v().d();
+  double YMAN = pb->ins[16].v->v().d();
 
-	Real err = SP - PV;
-	Real ti = (Real)TI;
-	Real td = (Real)TD;
-	Real td_lag = (Real)TD_LAG;
-	
-	if(EN_P == 1){
-		pb->d[20].v.v.f = GAIN * err;
-	}else{
-		pb->d[20].v.v.f = 0;
-	}
+  vam_t &Y = pb->outs[1].v;
+  vam_t &ER = pb->outs[2].v;
+  vam_t &QMAX = pb->outs[3].v;
+  vam_t &QMIN = pb->outs[4].v;
+  vam_t &YP = pb->outs[5].v;
+  vam_t &YI = pb->outs[6].v;
+  vam_t &YD = pb->outs[7].v;
 
-	if((MAN == 0) && (HALT == 0)){
-		if(EN_I){
-			if(!pb->d[18].v.v.b && !pb->d[19].v.v.b){
-				if((pb->d[21].v.v.f <= (YMAX - pb->d[20].v.v.f -BIAS)) && (pb->d[21].v.v.f >= (YMIN - pb->d[20].v.v.f -BIAS))){
-					pb->d[21].v.v.f = pb->d[23].v.v.f + GAIN * dt / ti * (err + pb->d[25].v.v.f) / 2;
-				}else if(pb->d[21].v.v.f > (YMAX - pb->d[20].v.v.f -BIAS)){
-					pb->d[21].v.v.f = YMAX - pb->d[20].v.v.f - BIAS;
-				}else if(pb->d[21].v.v.f < (YMIN - pb->d[20].v.v.f -BIAS)){
-					pb->d[21].v.v.f = YMIN - pb->d[20].v.v.f -BIAS;
-				}				
-			}
-		}else{
-			pb->d[21].v.v.f = 0;
-		}
+  vam_t &OLD_YI = pb->props[0].v;
+  vam_t &OLD_YD = pb->props[1].v;
+  vam_t &OLD_ER = pb->props[2].v;
+  vam_t &OLD_PV = pb->props[3].v;
 
-		if(EN_D){
-		 	if(D_ON_X){
-				pb->d[22].v.v.f = (pb->d[24].v.v.f * td_lag + td * GAIN * (err - pb->d[25].v.v.f)) / (dt + td_lag);
-			}else{
-				pb->d[22].v.v.f = (pb->d[24].v.v.f * td_lag + td * GAIN * (pb->d[26].v.v.f - PV)) / (dt + td_lag);
-			}
-		}else{
-			pb->d[22].v.v.f = 0;
-		}
-	}
+  double er = SP - PV;
+  double ti = TI;
+  double td = TD;
+  double td_lag = TD_LAG;
 
-	//
-	if(!MAN){
-		if(!HALT){
-			pb->d[16].v.v.f = pb->d[20].v.v.f + pb->d[21].v.v.f + pb->d[22].v.v.f;
-		}else{
-			if(EN_I){
-				if((pb->d[21].v.v.f <= (YMAX - pb->d[20].v.v.f -BIAS)) && (pb->d[21].v.v.f >= (YMIN - pb->d[20].v.v.f -BIAS))){
-					pb->d[21].v.v.f = pb->d[16].v.v.f - pb->d[20].v.v.f - BIAS;
-				}else if(pb->d[21].v.v.f > (YMAX - pb->d[20].v.v.f -BIAS)){
-					pb->d[21].v.v.f = YMAX - pb->d[20].v.v.f - BIAS;
-				}else if(pb->d[21].v.v.f < (YMIN - pb->d[20].v.v.f -BIAS)){
-					pb->d[21].v.v.f = YMIN - pb->d[20].v.v.f -BIAS;
-				}
-			}else{
-				pb->d[21].v.v.f = 0;
-			}
-		pb->d[22].v.v.f = 0;
-		}
-	}else{
-		pb->d[16].v.v.f = YMAN;
-		if(EN_I){
-			if((pb->d[21].v.v.f <= (YMAX - pb->d[20].v.v.f -BIAS)) && (pb->d[21].v.v.f >= (YMIN - pb->d[20].v.v.f -BIAS))){
-				pb->d[21].v.v.f = pb->d[16].v.v.f - pb->d[20].v.v.f - BIAS;
-			}else if(pb->d[21].v.v.f > (YMAX - pb->d[20].v.v.f -BIAS)){
-				pb->d[21].v.v.f = YMAX - pb->d[20].v.v.f - BIAS;
-			}else if(pb->d[21].v.v.f < (YMIN - pb->d[20].v.v.f -BIAS)){
-				pb->d[21].v.v.f = YMIN - pb->d[20].v.v.f -BIAS;
-			}
-		}else{
-			pb->d[21].v.v.f = 0;
-		}
-		pb->d[22].v.v.f = 0;
-	}
+  ER->mutable_v()->set_d(er);
+  if (EN_P) {
+    YP->mutable_v()->set_d(GAIN * er);
+  } else {
+    YP->mutable_v()->set_d(0.0);
+  }
 
-	if(pb->d[16].v.v.f > YMAX){
-		pb->d[18].v.v.b = 1;
-		pb->d[16].v.v.f = YMAX;
-	}else{
-		pb->d[18].v.v.b = 0;
-	}
-	if(pb->d[16].v.v.f < YMIN){
-		pb->d[19].v.v.b = 1;
-		pb->d[16].v.v.f = YMIN;
-	}else{
-		pb->d[19].v.v.b = 0;
-	}
-	
-	pb->d[23].v.v.f = pb->d[21].v.v.f;
-	pb->d[24].v.v.f = pb->d[22].v.v.f;
-	pb->d[26].v.v.f = PV;
-	pb->d[25].v.v.f = err;
+  if ((MAN == false) && (HALT == false)) {
+    if (EN_I) {
+      if (!QMAX->v().b() && !QMIN->v().b()) {
+        if ((YI->v().d() <= (YMAX - YP->v().d() - BIAS)) &&
+            (YI->v().d() >= (YMIN - YP->v().d() - BIAS))) {
+          YI->mutable_v()->set_d(OLD_YI->v().d() +
+                                 GAIN * dt / ti * (er + OLD_ER->v().d()) / 2);
+        } else if (YI->v().d() > (YMAX - YP->v().d() - BIAS)) {
+          YI->mutable_v()->set_d(YMAX - YP->v().d() - BIAS);
+        } else if ((YI->v().d() < (YMIN - YP->v().d() - BIAS))) {
+          YI->mutable_v()->set_d(YMIN - YP->v().d() - BIAS);
+        }
+      }
+    } else {
+      YI->mutable_v()->set_d(0.0);
+    }
+
+    if (EN_D) {
+      if (D_ON_X) {
+        YD->mutable_v()->set_d(OLD_YI->v().d() * td_lag +
+                               td * GAIN * (er - OLD_ER->v().d()) /
+                                   (dt + td_lag));
+      } else {
+        YD->mutable_v()->set_d(OLD_YI->v().d() * td_lag +
+                               td * GAIN * (OLD_PV->v().d() - PV) /
+                                   (dt + td_lag));
+      }
+    } else {
+      YD->mutable_v()->set_d(0.0);
+    }
+  }
+
+  //
+  if (!MAN) {
+    if (!HALT) {
+      Y->mutable_v()->set_d(YP->v().d() + YI->v().d() + YD->v().d());
+    } else {
+      if (EN_I) {
+        if ((YI->v().d() <= (YMAX - YP->v().d() - BIAS)) &&
+            (YI->v().d() >= (YMIN - YP->v().d() - BIAS))) {
+          YI->mutable_v()->set_d(OLD_YI->v().d() +
+                                 GAIN * dt / ti * (er + OLD_ER->v().d()) / 2);
+        } else if (YI->v().d() > (YMAX - YP->v().d() - BIAS)) {
+          YI->mutable_v()->set_d(YMAX - YP->v().d() - BIAS);
+        } else if ((YI->v().d() < (YMIN - YP->v().d() - BIAS))) {
+          YI->mutable_v()->set_d(YMIN - YP->v().d() - BIAS);
+        }
+      } else {
+        YI->mutable_v()->set_d(0.0);
+      }
+      YD->mutable_v()->set_d(0.0);
+    }
+  } else {
+    Y->mutable_v()->set_d(YMAN);
+    if (EN_I) {
+      if ((YI->v().d() <= (YMAX - YP->v().d() - BIAS)) &&
+          (YI->v().d() >= (YMIN - YP->v().d() - BIAS))) {
+        YI->mutable_v()->set_d(OLD_YI->v().d() +
+                               GAIN * dt / ti * (er + OLD_ER->v().d()) / 2);
+      } else if (YI->v().d() > (YMAX - YP->v().d() - BIAS)) {
+        YI->mutable_v()->set_d(YMAX - YP->v().d() - BIAS);
+      } else if ((YI->v().d() < (YMIN - YP->v().d() - BIAS))) {
+        YI->mutable_v()->set_d(YMIN - YP->v().d() - BIAS);
+      }
+    } else {
+      YI->mutable_v()->set_d(0.0);
+    }
+    YD->mutable_v()->set_d(0.0);
+  }
+
+  if (Y->v().d() > YMAX) {
+    QMAX->mutable_v()->set_b(true);
+    Y->mutable_v()->set_d(YMAX);
+  } else {
+    QMAX->mutable_v()->set_b(false);
+  }
+  if (Y->v().d() < YMIN) {
+    QMIN->mutable_v()->set_b(true);
+    Y->mutable_v()->set_d(YMIN);
+  } else {
+    QMIN->mutable_v()->set_b(false);
+  }
+  OLD_YI->mutable_v()->set_d(YI->v().d());
+  OLD_YD->mutable_v()->set_d(YD->v().d());
+  OLD_ER->mutable_v()->set_d(er);
+  OLD_PV->mutable_v()->set_d(PV);
 }
 
-static fb_t fb_PID = {
-	"PID", 16, 4, 7, 0, run_PID, 
-	{	
-		"MAN", T_BOOL, 0,
-		"HALT", T_BOOL, 0,
-		"SP", T_REAL, 0,
-		"PV", T_REAL, 0,
-		"BIAS", T_REAL, 0,
-
-		"EN_P", T_BOOL, 0,
-		"EN_I", T_BOOL, 0,
-		"EN_D", T_BOOL, 0,
-		"D_ON_X", T_BOOL, 0,
-
-		"GAIN", T_REAL, 0,
-		"TI", T_TIME, 0,
-		"TD", T_TIME, 0,
-		"TD_LAG", T_TIME, 0,
-
-		"YMAX", T_REAL, 0,
-		"YMIN", T_REAL, 0,
-		"YMAN", T_REAL, 0,
-
-		"Y", T_REAL, 0,
-		"err", T_REAL, 0,
-		"QMAX", T_BOOL, 0,
-		"QMIN", T_BOOL, 0,
-
-		"YP", T_REAL, 0,
-		"YI", T_REAL, 0,
-		"YD", T_REAL, 0,
-
-		"old_YI", T_REAL, 0,
-		"old_YD", T_REAL, 0,
-		"old_err", T_REAL, 0,
-		"old_PV", T_REAL, 0,
-	}
-};
+static fb_t fb_PID = {{"Control", "PID", "", 0, 0, 0, 0, run_PID},
+                      {{"EN", PIN_NO_LINK, T_BOOL, "", nullptr},
+                       {"MAN", PIN_NO_LINK, T_BOOL, "", nullptr},
+                       {"HALT", PIN_NO_LINK, T_BOOL, "", nullptr},
+                       {"SP", PIN_NO_LINK, T_FLOAT64, "", nullptr},
+                       {"PV", PIN_NO_LINK, T_FLOAT64, "", nullptr},
+                       {"BIAS", PIN_NO_LINK, T_FLOAT64, "", nullptr},
+                       {"EN_P", PIN_NO_LINK, T_BOOL, "", nullptr},
+                       {"EN_I", PIN_NO_LINK, T_BOOL, "", nullptr},
+                       {"EN_D", PIN_NO_LINK, T_BOOL, "", nullptr},
+                       {"D_ON_X", PIN_NO_LINK, T_BOOL, "", nullptr},
+                       {"GAIN", PIN_NO_LINK, T_FLOAT64, "", nullptr},
+                       {"TI", PIN_NO_LINK, T_FLOAT64, "", nullptr},
+                       {"TD", PIN_NO_LINK, T_FLOAT64, "", nullptr},
+                       {"TD_LAG", PIN_NO_LINK, T_FLOAT64, "", nullptr},
+                       {"YMAX", PIN_NO_LINK, T_FLOAT64, "", nullptr},
+                       {"YMIN", PIN_NO_LINK, T_FLOAT64, "", nullptr},
+                       {"YMAN", PIN_NO_LINK, T_FLOAT64, "", nullptr}},
+                      {{"STATUS", PIN_NO_LINK, T_INT32, "", nullptr},
+                       {"Y", PIN_NO_LINK, T_FLOAT64, "", nullptr},
+                       {"ER", PIN_NO_LINK, T_FLOAT64, "", nullptr},
+                       {"QMAX", PIN_NO_LINK, T_BOOL, "", nullptr},
+                       {"QMIN", PIN_NO_LINK, T_BOOL, "", nullptr},
+                       {"YP", PIN_NO_LINK, T_FLOAT64, "", nullptr},
+                       {"YI", PIN_NO_LINK, T_FLOAT64, "", nullptr},
+                       {"YD", PIN_NO_LINK, T_FLOAT64, "", nullptr}},
+                      {{"OLD_YI", PIN_NO_LINK, T_FLOAT64, "", nullptr},
+                       {"OLD_YD", PIN_NO_LINK, T_FLOAT64, "", nullptr},
+                       {"OLD_ER", PIN_NO_LINK, T_FLOAT64, "", nullptr},
+                       {"OLD_PV", PIN_NO_LINK, T_FLOAT64, "", nullptr}}};

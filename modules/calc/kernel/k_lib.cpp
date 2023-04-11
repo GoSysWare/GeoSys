@@ -5,6 +5,7 @@
 #include "modules/calc/include/lib/Arithmetic.h"
 #include "modules/calc/include/lib/Comparison.h"
 #include "modules/calc/include/lib/Converter.h"
+#include "modules/calc/include/lib/Control.h"
 #include "modules/calc/include/lib/Counter.h"
 #include "modules/calc/include/lib/Devices.h"
 #include "modules/calc/include/lib/Fsm.h"
@@ -38,7 +39,7 @@ void lib_init()
 	lib_set_table(1, "Arithmetic", arithmetic_first, arithmetic_next);
 	lib_set_table(3, "Comparison", comparison_first, comparison_next);
 	lib_set_table(4, "Converter", converter_first, converter_next);
-// 	// lib_set_table(5, "Control", control_first, control_next);
+	lib_set_table(5, "Control", control_first, control_next);
 	lib_set_table(6, "Counter", counter_first, counter_next);
 	lib_set_table(7, "Devices", devices_first, devices_next);
 // 	// lib_set_table(8, "IO", io_first, io_next);

@@ -9,7 +9,8 @@ cc_library(
     deps = [
         "//modules/calc/lib/AI:AI",
         "//modules/calc/lib/Arithmetic:Arithmetic",
-        "//modules/calc/lib/Comparison:Comparison",        
+        "//modules/calc/lib/Comparison:Comparison",  
+        "//modules/calc/lib/Control:Control",
         "//modules/calc/lib/Converter:Converter",
         "//modules/calc/lib/Counter:Counter",
         "//modules/calc/lib/Devices:Devices",
