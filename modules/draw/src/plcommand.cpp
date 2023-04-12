@@ -219,10 +219,10 @@ bool PLCommand::dispatch() {
       h = std::max(p_fb->ins.size(), p_fb->outs.size());
 
       w = fb.funName.size() + 1;
-      if (w < (wi + wo + 2)) {
-        w = wi + wo + 2;
+      if (w < (wi + wo + 6)) {
+        w = wi + wo + 6;
       }
-      fb.h = h + 1;
+      fb.h = h + 2;
       fb.w = w;
 
       fb.isSelected = true;
