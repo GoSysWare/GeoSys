@@ -272,6 +272,8 @@
         "file_read_once": "cpp",
         "pid copy": "cpp",
         "modules": "cpp",
-        "pid": "cpp"
+        "pid": "cpp",
+        "event": "cpp",
+        "sleep": "cpp"
     }
 }

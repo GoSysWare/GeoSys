@@ -330,6 +330,29 @@ prog_t *prj_prgfind(std::string mod_name,std::string prog_name) {
   }
   return mod_prgfind(p_pn_select->p_mod, prog_name);
 }
+
+mnode_t *prj_prg_info_find(std::string mod_name, std::string prog_name)
+{
+  if (prj_modselect(mod_name) != 0) {
+    return 0;
+  }
+  if(p_pn_select == &pn_head){
+    return 0;
+  }
+  return mod_prg_info_find(p_pn_select->p_mod, prog_name);
+}
+mnode_t *prj_prg_info_find(int idmod, int idprg)
+{
+  if (prj_modselect(idmod) != 0) {
+    return 0;
+  }
+  if(p_pn_select == &pn_head){
+    return 0;
+  }
+  return mod_prg_info_find(p_pn_select->p_mod, idprg);  
+}
+
+
 mod_t *prj_modfind(int idmod) {
   if (prj_modselect(idmod) != 0) {
     return 0;
@@ -343,6 +366,28 @@ mod_t *prj_modfind(std::string mod_name) {
   }
   return p_pn_select->p_mod;
 }
+
+pnode_t *prj_mod_info_find(std::string mod_name)
+{
+  if (prj_modselect(mod_name) != 0) {
+    return 0;
+  }
+  if(p_pn_select == &pn_head){
+    return 0;
+  }
+  return p_pn_select;
+}
+pnode_t *prj_mod_info_find(int idmod)
+{
+   if (prj_modselect(idmod) != 0) {
+    return 0;
+  }
+  if(p_pn_select == &pn_head){
+    return 0;
+  }
+  return p_pn_select; 
+}
+
 
 int prj_to_snapshot(Bus::ProjSnapshotRsp *snapshot) {
   pnode_t *p_pn= 0;

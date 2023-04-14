@@ -1,6 +1,7 @@
 #include <stddef.h>
 #include <thread>
 #include <sstream>
+#include "cyber/cyber.h"
 #include "modules/calc/include/k_functionblock.h"
 #include "modules/calc/include/k_util.h"
 

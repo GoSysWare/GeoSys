@@ -5,7 +5,7 @@
 #include <limits>
 #include <sstream>
 
-static uint64_t MonoTime() {
+static uint64_t MonoSystemTime() {
   auto now = std::chrono::system_clock::now();
   auto nano_time_point =
       std::chrono::time_point_cast<std::chrono::nanoseconds>(now);
@@ -40,12 +40,19 @@ static std::string ToString(uint64_t nanoseconds)  {
 }
 
 static void run_SYSSTATE(void *p) {
-
   fb_t *pb = (fb_t *)p;
+  vam_t &enable = pb->ins[0].v;
+  vam_t &status = pb->outs[0].v;
+  if (enable->v().b() == false)
+    return;
   vam_t &cycle = pb->outs[1].v;
   vam_t &peroid = pb->outs[2].v;
   vam_t &thread_id = pb->outs[3].v;
   vam_t &datetime = pb->outs[4].v;
+  vam_t &begin_time = pb->outs[5].v;
+  vam_t &cid = pb->outs[6].v;
+  vam_t &cname = pb->outs[7].v;
+  vam_t &cpid = pb->outs[8].v;
 
   uint64_t dt = pb->h.cycle_time / 1000000;
 
@@ -58,15 +65,28 @@ static void run_SYSSTATE(void *p) {
   uint32_t id;
   ss >>id;
   thread_id->mutable_v()->set_ui(*(uint32_t*)&id);
+  datetime->mutable_v()->set_str(ToString(MonoSystemTime()));
+  begin_time->mutable_v()->set_tm(pb->h.begin_time);
 
-  datetime->mutable_v()->set_str(ToString(MonoTime()));
-
+  apollo::cyber::croutine::CRoutine * this_croutine = apollo::cyber::croutine::CRoutine::GetCurrentRoutine();
+  if(this_croutine){
+    cid->mutable_v()->set_ull(this_croutine->id());
+    cname->mutable_v()->set_str(this_croutine->name());
+    cpid->mutable_v()->set_i(this_croutine->processor_id());
+  }
+  else{
+    status->mutable_v()->set_i(1);
+  }
 }
 
 static fb_t fb_SYSSTATE = {{"System", "SYSSTATE", "", 0, 0, 0, 0, run_SYSSTATE},
                            {{"EN", PIN_NO_LINK, T_BOOL, "", nullptr}},
                            {{"STATUS", PIN_NO_LINK, T_INT32, "", nullptr},
-                            {"CYCLE", PIN_NO_LINK, T_UINT32, "", nullptr},
-                            {"TIME", PIN_NO_LINK, T_TIME, "", nullptr},
+                            {"COUNT", PIN_NO_LINK, T_UINT32, "", nullptr},
+                            {"PEROID_TIME", PIN_NO_LINK, T_TIME, "", nullptr},
                             {"THRAD", PIN_NO_LINK, T_UINT32, "", nullptr},
-                            {"DATETIME", PIN_NO_LINK, T_STRING, "", nullptr}}};
+                            {"DATETIME", PIN_NO_LINK, T_STRING, "", nullptr},
+                            {"BEGINE_TIME", PIN_NO_LINK, T_STRING, "", nullptr},
+                            {"CROUTINE_ID", PIN_NO_LINK, T_UINT64, "", nullptr},
+                            {"CROUTINE_NAME", PIN_NO_LINK, T_STRING, "", nullptr},
+                            {"CROUTINE_PID", PIN_NO_LINK, T_INT32, "", nullptr}}};

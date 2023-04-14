@@ -26,7 +26,7 @@ static void run_TASK(void *p) {
   if (fire->v().b()) {
     prog_t *prg = prj_prgfind(mod_name->v().str(), task_name->v().str());
     if (!prg) {
-      status->mutable_v()->set_i(1);
+      status->mutable_v()->set_i(-1);
       return;
     }
     // asyc
@@ -46,7 +46,7 @@ static void run_TASK(void *p) {
       req_time->mutable_v()->set_tm(MonoTime());
 
       auto response =
-          client->SendRequest(request, std::chrono::seconds(timeout->v().tm()));
+          client->SendRequest(request, std::chrono::seconds(timeout->v().tm()/1000));
       if (response == nullptr) {
         status->mutable_v()->set_i(3);
         next_task->mutable_v()->set_b(false);
@@ -56,16 +56,26 @@ static void run_TASK(void *p) {
       next_task->mutable_v()->set_b(true);
 
     } else { // sync
-      prog_t *prg = prj_prgfind(mod_name->v().str(), task_name->v().str());
-      if (!prg) {
-        status->mutable_v()->set_i(1);
+      mnode_t *p_mn =
+          prj_prg_info_find(mod_name->v().str(), task_name->v().str());
+      if (!p_mn) {
+        status->mutable_v()->set_i(-1);
         next_task->mutable_v()->set_b(false);
         return;
       }
       req_time->mutable_v()->set_tm(MonoTime());
-      proginfo_t info;
-      info.cycle_time = pb->h.cycle_time;
-      prg_exec(prg, &info);
+      // 同步子任务执行
+      p_mn->info.begin_time = apollo::cyber::Time::Now().ToNanosecond();
+      p_mn->info.cycle_time =
+          apollo::cyber::Duration(
+              int64_t(p_mn->info.begin_time - p_mn->info.prev_time))
+              .ToNanosecond();
+      p_mn->info.prev_time = p_mn->info.begin_time;
+      prg_exec(p_mn->p_prg, &p_mn->info);
+      p_mn->info.expend_time = (apollo::cyber::Time::Now() -
+                                apollo::cyber::Time(p_mn->info.begin_time))
+                                   .ToNanosecond();
+      //同步子任务结束
       rsp_time->mutable_v()->set_tm(MonoTime());
       next_task->mutable_v()->set_b(true);
     }
@@ -84,7 +94,7 @@ static fb_t fb_TASK = {{"Task", "TASK", "", 0, 0, 0, 0, run_TASK},
                         {"MOD_NAME", PIN_NO_LINK, T_STRING, "", nullptr},
                         {"TASK_NAME", PIN_NO_LINK, T_STRING, "", nullptr},
                         {"TIMEOUT", PIN_NO_LINK, T_TIME, "", nullptr},
-                        {"IS_ASYC", PIN_NO_LINK, T_INT32, "", nullptr}},
+                        {"IS_ASYC", PIN_NO_LINK, T_BOOL, "", nullptr}},
                        {{"STATUS", PIN_NO_LINK, T_INT32, "", nullptr},
                         {"NEXT", PIN_NO_LINK, T_BOOL, "", nullptr},
                         {"REQ_TIME", PIN_NO_LINK, T_TIME, "", nullptr},

@@ -65,7 +65,15 @@ int cmd_dispatch(const Bus::EditInfo &edit_info) {
       ret =
           prj_prgremove(edit_info.task().mod_id(), edit_info.task().task_id());
     } else if (type == Bus::EditType::SET) {
-      ret = 0;
+      mnode_t *p_mn = prj_prg_info_find(edit_info.task().mod_id(),edit_info.task().task_id());
+      if(p_mn){
+        p_mn->name = edit_info.task().task_name();
+        p_mn->type = edit_info.task().task_type();
+        p_mn->desc = edit_info.task().task_desc();
+        ret = 0;
+      }else{
+      ret = -1;
+      }
 
     } else if (type == Bus::EditType::SHOW) {
       ret = 0;

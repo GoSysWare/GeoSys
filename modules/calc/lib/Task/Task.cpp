@@ -7,13 +7,17 @@
 #include "modules/calc/proto/edit.pb.h"
 
 #include "TASK"
-#include "REQUEST"
-#include "RESPONSE"
+// #include "REQUEST"
+// #include "RESPONSE"
+#include "EVENT"
+#include "SLEEP"
 
 static void *fb_table[]={
 	&fb_TASK,
-	&fb_REQUEST,
-	&fb_RESPONSE
+	// &fb_REQUEST,
+	// &fb_RESPONSE
+	&fb_EVENT,
+	&fb_SLEEP,
 
 	};
 

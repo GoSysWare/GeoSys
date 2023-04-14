@@ -1,0 +1,27 @@
+static void run_EVENT(void *p)
+{	
+  fb_t *pb = (fb_t *)p;
+  vam_t &enable = pb->ins[0].v;
+  vam_t &status = pb->outs[0].v;
+  if (enable->v().b() == false)
+    return;
+  vam_t action = pb->ins[1].v;
+  vam_t &fire = pb->outs[1].v;
+  vam_t &old_action = pb->props[0].v;
+
+ 
+	if(!old_action->v().b() && action->v().b()){
+		fire->mutable_v()->set_b(true);
+	}else{
+		fire->mutable_v()->set_b(false);
+	}
+	old_action->mutable_v()->set_b(action->v().b());
+}
+
+
+static fb_t fb_EVENT = {{"TASK","EVENT", "",0,0,0,0,run_EVENT},
+                        {{"EN",PIN_NO_LINK, T_BOOL, "", nullptr},
+                         {"ACTION", PIN_NO_LINK,T_BOOL, "", nullptr}},
+                        {{"STATUS", PIN_NO_LINK,T_INT32, "", nullptr},
+                         {"FIRE", PIN_NO_LINK,T_BOOL, "", nullptr}},
+						 {{"OLD_ACTION", PIN_NO_LINK,T_BOOL, "", nullptr}}};

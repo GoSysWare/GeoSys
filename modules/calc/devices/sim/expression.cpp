@@ -1,5 +1,4 @@
 #include "math.h"
-#pragma warning(disable : 4251)
 #include "expression.h"
 #include <algorithm>
 #include <chrono>
@@ -36,7 +35,7 @@ unsigned char random(double max) {
 }
 
 static uint64_t MonoTime() {
-  auto now = std::chrono::steady_clock::now();
+  auto now = std::chrono::system_clock::now();
   auto nano_time_point =
       std::chrono::time_point_cast<std::chrono::nanoseconds>(now);
   auto epoch = nano_time_point.time_since_epoch();
@@ -45,28 +44,6 @@ static uint64_t MonoTime() {
   return now_nano;
 }
 
-static std::string TimeToString(uint64_t t) {
-  auto nano = std::chrono::nanoseconds(t);
-  std::chrono::system_clock::time_point tp(nano);
-  auto time = std::chrono::system_clock::to_time_t(tp);
-  struct tm stm;
-  auto ret = localtime_r(&time, &stm);
-  if (ret == nullptr) {
-    return std::to_string(static_cast<double>(time) / 1000000000.0);
-  }
-
-  std::stringstream ss;
-#if __GNUC__ >= 5
-  ss << std::put_time(ret, "%F %T");
-  ss << "." << std::setw(9) << std::setfill('0') << time % 1000000000UL;
-#else
-  char date_time[128];
-  strftime(date_time, sizeof(date_time), "%F %T", ret);
-  ss << std::string(date_time) << "." << std::setw(9) << std::setfill('0')
-     << nanoseconds_ % 1000000000UL;
-#endif
-  return ss.str();
-}
 
 void CExpression::elibmem(arbore a) {
   if (a == 0)
@@ -615,7 +592,7 @@ double CExpression::vexp(arbore a) {
     return (int)(vexp(a->left)) | (int)(vexp(a->right));
 
   case 169: {
-    return static_cast<double>(now) / 1000000000UL;
+    return static_cast<double>(now);
     ;
   }
   }

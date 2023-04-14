@@ -13,7 +13,6 @@ typedef struct PrjInfo {
   unsigned int cmd_id;
 } prjinfo_t;
 
-
 typedef struct PNode {
   struct PNode *p_prev;
   struct PNode *p_next;
@@ -32,7 +31,8 @@ void prj_reset();
 int prj_modadd(int idmod, std::string name, std::string desc);
 int prj_modremove(int idmod);
 
-int prj_prgadd(int idmod, int idprg, std::string name,int type,std::string desc = "", int period = 50);
+int prj_prgadd(int idmod, int idprg, std::string name, int type,
+               std::string desc = "", int period = 50);
 int prj_prgremove(int idmod, int idprg);
 
 void prj_start();
@@ -64,12 +64,16 @@ int prj_fbdump(int idmod, int idprg, int idfb);
 fb_t *prj_fbfind(int idmod, int idprg, int idfb);
 prog_t *prj_prgfind(int idmod, int idprg);
 prog_t *prj_prgfind(int idmod, std::string prog_name);
-prog_t *prj_prgfind(std::string mod_name,std::string prog_name);
+prog_t *prj_prgfind(std::string mod_name, std::string prog_name);
+mnode_t *prj_prg_info_find(std::string mod_name, std::string prog_name);
+mnode_t *prj_prg_info_find(int idmod, int idprg);
+
 mod_t *prj_modfind(int idmod);
 mod_t *prj_modfind(std::string mod_name);
+pnode_t *prj_mod_info_find(std::string mod_name);
+pnode_t *prj_mod_info_find(int idmod);
 
-
-int prj_to_snapshot(Bus::ProjSnapshotRsp * snapshot);
+int prj_to_snapshot(Bus::ProjSnapshotRsp *snapshot);
 int prj_from_snapshot(Bus::ProjSnapshotRsp *snapshot);
 
 // int prj_img_size();

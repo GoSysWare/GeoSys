@@ -52,7 +52,7 @@ typedef struct MTaskNode : MNode {
 
 typedef struct MPeriodNode : MNode {
   std::string client;
-  int interval{50};
+  int interval{500};
   apollo::cyber::Timer timer;
 } period_node_t;
 
@@ -129,4 +129,6 @@ fb_t *mod_fbfind(mod_t *p_mod, int idprg, int idfb);
 prog_t *mod_prgfind(mod_t *p_mod, int idprg);
 prog_t *mod_prgfind(mod_t *p_mod, std::string prog_name);
 
+mnode_t *mod_prg_info_find(mod_t *p_mod, int idprg);
+mnode_t *mod_prg_info_find(mod_t *p_mod, std::string prog_name);
 #endif

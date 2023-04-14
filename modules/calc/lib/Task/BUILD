@@ -10,9 +10,10 @@ cc_library(
     ],
     hdrs = [
         "TASK",
-        "REQUEST",
-        "RESPONSE",
-
+        # "REQUEST",
+        # "RESPONSE",
+        "EVENT",
+        "SLEEP",
     ],
     srcs = [
         "Task.cpp",

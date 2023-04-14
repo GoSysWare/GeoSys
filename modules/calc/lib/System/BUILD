@@ -19,5 +19,6 @@ cc_library(
         "//modules/calc/include:calc_include",
         "//modules/calc/include/lib:lib_include",
         "//modules/calc/proto:bus_cc_proto",
+        "//cyber"
     ],
 )

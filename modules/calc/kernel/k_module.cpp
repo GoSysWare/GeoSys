@@ -17,7 +17,7 @@ static mnode_t *mn_new(int type) {
     return new action_node_t;
   } else if (type == Bus::TaskType::ASYNC) {
     return new task_node_t;
-  }  else {
+  } else {
     return 0;
   }
 }
@@ -173,7 +173,6 @@ mod_t *mod_new() {
     p_new->mn_fsm_head.p_prev = &p_new->mn_fsm_head;
     p_new->mn_fsm_head.p_next = &p_new->mn_fsm_head;
     p_new->p_mn_fsm = &p_new->mn_fsm_head;
-
   }
 
   return p_new;
@@ -236,7 +235,6 @@ int mod_prgremove(mod_t *p_mod, int id) {
   return 0;
 }
 
-
 void mod_start(mod_t *p_mod) {
   mnode_t *p_mn;
 
@@ -255,7 +253,10 @@ void mod_start(mod_t *p_mod) {
       opt.oneshot = false;
       opt.callback = [p_mn]() {
         p_mn->info.begin_time = apollo::cyber::Time::Now().ToNanosecond();
-        p_mn->info.cycle_time = apollo::cyber::Duration(int64_t(p_mn->info.begin_time - p_mn->info.prev_time)).ToNanosecond();
+        p_mn->info.cycle_time =
+            apollo::cyber::Duration(
+                int64_t(p_mn->info.begin_time - p_mn->info.prev_time))
+                .ToNanosecond();
         p_mn->info.prev_time = p_mn->info.begin_time;
 
         prg_exec(p_mn->p_prg, &p_mn->info);
@@ -280,7 +281,7 @@ void mod_start(mod_t *p_mod) {
         if (ppfb) {
           fb_setpin(ppfb, PINOUTPUT, 1, response);
         }
-        prg_exec(p_mn->p_prg,&p_mn->info);
+        prg_exec(p_mn->p_prg, &p_mn->info);
       };
       auto service_ =
           apollo::cyber::GlobalNode()->CreateService<value_tm, value_tm>(
@@ -288,7 +289,7 @@ void mod_start(mod_t *p_mod) {
     } else if (p_mn->type == Bus::TaskType::FSM) {
       apollo::cyber::TimerOption opt;
       opt.oneshot = false;
-      opt.callback = [p_mn]() { prg_exec(p_mn->p_prg,&p_mn->info); };
+      opt.callback = [p_mn]() { prg_exec(p_mn->p_prg, &p_mn->info); };
       opt.period = ((fsm_node_t *)p_mn)->interval;
       ((fsm_node_t *)p_mn)->timer.SetTimerOption(opt);
       ((fsm_node_t *)p_mn)->timer.Start();
@@ -298,21 +299,19 @@ void mod_start(mod_t *p_mod) {
 
       auto f = [p_mn](const std::shared_ptr<TaskReqParam> &request,
                       std::shared_ptr<TaskRspParam> &response) {
-        // fb_t *pqfb, *ppfb;
-        // pqfb = prg_fbfind_by_lib(p_mn->p_prg, "Task", "REQUEST");
-        // if (pqfb) {
-        //   fb_setpin(pqfb, PININPUT, 1, request->param());
-        // }
-        ((task_node_t *)p_mn)->client = request->client();
-        prg_exec(p_mn->p_prg,&p_mn->info);
 
-        // ppfb = prg_fbfind_by_lib(p_mn->p_prg, "Task", "RESPONSE");
-        // if (ppfb) {
-        //   pin_t *pin = fb_getpin(ppfb, PINOUTPUT, 1);
-        //   if (pin) {
-        //     response->mutable_param()->CopyFrom(*(pin->v));
-        //   }
-          response->set_timestamp(apollo::cyber::Time::Now().ToNanosecond());
+        ((task_node_t *)p_mn)->client = request->client();
+       p_mn->info.begin_time = apollo::cyber::Time::Now().ToNanosecond();
+        p_mn->info.cycle_time =
+            apollo::cyber::Duration(
+                int64_t(p_mn->info.begin_time - p_mn->info.prev_time))
+                .ToNanosecond();
+        p_mn->info.prev_time = p_mn->info.begin_time;  
+        prg_exec(p_mn->p_prg, &p_mn->info);
+        p_mn->info.expend_time = (apollo::cyber::Time::Now() -
+                                  apollo::cyber::Time(p_mn->info.begin_time))
+                                     .ToNanosecond();
+        response->set_timestamp(apollo::cyber::Time::Now().ToNanosecond());
         // }
       };
       ((task_node_t *)p_mn)->task_server =
@@ -322,8 +321,6 @@ void mod_start(mod_t *p_mod) {
     p_mn = p_mn->p_next;
   }
 }
-
-
 
 int mod_fbadd(mod_t *p_mod, int idprg, int id, std::string libname,
               std::string fcname, std::string fbname) {
@@ -444,6 +441,25 @@ prog_t *mod_prgfind(mod_t *p_mod, std::string prog_name) {
     return 0;
   }
   return p_mod->p_mn_select->p_prg;
+}
+
+mnode_t *mod_prg_info_find(mod_t *p_mod, int idprg) {
+  if (mod_prgselect(p_mod, idprg) != 0) {
+    return 0;
+  }
+  if(p_mod->p_mn_select == &p_mod->mn_head){
+    return 0;
+  }
+  return p_mod->p_mn_select;
+}
+mnode_t *mod_prg_info_find(mod_t *p_mod, std::string prog_name) {
+  if (mod_prgselect(p_mod, prog_name) != 0) {
+    return 0;
+  }
+  if(p_mod->p_mn_select == &p_mod->mn_head){
+    return 0;
+  }
+  return p_mod->p_mn_select;
 }
 
 // int mod_to_img(prjimg_t *pimg) {
