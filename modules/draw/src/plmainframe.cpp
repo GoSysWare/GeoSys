@@ -254,8 +254,8 @@ void PLMainFrame::prjNew() {
   }
 
   gMainModel->clear();
+  gMainModel->updateProgList(-1);
   gMainModel->updateModuleList();
-  // gMainModel->updateProgList();
 
   dockProj->setWindowTitle(gMainModel->project.description());
   updateCadView();

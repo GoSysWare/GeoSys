@@ -46,9 +46,9 @@ void CadPanel::zoom(int mode) {
   h = (DEF_HEIGHT + 2) * step;
   setMinimumSize(w, h);
 
-  int ch = step * 0.8;
-  if (ch < 1) {
-    ch = 1;
+  int ch = step * 0.6;
+  if (ch < 4) {
+    ch = 4;
   }
   QFont ft(DEF_FONT_FAMILY, ch);
   setFont(ft);
@@ -200,10 +200,22 @@ void CadPanel::drawFunctionBlock(QPainter &painter, PLFunctionBlock &fb) {
   painter.fillRect(rt, fbColor);
   if (fb.isSelected) {
     QBrush brush(Qt::blue);
-    QPen pen(brush, 2.0);
+    QPen pen(brush, 3.0);
     painter.setPen(pen);
   } else {
     painter.setPen(Qt::black);
+  }
+
+  if (gTarget->isMonitor()) {
+    if(fb.output.at(0).value.v().i() < 0){
+      QBrush brush(Qt::darkRed);
+      QPen pen(brush, 3.0);
+      painter.setPen(pen);
+    }else if(fb.output.at(0).value.v().i() > 0){
+      QBrush brush(Qt::darkMagenta);
+      QPen pen(brush, 3.0);
+      painter.setPen(pen);
+    }
   }
   painter.drawRect(rt);
 

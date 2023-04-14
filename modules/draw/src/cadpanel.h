@@ -10,9 +10,9 @@
 
 const int DEF_WIDTH = 500;
 const int DEF_HEIGHT = 500;
-const int DEF_GRID_STEP = 7;
-const int MIN_GRID_STEP = 1;
-const int MAX_GRID_STEP = 15;
+const int DEF_GRID_STEP = 11;
+const int MIN_GRID_STEP = 5;
+const int MAX_GRID_STEP = 21;
 const QString DEF_FONT_FAMILY = "Monospaced";
 
 class CadPanel : public QWidget
