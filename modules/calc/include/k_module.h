@@ -12,6 +12,8 @@
 #include "modules/calc/proto/edit.pb.h"
 
 
+struct PNode;
+
 typedef struct ModInfo {
   std::string uuid;
   int id_cmd;
@@ -102,7 +104,7 @@ int mod_prgadd(mod_t *p_mod, int id, std::string name, int type,
                std::string desc, int interval);
                
 int mod_prgremove(mod_t *p_mod, int id);
-void mod_start(mod_t *p_mod);
+void mod_start(PNode *p_pn,mod_t *p_mod);
 void mod_stop(mod_t *p_mod);
 
 int mod_fbadd(mod_t *p_mod, int idprg, int id, std::string libname,

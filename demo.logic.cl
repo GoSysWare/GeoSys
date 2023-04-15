@@ -2,7 +2,7 @@ infos {
   edit_type: SET
   proj {
     proj_name: "rotbot-engine-project"
-    proj_uuid: "{f292bb71-1a61-4343-9a3d-618d8f0f6bbe}"
+    proj_uuid: "{087dcede-f4f7-4eef-a61b-f7e94f304906}"
   }
 }
 infos {
@@ -3010,20 +3010,6 @@ infos {
   }
 }
 infos {
-  cmd_id: 180
-  element: FB
-  edit_type: MV
-  fb {
-    mod_id: 9
-    task_id: 46
-    fb_id: 119
-  }
-  pos {
-    x: 176
-    y: 192
-  }
-}
-infos {
   cmd_id: 181
   element: LK
   edit_type: ADD
@@ -3103,24 +3089,6 @@ infos {
   pos {
     x: 221
     y: 192
-  }
-}
-infos {
-  cmd_id: 189
-  element: LK
-  edit_type: MV
-  lk {
-    mod_id: 9
-    task_id: 46
-    lk_id: 122
-  }
-  pos {
-    x: 198
-    y: 199
-  }
-  pos {
-    x: 221
-    y: 199
   }
 }
 infos {
@@ -4173,21 +4141,6 @@ infos {
   }
 }
 infos {
-  cmd_id: 305
-  element: FB
-  edit_type: MV
-  fb {
-    mod_id: 9
-    task_id: 46
-    fb_id: 121
-    fb_name: "\345\274\202\346\255\245\344\273\273\345\212\2412"
-  }
-  pos {
-    x: 221
-    y: 192
-  }
-}
-infos {
   cmd_id: 306
   element: FB
   edit_type: MV
@@ -4317,5 +4270,601 @@ infos {
       }
       tm: 1681464356654517059
     }
+  }
+}
+infos {
+  cmd_id: 322
+  element: FB
+  edit_type: MV
+  fb {
+    mod_id: 9
+    task_id: 46
+    fb_id: 119
+  }
+  pos {
+    x: 187
+    y: 192
+  }
+}
+infos {
+  cmd_id: 323
+  element: LK
+  edit_type: MV
+  lk {
+    mod_id: 9
+    task_id: 46
+    lk_id: 120
+  }
+  pos {
+    x: 158
+    y: 199
+  }
+  pos {
+    x: 187
+    y: 199
+  }
+}
+infos {
+  cmd_id: 329
+  element: FB
+  edit_type: MV
+  fb {
+    mod_id: 9
+    task_id: 46
+    fb_id: 121
+    fb_name: "\345\274\202\346\255\245\344\273\273\345\212\2412"
+  }
+  pos {
+    x: 242
+    y: 192
+  }
+}
+infos {
+  cmd_id: 330
+  element: LK
+  edit_type: MV
+  lk {
+    mod_id: 9
+    task_id: 46
+    lk_id: 122
+  }
+  pos {
+    x: 209
+    y: 199
+  }
+  pos {
+    x: 242
+    y: 199
+  }
+}
+infos {
+  cmd_id: 331
+  element: FB
+  edit_type: ADD
+  fb {
+    mod_id: 105
+    task_id: 106
+    fb_id: 140
+    flib_name: "Task"
+    fc_name: "SLEEP"
+  }
+  pos {
+    x: 83
+    y: 49
+  }
+}
+infos {
+  cmd_id: 342
+  element: FB
+  edit_type: ADD
+  fb {
+    mod_id: 105
+    task_id: 106
+    fb_id: 141
+    flib_name: "Logic"
+    fc_name: "NOT"
+  }
+  pos {
+    x: 72
+    y: 57
+  }
+}
+infos {
+  cmd_id: 345
+  element: FB
+  edit_type: MV
+  fb {
+    mod_id: 105
+    task_id: 106
+    fb_id: 141
+  }
+  pos {
+    x: 70
+    y: 51
+  }
+}
+infos {
+  cmd_id: 347
+  element: FB
+  edit_type: RM
+  fb {
+    mod_id: 105
+    task_id: 106
+    fb_id: 141
+  }
+}
+infos {
+  cmd_id: 348
+  element: FB
+  edit_type: ADD
+  fb {
+    mod_id: 105
+    task_id: 106
+    fb_id: 142
+    flib_name: "Comparison"
+    fc_name: "NE_INT"
+  }
+  pos {
+    x: 79
+    y: 57
+  }
+}
+infos {
+  cmd_id: 349
+  element: FB
+  edit_type: MV
+  fb {
+    mod_id: 105
+    task_id: 106
+    fb_id: 142
+  }
+  pos {
+    x: 71
+    y: 45
+  }
+}
+infos {
+  cmd_id: 350
+  element: LK
+  edit_type: ADD
+  lk {
+    mod_id: 105
+    task_id: 106
+    lk_id: 143
+    src_fb_id: 123
+    target_fb_id: 142
+    target_pin_index: 1
+  }
+  pos {
+    x: 47
+    y: 58
+  }
+  pos {
+    x: 59
+    y: 58
+  }
+  pos {
+    x: 59
+    y: 52
+  }
+  pos {
+    x: 71
+    y: 52
+  }
+}
+infos {
+  cmd_id: 351
+  element: PIN
+  edit_type: SET
+  pin {
+    mod_id: 105
+    task_id: 106
+    fb_id: 142
+    pin_index: 2
+    pin_val {
+      v {
+        t: T_INT32
+        i: 0
+      }
+      tm: 1681571174138136249
+    }
+  }
+}
+infos {
+  cmd_id: 352
+  element: LK
+  edit_type: ADD
+  lk {
+    mod_id: 105
+    task_id: 106
+    lk_id: 144
+    src_fb_id: 142
+    src_pin_index: 1
+    target_fb_id: 140
+    target_pin_index: 1
+  }
+  pos {
+    x: 90
+    y: 52
+  }
+  pos {
+    x: 99
+    y: 52
+  }
+  pos {
+    x: 99
+    y: 56
+  }
+  pos {
+    x: 109
+    y: 56
+  }
+}
+infos {
+  cmd_id: 359
+  element: FB
+  edit_type: MV
+  fb {
+    mod_id: 105
+    task_id: 106
+    fb_id: 140
+  }
+  pos {
+    x: 113
+    y: 45
+  }
+}
+infos {
+  cmd_id: 360
+  element: LK
+  edit_type: MV
+  lk {
+    mod_id: 105
+    task_id: 106
+    lk_id: 144
+  }
+  pos {
+    x: 90
+    y: 52
+  }
+  pos {
+    x: 113
+    y: 52
+  }
+}
+infos {
+  cmd_id: 361
+  element: FB
+  edit_type: ADD
+  fb {
+    mod_id: 105
+    task_id: 106
+    fb_id: 145
+    flib_name: "Arithmetic"
+    fc_name: "MUL_INT"
+  }
+  pos {
+    x: 159
+    y: 67
+  }
+}
+infos {
+  cmd_id: 365
+  element: LK
+  edit_type: ADD
+  lk {
+    mod_id: 105
+    task_id: 106
+    lk_id: 146
+    src_fb_id: 140
+    src_pin_index: 1
+    target_fb_id: 145
+  }
+  pos {
+    x: 138
+    y: 52
+  }
+  pos {
+    x: 148
+    y: 52
+  }
+  pos {
+    x: 148
+    y: 49
+  }
+  pos {
+    x: 158
+    y: 49
+  }
+}
+infos {
+  cmd_id: 370
+  element: LK
+  edit_type: ADD
+  lk {
+    mod_id: 105
+    task_id: 106
+    lk_id: 147
+    src_fb_id: 123
+    src_pin_index: 1
+    target_fb_id: 145
+    target_pin_index: 1
+  }
+  pos {
+    x: 47
+    y: 60
+  }
+  pos {
+    x: 104
+    y: 60
+  }
+  pos {
+    x: 104
+    y: 53
+  }
+  pos {
+    x: 161
+    y: 53
+  }
+}
+infos {
+  cmd_id: 375
+  element: PIN
+  edit_type: SET
+  pin {
+    mod_id: 105
+    task_id: 106
+    fb_id: 145
+    pin_index: 2
+    pin_val {
+      v {
+        t: T_INT32
+        i: 5
+      }
+      tm: 1681571290289475773
+    }
+  }
+}
+infos {
+  cmd_id: 376
+  element: FB
+  edit_type: MV
+  fb {
+    mod_id: 105
+    task_id: 106
+    fb_id: 145
+  }
+  pos {
+    x: 196
+    y: 47
+  }
+}
+infos {
+  cmd_id: 377
+  element: LK
+  edit_type: MV
+  lk {
+    mod_id: 105
+    task_id: 106
+    lk_id: 146
+  }
+  pos {
+    x: 138
+    y: 52
+  }
+  pos {
+    x: 196
+    y: 52
+  }
+}
+infos {
+  cmd_id: 379
+  element: LK
+  edit_type: MV
+  lk {
+    mod_id: 105
+    task_id: 106
+    lk_id: 147
+  }
+  pos {
+    x: 47
+    y: 60
+  }
+  pos {
+    x: 47
+    y: 69
+  }
+  pos {
+    x: 179
+    y: 69
+  }
+  pos {
+    x: 179
+    y: 54
+  }
+  pos {
+    x: 196
+    y: 54
+  }
+}
+infos {
+  cmd_id: 380
+  element: PIN
+  edit_type: SET
+  pin {
+    mod_id: 105
+    task_id: 106
+    fb_id: 140
+    pin_index: 2
+    pin_val {
+      v {
+        t: T_TIME
+        tm: 5000
+      }
+      tm: 1681571388005251469
+    }
+  }
+}
+infos {
+  cmd_id: 381
+  element: LK
+  edit_type: RM
+  lk {
+    mod_id: 105
+    task_id: 106
+    lk_id: 144
+  }
+}
+infos {
+  cmd_id: 382
+  element: LK
+  edit_type: RM
+  lk {
+    mod_id: 105
+    task_id: 106
+    lk_id: 143
+  }
+}
+infos {
+  cmd_id: 383
+  element: FB
+  edit_type: RM
+  fb {
+    mod_id: 105
+    task_id: 106
+    fb_id: 142
+  }
+}
+infos {
+  cmd_id: 384
+  element: FB
+  edit_type: ADD
+  fb {
+    mod_id: 105
+    task_id: 106
+    fb_id: 148
+    flib_name: "Comparison"
+    fc_name: "EQ_INT"
+  }
+  pos {
+    x: 79
+    y: 50
+  }
+}
+infos {
+  cmd_id: 385
+  element: LK
+  edit_type: ADD
+  lk {
+    mod_id: 105
+    task_id: 106
+    lk_id: 149
+    src_fb_id: 123
+    target_fb_id: 148
+    target_pin_index: 1
+  }
+  pos {
+    x: 47
+    y: 58
+  }
+  pos {
+    x: 63
+    y: 58
+  }
+  pos {
+    x: 63
+    y: 57
+  }
+  pos {
+    x: 79
+    y: 57
+  }
+}
+infos {
+  cmd_id: 386
+  element: FB
+  edit_type: MV
+  fb {
+    mod_id: 105
+    task_id: 106
+    fb_id: 148
+  }
+  pos {
+    x: 72
+    y: 41
+  }
+}
+infos {
+  cmd_id: 387
+  element: LK
+  edit_type: MV
+  lk {
+    mod_id: 105
+    task_id: 106
+    lk_id: 149
+  }
+  pos {
+    x: 47
+    y: 58
+  }
+  pos {
+    x: 63
+    y: 58
+  }
+  pos {
+    x: 63
+    y: 48
+  }
+  pos {
+    x: 72
+    y: 48
+  }
+}
+infos {
+  cmd_id: 388
+  element: PIN
+  edit_type: SET
+  pin {
+    mod_id: 105
+    task_id: 106
+    fb_id: 148
+    pin_index: 2
+    pin_val {
+      v {
+        t: T_INT32
+        i: 0
+      }
+      tm: 1681571512788630782
+    }
+  }
+}
+infos {
+  cmd_id: 389
+  element: LK
+  edit_type: ADD
+  lk {
+    mod_id: 105
+    task_id: 106
+    lk_id: 150
+    src_fb_id: 148
+    src_pin_index: 1
+    target_fb_id: 140
+    target_pin_index: 1
+  }
+  pos {
+    x: 91
+    y: 48
+  }
+  pos {
+    x: 102
+    y: 48
+  }
+  pos {
+    x: 102
+    y: 52
+  }
+  pos {
+    x: 113
+    y: 52
   }
 }

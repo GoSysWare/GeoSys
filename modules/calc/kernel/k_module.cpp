@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <string>
 
+#include "modules/calc/include/k_project.h"
 #include "modules/calc/include/k_module.h"
 #include "modules/calc/include/k_util.h"
 
@@ -235,7 +236,7 @@ int mod_prgremove(mod_t *p_mod, int id) {
   return 0;
 }
 
-void mod_start(mod_t *p_mod) {
+void mod_start(PNode *p_pn, mod_t *p_mod) {
   mnode_t *p_mn;
 
   p_mn = p_mod->mn_head.p_next;
@@ -299,14 +300,13 @@ void mod_start(mod_t *p_mod) {
 
       auto f = [p_mn](const std::shared_ptr<TaskReqParam> &request,
                       std::shared_ptr<TaskRspParam> &response) {
-
         ((task_node_t *)p_mn)->client = request->client();
-       p_mn->info.begin_time = apollo::cyber::Time::Now().ToNanosecond();
+        p_mn->info.begin_time = apollo::cyber::Time::Now().ToNanosecond();
         p_mn->info.cycle_time =
             apollo::cyber::Duration(
                 int64_t(p_mn->info.begin_time - p_mn->info.prev_time))
                 .ToNanosecond();
-        p_mn->info.prev_time = p_mn->info.begin_time;  
+        p_mn->info.prev_time = p_mn->info.begin_time;
         prg_exec(p_mn->p_prg, &p_mn->info);
         p_mn->info.expend_time = (apollo::cyber::Time::Now() -
                                   apollo::cyber::Time(p_mn->info.begin_time))
@@ -316,7 +316,8 @@ void mod_start(mod_t *p_mod) {
       };
       ((task_node_t *)p_mn)->task_server =
           apollo::cyber::GlobalNode()
-              ->CreateAsyncTask<TaskReqParam, TaskRspParam>(p_mn->name, f);
+              ->CreateAsyncTask<TaskReqParam, TaskRspParam>(
+                  p_pn->name + "." + p_mn->name, f);
     }
     p_mn = p_mn->p_next;
   }
@@ -447,7 +448,7 @@ mnode_t *mod_prg_info_find(mod_t *p_mod, int idprg) {
   if (mod_prgselect(p_mod, idprg) != 0) {
     return 0;
   }
-  if(p_mod->p_mn_select == &p_mod->mn_head){
+  if (p_mod->p_mn_select == &p_mod->mn_head) {
     return 0;
   }
   return p_mod->p_mn_select;
@@ -456,7 +457,7 @@ mnode_t *mod_prg_info_find(mod_t *p_mod, std::string prog_name) {
   if (mod_prgselect(p_mod, prog_name) != 0) {
     return 0;
   }
-  if(p_mod->p_mn_select == &p_mod->mn_head){
+  if (p_mod->p_mn_select == &p_mod->mn_head) {
     return 0;
   }
   return p_mod->p_mn_select;

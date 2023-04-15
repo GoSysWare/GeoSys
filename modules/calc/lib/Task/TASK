@@ -18,71 +18,76 @@ static void run_TASK(void *p) {
   vam_t fire = pb->ins[1].v;
   vam_t mod_name = pb->ins[2].v;
   vam_t task_name = pb->ins[3].v;
-  vam_t timeout = pb->ins[3].v;
-  vam_t is_asyc = pb->ins[4].v;
+  vam_t timeout = pb->ins[4].v;
+  vam_t is_asyc = pb->ins[5].v;
   vam_t &next_task = pb->outs[1].v;
   vam_t &req_time = pb->outs[2].v;
   vam_t &rsp_time = pb->outs[3].v;
-  if (fire->v().b()) {
-    prog_t *prg = prj_prgfind(mod_name->v().str(), task_name->v().str());
-    if (!prg) {
-      status->mutable_v()->set_i(-1);
+  if (!fire->v().b()) {
+    next_task->mutable_v()->set_b(false);
+    return;
+  }
+  prog_t *prg = prj_prgfind(mod_name->v().str(), task_name->v().str());
+  if (!prg) {
+    status->mutable_v()->set_i(-1);
+    return;
+  }
+  // asyc
+  if (is_asyc->v().b() == true) {
+    req_time->mutable_v()->set_tm(MonoTime());
+
+    auto client = apollo::cyber::GlobalNode()
+                      ->CreateAsyncTaskClient<TaskReqParam, TaskRspParam>(
+                          mod_name->v().str() + "." + task_name->v().str());
+    if (client == nullptr) {
+      status->mutable_v()->set_i(2);
+      next_task->mutable_v()->set_b(false);
+      rsp_time->mutable_v()->set_tm(0);
       return;
     }
-    // asyc
-    if (is_asyc->v().b() == true) {
-      //
-      auto client = apollo::cyber::GlobalNode()
-                        ->CreateAsyncTaskClient<TaskReqParam, TaskRspParam>(
-                            mod_name->v().str() + "." + task_name->v().str());
-      if (client == nullptr) {
-        status->mutable_v()->set_i(2);
-        return;
-      }
 
-      std::shared_ptr<TaskReqParam> request = std::make_shared<TaskReqParam>();
-      request->set_client(pb->h.fbname);
+    std::shared_ptr<TaskReqParam> request = std::make_shared<TaskReqParam>();
+    request->set_client(pb->h.fbname);
 
-      req_time->mutable_v()->set_tm(MonoTime());
 
-      auto response =
-          client->SendRequest(request, std::chrono::seconds(timeout->v().tm()/1000));
-      if (response == nullptr) {
-        status->mutable_v()->set_i(3);
-        next_task->mutable_v()->set_b(false);
-        return;
-      }
-      rsp_time->mutable_v()->set_tm(response->timestamp());
-      next_task->mutable_v()->set_b(true);
-
-    } else { // sync
-      mnode_t *p_mn =
-          prj_prg_info_find(mod_name->v().str(), task_name->v().str());
-      if (!p_mn) {
-        status->mutable_v()->set_i(-1);
-        next_task->mutable_v()->set_b(false);
-        return;
-      }
-      req_time->mutable_v()->set_tm(MonoTime());
-      // 同步子任务执行
-      p_mn->info.begin_time = apollo::cyber::Time::Now().ToNanosecond();
-      p_mn->info.cycle_time =
-          apollo::cyber::Duration(
-              int64_t(p_mn->info.begin_time - p_mn->info.prev_time))
-              .ToNanosecond();
-      p_mn->info.prev_time = p_mn->info.begin_time;
-      prg_exec(p_mn->p_prg, &p_mn->info);
-      p_mn->info.expend_time = (apollo::cyber::Time::Now() -
-                                apollo::cyber::Time(p_mn->info.begin_time))
-                                   .ToNanosecond();
-      //同步子任务结束
-      rsp_time->mutable_v()->set_tm(MonoTime());
-      next_task->mutable_v()->set_b(true);
+    auto response = client->SendRequest(
+        request, std::chrono::seconds(timeout->v().tm() / 1000));
+    if (response == nullptr) {
+      status->mutable_v()->set_i(3);
+      next_task->mutable_v()->set_b(false);
+      rsp_time->mutable_v()->set_tm(0);
+      return;
     }
-
-  } else {
     status->mutable_v()->set_i(0);
-    next_task->mutable_v()->set_b(false);
+    rsp_time->mutable_v()->set_tm(response->timestamp());
+    next_task->mutable_v()->set_b(true);
+
+  } else { // sync
+    req_time->mutable_v()->set_tm(MonoTime());
+
+    mnode_t *p_mn =
+        prj_prg_info_find(mod_name->v().str(), task_name->v().str());
+    if (!p_mn) {
+      status->mutable_v()->set_i(-1);
+      next_task->mutable_v()->set_b(false);
+      rsp_time->mutable_v()->set_tm(0);
+      return;
+    }
+    // 同步子任务执行
+    p_mn->info.begin_time = apollo::cyber::Time::Now().ToNanosecond();
+    p_mn->info.cycle_time =
+        apollo::cyber::Duration(
+            int64_t(p_mn->info.begin_time - p_mn->info.prev_time))
+            .ToNanosecond();
+    p_mn->info.prev_time = p_mn->info.begin_time;
+    prg_exec(p_mn->p_prg, &p_mn->info);
+    p_mn->info.expend_time = (apollo::cyber::Time::Now() -
+                              apollo::cyber::Time(p_mn->info.begin_time))
+                                 .ToNanosecond();
+    //同步子任务结束
+    status->mutable_v()->set_i(0);
+    rsp_time->mutable_v()->set_tm(MonoTime());
+    next_task->mutable_v()->set_b(true);
   }
 
   return;

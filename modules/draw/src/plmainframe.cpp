@@ -283,6 +283,7 @@ void PLMainFrame::openProject(QString fileName) {
   }
 
   gMainModel->modelEVData.endReset();
+  gMainModel->updateProgList(-1);
   gMainModel->updateModuleList();
   gMainModel->project.fileName = fileName;
 

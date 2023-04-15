@@ -159,7 +159,7 @@ void prj_start() {
   p_pn = pn_head.p_next;
   while (p_pn != &pn_head) {
     if (p_pn->enable) {
-      mod_start(p_pn->p_mod);
+      mod_start(p_pn,p_pn->p_mod);
     }
     p_pn = p_pn->p_next;
   }
