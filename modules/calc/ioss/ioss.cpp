@@ -1,16 +1,16 @@
 
 #include "ioss.h"
 
-IOSS::DevicesInfo g_devices_info;
+IOSS::DevicesCfg g_devices_cfg;
 
 bool ioss_init() {
   // apollo::cyber::common::GetProtoFromFile("device_info.conf",
-  // &g_devices_info);
+  // &g_devices_cfg);
   apollo::cyber::common::GetProtoFromFile(
       "/home/shuimujie/Works/GeoSys/modules/calc/ioss/device_info.conf",
-      &g_devices_info);
+      &g_devices_cfg);
 
-  std::cout << g_devices_info.DebugString() << std::endl;
+  std::cout << g_devices_cfg.DebugString() << std::endl;
   io_pnp_devices();
   return true;
 }
@@ -18,17 +18,17 @@ void ioss_uninit() { io_pnp_stop_devices(); }
 
 bool io_pnp_devices() {
 
-  for (auto i = 0; i < g_devices_info.vendors().size(); i++) {
-    IOSS::Vendors v = g_devices_info.vendors(i);
+  for (auto i = 0; i < g_devices_cfg.vendors().size(); i++) {
+    IOSS::VendorsCfg v = g_devices_cfg.vendors(i);
     for (auto j = 0; j < v.drivers().size(); j++) {
-      IOSS::Driver drv_cfg = v.drivers(j);
+      IOSS::DriverCfg drv_cfg = v.drivers(j);
       if (drv_cfg.devices().size() > 0) {
         driver_t *driver = io_load_driver(v.name(), drv_cfg.name());
         if (!driver) {
           // to do
         }
         for (auto m = 0; m < drv_cfg.devices().size(); m++) {
-          IOSS::Device dev_cfg = drv_cfg.devices(m);
+          IOSS::DeviceCfg dev_cfg = drv_cfg.devices(m);
           device_t *device = io_create_device(driver, dev_cfg.name());
           if (!device) {
             // to do

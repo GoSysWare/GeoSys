@@ -12,7 +12,7 @@
 #include "ioss.h"
 
 DRIVER_LIST g_drivers;
-extern IOSS::DevicesInfo g_devices_info;
+extern IOSS::DevicesCfg g_devices_cfg;
 
 #ifndef _WIN32
 #define LoadLibrary(name, flag) dlopen(name, flag)
@@ -78,14 +78,27 @@ driver_t *get_driver(std::string key) {
   return dev->drv;
 }
 
+std::vector<driver_t *> io_get_drivers()
+{
+ DRIVER_LIST::iterator p;
+  std::vector<driver_t *> drv_list;
+  p = g_drivers.begin();
+  while (p != g_drivers.end()) {
+    drv_list.push_back(&(*p));
+    p++;
+  }
+  return std::move(drv_list);
+}
+
+
 driver_t *io_load_driver(std::string vendor_name, std::string driver_name) {
   DRIVER_LIST::iterator it;
   driver_t driver;
   std::string infofile;
 
-  for (auto i = 0; i < g_devices_info.vendors().size(); i++) {
-    if (g_devices_info.vendors(i).name() == vendor_name) {
-      IOSS::Vendors v = g_devices_info.vendors(i);
+  for (auto i = 0; i < g_devices_cfg.vendors().size(); i++) {
+    if (g_devices_cfg.vendors(i).name() == vendor_name) {
+      IOSS::VendorsCfg v = g_devices_cfg.vendors(i);
       for (auto j = 0; j < v.drivers().size(); j++) {
         if (v.drivers(j).name() == driver_name) {
           driver.dllname = v.drivers(j).dllname();

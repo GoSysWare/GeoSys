@@ -22,6 +22,7 @@ device_t *io_create_device(driver_t *driver, std::string device_name);
 bool io_delete_device(device_t *dev);
 
 std::vector<device_t *> io_get_devices();
+std::vector<driver_t *> io_get_drivers();
 
 device_t *io_get_devices(std::string dev_name);
 
