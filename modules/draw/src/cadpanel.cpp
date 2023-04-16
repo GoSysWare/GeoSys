@@ -8,10 +8,11 @@
 #include "pllink.h"
 #include "plprogram.h"
 #include <QMessageBox>
-
+#include <QToolTip>
 CadPanel::CadPanel() {
   fontMetrics = NULL;
   zoom(0);
+  setWindowTitle(tr("test"));
 
   cursorFb = new QCursor(QPixmap(":/images/cursorfb.png"));
   cursorLk = new QCursor(QPixmap(":/images/cursorlk.png"), 0, 0);
@@ -174,9 +175,9 @@ void CadPanel::drawFunctionBlock(QPainter &painter, PLFunctionBlock &fb) {
   QColor fColor = Qt::black;
   QColor bColor = Qt::white;
   if (gTarget->isMonitor()) {
-    if(fb.flag & 0xFF == FB_INIT){
+    if (fb.flag & 0xFF == FB_INIT) {
       bColor = Qt::blue;
-    }else{
+    } else {
       bColor = Qt::lightGray;
     }
   }
@@ -207,11 +208,11 @@ void CadPanel::drawFunctionBlock(QPainter &painter, PLFunctionBlock &fb) {
   }
 
   if (gTarget->isMonitor()) {
-    if(fb.output.at(0).value.v().i() < 0){
+    if (fb.output.at(0).value.v().i() < 0) {
       QBrush brush(Qt::darkRed);
       QPen pen(brush, 3.0);
       painter.setPen(pen);
-    }else if(fb.output.at(0).value.v().i() > 0){
+    } else if (fb.output.at(0).value.v().i() > 0) {
       QBrush brush(Qt::darkMagenta);
       QPen pen(brush, 3.0);
       painter.setPen(pen);
@@ -425,9 +426,6 @@ void CadPanel::mousePressEvent(QMouseEvent *event) {
 }
 
 void CadPanel::mouseMoveEvent(QMouseEvent *event) {
-  if (gTarget->isMonitor()) {
-    return;
-  }
 
   if (gMainModel->prgCurrent == NULL) {
     return;
@@ -442,7 +440,22 @@ void CadPanel::mouseMoveEvent(QMouseEvent *event) {
 
   xMov = event->x() - step;
   yMov = event->y() - step;
+  bool isShowTip = false;
 
+  if (gTarget->isMonitor()) {
+    hitTest(xMov, yMov);
+    if (selCurrent.type == PT_FB) {
+      QString tipString = tr("begin time(ns) :") + QString::number(selCurrent.fb->begin_time);
+      tipString += "\n";
+      tipString += tr("cycle time(ms) :") + QString::number(selCurrent.fb->cycle_time/1000000);
+      tipString += "\n";
+      tipString += tr("last expend (ns) :") + QString::number(selCurrent.fb->expend_time);    
+      QToolTip::showText(QCursor::pos(), tipString);
+    } else {
+      QToolTip::hideText();
+    }
+    return;
+  }
   if (event->buttons() & Qt::LeftButton) {
     if (selCurrent.type == PT_INPUT || selCurrent.type == PT_OUTPUT) {
       hitTestTarget(xMov, yMov);
@@ -603,7 +616,6 @@ void CadPanel::mouseReleaseEvent(QMouseEvent *event) {
 
 void CadPanel::mouseDoubleClickEvent(QMouseEvent *event) {
 
-
   int x, y;
   x = event->x() - step;
   y = event->y() - step;
@@ -612,30 +624,32 @@ void CadPanel::mouseDoubleClickEvent(QMouseEvent *event) {
   if (gTarget->isMonitor()) {
 
     if (selCurrent.type == PT_INPUT) {
-        if (selCurrent.fb->input.at(selCurrent.value).hasVariable) {
-          return;
-        }
-        if (selCurrent.fb->input.at(selCurrent.value).hasInputLink) {
-          return;
-        }
-        PLEVData ev;
-        QString constValue = "0";
-        bool isConst = true;
-        DlgPinSet dlgPinSet(this);
-        dlgPinSet.exchangeValue(constValue, ev, isConst, true, true);
-        if (dlgPinSet.exec() != QDialog::Accepted) {
-          return;
-        }
-        dlgPinSet.exchangeValue(constValue, ev, isConst, true, false);
-        if (isConst) {
-            value_tm val;
-            val = setvar(selCurrent.fb->input[selCurrent.value].type,
-                        constValue.toStdString());
-	        emit  setOnlineValueSignal(gMainModel->prgCurrent->idMod,gMainModel->prgCurrent->id,selCurrent.fb->id, selCurrent.value,val);
-
-          update();
-        } 
+      if (selCurrent.fb->input.at(selCurrent.value).hasVariable) {
+        return;
       }
+      if (selCurrent.fb->input.at(selCurrent.value).hasInputLink) {
+        return;
+      }
+      PLEVData ev;
+      QString constValue = "0";
+      bool isConst = true;
+      DlgPinSet dlgPinSet(this);
+      dlgPinSet.exchangeValue(constValue, ev, isConst, true, true);
+      if (dlgPinSet.exec() != QDialog::Accepted) {
+        return;
+      }
+      dlgPinSet.exchangeValue(constValue, ev, isConst, true, false);
+      if (isConst) {
+        value_tm val;
+        val = setvar(selCurrent.fb->input[selCurrent.value].type,
+                     constValue.toStdString());
+        emit setOnlineValueSignal(gMainModel->prgCurrent->idMod,
+                                  gMainModel->prgCurrent->id, selCurrent.fb->id,
+                                  selCurrent.value, val);
+
+        update();
+      }
+    }
 
     return;
   }
@@ -643,8 +657,6 @@ void CadPanel::mouseDoubleClickEvent(QMouseEvent *event) {
   if (gMainModel->prgCurrent == NULL) {
     return;
   }
-
-
 
   if (selCurrent.type == PT_FB) {
     DlgObjName dlgObjName(this);
@@ -1070,8 +1082,14 @@ int CadPanel::pinMatch() {
       t1 = selCurrent.fb->input.at(selCurrent.value).value.v().t();
       t2 = selTarget.fb->output.at(selTarget.value).value.v().t();
       pin = &selCurrent.fb->input[selCurrent.value];
-      if(t1 == v_type::T_ANY) t1_sub = selCurrent.fb->input.at(selCurrent.value).value.v().any().type_url();
-      if(t2 == v_type::T_ANY) t2_sub = selTarget.fb->input.at(selTarget.value).value.v().any().type_url();
+      if (t1 == v_type::T_ANY)
+        t1_sub = selCurrent.fb->input.at(selCurrent.value)
+                     .value.v()
+                     .any()
+                     .type_url();
+      if (t2 == v_type::T_ANY)
+        t2_sub =
+            selTarget.fb->input.at(selTarget.value).value.v().any().type_url();
 
     } else {
       return -1;
@@ -1081,8 +1099,14 @@ int CadPanel::pinMatch() {
       t1 = selCurrent.fb->output.at(selCurrent.value).value.v().t();
       t2 = selTarget.fb->input.at(selTarget.value).value.v().t();
       pin = &selTarget.fb->input[selTarget.value];
-      if(t1 == v_type::T_ANY) t1_sub = selCurrent.fb->input.at(selCurrent.value).value.v().any().type_url();
-      if(t2 == v_type::T_ANY) t2_sub = selTarget.fb->input.at(selTarget.value).value.v().any().type_url();
+      if (t1 == v_type::T_ANY)
+        t1_sub = selCurrent.fb->input.at(selCurrent.value)
+                     .value.v()
+                     .any()
+                     .type_url();
+      if (t2 == v_type::T_ANY)
+        t2_sub =
+            selTarget.fb->input.at(selTarget.value).value.v().any().type_url();
     } else {
       return -1;
     }
@@ -1091,16 +1115,16 @@ int CadPanel::pinMatch() {
   }
 
   if (t1 == t2) {
-    if(t1_sub == t2_sub){
+    if (t1_sub == t2_sub) {
       if (pin->hasInputLink || pin->hasVariable) {
-          return -1;
-        } else {
-          return 1;
-        }
-    }else{
+        return -1;
+      } else {
+        return 1;
+      }
+    } else {
       return -2;
     }
- 
+
   } else {
     return -1;
   }
@@ -1118,9 +1142,8 @@ void CadPanel::hitTestTarget(int x, int y) {
 
   // 如果两者类型不对，不让连线
   if (m == -2) {
-    QMessageBox::warning(
-            this, "Warning",
-            tr("sub type is not match when type is any"));   
+    QMessageBox::warning(this, "Warning",
+                         tr("sub type is not match when type is any"));
     setCursor(Qt::ForbiddenCursor);
   } else if (m == -1) {
     setCursor(Qt::ForbiddenCursor);
@@ -1504,7 +1527,7 @@ void CadPanel::getCopyCommands(QByteArray &cpCmds) {
   int len = edit_infos.ByteSizeLong();
   cpCmds.resize(len);
 
-  edit_infos.SerializeToArray(cpCmds.data(),len);
+  edit_infos.SerializeToArray(cpCmds.data(), len);
 }
 
 static int getObjFromCpCmd(const Bus::EditInfo &info, PLFunctionBlock &fb,
@@ -1552,7 +1575,7 @@ void CadPanel::exeCopyCommands(QByteArray &cpCmds) {
 
   Bus::EditInfos edit_infos;
 
-  edit_infos.ParseFromArray(cpCmds.data(),cpCmds.size());
+  edit_infos.ParseFromArray(cpCmds.data(), cpCmds.size());
 
   for (i = 0; i < edit_infos.infos_size(); i++) {
     t = getObjFromCpCmd(edit_infos.infos(i), fb, lk);

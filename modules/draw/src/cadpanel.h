@@ -36,7 +36,6 @@ protected:
     void dragEnterEvent(QDragEnterEvent * event);
     void dropEvent(QDropEvent * event);
     void mouseDoubleClickEvent(QMouseEvent * event);
-
 signals:
 	void setOnlineValueSignal(int idMod,int idPrg,int idFb,int idPin, value_tm val);
 
