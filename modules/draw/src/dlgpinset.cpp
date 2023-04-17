@@ -20,7 +20,7 @@ DlgPinSet::DlgPinSet(QWidget *parent, Qt::WindowFlags f)
     rbConst = new QRadioButton(tr("Const"));
     rbVariable = new QRadioButton(tr("Variable"));
     textConst = new QLineEdit;
-    textConst->setMaxLength(32);
+    textConst->setMaxLength(1024);
     textVariable = new QLineEdit;
     textVariable->setMaxLength(32);
     buttonBox = new QDialogButtonBox;

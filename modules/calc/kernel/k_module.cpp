@@ -3,8 +3,8 @@
 #include <stdlib.h>
 #include <string>
 
-#include "modules/calc/include/k_project.h"
 #include "modules/calc/include/k_module.h"
+#include "modules/calc/include/k_project.h"
 #include "modules/calc/include/k_util.h"
 
 static mnode_t *mn_new(int type) {
@@ -265,6 +265,10 @@ void mod_start(PNode *p_pn, mod_t *p_mod) {
         p_mn->info.expend_time = (apollo::cyber::Time::Now() -
                                   apollo::cyber::Time(p_mn->info.begin_time))
                                      .ToNanosecond();
+        // AERROR << "Async task name:" << p_mn->name
+        //        << " begin_time:" << p_mn->info.begin_time
+        //        << " cycle_time:" << p_mn->info.cycle_time
+        //        << " expend_time:" << p_mn->info.expend_time;
       };
       opt.period = ((period_node_t *)p_mn)->interval;
       ((period_node_t *)p_mn)->timer.SetTimerOption(opt);
@@ -312,7 +316,11 @@ void mod_start(PNode *p_pn, mod_t *p_mod) {
                                   apollo::cyber::Time(p_mn->info.begin_time))
                                      .ToNanosecond();
         response->set_timestamp(apollo::cyber::Time::Now().ToNanosecond());
-        // }
+        // AERROR << "Async task name:" << p_mn->name
+        //        << " client:" << request->client()
+        //        << " begin_time:" << p_mn->info.begin_time
+        //        << " cycle_time:" << p_mn->info.cycle_time
+        //        << " expend_time:" << p_mn->info.expend_time;
       };
       ((task_node_t *)p_mn)->task_server =
           apollo::cyber::GlobalNode()

@@ -155,11 +155,7 @@ void EVDataPanel::showEVData(bool check)
 
     DlgEvShow dlgShow(this);
     dlgShow.setTitle(evCur.name);
-    QByteArray  img_bytes;
-    int len = evCur.value.v().img().length();
-    img_bytes.resize(len);
-    memcpy(img_bytes.data(), evCur.value.v().img().data(), len);//copy数据
-    dlgShow.setValueData(img_bytes);
+    dlgShow.setValueData(evCur);
 
     if (dlgShow.exec() != QDialog::Accepted) {
 

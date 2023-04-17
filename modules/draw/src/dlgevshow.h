@@ -1,6 +1,6 @@
 
-#ifndef DLGOBJNAME_H
-#define DLGOBJNAME_H
+#ifndef DLGEVSHOW_H
+#define DLGEVSHOW_H
 
 #include <QDialog>
 #include <QBoxLayout>
@@ -10,6 +10,7 @@
 #include <QImage>
 #include <QDialogButtonBox>
 #include <QPainter>
+#include "plevdata.h"
 
 class DlgEvShow : public QDialog
 {
@@ -19,11 +20,14 @@ public:
     ~DlgEvShow();
     void setTitle(QString title);
     void setValueData(QByteArray value);
-    void paintEvent(QPaintEvent *e);
-
+    // void paintEvent(QPaintEvent *e);
+    void setValueData(PLEVData ev);
 private:
     QImage * img;
     QVBoxLayout *layout;
+    QLabel *label;
+    QLineEdit  *str_value;
+    QLabel *img_value;
 };
 
 #endif // DLGOBJNAME_H

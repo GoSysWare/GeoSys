@@ -96,7 +96,7 @@ void CameraComponent::run() {
     // raw_image_->image 里是RGB
     // cv::Mat 是BGR
     cv::Mat v(raw_image_->height,raw_image_->width,CV_8UC3,raw_image_->image);
-    cv::imwrite("/home/shuimujie/Works/GeoSys/modules/calc/devices/camera/proto/lgo.jpg",v);
+    cv::imwrite("/home/shuimujie/Works/GeoSys/go.jpg",v);
 
     apollo::cyber::SleepFor(std::chrono::microseconds(spin_rate_));
   }
