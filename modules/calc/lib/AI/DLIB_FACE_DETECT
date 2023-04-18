@@ -116,8 +116,8 @@ static void run_DLIB_FACE_DETECT(void *p) {
     dlib::matrix<dlib::rgb_pixel> face_chip;
     dlib::extract_image_chip(dlib_img, get_face_chip_details(shape, 150, 0.25),
                              face_chip);
-    dlib::save_jpeg(face_chip, "/home/shuimujie/Works/GeoSys/" +
-                                   std::to_string(count) + ".jpeg");
+    // dlib::save_jpeg(face_chip, "/home/shuimujie/Works/GeoSys/" +
+    //                                std::to_string(count) + ".jpeg");
     faces.push_back(move(face_chip));
 
 
