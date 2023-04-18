@@ -85,11 +85,28 @@ void prg_exec(prog_t *p_prg, proginfo_t *p_prog_info) {
              apollo::cyber::Time(p_en->p_fb->h.begin_time))
                 .ToNanosecond();
       }
-    } else { 
-      // 当是pin之间link链接时
-      p_en->p_vtgt->v = p_en->p_vsrc->v;
     }
-    p_en = p_en->p_next;
+    //  else {
+    //   // 当是pin之间link链接时
+    //   //
+    //   if (p_en->p_vsrc->s == PIN_HAS_LOCK) {
+    //     apollo::cyber::base::ReadLockGuard<apollo::cyber::base::ReentrantRWLock>
+    //         lg(*(p_en->p_vsrc->l));
+    //     if (p_en->p_vtgt->s == PIN_HAS_LOCK) {
+    //       apollo::cyber::base::WriteLockGuard<
+    //           apollo::cyber::base::ReentrantRWLock>
+    //           lg(*(p_en->p_vtgt->l));
+    //       p_en->p_vtgt->v = p_en->p_vsrc->v;
+
+    //     } else {
+    //       p_en->p_vtgt->v = p_en->p_vsrc->v;
+    //     }
+    //   } else {
+    //     p_en->p_vtgt->v = p_en->p_vsrc->v;
+    //   }
+    //   p_en = p_en->p_next;
+    // }
+  p_en = p_en->p_next;
   }
 }
 
@@ -311,7 +328,7 @@ int prg_fbremove(prog_t *p_prg, int id) {
 int prg_viadd(prog_t *p_prg, int idev, int idfb, int pin) {
   fb_t *p_fb;
   pin_t *p_pin;
-  evnode_t * p_ev;
+  evnode_t *p_ev;
 
   p_ev = ev_find_n(idev);
   if (p_ev == nullptr) {
@@ -354,7 +371,7 @@ int prg_viremove(prog_t *p_prg, int idfb, int pin) {
 int prg_voadd(prog_t *p_prg, int idev, int idfb, int pin) {
   fb_t *p_fb;
   pin_t *p_pin;
-  evnode_t * p_ev;
+  evnode_t *p_ev;
 
   p_ev = ev_find_n(idev);
   if (p_ev == nullptr) {
@@ -444,8 +461,9 @@ int prg_lkadd(prog_t *p_prg, int id, int fbsrc, int pinsrc, int fbtgt,
   }
   *p_en = en;
 
-  p_en->p_vtgt->s =  p_en->p_vsrc->s;
-  p_en->p_vtgt->l =  p_en->p_vsrc->l;
+  p_en->p_vtgt->s = p_en->p_vsrc->s;
+  p_en->p_vtgt->l = p_en->p_vsrc->l;
+  p_en->p_vtgt->v = p_en->p_vsrc->v;
 
   en_addafter(p_en, p_src);
 
@@ -476,6 +494,10 @@ int prg_lkremove(prog_t *p_prg, int id) {
 
   if (p_rm->p_fb != 0) {
     fb_delete(p_rm->p_fb);
+  } else {
+    p_rm->p_vtgt->s = PIN_NO_LOCK;
+    p_rm->p_vtgt->l = 0;
+    vam_init(&p_rm->p_vtgt->v, p_rm->p_vtgt->t, p_rm->p_vtgt->u);
   }
   en_remove(p_rm);
   en_delete(p_rm);

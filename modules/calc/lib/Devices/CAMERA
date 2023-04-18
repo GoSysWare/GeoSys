@@ -18,7 +18,15 @@ static void run_CAMERA(void *p) {
   std::string pin_nmae_5 = pb->outs[5].pinname;
   std::string pin_nmae_6 = pb->outs[6].pinname;
   vam_t in1 = pb->ins[1].v;
-  io_update_tag(in1->v().str(),pin_nmae_1,out1);
+
+  if(pb->outs[1].s == PIN_HAS_LOCK){
+    apollo::cyber::base::ReadLockGuard< apollo::cyber::base::ReentrantRWLock> lg(*(pb->outs[1].l));
+    io_update_tag(in1->v().str(),pin_nmae_1,out1);
+  }
+  else{
+    io_update_tag(in1->v().str(),pin_nmae_1,out1);
+  }
+
   io_update_tag(in1->v().str(),pin_nmae_2,out2);
   io_update_tag(in1->v().str(),pin_nmae_3,out3);
   io_update_tag(in1->v().str(),pin_nmae_4,out4);
