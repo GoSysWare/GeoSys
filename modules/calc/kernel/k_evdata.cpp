@@ -155,7 +155,12 @@ vam_t *ev_find_v(int id) {
   }
   return nullptr;
 }
-
+evnode_t *ev_find_n(int id) {
+  if (ev_select(id) == 0) {
+    return p_vn_select;
+  }
+  return nullptr;
+}
 int ev_add(int id, const std::string &str, const std::string &name) {
   evnode_t *p_vn;
 
@@ -254,6 +259,7 @@ int ev_to_snapshot(Bus::ProjSnapshotRsp *snapshot ) {
   while (p_vn != &vn_head) {
     Bus::EVNodeValue * val_sp = snapshot->add_vals();
     val_sp->set_ev_id(p_vn->id);
+    apollo::cyber::base::ReadLockGuard<apollo::cyber::base::ReentrantRWLock> lock(p_vn->mutex);
     val_sp->mutable_val()->CopyFrom(*(p_vn->v));
     p_vn = p_vn->p_next;
   }
@@ -266,6 +272,7 @@ int ev_from_snapshot(Bus::ProjSnapshotRsp *snapshot ) {
   p_vn = vn_head.p_next;
   while (p_vn != &vn_head) {
     p_vn->id = snapshot->mutable_vals(i)->ev_id();
+    apollo::cyber::base::WriteLockGuard<apollo::cyber::base::ReentrantRWLock> lock(p_vn->mutex);
     p_vn->v.get()->CopyFrom(snapshot->mutable_vals(i)->val());
     p_vn = p_vn->p_next;
     i++;

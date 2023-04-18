@@ -1,10 +1,9 @@
 #ifndef k_evdata_h
 #define k_evdata_h
 
-
 #include "modules/calc/proto/value.pb.h"
 #include "modules/calc/proto/snapshot.pb.h"
-
+#include "cyber/base/reentrant_rw_lock.h"
 typedef std::shared_ptr<value_t> var_t;
 typedef std::shared_ptr<value_tm> vam_t;
 
@@ -15,6 +14,7 @@ typedef struct EVNode{
 	int id;
 	std::string name;
 	vam_t v;
+	apollo::cyber::base::ReentrantRWLock mutex;
 } evnode_t;
 
 std::string type2str( v_type it);
@@ -30,6 +30,7 @@ void vam_init(vam_t * vam,v_type t,std::string u);
 
 
 vam_t * ev_find_v(int id);
+evnode_t *ev_find_n(int id);
 int ev_add(int id, const std::string & val, const std::string &name);
 int ev_add(int id, const std::string & name, const value_tm & val);
 

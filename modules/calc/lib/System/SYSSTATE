@@ -80,13 +80,13 @@ static void run_SYSSTATE(void *p) {
 }
 
 static fb_t fb_SYSSTATE = {{"System", "SYSSTATE", "", 0, 0, 0, 0, run_SYSSTATE},
-                           {{"EN", PIN_NO_LINK, T_BOOL, "", nullptr}},
-                           {{"STATUS", PIN_NO_LINK, T_INT32, "", nullptr},
-                            {"COUNT", PIN_NO_LINK, T_UINT32, "", nullptr},
-                            {"PEROID_TIME", PIN_NO_LINK, T_TIME, "", nullptr},
-                            {"THRAD", PIN_NO_LINK, T_UINT32, "", nullptr},
-                            {"DATETIME", PIN_NO_LINK, T_STRING, "", nullptr},
-                            {"BEGINE_TIME", PIN_NO_LINK, T_STRING, "", nullptr},
-                            {"CROUTINE_ID", PIN_NO_LINK, T_UINT64, "", nullptr},
-                            {"CROUTINE_NAME", PIN_NO_LINK, T_STRING, "", nullptr},
-                            {"CROUTINE_PID", PIN_NO_LINK, T_INT32, "", nullptr}}};
+                           {{"EN", PIN_NO_LOCK, T_BOOL, "", nullptr}},
+                           {{"STATUS", PIN_NO_LOCK, T_INT32, "", nullptr},
+                            {"COUNT", PIN_NO_LOCK, T_UINT32, "", nullptr},
+                            {"PEROID_TIME", PIN_NO_LOCK, T_TIME, "", nullptr},
+                            {"THRAD", PIN_NO_LOCK, T_UINT32, "", nullptr},
+                            {"DATETIME", PIN_NO_LOCK, T_STRING, "", nullptr},
+                            {"BEGINE_TIME", PIN_NO_LOCK, T_STRING, "", nullptr},
+                            {"CROUTINE_ID", PIN_NO_LOCK, T_UINT64, "", nullptr},
+                            {"CROUTINE_NAME", PIN_NO_LOCK, T_STRING, "", nullptr},
+                            {"CROUTINE_PID", PIN_NO_LOCK, T_INT32, "", nullptr}}};

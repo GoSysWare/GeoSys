@@ -311,10 +311,10 @@ int prg_fbremove(prog_t *p_prg, int id) {
 int prg_viadd(prog_t *p_prg, int idev, int idfb, int pin) {
   fb_t *p_fb;
   pin_t *p_pin;
-  vam_t *p_var;
+  evnode_t * p_ev;
 
-  p_var = ev_find_v(idev);
-  if (p_var == nullptr) {
+  p_ev = ev_find_n(idev);
+  if (p_ev == nullptr) {
     return -1;
   }
   p_fb = prg_fbfind(p_prg, idfb);
@@ -325,7 +325,10 @@ int prg_viadd(prog_t *p_prg, int idev, int idfb, int pin) {
   if (p_pin == 0) {
     return -1;
   }
-  p_pin->v = *p_var;
+
+  p_pin->s = PIN_HAS_LOCK;
+  p_pin->v = p_ev->v;
+  p_pin->l = &p_ev->mutex;
 
   return 0;
 }
@@ -341,18 +344,20 @@ int prg_viremove(prog_t *p_prg, int idfb, int pin) {
   if (p_pin == 0) {
     return -1;
   }
-  vam_init(&p_pin->v, p_pin->t, p_pin->u);
 
+  vam_init(&p_pin->v, p_pin->t, p_pin->u);
+  p_pin->s = PIN_NO_LOCK;
+  p_pin->l = 0;
   return 0;
 }
 
 int prg_voadd(prog_t *p_prg, int idev, int idfb, int pin) {
   fb_t *p_fb;
   pin_t *p_pin;
-  vam_t *p_var;
+  evnode_t * p_ev;
 
-  p_var = ev_find_v(idev);
-  if (p_var == nullptr) {
+  p_ev = ev_find_n(idev);
+  if (p_ev == nullptr) {
     return -1;
   }
   p_fb = prg_fbfind(p_prg, idfb);
@@ -364,7 +369,9 @@ int prg_voadd(prog_t *p_prg, int idev, int idfb, int pin) {
     return -1;
   }
 
-  p_pin->v = *p_var;
+  p_pin->s = PIN_HAS_LOCK;
+  p_pin->v = p_ev->v;
+  p_pin->l = &p_ev->mutex;
 
   return 0;
 }
@@ -383,6 +390,8 @@ int prg_voremove(prog_t *p_prg, int idfb, int pin) {
   }
 
   vam_init(&p_pin->v, p_pin->t, p_pin->u);
+  p_pin->s = PIN_NO_LOCK;
+  p_pin->l = 0;
 
   return 0;
 }
@@ -435,8 +444,8 @@ int prg_lkadd(prog_t *p_prg, int id, int fbsrc, int pinsrc, int fbtgt,
   }
   *p_en = en;
 
-  p_en->p_vsrc->s = PIN_IS_LINK;
-  p_en->p_vtgt->s = PIN_IS_LINK;
+  p_en->p_vtgt->s =  p_en->p_vsrc->s;
+  p_en->p_vtgt->l =  p_en->p_vsrc->l;
 
   en_addafter(p_en, p_src);
 

@@ -10,8 +10,8 @@
 
 // typedef void (*fbrun)(void *);
 
-#define PIN_NO_LINK 0
-#define PIN_IS_LINK 1
+#define PIN_NO_LOCK 0
+#define PIN_HAS_LOCK 1
 
 #define PININPUT 1
 #define PINOUTPUT 2
@@ -52,6 +52,7 @@ typedef struct Pin{
 	v_type t;	// 内置类型
 	std::string u;	// 次级类型，主要用作Any类型限定
 	vam_t v;	// 管脚的值
+	apollo::cyber::base::ReentrantRWLock *l;
 } pin_t;
 
 typedef struct FB{

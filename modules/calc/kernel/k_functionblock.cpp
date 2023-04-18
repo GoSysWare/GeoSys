@@ -7,12 +7,12 @@
 
 
 static void fb_init_pin(pin_t *pin) {
-  pin->s = PIN_NO_LINK;
+  pin->s = PIN_NO_LOCK;
   vam_init(&pin->v,pin->t,pin->u);
 }
 
 // static void fb_init_pin(pin_t *pin) {
-//   pin->s = PIN_NO_LINK;
+//   pin->s = PIN_NO_LOCK;
 
 //   pin->v.reset( new value_tm );
 //   pin->v->set_tm(apollo::cyber::Time::Now().ToNanosecond());
@@ -170,7 +170,7 @@ int fb_setpin(fb_t *p_fb, int pintype, unsigned int n, value_tm v) {
   } else {
     return -1;
   }
-  p_pin->s = PIN_IS_LINK;
+  p_pin->s = PIN_NO_LOCK;
   p_pin->v = std::make_shared<value_tm>(v);
   return 0;
 }
@@ -196,7 +196,7 @@ int fb_setpin(fb_t *p_fb, int pintype, unsigned int n, vam_t v) {
   } else {
     return -1;
   }
-  p_pin->s = PIN_IS_LINK;
+  p_pin->s = PIN_NO_LOCK;
   p_pin->v = v;
   return 0;
 }

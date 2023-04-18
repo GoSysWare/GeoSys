@@ -19,8 +19,8 @@ static void run_RS(void *p) {
 
 static fb_t fb_RS= {
     {"Logic", "RS", "", 0, 0, 0, 0, run_RS},
-    {{"EN", PIN_NO_LINK, T_BOOL, "", nullptr},
-     {"R", PIN_NO_LINK, T_BOOL, "", nullptr},
-     {"S", PIN_NO_LINK, T_BOOL, "", nullptr}},
-    {{"STATUS", PIN_NO_LINK, T_INT32, "", nullptr},
-     {"Q", PIN_NO_LINK, T_BOOL, "", nullptr}}};
+    {{"EN", PIN_NO_LOCK, T_BOOL, "", nullptr},
+     {"R", PIN_NO_LOCK, T_BOOL, "", nullptr},
+     {"S", PIN_NO_LOCK, T_BOOL, "", nullptr}},
+    {{"STATUS", PIN_NO_LOCK, T_INT32, "", nullptr},
+     {"Q", PIN_NO_LOCK, T_BOOL, "", nullptr}}};
