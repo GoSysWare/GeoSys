@@ -1,0 +1,92 @@
+
+#include <ctime>
+#include <chrono>
+#include <iomanip>
+#include <limits>
+#include <sstream>
+
+static uint64_t MonoSystemTime() {
+  auto now = std::chrono::system_clock::now();
+  auto nano_time_point =
+      std::chrono::time_point_cast<std::chrono::nanoseconds>(now);
+  auto epoch = nano_time_point.time_since_epoch();
+  uint64_t now_nano =
+      std::chrono::duration_cast<std::chrono::nanoseconds>(epoch).count();
+  return now_nano;
+}
+
+
+static std::string ToString(uint64_t nanoseconds)  {
+  auto nano = std::chrono::nanoseconds(nanoseconds);
+  std::chrono::system_clock::time_point tp(nano);
+  auto time = std::chrono::system_clock::to_time_t(tp);
+  struct tm stm;
+  auto ret = localtime_r(&time, &stm);
+  if (ret == nullptr) {
+    return std::to_string(static_cast<double>(nanoseconds) / 1000000000.0);
+  }
+
+  std::stringstream ss;
+#if __GNUC__ >= 5
+  ss << std::put_time(ret, "%F %T");
+  ss << "." << std::setw(9) << std::setfill('0') << nanoseconds % 1000000000UL;
+#else
+  char date_time[128];
+  std::strftime(date_time, sizeof(date_time), "%F %T", ret);
+  ss << std::string(date_time) << "." << std::setw(9) << std::setfill('0')
+     << nanoseconds % 1000000000UL;
+#endif
+  return ss.str();
+}
+
+static void run_TASK_STATE(void *p) {
+  fb_t *pb = (fb_t *)p;
+  vam_t &enable = pb->ins[0].v;
+  vam_t &status = pb->outs[0].v;
+  if (enable->v().b() == false)
+    return;
+  vam_t &cycle = pb->outs[1].v;
+  vam_t &peroid = pb->outs[2].v;
+  vam_t &thread_id = pb->outs[3].v;
+  vam_t &datetime = pb->outs[4].v;
+  vam_t &begin_time = pb->outs[5].v;
+  vam_t &cid = pb->outs[6].v;
+  vam_t &cname = pb->outs[7].v;
+  vam_t &cpid = pb->outs[8].v;
+
+  uint64_t dt = pb->h.cycle_time / 1000000;
+
+  cycle->mutable_v()->set_ui(cycle->v().ui() + 1);
+  peroid->mutable_v()->set_tm(dt);
+
+  std::thread::id thr_id = std::this_thread::get_id();
+  std::stringstream ss;
+  ss << thr_id;
+  uint32_t id;
+  ss >>id;
+  thread_id->mutable_v()->set_ui(*(uint32_t*)&id);
+  datetime->mutable_v()->set_str(ToString(MonoSystemTime()));
+  begin_time->mutable_v()->set_tm(pb->h.begin_time);
+
+  apollo::cyber::croutine::CRoutine * this_croutine = apollo::cyber::croutine::CRoutine::GetCurrentRoutine();
+  if(this_croutine){
+    cid->mutable_v()->set_ull(this_croutine->id());
+    cname->mutable_v()->set_str(this_croutine->name());
+    cpid->mutable_v()->set_i(this_croutine->processor_id());
+  }
+  else{
+    status->mutable_v()->set_i(1);
+  }
+}
+
+static fb_t fb_TASK_STATE = {{"TASK", "TASK_STATE", "", 0, 0, 0, 0, run_TASK_STATE},
+                           {{"EN", PIN_NO_LOCK, T_BOOL, "", nullptr}},
+                           {{"STATUS", PIN_NO_LOCK, T_INT32, "", nullptr},
+                            {"COUNT", PIN_NO_LOCK, T_UINT32, "", nullptr},
+                            {"PEROID_TIME", PIN_NO_LOCK, T_TIME, "", nullptr},
+                            {"THRAD", PIN_NO_LOCK, T_UINT32, "", nullptr},
+                            {"DATETIME", PIN_NO_LOCK, T_STRING, "", nullptr},
+                            {"BEGINE_TIME", PIN_NO_LOCK, T_STRING, "", nullptr},
+                            {"CROUTINE_ID", PIN_NO_LOCK, T_UINT64, "", nullptr},
+                            {"CROUTINE_NAME", PIN_NO_LOCK, T_STRING, "", nullptr},
+                            {"CROUTINE_PID", PIN_NO_LOCK, T_INT32, "", nullptr}}};

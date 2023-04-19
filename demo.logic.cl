@@ -230,8 +230,8 @@ infos {
     mod_id: 11
     task_id: 12
     fb_id: 14
-    flib_name: "System"
-    fc_name: "SYSSTATE"
+    flib_name: "Task"
+    fc_name: "TASK_STATE"
     fb_name: "\347\263\273\347\273\237\347\233\221\346\265\213"
   }
   pos {
@@ -1304,8 +1304,8 @@ infos {
     mod_id: 11
     task_id: 50
     fb_id: 74
-    flib_name: "System"
-    fc_name: "SYSSTATE"
+    flib_name: "Task"
+    fc_name: "TASK_STATE"
   }
   pos {
     x: 12
@@ -2234,8 +2234,8 @@ infos {
     mod_id: 117
     task_id: 118
     fb_id: 121
-    flib_name: "System"
-    fc_name: "SYSSTATE"
+    flib_name: "Task"
+    fc_name: "TASK_STATE"
   }
   pos {
     x: 19
@@ -2293,8 +2293,8 @@ infos {
     mod_id: 123
     task_id: 124
     fb_id: 125
-    flib_name: "System"
-    fc_name: "SYSSTATE"
+    flib_name: "Task"
+    fc_name: "TASK_STATE"
     fb_name: "Task\347\212\266\346\200\201\347\233\221\350\247\206"
   }
   pos {
@@ -2402,8 +2402,8 @@ infos {
     mod_id: 123
     task_id: 131
     fb_id: 132
-    flib_name: "System"
-    fc_name: "SYSSTATE"
+    flib_name: "Task"
+    fc_name: "TASK_STATE"
     fb_name: "Task\347\212\266\346\200\201\347\233\221\350\247\206"
   }
   pos {
@@ -2565,8 +2565,8 @@ infos {
     mod_id: 123
     task_id: 140
     fb_id: 141
-    flib_name: "System"
-    fc_name: "SYSSTATE"
+    flib_name: "Task"
+    fc_name: "TASK_STATE"
   }
   pos {
     x: 23
@@ -2593,8 +2593,8 @@ infos {
     mod_id: 123
     task_id: 142
     fb_id: 143
-    flib_name: "System"
-    fc_name: "SYSSTATE"
+    flib_name: "Task"
+    fc_name: "TASK_STATE"
   }
   pos {
     x: 28
@@ -2663,8 +2663,8 @@ infos {
     mod_id: 123
     task_id: 147
     fb_id: 148
-    flib_name: "System"
-    fc_name: "SYSSTATE"
+    flib_name: "Task"
+    fc_name: "TASK_STATE"
   }
   pos {
     x: 24
@@ -2707,8 +2707,8 @@ infos {
     mod_id: 123
     task_id: 150
     fb_id: 151
-    flib_name: "System"
-    fc_name: "SYSSTATE"
+    flib_name: "Task"
+    fc_name: "TASK_STATE"
   }
   pos {
     x: 18
@@ -2752,8 +2752,8 @@ infos {
     mod_id: 123
     task_id: 153
     fb_id: 154
-    flib_name: "System"
-    fc_name: "SYSSTATE"
+    flib_name: "Task"
+    fc_name: "TASK_STATE"
   }
   pos {
     x: 29
@@ -4608,7 +4608,7 @@ infos {
     mod_id: 117
     task_id: 160
     task_name: "IMAGE"
-    interval: 200
+    interval: 500
   }
 }
 infos {
@@ -5137,8 +5137,8 @@ infos {
     mod_id: 117
     task_id: 160
     fb_id: 175
-    flib_name: "System"
-    fc_name: "SYSSTATE"
+    flib_name: "Task"
+    fc_name: "TASK_STATE"
   }
   pos {
     x: 10
@@ -5285,8 +5285,8 @@ infos {
     mod_id: 117
     task_id: 166
     fb_id: 178
-    flib_name: "System"
-    fc_name: "SYSSTATE"
+    flib_name: "Task"
+    fc_name: "TASK_STATE"
   }
   pos {
     x: 23

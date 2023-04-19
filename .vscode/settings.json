@@ -274,6 +274,7 @@
         "modules": "cpp",
         "pid": "cpp",
         "event": "cpp",
-        "sleep": "cpp"
+        "sleep": "cpp",
+        "sys_state": "cpp"
     }
 }

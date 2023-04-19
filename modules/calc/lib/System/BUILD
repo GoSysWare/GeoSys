@@ -9,7 +9,7 @@ cc_library(
     includes = [
     ],
     hdrs = [
-        "SYSSTATE",
+        "SYS_STATE",
         "FILE_READ_ONCE",
     ],
     srcs = [

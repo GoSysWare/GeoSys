@@ -5,11 +5,11 @@
 #include "modules/calc/include/k_functionblock.h"
 #include "modules/calc/include/k_util.h"
 
-#include "SYSSTATE"
+#include "SYS_STATE"
 #include "FILE_READ_ONCE"
 
 static void *fb_table[]={
-	&fb_SYSSTATE,
+	&fb_SYS_STATE,
 	&fb_FILE_OPEN_ONCE,
 	};
 

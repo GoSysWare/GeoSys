@@ -14,6 +14,7 @@ cc_library(
         # "RESPONSE",
         "EVENT",
         "SLEEP",
+        "TASK_STATE",
     ],
     srcs = [
         "Task.cpp",

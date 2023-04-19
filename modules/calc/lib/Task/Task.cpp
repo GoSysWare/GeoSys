@@ -11,6 +11,7 @@
 // #include "RESPONSE"
 #include "EVENT"
 #include "SLEEP"
+#include "TASK_STATE"
 
 static void *fb_table[]={
 	&fb_TASK,
@@ -18,7 +19,7 @@ static void *fb_table[]={
 	// &fb_RESPONSE
 	&fb_EVENT,
 	&fb_SLEEP,
-
+	&fb_TASK_STATE,
 	};
 
 static size_t cursor;
