@@ -68,13 +68,13 @@ extern "C" {
 
 
 
-using apollo::drivers::camera::config::Config;
-using apollo::drivers::camera::config::IO_METHOD_MMAP;
-using apollo::drivers::camera::config::IO_METHOD_READ;
-using apollo::drivers::camera::config::IO_METHOD_UNKNOWN;
-using apollo::drivers::camera::config::IO_METHOD_USERPTR;
-using apollo::drivers::camera::config::RGB;
-using apollo::drivers::camera::config::YUYV;
+using devices::camera::Config;
+using devices::camera::IO_METHOD_MMAP;
+using devices::camera::IO_METHOD_READ;
+using devices::camera::IO_METHOD_UNKNOWN;
+using devices::camera::IO_METHOD_USERPTR;
+using devices::camera::RGB;
+using devices::camera::YUYV;
 
 // camera raw image struct
 struct CameraImage {

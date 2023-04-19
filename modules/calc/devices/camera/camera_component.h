@@ -25,26 +25,32 @@
 #include "modules/calc/devices/camera/proto/config.pb.h"
 
 #include "modules/calc/devices/camera/usb_cam.h"
+#include "modules/calc/proto/image.pb.h"
 
 
-using apollo::drivers::camera::config::Config;
+using devices::camera::Config;
 
 class CameraComponent {
  public:
   bool Init(std::string config) ;
   ~CameraComponent();
-  CameraImagePtr raw_image_ = nullptr;
+  std::shared_ptr<Image> & GetCurrentPbImag(){
 
+    return pb_image_buffer_.at(index_-1 < 0 ? buffer_size_ :index_ -1 );
+  }
+  bool IsNew(){
+    return raw_image_->is_new;
+  }
  private:
   void run();
-
+  CameraImagePtr raw_image_ = nullptr;
   std::unique_ptr<UsbCam> camera_device_;
   std::shared_ptr<Config> camera_config_;
-  std::vector<CameraImagePtr> raw_image_buffer_;
+  std::vector<std::shared_ptr<Image>> pb_image_buffer_;
+  int index_ = 0;
 
   uint32_t spin_rate_ = 200;
   uint32_t device_wait_ = 2000;
-  int index_ = 0;
   int buffer_size_ = 16;
   const int32_t MAX_IMAGE_SIZE = 20 * 1024 * 1024;
   std::future<void> async_result_;

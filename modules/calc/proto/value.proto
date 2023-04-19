@@ -1,6 +1,7 @@
 
 syntax = "proto3";
 import "google/protobuf/any.proto";
+import "modules/calc/proto/image.proto";
 
 enum v_type {
   T_NONE = 0 ;
@@ -35,7 +36,7 @@ message value_t {
     uint64 tm = 9;
     string str = 10;
     bytes blob = 11;
-    bytes img = 12;
+    Image img = 12;
     bytes lidar = 13;
     bytes sonar = 14;
     bytes file = 15;

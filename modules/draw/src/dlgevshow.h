@@ -19,11 +19,8 @@ public:
     DlgEvShow(QWidget *parent = 0, Qt::WindowFlags f = 0);
     ~DlgEvShow();
     void setTitle(QString title);
-    void setValueData(QByteArray value);
-    // void paintEvent(QPaintEvent *e);
     void setValueData(PLEVData ev);
 private:
-    QImage * img;
     QVBoxLayout *layout;
     QLabel *label;
     QLineEdit  *str_value;

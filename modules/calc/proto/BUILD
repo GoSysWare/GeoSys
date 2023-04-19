@@ -134,7 +134,9 @@ proto_library(
     name = "value_proto",
     srcs = ["value.proto"],
     deps = [
-            "@com_google_protobuf//:any_proto",
+        ":image_proto",
+        "@com_google_protobuf//:any_proto",
+
     ],
 )
 

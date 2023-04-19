@@ -4646,6 +4646,20 @@ infos {
   }
 }
 infos {
+  cmd_id: 260
+  element: FB
+  edit_type: MV
+  fb {
+    mod_id: 117
+    task_id: 160
+    fb_id: 161
+  }
+  pos {
+    x: 26
+    y: 21
+  }
+}
+infos {
   cmd_id: 261
   element: FB
   edit_type: ADD
@@ -5127,209 +5141,5 @@ infos {
     pin_index: 1
     ev_id: 172
     vi_id: 174
-  }
-}
-infos {
-  cmd_id: 289
-  element: FB
-  edit_type: ADD
-  fb {
-    mod_id: 117
-    task_id: 160
-    fb_id: 175
-    flib_name: "System"
-    fc_name: "SYSSTATE"
-  }
-  pos {
-    x: 10
-    y: 55
-  }
-}
-infos {
-  cmd_id: 292
-  element: FB
-  edit_type: MV
-  fb {
-    mod_id: 117
-    task_id: 160
-    fb_id: 175
-  }
-  pos {
-    x: 11
-    y: 11
-  }
-}
-infos {
-  cmd_id: 301
-  element: EV
-  edit_type: ADD
-  ev {
-    ev_id: 176
-    ev_name: "IMAG_1"
-    ev_type: 11
-    ev_desc: "Desc"
-    init_val {
-      v {
-        t: T_IMAGE
-        img {
-          data: "0"
-        }
-      }
-      tm: 1681910333300547072
-    }
-  }
-}
-infos {
-  cmd_id: 302
-  element: EV
-  edit_type: ADD
-  ev {
-    ev_id: 177
-    ev_name: "IMAG_2"
-    ev_type: 11
-    ev_desc: "Desc"
-    init_val {
-      v {
-        t: T_IMAGE
-        img {
-          data: "0"
-        }
-      }
-      tm: 1681910346610044911
-    }
-  }
-}
-infos {
-  cmd_id: 303
-  element: FB
-  edit_type: MV
-  fb {
-    mod_id: 117
-    task_id: 160
-    fb_id: 161
-  }
-  pos {
-    x: 36
-    y: 48
-  }
-}
-infos {
-  cmd_id: 311
-  element: FB
-  edit_type: MV
-  fb {
-    mod_id: 117
-    task_id: 160
-    fb_id: 162
-  }
-  pos {
-    x: 83
-    y: 54
-  }
-}
-infos {
-  cmd_id: 312
-  element: LK
-  edit_type: MV
-  lk {
-    mod_id: 117
-    task_id: 160
-    lk_id: 163
-  }
-  pos {
-    x: 56
-    y: 61
-  }
-  pos {
-    x: 83
-    y: 61
-  }
-}
-infos {
-  cmd_id: 316
-  element: FB
-  edit_type: MV
-  fb {
-    mod_id: 117
-    task_id: 160
-    fb_id: 164
-  }
-  pos {
-    x: 140
-    y: 54
-  }
-}
-infos {
-  cmd_id: 317
-  element: LK
-  edit_type: MV
-  lk {
-    mod_id: 117
-    task_id: 160
-    lk_id: 165
-  }
-  pos {
-    x: 105
-    y: 61
-  }
-  pos {
-    x: 140
-    y: 61
-  }
-}
-infos {
-  cmd_id: 318
-  element: FB
-  edit_type: ADD
-  fb {
-    mod_id: 117
-    task_id: 166
-    fb_id: 178
-    flib_name: "System"
-    fc_name: "SYSSTATE"
-  }
-  pos {
-    x: 23
-    y: 27
-  }
-}
-infos {
-  cmd_id: 319
-  element: FB
-  edit_type: MV
-  fb {
-    mod_id: 117
-    task_id: 166
-    fb_id: 178
-  }
-  pos {
-    x: 29
-    y: 17
-  }
-}
-infos {
-  cmd_id: 320
-  element: VO
-  edit_type: ADD
-  vo {
-    mod_id: 117
-    task_id: 166
-    fb_id: 169
-    pin_index: 4
-    ev_id: 176
-    vo_id: 179
-  }
-}
-infos {
-  cmd_id: 321
-  element: VO
-  edit_type: ADD
-  vo {
-    mod_id: 117
-    task_id: 166
-    fb_id: 169
-    pin_index: 5
-    ev_id: 177
-    vo_id: 180
   }
 }

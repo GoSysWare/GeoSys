@@ -1,6 +1,6 @@
 syntax = "proto2";
 
-package apollo.drivers.camera.config;
+package devices.camera;
 
 enum IOMethod {
   IO_METHOD_UNKNOWN = 0;

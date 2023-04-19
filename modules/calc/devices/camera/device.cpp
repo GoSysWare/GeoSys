@@ -27,22 +27,18 @@ bool write_value(device_t *device, std::string tag_name, vam_t vaule) {
 bool update_value(device_t *device, std::string tag_name, vam_t value) {
   CameraComponent *camera = 0;
   camera = (CameraComponent *)device->owner_field;
+  auto pb_image = camera->GetCurrentPbImag();
+
   if (tag_name == "IMG") {
-    if(camera->raw_image_->is_new ){
-      value->mutable_v()->set_t(v_type::T_IMAGE);
-      value->mutable_v()->set_img(camera->raw_image_->image,camera->raw_image_->image_size);
+    if(camera->IsNew()){
+      value->mutable_v()->mutable_img()->CopyFrom(*pb_image);
     }
   } else if (tag_name == "HEIGHT") {
-    value->mutable_v()->set_ui(camera->raw_image_->height);
+    value->mutable_v()->set_ui(pb_image->height());
   } else if (tag_name == "WIDTH") {
-    value->mutable_v()->set_ui(camera->raw_image_->width);
+    value->mutable_v()->set_ui(pb_image->width());
   } else if (tag_name == "ISNEW") {
-    value->mutable_v()->set_b(camera->raw_image_->is_new == 1 ? true : false);
-  } else if (tag_name == "SEC") {
-    value->mutable_v()->set_ui(camera->raw_image_->tv_sec);
-  } else if (tag_name == "USEC") {
-    value->mutable_v()->set_ui(camera->raw_image_->tv_usec);
-
+    value->mutable_v()->set_b(camera->IsNew());
   } else {
   }
   value->set_tm(apollo::cyber::Time::Now().ToNanosecond());

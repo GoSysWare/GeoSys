@@ -83,13 +83,10 @@ value_tm setvar(v_type t, std::string value) {
     vam.mutable_v()->set_blob(value);
     break;
   case v_type::T_IMAGE:
-    vam.mutable_v()->set_img(value);
     break;
   case v_type::T_LIDAR:
-    vam.mutable_v()->set_lidar(value);
     break;
   case v_type::T_SONAR:
-    vam.mutable_v()->set_sonar(value);
     break;
   case v_type::T_FILE:
     vam.mutable_v()->set_file(value);

@@ -57,16 +57,20 @@ bool CameraComponent::Init(std::string config) {
   }
 
   for (int i = 0; i < buffer_size_; ++i) {
-    auto cam_image = std::make_shared<CameraImage>();
+    auto pb_image = std::make_shared<Image>();
+    pb_image->set_width(raw_image_->width);
+    pb_image->set_height(raw_image_->height);
+    pb_image->mutable_data()->reserve(raw_image_->image_size);
 
-    cam_image->width = raw_image_->width;
-    cam_image->height = raw_image_->height;
-    cam_image->bytes_per_pixel = raw_image_->bytes_per_pixel;
-    cam_image->image_size = raw_image_->image_size;
-    cam_image->image =
-      reinterpret_cast<char*>(calloc(raw_image_->image_size, sizeof(char)));
+    if (camera_config_->output_type() == YUYV) {
+      pb_image->set_encoding("yuyv");
+      pb_image->set_step(2 * raw_image_->width);
+    } else if (camera_config_->output_type() == RGB) {
+      pb_image->set_encoding("rgb8");
+      pb_image->set_step(3 * raw_image_->width);
+    }
 
-    raw_image_buffer_.push_back(cam_image);
+    pb_image_buffer_.push_back(pb_image);
   }
 
   async_result_ = apollo::cyber::Async(&CameraComponent::run, this);
@@ -86,13 +90,15 @@ void CameraComponent::run() {
       AERROR << "camera device poll failed";
       continue;
     }
-      AERROR << "camera device poll succ spin_rate_" << spin_rate_;
+    AERROR << "camera device poll succ spin_rate_" << spin_rate_;
+    apollo::cyber::Time image_time(raw_image_->tv_sec, 1000 * raw_image_->tv_usec);
 
     if (index_ >= buffer_size_) {
       index_ = 0;
     }
-    auto cam_image = raw_image_buffer_.at(index_++);
-    memcpy(cam_image->image, raw_image_->image, raw_image_->image_size);
+    std::shared_ptr<Image> & pb_image = pb_image_buffer_.at(index_++);
+    pb_image->set_measurement_time(image_time.ToSecond());
+    pb_image->set_data(raw_image_->image, raw_image_->image_size);
     // raw_image_->image 里是RGB
     // cv::Mat 是BGR
     // cv::Mat v(raw_image_->height,raw_image_->width,CV_8UC3,raw_image_->image);

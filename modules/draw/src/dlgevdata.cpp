@@ -151,7 +151,7 @@ void DlgEVData::setValue(PLEVData &ev, int m)
         break;
     case v_type::T_IMAGE:
         listType->setCurrentRow(10);
-        value = ev.initValue.v().img();
+        value = ev.initValue.v().img().data();
         break;
     case v_type::T_LIDAR:
         listType->setCurrentRow(11);
@@ -230,9 +230,9 @@ void DlgEVData::getValue(PLEVData &ev)
         ev.initValue.mutable_v()->set_blob(value);
         break;
     case 10:
-        ev.type = v_type::T_INT32;
+        ev.type = v_type::T_IMAGE;
         ev.initValue.mutable_v()->set_t(v_type::T_IMAGE);
-        ev.initValue.mutable_v()->set_img(value);
+        ev.initValue.mutable_v()->mutable_img()->set_data(value);
         break;
     case 11:
         ev.type = v_type::T_LIDAR;

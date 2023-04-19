@@ -75,21 +75,25 @@ static void run_DLIB_FACE_DETECT(void *p) {
   vam_t &out_img_3 = pb->outs[6].v;
   vam_t &out_img_4 = pb->outs[7].v;
 
-  uint32_t width = in_width->v().ui();
-  uint32_t height = in_height->v().ui();
+  uint32_t width = in_img->v().img().width();
+  uint32_t height = in_img->v().img().height();
+  std::string encoding = in_img->v().img().encoding();
+  uint32_t img_step;
+
+  uint32_t out_tmp_width = 0;
+  uint32_t out_tmp_height = 0;
   std::string value;
 
-  if(pb->ins[1].s == PIN_HAS_LOCK){
-    apollo::cyber::base::ReadLockGuard< apollo::cyber::base::ReentrantRWLock> lg(*(pb->ins[1].l));
-    value = in_img->v().img();
-  }
-  else{
-     value = in_img->v().img();
+  if (pb->ins[1].s == PIN_HAS_LOCK) {
+    apollo::cyber::base::ReadLockGuard<apollo::cyber::base::ReentrantRWLock> lg(
+        *(pb->ins[1].l));
+    value = in_img->v().img().data();
+  } else {
+    value = in_img->v().img().data();
   }
 
-  std::istringstream si_sp(sp_file->v().file()) ;
-  std::istringstream si_anet(anet_file->v().file()) ;
-
+  std::istringstream si_sp(sp_file->v().file());
+  std::istringstream si_anet(anet_file->v().file());
 
   dlib::shape_predictor sp;
   dlib::frontal_face_detector detector = dlib::get_frontal_face_detector();
@@ -116,38 +120,69 @@ static void run_DLIB_FACE_DETECT(void *p) {
     dlib::matrix<dlib::rgb_pixel> face_chip;
     dlib::extract_image_chip(dlib_img, get_face_chip_details(shape, 150, 0.25),
                              face_chip);
-    // dlib::save_jpeg(face_chip, "/home/shuimujie/Works/GeoSys/" +
-    //                                std::to_string(count) + ".jpeg");
+    dlib::save_jpeg(face_chip, "/home/shuimujie/Works/GeoSys/" +
+                                   std::to_string(count) + ".jpeg");
     faces.push_back(move(face_chip));
-
-
-    count ++;
+    count++;
   }
-  for (auto i = 0; i < faces.size(); i++)
-  {
-    std::ostringstream ss;
-    dlib::serialize(faces[i],ss);
-      if(i == 0){
-      out_img_1->mutable_v()->set_img(ss.str());
-    }else if(i == 1){
-      out_img_2->mutable_v()->set_img(ss.str());
-    }else if(i == 2){
-      out_img_3->mutable_v()->set_img(ss.str());
-    }else if(i == 3){
-      out_img_4->mutable_v()->set_img(ss.str());
-    }else{
 
+  for (auto i = 0; i < faces.size(); i++) {
+    out_tmp_width = faces[i].nc();
+    out_tmp_height = faces[i].nr();
+    if (encoding == "yuyv") {
+      img_step = out_tmp_width * 2;
+    } else if (encoding == "rgb8") {
+      img_step = out_tmp_width * 3;
     }
-    out_width->mutable_v()->set_ui(faces[i].nc());
-    out_height->mutable_v()->set_ui(faces[i].nr());
+    std::ostringstream ss;
+    dlib::serialize(faces[i], ss);
+    if (i == 0) {
+      if (pb->outs[4].s == PIN_HAS_LOCK) {
+        apollo::cyber::base::WriteLockGuard<
+            apollo::cyber::base::ReentrantRWLock>
+            lg(*(pb->outs[4].l));
+        out_img_1->mutable_v()->mutable_img()->set_encoding(encoding);
+        out_img_1->mutable_v()->mutable_img()->set_step(img_step);
+        out_img_1->mutable_v()->mutable_img()->set_width(out_tmp_width);
+        out_img_1->mutable_v()->mutable_img()->set_height(out_tmp_height);
+        out_img_1->mutable_v()->mutable_img()->set_data(ss.str());
+      } else {
+        out_img_1->mutable_v()->mutable_img()->set_encoding(encoding);
+        out_img_1->mutable_v()->mutable_img()->set_step(img_step);
+        out_img_1->mutable_v()->mutable_img()->set_width(out_tmp_width);
+        out_img_1->mutable_v()->mutable_img()->set_height(out_tmp_height);
+        out_img_1->mutable_v()->mutable_img()->set_data(ss.str());
+      }
+
+    } else if (i == 1) {
+      out_img_2->mutable_v()->mutable_img()->set_encoding(encoding);
+      out_img_2->mutable_v()->mutable_img()->set_step(img_step);
+      out_img_2->mutable_v()->mutable_img()->set_width(out_tmp_width);
+      out_img_2->mutable_v()->mutable_img()->set_height(out_tmp_height);
+      out_img_2->mutable_v()->mutable_img()->set_data(ss.str());
+    } else if (i == 2) {
+      out_img_3->mutable_v()->mutable_img()->set_encoding(encoding);
+      out_img_3->mutable_v()->mutable_img()->set_step(img_step);
+      out_img_3->mutable_v()->mutable_img()->set_width(out_tmp_width);
+      out_img_3->mutable_v()->mutable_img()->set_height(out_tmp_height);
+      out_img_3->mutable_v()->mutable_img()->set_data(ss.str());
+    } else if (i == 3) {
+      out_img_4->mutable_v()->mutable_img()->set_encoding(encoding);
+      out_img_4->mutable_v()->mutable_img()->set_step(img_step);
+      out_img_4->mutable_v()->mutable_img()->set_width(out_tmp_width);
+      out_img_4->mutable_v()->mutable_img()->set_height(out_tmp_height);
+      out_img_4->mutable_v()->mutable_img()->set_data(ss.str());
+    } else {
+    }
   }
+  out_width->mutable_v()->set_ui(out_tmp_width);
+  out_height->mutable_v()->set_ui(out_tmp_width);
   if (faces.size() == 0) {
-    cout << "No faces found in image!" << endl;
-    face_count->mutable_v()->set_i(0);
+
     status->mutable_v()->set_i(1);
-    return ;
+  } else {
+    status->mutable_v()->set_i(0);
   }
-  status->mutable_v()->set_i(0);
   face_count->mutable_v()->set_i(count);
 
   return;
@@ -168,5 +203,4 @@ static fb_t fb_DLIB_FACE_DETECT = {
      {"IMG_OUT_1", PIN_NO_LOCK, T_IMAGE, "", nullptr},
      {"IMG_OUT_2", PIN_NO_LOCK, T_IMAGE, "", nullptr},
      {"IMG_OUT_3", PIN_NO_LOCK, T_IMAGE, "", nullptr},
-     {"IMG_OUT_4", PIN_NO_LOCK, T_IMAGE, "", nullptr}
-}};
+     {"IMG_OUT_4", PIN_NO_LOCK, T_IMAGE, "", nullptr}}};
