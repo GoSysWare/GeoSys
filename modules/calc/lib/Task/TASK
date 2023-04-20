@@ -53,9 +53,16 @@ static void run_TASK(void *p) {
     auto response = client->SendRequest(
         request, std::chrono::seconds(timeout->v().tm() / 1000));
     if (response == nullptr) {
-      status->mutable_v()->set_i(3);
-      next_task->mutable_v()->set_b(false);
-      rsp_time->mutable_v()->set_tm(0);
+      // timeout is 0 noblock task
+      if(timeout->v().tm() == 0){
+        status->mutable_v()->set_i(0);
+        next_task->mutable_v()->set_b(true);
+        rsp_time->mutable_v()->set_tm(0);
+      }else{
+        status->mutable_v()->set_i(3);
+        next_task->mutable_v()->set_b(false);
+        rsp_time->mutable_v()->set_tm(0);
+      }
       return;
     }
     status->mutable_v()->set_i(0);
