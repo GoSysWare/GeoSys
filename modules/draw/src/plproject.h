@@ -13,6 +13,7 @@ public:
 
     QString name;
     QString uuid;
+    unsigned int cmdId;
     QString desc;
     QString fileName;
 };

@@ -11,6 +11,8 @@
 typedef struct PrjInfo {
   std::string uuid;
   unsigned int cmd_id;
+  std::string name;
+  std::string desc;
 } prjinfo_t;
 
 typedef struct PNode {

@@ -39,7 +39,12 @@ static int on_bus_download(Bus::EditInfos infos) {
   ret = cmds_dispatch(infos);
   // archive logic
   if(ret == 0){
+    std::cout << "on_bus_download succ" << std::endl;
      cmds_append(infos);
+  }
+  else{
+    std::cout << "on_bus_download error" << std::endl;
+
   }
   return ret;
 }

@@ -26,8 +26,14 @@ bool PLCommand::dispatch() {
     } else if (type == Bus::EditType::RM) {
 
     } else if (type == Bus::EditType::SET) {
+      gMainModel->project.name =
+          QString::fromStdString(editInfo.proj().proj_name());
+      gMainModel->project.desc =
+          QString::fromStdString(editInfo.proj().proj_desc());
       gMainModel->project.uuid =
           QString::fromStdString(editInfo.proj().proj_uuid());
+      gMainModel->project.cmdId = editInfo.cmd_id();
+
     } else if (type == Bus::EditType::SHOW) {
 
     } else if (type == Bus::EditType::MV) {
@@ -457,7 +463,7 @@ bool PLCommand::dispatch() {
     } else {
     }
   }
-   gMainModel->isModified = true;
+  gMainModel->isModified = true;
   return true;
 }
 

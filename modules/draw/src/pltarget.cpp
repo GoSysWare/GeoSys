@@ -13,7 +13,9 @@ void PLTarget::timerEvent(QTimerEvent *e) {
       info_res->result().code() == Bus::ResultCode::OK) {
     idCmdTarget = info_res->cmd_id();
     uuidTarget = QString::fromStdString(info_res->prj_uuid());
-    // qDebug() << "Target cmd_id:" << idCmdTarget << "uuid" << uuidTarget;
+    qDebug() << "Target cmd_id:" << idCmdTarget << "uuid" << uuidTarget;
+    qDebug() << "HMI cmd_id:" << gMainModel->cmdID << "uuid" << gMainModel->project.uuid;
+
   } else {
     online(false, NULL);
   }
@@ -86,7 +88,7 @@ PLTarget::PLTarget(QObject *parent) : QTimer(parent) {
   bOnline = false;
   bMonitor = false;
 
-  setInterval(200);
+  setInterval(500);
 }
 
 PLTarget::~PLTarget() {}
@@ -223,6 +225,7 @@ bool PLTarget::download() {
   Bus::EditInfo *proj_info = edit_infos.add_infos();
   proj_info->set_element(Bus::PROJ);
   proj_info->set_edit_type(Bus::SET);
+  proj_info->set_cmd_id(gMainModel->cmdID);
   proj_info->mutable_proj()->set_proj_uuid(
       gMainModel->project.uuid.toStdString());
   proj_info->mutable_proj()->set_proj_name(
@@ -320,7 +323,7 @@ bool PLTarget::isMatch() {
 
 bool PLTarget::isSync() {
   if (isMatch()) {
-    if (idCmdTarget == gMainModel->cmdID) {
+    if (idCmdTarget == gMainModel->cmdID && uuidTarget == gMainModel->project.uuid) {
       return true;
     }
   }

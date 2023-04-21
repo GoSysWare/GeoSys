@@ -1,8 +1,9 @@
 infos {
+  cmd_id: 345
   edit_type: SET
   proj {
     proj_name: "rotbot-engine-project"
-    proj_uuid: "{b484a9f9-40df-4bfc-89d3-467f9bb7134e}"
+    proj_uuid: "{3ce7551f-9c9e-4319-8d20-3c38eaa9ff80}"
   }
 }
 infos {
@@ -5487,7 +5488,7 @@ infos {
   }
 }
 infos {
-  cmd_id: 344
+  cmd_id: 345
   element: FB
   edit_type: MV
   fb {
@@ -5497,7 +5498,7 @@ infos {
     fb_name: "\347\263\273\347\273\237\347\233\221\346\265\213"
   }
   pos {
-    x: 38
-    y: 2
+    x: 31
+    y: 1
   }
 }

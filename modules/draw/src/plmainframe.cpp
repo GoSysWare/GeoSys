@@ -349,14 +349,17 @@ void PLMainFrame::prjSave() {
   gMainModel->removeDualCommands(gMainModel->cmdList, false);
 
   Bus::EditInfo *proj_info = edit_infos.add_infos();
+  proj_info->set_cmd_id(gMainModel->cmdID);
   proj_info->set_element(Bus::PROJ);
   proj_info->set_edit_type(Bus::SET);
+
   proj_info->mutable_proj()->set_proj_uuid(
       gMainModel->project.uuid.toStdString());
   proj_info->mutable_proj()->set_proj_name(
       gMainModel->project.name.toStdString());
   proj_info->mutable_proj()->set_proj_desc(
       gMainModel->project.desc.toStdString());
+
   for (auto i = 0; i < gMainModel->cmdList.size(); i++) {
     Bus::EditInfo *info = edit_infos.add_infos();
     info->CopyFrom(gMainModel->cmdList.at(i).editInfo);
@@ -386,8 +389,9 @@ void PLMainFrame::prjSaveAs(bool holdUuid) {
   Bus::EditInfos edit_infos;
 
   Bus::EditInfo *proj_info = edit_infos.add_infos();
-  proj_info->set_element(Bus::PROJ);
   proj_info->set_edit_type(Bus::SET);
+  proj_info->set_element(Bus::PROJ);
+  proj_info->set_cmd_id(gMainModel->cmdID);
   proj_info->mutable_proj()->set_proj_uuid(
       gMainModel->project.uuid.toStdString());
   proj_info->mutable_proj()->set_proj_name(

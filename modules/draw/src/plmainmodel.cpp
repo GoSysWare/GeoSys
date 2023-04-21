@@ -573,7 +573,7 @@ bool PLMainModel::isCmdObjRemoved(PLCommand *cmd) {
   }
   return false;
 }
-
+// 处理重复多余的CMD
 void PLMainModel::removeDualCommands(QList<PLCommand> &cmdList, bool all) {
   QList<PLCommand *> moveFbCmdList;
   QList<PLCommand *> moveLkCmdList;
@@ -588,10 +588,12 @@ void PLMainModel::removeDualCommands(QList<PLCommand> &cmdList, bool all) {
     cmd = &cmdList[i];
     cmd->mark = false;
     if (all) {
+      // 判断cmdlis中哪些命令中相关的module program fb已经被删除了
       if (isCmdObjRemoved(cmd)) {
         cmd->mark = true;
       }
     }
+    //多个 fb.mv的指令只保留最后一个
     if (cmd->editInfo.element() == Bus::EditElement::FB &&
         cmd->editInfo.edit_type() == Bus::EditType::MV) {
 
@@ -605,6 +607,7 @@ void PLMainModel::removeDualCommands(QList<PLCommand> &cmdList, bool all) {
       if (!cmd->mark) {
         moveFbCmdList.append(cmd);
       }
+    //多个 link.mv的指令只保留最后一个
     } else if (cmd->editInfo.element() == Bus::EditElement::LK &&
                cmd->editInfo.edit_type() == Bus::EditType::MV) {
       for (j = 0; j < moveLkCmdList.size(); j++) {
@@ -617,6 +620,7 @@ void PLMainModel::removeDualCommands(QList<PLCommand> &cmdList, bool all) {
       if (!cmd->mark) {
         moveLkCmdList.append(cmd);
       }
+    //多个 pin.set的指令只保留最后一个
     } else if (cmd->editInfo.element() == Bus::EditElement::PIN &&
                cmd->editInfo.edit_type() == Bus::EditType::SET) {
       for (j = 0; j < setPinCmdList.size(); j++) {
@@ -629,6 +633,7 @@ void PLMainModel::removeDualCommands(QList<PLCommand> &cmdList, bool all) {
       if (!cmd->mark) {
         setPinCmdList.append(cmd);
       }
+    //多个 ev.set的指令只保留最后一个
     } else if (cmd->editInfo.element() == Bus::EditElement::EV &&
                cmd->editInfo.edit_type() == Bus::EditType::SET) {
       for (j = 0; j < setEvCmdList.size(); j++) {
@@ -641,6 +646,7 @@ void PLMainModel::removeDualCommands(QList<PLCommand> &cmdList, bool all) {
       if (!cmd->mark) {
         setEvCmdList.append(cmd);
       }
+    //多个 task.set的指令只保留最后一个
     } else if (cmd->editInfo.element() == Bus::EditElement::TASK &&
                cmd->editInfo.edit_type() == Bus::EditType::SET) {
       for (j = 0; j < setPrgCmdList.size(); j++) {
@@ -653,6 +659,7 @@ void PLMainModel::removeDualCommands(QList<PLCommand> &cmdList, bool all) {
       if (!cmd->mark) {
         setPrgCmdList.append(cmd);
       }
+    //多个 mod.set的指令只保留最后一个
     } else if (cmd->editInfo.element() == Bus::EditElement::MOD &&
                cmd->editInfo.edit_type() == Bus::EditType::SET) {
       for (j = 0; j < setModCmdList.size(); j++) {

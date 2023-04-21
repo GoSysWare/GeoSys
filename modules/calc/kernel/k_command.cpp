@@ -8,13 +8,7 @@
 #include <string.h>
 
 int cmd_dispatch(const Bus::EditInfo &edit_info) {
-  std::cout << edit_info.DebugString() << std::endl;
   int ret = -1;
-  prjinfo_t *info;
-  info = prj_info();
-  if (info->cmd_id < edit_info.cmd_id()) {
-    info->cmd_id = edit_info.cmd_id();
-  }
 
   Bus::EditElement element = edit_info.element();
   Bus::EditType type = edit_info.edit_type();
@@ -25,9 +19,13 @@ int cmd_dispatch(const Bus::EditInfo &edit_info) {
     } else if (type == Bus::EditType::RM) {
 
     } else if (type == Bus::EditType::SET) {
+    std::cout << "cmd_dispatch:" << edit_info.DebugString() << std::endl;
       prjinfo_t *info;
       info = prj_info();
       info->uuid = edit_info.proj().proj_uuid();
+      info->cmd_id = edit_info.cmd_id();
+      info->name = edit_info.proj().proj_name();
+      info->desc = edit_info.proj().proj_desc();
       ret = 0;
     } else if (type == Bus::EditType::SHOW) {
       ret = 0;
@@ -234,10 +232,6 @@ int cmds_dispatch(const Bus::EditInfos &edit_infos) {
 
   int info_size = edit_infos.infos_size();
   for (auto i = 0; i < info_size; i++) {
-    prjinfo_t *info = prj_info();
-    if (info->cmd_id < edit_infos.infos(i).cmd_id()) {
-      info->cmd_id = edit_infos.infos(i).cmd_id();
-    }
     if (cmd_dispatch(edit_infos.infos(i)) != 0) {
       return -1;
     }
