@@ -27,6 +27,10 @@ static int on_bus_run() {
 static int on_bus_stop() {
   std::cout << "on_bus_stop " << std::endl;
   prj_stop();
+  prj_join();
+  prj_exit();
+  std::cout << "proj exit" << std::endl;
+
   return 0;
 }
 static int on_bus_download(Bus::EditInfos infos) {
@@ -89,8 +93,8 @@ int bus_init(std::shared_ptr<apollo::cyber::Node> node) {
           FLAGS_prj_snapshot_name,
           [](const std::shared_ptr<Bus::ProjSnapshotReq> &request,
              std::shared_ptr<Bus::ProjSnapshotRsp> &response) {
-            std::cout << "get project snapshot:" << std::endl;
-            std::cout << "request:" << request->DebugString() << std::endl;
+            // std::cout << "get project snapshot:" << std::endl;
+            // std::cout << "request:" << request->DebugString() << std::endl;
 
             prj_to_snapshot(response.get());
             response->mutable_result()->set_code(Bus::ResultCode::OK);
@@ -217,7 +221,7 @@ bus_stop_send(std::shared_ptr<apollo::cyber::Node> node,
       std::make_shared<Bus::ProjectCmdReq>();
   req->set_cmd_type(Bus::RunType::STOP);
 
-  return bus_cmd->SendRequest(req);
+  return bus_cmd->SendRequest(req,std::chrono::seconds(20));
 }
 
 std::shared_ptr<Bus::ProjectCmdRsp> bus_reset_send(

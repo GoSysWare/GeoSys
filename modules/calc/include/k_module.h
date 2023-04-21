@@ -7,9 +7,12 @@
 #include "cyber/cyber.h"
 #include "k_config.h"
 #include "k_program.h"
+#include "k_datatype.h"
+
 #include "modules/calc/proto/task_def.pb.h"
 #include "modules/calc/proto/cmd.pb.h"
 #include "modules/calc/proto/edit.pb.h"
+
 
 
 struct PNode;
@@ -27,6 +30,7 @@ typedef struct MNode {
   int type;
   std::string desc;
   bool enable;
+  bool stop;
   proginfo_t info;
   prog_t *p_prg;
 } mnode_t;
@@ -91,10 +95,13 @@ typedef struct Module {
   fsm_node_t *p_mn_fsm;
 } mod_t;
 
-void *mod_main_loop(void *sth);
 
+void mod_start(PNode *p_pn,mod_t *p_mod);
 void mod_run(mod_t *p_mod);
 void mod_stop(mod_t *p_mod);
+bool mod_check_stop(mod_t *p_mod);
+
+void mod_exit(PNode *p_pn,mod_t *p_mod);
 void mod_reset(mod_t *p_mod);
 
 mod_t *mod_new();
@@ -102,14 +109,12 @@ void mod_delete(mod_t *p_mod);
 
 int mod_prgadd(mod_t *p_mod, int id, std::string name, int type,
                std::string desc, int interval);
-               
 int mod_prgremove(mod_t *p_mod, int id);
-void mod_start(PNode *p_pn,mod_t *p_mod);
-void mod_stop(mod_t *p_mod);
 
 int mod_fbadd(mod_t *p_mod, int idprg, int id, std::string libname,
               std::string fcname, std::string fbname);
-int mod_fbremove(mod_t *p_mod, int idprg, int id);
+int mod_fbremove(mod_t *p_mod, int idprg, int id);               
+
 int mod_lkadd(mod_t *p_mod, int idprg, int id, int fbsrc, int pinsrc, int fbtgt,
               int pintgt);
 int mod_lkremove(mod_t *p_mod, int idprg, int id);

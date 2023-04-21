@@ -2,7 +2,7 @@ infos {
   edit_type: SET
   proj {
     proj_name: "rotbot-engine-project"
-    proj_uuid: "{a8cd8cfe-d7f1-4385-a4da-7525a961b46e}"
+    proj_uuid: "{d779f0fa-ca9c-4dda-99ac-43f0812f012d}"
   }
 }
 infos {
@@ -46,11 +46,11 @@ infos {
     task_id: 2
     fb_id: 4
     flib_name: "System"
-    fc_name: "SYSSTATE"
+    fc_name: "SYS_STATE"
   }
   pos {
-    x: 37
-    y: 20
+    x: 16
+    y: 12
   }
 }
 infos {
@@ -59,32 +59,30 @@ infos {
   edit_type: ADD
   fb {
     mod_id: 1
-    task_id: 2
+    task_id: 3
     fb_id: 5
-    flib_name: "Devices"
-    fc_name: "SIM_READ"
+    flib_name: "System"
+    fc_name: "SYS_STATE"
   }
   pos {
-    x: 34
-    y: 62
+    x: 14
+    y: 18
   }
 }
 infos {
   cmd_id: 6
-  element: PIN
-  edit_type: SET
-  pin {
+  element: FB
+  edit_type: ADD
+  fb {
     mod_id: 1
     task_id: 2
-    fb_id: 5
-    pin_index: 1
-    pin_val {
-      v {
-        t: T_STRING
-        str: "SIM"
-      }
-      tm: 1681556506738302931
-    }
+    fb_id: 6
+    flib_name: "Devices"
+    fc_name: "SIM_READ"
+  }
+  pos {
+    x: 19
+    y: 51
   }
 }
 infos {
@@ -94,85 +92,63 @@ infos {
   pin {
     mod_id: 1
     task_id: 2
-    fb_id: 5
-    pin_index: 5
+    fb_id: 6
+    pin_index: 1
     pin_val {
       v {
         t: T_STRING
-        str: "$SECOND"
+        str: "SIM"
       }
-      tm: 1681556519671574977
+      tm: 1681995203281388421
     }
   }
 }
 infos {
   cmd_id: 8
-  element: FB
-  edit_type: ADD
-  fb {
+  element: PIN
+  edit_type: SET
+  pin {
     mod_id: 1
     task_id: 2
     fb_id: 6
-    flib_name: "Comparison"
-    fc_name: "EQ_DOUBLE"
-  }
-  pos {
-    x: 83
-    y: 76
+    pin_index: 7
+    pin_val {
+      v {
+        t: T_STRING
+        str: "$SECOND"
+      }
+      tm: 1681995216498767836
+    }
   }
 }
 infos {
   cmd_id: 9
-  element: LK
+  element: FB
   edit_type: ADD
-  lk {
+  fb {
     mod_id: 1
     task_id: 2
-    lk_id: 7
-    src_fb_id: 5
-    src_pin_index: 4
-    target_fb_id: 6
-    target_pin_index: 1
+    fb_id: 7
+    flib_name: "Comparison"
+    fc_name: "GE_DOUBLE"
   }
   pos {
-    x: 54
-    y: 75
-  }
-  pos {
-    x: 68
-    y: 75
-  }
-  pos {
-    x: 68
-    y: 83
-  }
-  pos {
-    x: 83
-    y: 83
+    x: 64
+    y: 65
   }
 }
 infos {
   cmd_id: 10
-  element: LK
-  edit_type: RM
-  lk {
-    mod_id: 1
-    task_id: 2
-    lk_id: 7
-  }
-}
-infos {
-  cmd_id: 11
   element: FB
   edit_type: RM
   fb {
     mod_id: 1
     task_id: 2
-    fb_id: 6
+    fb_id: 7
   }
 }
 infos {
-  cmd_id: 12
+  cmd_id: 11
   element: FB
   edit_type: ADD
   fb {
@@ -183,42 +159,76 @@ infos {
     fc_name: "GE_DOUBLE"
   }
   pos {
-    x: 71
-    y: 73
+    x: 60
+    y: 65
   }
 }
 infos {
-  cmd_id: 13
+  cmd_id: 12
   element: LK
   edit_type: ADD
   lk {
     mod_id: 1
     task_id: 2
     lk_id: 9
-    src_fb_id: 5
-    src_pin_index: 4
+    src_fb_id: 6
+    src_pin_index: 6
     target_fb_id: 8
     target_pin_index: 1
   }
   pos {
-    x: 54
-    y: 75
+    x: 39
+    y: 68
   }
   pos {
-    x: 62
-    y: 75
+    x: 49
+    y: 68
   }
   pos {
-    x: 62
-    y: 80
+    x: 49
+    y: 72
   }
   pos {
-    x: 71
-    y: 80
+    x: 60
+    y: 72
+  }
+}
+infos {
+  cmd_id: 13
+  element: PIN
+  edit_type: SET
+  pin {
+    mod_id: 1
+    task_id: 2
+    fb_id: 6
+    pin_index: 8
+    pin_val {
+      v {
+        t: T_STRING
+        str: "RANDOM(0,7)"
+      }
+      tm: 1681995309568330426
+    }
   }
 }
 infos {
   cmd_id: 14
+  element: FB
+  edit_type: ADD
+  fb {
+    mod_id: 1
+    task_id: 2
+    fb_id: 10
+    flib_name: "Comparison"
+    fc_name: "GE_DOUBLE"
+  }
+  pos {
+    x: 71
+    y: 88
+  }
+}
+infos {
+  cmd_id: 15
   element: PIN
   edit_type: SET
   pin {
@@ -231,24 +241,8 @@ infos {
         t: T_FLOAT64
         d: 30
       }
-      tm: 1681556594638311300
+      tm: 1681995320884760138
     }
-  }
-}
-infos {
-  cmd_id: 15
-  element: FB
-  edit_type: ADD
-  fb {
-    mod_id: 1
-    task_id: 2
-    fb_id: 10
-    flib_name: "Trigger"
-    fc_name: "U_TRIG"
-  }
-  pos {
-    x: 118
-    y: 75
   }
 }
 infos {
@@ -259,46 +253,60 @@ infos {
     mod_id: 1
     task_id: 2
     lk_id: 11
-    src_fb_id: 8
-    src_pin_index: 1
+    src_fb_id: 6
+    src_pin_index: 7
     target_fb_id: 10
     target_pin_index: 1
   }
   pos {
-    x: 90
-    y: 80
+    x: 39
+    y: 70
   }
   pos {
-    x: 104
-    y: 80
+    x: 55
+    y: 70
   }
   pos {
-    x: 104
-    y: 82
+    x: 55
+    y: 95
   }
   pos {
-    x: 118
-    y: 82
+    x: 71
+    y: 95
   }
 }
 infos {
   cmd_id: 17
-  element: LK
-  edit_type: RM
-  lk {
+  element: PIN
+  edit_type: SET
+  pin {
     mod_id: 1
     task_id: 2
-    lk_id: 11
+    fb_id: 10
+    pin_index: 2
+    pin_val {
+      v {
+        t: T_FLOAT64
+        d: 3.5
+      }
+      tm: 1681995340685093424
+    }
   }
 }
 infos {
   cmd_id: 18
   element: FB
-  edit_type: RM
+  edit_type: ADD
   fb {
     mod_id: 1
     task_id: 2
-    fb_id: 10
+    fb_id: 12
+    flib_name: "Task"
+    fc_name: "TASK"
+  }
+  pos {
+    x: 132
+    y: 92
   }
 }
 infos {
@@ -308,13 +316,13 @@ infos {
   fb {
     mod_id: 1
     task_id: 2
-    fb_id: 12
+    fb_id: 13
     flib_name: "Task"
     fc_name: "EVENT"
   }
   pos {
-    x: 113
-    y: 75
+    x: 107
+    y: 97
   }
 }
 infos {
@@ -324,43 +332,41 @@ infos {
   lk {
     mod_id: 1
     task_id: 2
-    lk_id: 13
-    src_fb_id: 8
+    lk_id: 14
+    src_fb_id: 10
     src_pin_index: 1
-    target_fb_id: 12
+    target_fb_id: 13
     target_pin_index: 1
   }
   pos {
     x: 90
-    y: 80
+    y: 95
   }
   pos {
-    x: 101
-    y: 80
+    x: 98
+    y: 95
   }
   pos {
-    x: 101
-    y: 82
+    x: 98
+    y: 104
   }
   pos {
-    x: 113
-    y: 82
+    x: 107
+    y: 104
   }
 }
 infos {
   cmd_id: 21
   element: FB
-  edit_type: ADD
+  edit_type: MV
   fb {
     mod_id: 1
     task_id: 2
-    fb_id: 14
-    flib_name: "Task"
-    fc_name: "TASK"
+    fb_id: 12
   }
   pos {
-    x: 154
-    y: 84
+    x: 134
+    y: 66
   }
 }
 infos {
@@ -371,26 +377,26 @@ infos {
     mod_id: 1
     task_id: 2
     lk_id: 15
-    src_fb_id: 12
+    src_fb_id: 13
     src_pin_index: 1
-    target_fb_id: 14
+    target_fb_id: 12
     target_pin_index: 1
   }
   pos {
-    x: 135
-    y: 82
+    x: 129
+    y: 104
   }
   pos {
-    x: 144
-    y: 82
+    x: 131
+    y: 104
   }
   pos {
-    x: 144
-    y: 91
+    x: 131
+    y: 73
   }
   pos {
-    x: 154
-    y: 91
+    x: 134
+    y: 73
   }
 }
 infos {
@@ -400,14 +406,14 @@ infos {
   pin {
     mod_id: 1
     task_id: 2
-    fb_id: 14
+    fb_id: 12
     pin_index: 2
     pin_val {
       v {
         t: T_STRING
         str: "M1"
       }
-      tm: 1681556646089430862
+      tm: 1681995381685609102
     }
   }
 }
@@ -418,14 +424,14 @@ infos {
   pin {
     mod_id: 1
     task_id: 2
-    fb_id: 14
+    fb_id: 12
     pin_index: 3
     pin_val {
       v {
         t: T_STRING
         str: "P2"
       }
-      tm: 1681556651923032746
+      tm: 1681995386469584506
     }
   }
 }
@@ -436,14 +442,14 @@ infos {
   pin {
     mod_id: 1
     task_id: 2
-    fb_id: 14
+    fb_id: 12
     pin_index: 4
     pin_val {
       v {
         t: T_TIME
-        tm: 1000
+        tm: 500
       }
-      tm: 1681556659439964059
+      tm: 1681995396753554950
     }
   }
 }
@@ -454,14 +460,14 @@ infos {
   pin {
     mod_id: 1
     task_id: 2
-    fb_id: 14
+    fb_id: 12
     pin_index: 5
     pin_val {
       v {
         t: T_BOOL
         b: true
       }
-      tm: 1681556663889214388
+      tm: 1681995401136515785
     }
   }
 }
@@ -477,8 +483,8 @@ infos {
     fc_name: "SLEEP"
   }
   pos {
-    x: 79
-    y: 62
+    x: 40
+    y: 58
   }
 }
 infos {
@@ -489,61 +495,67 @@ infos {
     mod_id: 1
     task_id: 3
     fb_id: 16
-    pin_index: 1
+    pin_index: 2
     pin_val {
       v {
-        t: T_BOOL
-        b: true
+        t: T_TIME
+        tm: 400
       }
-      tm: 1681556678924318404
+      tm: 1681995441254157122
     }
   }
 }
 infos {
   cmd_id: 29
-  element: PIN
-  edit_type: SET
-  pin {
-    mod_id: 1
-    task_id: 3
-    fb_id: 16
-    pin_index: 2
-    pin_val {
-      v {
-        t: T_TIME
-        tm: 5000
-      }
-      tm: 1681556684223171689
-    }
-  }
-}
-infos {
-  cmd_id: 30
-  element: FB
-  edit_type: ADD
-  fb {
-    mod_id: 1
-    task_id: 3
-    fb_id: 17
-    flib_name: "System"
-    fc_name: "SYSSTATE"
-  }
-  pos {
-    x: 54
-    y: 41
-  }
-}
-infos {
-  cmd_id: 31
   element: FB
   edit_type: MV
   fb {
     mod_id: 1
-    task_id: 3
-    fb_id: 17
+    task_id: 2
+    fb_id: 8
   }
   pos {
-    x: 46
-    y: 29
+    x: 83
+    y: 44
+  }
+}
+infos {
+  cmd_id: 30
+  element: LK
+  edit_type: MV
+  lk {
+    mod_id: 1
+    task_id: 2
+    lk_id: 9
+  }
+  pos {
+    x: 39
+    y: 68
+  }
+  pos {
+    x: 49
+    y: 68
+  }
+  pos {
+    x: 49
+    y: 51
+  }
+  pos {
+    x: 83
+    y: 51
+  }
+}
+infos {
+  cmd_id: 43
+  element: FB
+  edit_type: MV
+  fb {
+    mod_id: 1
+    task_id: 2
+    fb_id: 4
+  }
+  pos {
+    x: 11
+    y: 13
   }
 }

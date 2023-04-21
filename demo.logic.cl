@@ -2,7 +2,7 @@ infos {
   edit_type: SET
   proj {
     proj_name: "rotbot-engine-project"
-    proj_uuid: "{2b18e010-babb-4466-bdcf-a449b792943c}"
+    proj_uuid: "{b484a9f9-40df-4bfc-89d3-467f9bb7134e}"
   }
 }
 infos {
@@ -4886,20 +4886,6 @@ infos {
   }
 }
 infos {
-  cmd_id: 276
-  element: FB
-  edit_type: MV
-  fb {
-    mod_id: 117
-    task_id: 166
-    fb_id: 168
-  }
-  pos {
-    x: 81
-    y: 62
-  }
-}
-infos {
   cmd_id: 277
   element: FB
   edit_type: ADD
@@ -5294,20 +5280,6 @@ infos {
   }
 }
 infos {
-  cmd_id: 319
-  element: FB
-  edit_type: MV
-  fb {
-    mod_id: 117
-    task_id: 166
-    fb_id: 178
-  }
-  pos {
-    x: 29
-    y: 17
-  }
-}
-infos {
   cmd_id: 320
   element: VO
   edit_type: ADD
@@ -5331,5 +5303,201 @@ infos {
     pin_index: 5
     ev_id: 177
     vo_id: 180
+  }
+}
+infos {
+  cmd_id: 331
+  element: FB
+  edit_type: MV
+  fb {
+    mod_id: 117
+    task_id: 166
+    fb_id: 168
+  }
+  pos {
+    x: 69
+    y: 47
+  }
+}
+infos {
+  cmd_id: 332
+  element: LK
+  edit_type: MV
+  lk {
+    mod_id: 117
+    task_id: 166
+    lk_id: 170
+  }
+  pos {
+    x: 91
+    y: 54
+  }
+  pos {
+    x: 142
+    y: 54
+  }
+}
+infos {
+  cmd_id: 333
+  element: FB
+  edit_type: MV
+  fb {
+    mod_id: 117
+    task_id: 166
+    fb_id: 178
+  }
+  pos {
+    x: 15
+    y: 5
+  }
+}
+infos {
+  cmd_id: 334
+  element: FB
+  edit_type: ADD
+  fb {
+    mod_id: 11
+    task_id: 12
+    fb_id: 181
+    flib_name: "Arithmetic"
+    fc_name: "ADD_INT"
+  }
+  pos {
+    x: 215
+    y: 50
+  }
+}
+infos {
+  cmd_id: 335
+  element: LK
+  edit_type: ADD
+  lk {
+    mod_id: 11
+    task_id: 12
+    lk_id: 182
+    src_fb_id: 18
+    src_pin_index: 1
+    target_fb_id: 181
+    target_pin_index: 1
+  }
+  pos {
+    x: 193
+    y: 49
+  }
+  pos {
+    x: 204
+    y: 49
+  }
+  pos {
+    x: 204
+    y: 57
+  }
+  pos {
+    x: 215
+    y: 57
+  }
+}
+infos {
+  cmd_id: 336
+  element: FB
+  edit_type: MV
+  fb {
+    mod_id: 11
+    task_id: 12
+    fb_id: 181
+    fb_name: "1"
+  }
+  pos {
+    x: 215
+    y: 50
+  }
+}
+infos {
+  cmd_id: 337
+  element: PIN
+  edit_type: SET
+  pin {
+    mod_id: 11
+    task_id: 12
+    fb_id: 181
+    pin_index: 2
+    pin_val {
+      v {
+        t: T_INT32
+        i: 1
+      }
+      tm: 1681990138855253870
+    }
+  }
+}
+infos {
+  cmd_id: 339
+  element: FB
+  edit_type: MV
+  fb {
+    mod_id: 117
+    task_id: 160
+    fb_id: 164
+    fb_name: "dlib_dectect"
+  }
+  pos {
+    x: 140
+    y: 54
+  }
+}
+infos {
+  cmd_id: 342
+  element: FB
+  edit_type: MV
+  fb {
+    mod_id: 11
+    task_id: 12
+    fb_id: 181
+    fb_name: "\345\212\240\346\263\225"
+  }
+  pos {
+    x: 214
+    y: 22
+  }
+}
+infos {
+  cmd_id: 343
+  element: LK
+  edit_type: MV
+  lk {
+    mod_id: 11
+    task_id: 12
+    lk_id: 182
+  }
+  pos {
+    x: 193
+    y: 49
+  }
+  pos {
+    x: 204
+    y: 49
+  }
+  pos {
+    x: 204
+    y: 29
+  }
+  pos {
+    x: 214
+    y: 29
+  }
+}
+infos {
+  cmd_id: 344
+  element: FB
+  edit_type: MV
+  fb {
+    mod_id: 11
+    task_id: 12
+    fb_id: 14
+    fb_name: "\347\263\273\347\273\237\347\233\221\346\265\213"
+  }
+  pos {
+    x: 38
+    y: 2
   }
 }

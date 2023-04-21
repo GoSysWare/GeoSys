@@ -26,7 +26,14 @@ typedef struct PNode {
 
 void prj_init(int server);
 void prj_uninit();
+
 void prj_reset();
+void prj_start();
+void prj_run();
+void prj_stop();
+bool mod_check_stop();
+void prj_join();
+void prj_exit();
 
 int prj_modadd(int idmod, std::string name, std::string desc);
 int prj_modremove(int idmod);
@@ -35,8 +42,7 @@ int prj_prgadd(int idmod, int idprg, std::string name, int type,
                std::string desc = "", int period = 50);
 int prj_prgremove(int idmod, int idprg);
 
-void prj_start();
-void prj_stop();
+
 
 prjinfo_t *prj_info();
 

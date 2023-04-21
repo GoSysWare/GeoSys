@@ -159,12 +159,54 @@ void prj_start() {
     p_pn = p_pn->p_next;
   }
 }
+
+void prj_run() {
+  pnode_t *p_pn;
+  p_pn = pn_head.p_next;
+  while (p_pn != &pn_head) {
+    if (p_pn->enable) {
+      mod_run(p_pn->p_mod);
+    }
+    p_pn = p_pn->p_next;
+  }
+}
 void prj_stop() {
   pnode_t *p_pn;
   p_pn = pn_head.p_next;
   while (p_pn != &pn_head) {
     if (p_pn->enable) {
       mod_stop(p_pn->p_mod);
+    }
+    p_pn = p_pn->p_next;
+  }
+}
+
+
+bool prj_check_stop() {
+  pnode_t *p_pn;
+  p_pn = pn_head.p_next;
+  while (p_pn != &pn_head) {
+    if (p_pn->enable) {
+      if (mod_check_stop(p_pn->p_mod) == false) {
+        return false;
+      }
+    }
+    p_pn = p_pn->p_next;
+  }
+  return true;
+}
+void prj_join(){
+  while(!prj_check_stop()){
+    apollo::cyber::USleep(10*1000);
+  }
+}
+
+void prj_exit() {
+  pnode_t *p_pn;
+  p_pn = pn_head.p_next;
+  while (p_pn != &pn_head) {
+    if (p_pn->enable) {
+      mod_exit(p_pn, p_pn->p_mod);
     }
     p_pn = p_pn->p_next;
   }

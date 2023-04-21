@@ -24,9 +24,9 @@
 #include "cyber/common/global_data.h"
 #include "cyber/service/client.h"
 #include "cyber/service/service.h"
-#include "cyber/task/async_task_client.h"
-#include "cyber/task/async_task.h"
 #include "cyber/service_discovery/topology_manager.h"
+#include "cyber/task/async_task.h"
+#include "cyber/task/async_task_client.h"
 
 namespace apollo {
 namespace cyber {
@@ -39,7 +39,7 @@ class Node;
  * e.g. Param Server and Client
  */
 class NodeServiceImpl {
- public:
+public:
   friend class Node;
 
   /**
@@ -47,7 +47,7 @@ class NodeServiceImpl {
    *
    * @param node_name node name
    */
-  explicit NodeServiceImpl(const std::string& node_name)
+  explicit NodeServiceImpl(const std::string &node_name)
       : node_name_(node_name) {
     attr_.set_host_name(common::GlobalData::Instance()->HostName());
     attr_.set_process_id(common::GlobalData::Instance()->ProcessId());
@@ -67,27 +67,46 @@ class NodeServiceImpl {
    */
   ~NodeServiceImpl() {}
 
- private:
+private:
   template <typename Request, typename Response>
-  auto CreateService(const std::string& service_name,
-                     const typename Service<Request, Response>::ServiceCallback&
-                         service_callback) ->
+  auto CreateService(const std::string &service_name,
+                     const typename Service<Request, Response>::ServiceCallback
+                         &service_callback) ->
       typename std::shared_ptr<Service<Request, Response>>;
 
   template <typename Request, typename Response>
-  auto CreateClient(const std::string& service_name) ->
+  auto CreateClient(const std::string &service_name) ->
       typename std::shared_ptr<Client<Request, Response>>;
 
   template <typename Request, typename Response>
-  auto CreateAsyncTask(const std::string& task_name,
-                     const typename AsyncTask<Request, Response>::TaskCallback&
-                         task_callback) ->
-      typename std::shared_ptr<AsyncTask<Request, Response>>;
+  auto CreateAsyncTask(
+      const std::string &task_name,
+      const typename AsyncTask<Request, Response>::TaskCallback &task_callback)
+      -> typename std::shared_ptr<AsyncTask<Request, Response>>;
 
   template <typename Request, typename Response>
-  auto CreateAsyncTaskClient(const std::string& task_name) ->
+  auto CreateAsyncTaskClient(const std::string &task_name) ->
       typename std::shared_ptr<AsyncTaskClient<Request, Response>>;
 
+  void RemoveAsyncTask(const std::string &task_name) {
+    auto task_attr = attr_;
+    task_attr.set_service_name(task_name);
+    auto service_id = common::GlobalData::RegisterService(task_name);
+    attr_.set_service_id(service_id);
+    service_discovery::TopologyManager::Instance()->service_manager()->Leave(
+        attr_, RoleType::ROLE_SERVER);
+
+    auto iter = async_task_list_.begin();
+    while (iter != async_task_list_.end()) {
+      if (iter->lock()->task_name() == task_name) {
+        iter->lock().reset();
+        iter = async_task_list_.erase(iter);
+        break;
+      }
+      iter++;
+    }
+    return;
+  }
   std::vector<std::weak_ptr<ServiceBase>> service_list_;
   std::vector<std::weak_ptr<ClientBase>> client_list_;
 
@@ -99,9 +118,9 @@ class NodeServiceImpl {
 
 template <typename Request, typename Response>
 auto NodeServiceImpl::CreateService(
-    const std::string& service_name,
-    const typename Service<Request, Response>::ServiceCallback&
-        service_callback) ->
+    const std::string &service_name,
+    const typename Service<Request, Response>::ServiceCallback
+        &service_callback) ->
     typename std::shared_ptr<Service<Request, Response>> {
   auto service_ptr = std::make_shared<Service<Request, Response>>(
       node_name_, service_name, service_callback);
@@ -116,10 +135,8 @@ auto NodeServiceImpl::CreateService(
   return service_ptr;
 }
 
-
-
 template <typename Request, typename Response>
-auto NodeServiceImpl::CreateClient(const std::string& service_name) ->
+auto NodeServiceImpl::CreateClient(const std::string &service_name) ->
     typename std::shared_ptr<Client<Request, Response>> {
   auto client_ptr =
       std::make_shared<Client<Request, Response>>(node_name_, service_name);
@@ -134,12 +151,10 @@ auto NodeServiceImpl::CreateClient(const std::string& service_name) ->
   return client_ptr;
 }
 
-
 template <typename Request, typename Response>
 auto NodeServiceImpl::CreateAsyncTask(
-    const std::string& task_name,
-    const typename AsyncTask<Request, Response>::TaskCallback&
-        task_callback) ->
+    const std::string &task_name,
+    const typename AsyncTask<Request, Response>::TaskCallback &task_callback) ->
     typename std::shared_ptr<AsyncTask<Request, Response>> {
   auto task_ptr = std::make_shared<AsyncTask<Request, Response>>(
       node_name_, task_name, task_callback);
@@ -153,14 +168,15 @@ auto NodeServiceImpl::CreateAsyncTask(
       attr_, RoleType::ROLE_SERVER);
   return task_ptr;
 }
+
 template <typename Request, typename Response>
-auto NodeServiceImpl::CreateAsyncTaskClient(const std::string& task_name) ->
+auto NodeServiceImpl::CreateAsyncTaskClient(const std::string &task_name) ->
     typename std::shared_ptr<AsyncTaskClient<Request, Response>> {
-  auto client_ptr =
-      std::make_shared<AsyncTaskClient<Request, Response>>(node_name_, task_name);
+  auto client_ptr = std::make_shared<AsyncTaskClient<Request, Response>>(
+      node_name_, task_name);
   RETURN_VAL_IF(!client_ptr->Init(), nullptr);
 
-  async_task_client_list_.emplace_back(client_ptr);
+  // async_task_client_list_.emplace_back(client_ptr);
   attr_.set_service_name(task_name);
   auto service_id = common::GlobalData::RegisterService(task_name);
   attr_.set_service_id(service_id);
@@ -168,7 +184,9 @@ auto NodeServiceImpl::CreateAsyncTaskClient(const std::string& task_name) ->
       attr_, RoleType::ROLE_CLIENT);
   return client_ptr;
 }
-}  // namespace cyber
-}  // namespace apollo
 
-#endif  // CYBER_NODE_NODE_SERVICE_IMPL_H_
+
+} // namespace cyber
+} // namespace apollo
+
+#endif // CYBER_NODE_NODE_SERVICE_IMPL_H_

@@ -3,4 +3,13 @@
 
 
 
+enum TaskStatus {
+    READY,
+    START,
+    PAUSE,
+    ABORT,
+    FINISH
+};
+
+
 #endif

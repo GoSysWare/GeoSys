@@ -52,7 +52,6 @@ class TaskManager {
     std::future<return_type> res(task->get_future());
     return res;
   }
-
  private:
   uint32_t num_threads_ = 0;
   uint32_t task_queue_size_ = 1000;
