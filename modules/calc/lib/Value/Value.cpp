@@ -3,10 +3,10 @@
 
 
 #include "V_GET_ANY"
-
+#include "V_GET_FLOAT64"
 static void *fb_table[]={
 	&fb_V_GET_ANY,
-
+	&fb_V_GET_FLOAT64,
 	};
 
 static size_t cursor;

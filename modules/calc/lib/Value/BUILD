@@ -10,6 +10,7 @@ cc_library(
     ],
     hdrs = [
         "V_GET_ANY",
+        "V_GET_FLOAT64",
     ],
     srcs = [
         "Value.cpp",

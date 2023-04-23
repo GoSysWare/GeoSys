@@ -278,7 +278,8 @@
         "sys_state": "cpp",
         "timer": "cpp",
         "proto_get_any": "cpp",
-        "v_get_any": "cpp"
+        "v_get_any": "cpp",
+        "v_get_float64": "cpp"
     },
     "C_Cpp.errorSquiggles": "disabled"
 }
