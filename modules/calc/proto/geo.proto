@@ -36,7 +36,7 @@ message Twist {
 
 // 位置
 message Pose {
-  Point postion = 1;          //  位置
+  Point position = 1;          //  位置
   Quaternion orientation = 2; // 姿态
 }
 // 2D位置

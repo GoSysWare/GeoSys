@@ -18,6 +18,7 @@
 #include "modules/calc/include/lib/Task.h"
 #include "modules/calc/include/lib/Geometry.h"
 #include "modules/calc/include/lib/String.h"
+#include "modules/calc/include/lib/Value.h"
 
 #define NLIBCOUNT 32
 static size_t cursor;
@@ -42,7 +43,7 @@ void lib_init()
 	lib_set_table(5, "Control", control_first, control_next);
 	lib_set_table(6, "Counter", counter_first, counter_next);
 	lib_set_table(7, "Devices", devices_first, devices_next);
-// 	// lib_set_table(8, "IO", io_first, io_next);
+	lib_set_table(8, "Value", value_first, value_next);
 	lib_set_table(9, "Logic", logic_first, logic_next);
 // 	// lib_set_table(10, "Maths", maths_first, maths_next);
 	lib_set_table(12, "System", system_first, system_next);

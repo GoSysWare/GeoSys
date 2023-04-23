@@ -1,0 +1,75 @@
+// static void run_TON(void *p)
+// {
+// 	fb_t *pb = (fb_t *)p;
+
+// 	Time dt = clk_cycle();
+// 	Time t;
+
+// 	if(!pb->d[0].v.v.b){
+// 		pb->d[2].v.v.b = 0;
+// 		pb->d[3].v.v.tm = 0;
+// 	}else{
+// 		t = pb->d[3].v.v.tm + dt;
+// 		if(t >= pb->d[1].v.v.tm){
+// 			t = pb->d[1].v.v.tm;
+// 			pb->d[2].v.v.b = 1;
+// 		}else{
+// 			pb->d[2].v.v.b = 0;
+// 		}
+// 		pb->d[3].v.v.tm = t;
+// 	}
+// }
+
+// static fb_t fb_TON = {
+// 	"TON", 2, 2, 0, 0, run_TON,
+// 	{
+// 		"S", T_BOOL, 0,
+// 		"T", T_TIME, 0,
+// 		"Q", T_BOOL, 0,
+// 		"ET", T_TIME, 0,
+// 	}
+// };
+
+static void run_TIMER(void *p) {
+  fb_t *pb = (fb_t *)p;
+
+  vam_t in_S = pb->ins[1].v;
+  vam_t in_T = pb->ins[2].v;
+  vam_t &out_Q = pb->outs[1].v;
+  vam_t &out_ET = pb->outs[2].v;
+  vam_t &old_T = pb->props[0].v;
+
+  out_ET->mutable_v()->set_tm(0);
+ 
+  uint64_t dt = pb->h.cycle_time / 1000000;
+  uint64_t t;
+
+  if (!in_S->v().b()) {
+    out_Q->mutable_v()->set_b(false);
+    out_ET->mutable_v()->set_tm(0);
+    old_T->mutable_v()->set_tm(0);
+  } else {
+    t = old_T->v().tm() + dt;
+    if (t >= in_T->v().tm()) {
+      t = in_T->v().tm();
+      out_Q->mutable_v()->set_b(true);
+      old_T->mutable_v()->set_tm(0);
+    } else {
+      out_Q->mutable_v()->set_b(false);
+      old_T->mutable_v()->set_tm(t);
+    }
+    out_ET->mutable_v()->set_tm(t);
+  }
+}
+
+// T ms
+// ET ms
+static fb_t fb_TIMER = {
+    {"Timer", "TIMER", "", 0, 0, 0, 0, run_TIMER},
+    {{"EN", PIN_NO_LOCK, T_BOOL, "", nullptr},
+     {"S", PIN_NO_LOCK, T_BOOL, "", nullptr},
+     {"T", PIN_NO_LOCK, T_TIME, "", nullptr}},
+    {{"STATUS", PIN_NO_LOCK, T_INT32, "", nullptr},
+     {"Q", PIN_NO_LOCK, T_BOOL, "", nullptr},
+     {"ET", PIN_NO_LOCK, T_TIME, "", nullptr}},
+    {{"OLD_T", PIN_NO_LOCK, T_TIME, "", nullptr}}};

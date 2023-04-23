@@ -1,32 +1,23 @@
 #include <stddef.h>
 #include "modules/calc/include/k_functionblock.h"
-#include "modules/calc/include/k_util.h"
 
-// #include "DELAY"
-// #include "SPO"
-// #include "TOFF"
-#include "TON"
-#include "TP"
-#include "TIMER"
+
+#include "V_GET_ANY"
 
 static void *fb_table[]={
-	// &fb_DELAY,
-	// &fb_SPO,
-	// &fb_TOFF,
-	&fb_TON,
-	&fb_TP,
-	&fb_TIMER,
+	&fb_V_GET_ANY,
+
 	};
 
 static size_t cursor;
 
-void *timer_first()
+void *value_first()
 {
 	cursor = 0;
 	return fb_table[0];
 }
 
-void *timer_next()
+void *value_next()
 {
 	cursor++;
 	if(cursor < sizeof(fb_table) / sizeof(void *)){

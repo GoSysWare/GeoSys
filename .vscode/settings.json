@@ -275,6 +275,10 @@
         "pid": "cpp",
         "event": "cpp",
         "sleep": "cpp",
-        "sys_state": "cpp"
-    }
+        "sys_state": "cpp",
+        "timer": "cpp",
+        "proto_get_any": "cpp",
+        "v_get_any": "cpp"
+    },
+    "C_Cpp.errorSquiggles": "disabled"
 }

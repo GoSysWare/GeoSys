@@ -1,0 +1,89 @@
+
+#include <regex>
+using namespace google::protobuf;
+
+static void split(const string &s, std::vector<string> &tokens,
+                  const string &delimiters = " ") {
+  string::size_type lastPos = s.find_first_not_of(delimiters, 0);
+  string::size_type pos = s.find_first_of(delimiters, lastPos);
+  while (string::npos != pos || string::npos != lastPos) {
+    tokens.emplace_back(s.substr(lastPos, pos - lastPos));
+    lastPos = s.find_first_not_of(delimiters, pos);
+    pos = s.find_first_of(delimiters, lastPos);
+  }
+}
+
+static void run_V_GET_ANY(void *p) {
+
+  fb_t *pb = (fb_t *)p;
+  vam_t &enable = pb->ins[0].v;
+  vam_t &status = pb->outs[0].v;
+  if (enable->v().b() == false)
+    return;
+  vam_t in_any = pb->ins[1].v;
+  bool is_in_any_lock = pb->ins[1].s;
+  apollo::cyber::base::ReentrantRWLock *in_any_lock = pb->ins[1].l;
+
+  vam_t in_field = pb->ins[2].v;
+  vam_t in_index = pb->ins[3].v;
+  vam_t &out_any = pb->outs[1].v;
+  bool is_out_any_lock = pb->outs[1].s;
+  apollo::cyber::base::ReentrantRWLock *out_any_lock = pb->outs[1].l;
+
+  if (in_any->v().t() != v_type::T_ANY) {
+    status->mutable_v()->set_i(1);
+    return ;
+  }
+  string type_name;
+  internal::ParseAnyTypeUrl(in_any->v().any().type_url(), &type_name);
+  const Descriptor *new_descriptor =
+      DescriptorPool::generated_pool()->FindMessageTypeByName(type_name);
+  const Message *new_prototype =
+      MessageFactory::generated_factory()->GetPrototype(new_descriptor);
+  Message *any_msg = new_prototype->New();
+  if (is_in_any_lock == PIN_HAS_LOCK) {
+    apollo::cyber::base::ReadLockGuard<apollo::cyber::base::ReentrantRWLock> lg(
+        *(in_any_lock));
+    in_any->v().any().UnpackTo(any_msg);
+  } else {
+    in_any->v().any().UnpackTo(any_msg);
+  }
+  std::vector<std::string> string_list;
+  split(in_field->v().str(), string_list, ".");
+  const Descriptor *descriptor;
+  const Reflection *reflection;
+  const FieldDescriptor *field_descriptor;
+
+  const Message *field_message = any_msg;
+
+  //
+  for (int i = 0; i < string_list.size(); i++) {
+    descriptor = field_message->GetDescriptor();
+    reflection = field_message->GetReflection();
+    field_descriptor = descriptor->FindFieldByName(string_list[i]);
+    if (field_descriptor->is_repeated()) {
+      field_message = &(
+          reflection->GetRepeatedMessage(*field_message, field_descriptor, 1));
+    } else {
+      field_message =
+          &(reflection->GetMessage(*field_message, field_descriptor));
+    }
+  }
+  if (is_out_any_lock == PIN_HAS_LOCK) {
+    apollo::cyber::base::ReadLockGuard<apollo::cyber::base::ReentrantRWLock> lg(
+        *(out_any_lock));
+    out_any->mutable_v()->mutable_any()->PackFrom(*field_message);
+  } else {
+    out_any->mutable_v()->mutable_any()->PackFrom(*field_message);
+  }
+  return;
+}
+
+static fb_t fb_V_GET_ANY = {
+    {"Value", "V_GET_ANY", "", 0, 0, 0, FB_EXEC, run_V_GET_ANY},
+    {{"EN", PIN_NO_LOCK, T_BOOL, "", nullptr},
+     {"IN", PIN_NO_LOCK, T_ANY, "", nullptr},
+     {"FIELD", PIN_NO_LOCK, T_STRING, "", nullptr},
+     {"INDEX", PIN_NO_LOCK, T_UINT32, "", nullptr}},
+    {{"STATUS", PIN_NO_LOCK, T_INT32, "", nullptr},
+     {"OUT", PIN_NO_LOCK, T_ANY, "", nullptr}}};

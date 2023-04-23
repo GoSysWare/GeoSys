@@ -4,9 +4,9 @@ load("//tools:cpplint.bzl", "cpplint")
 package(default_visibility = ["//visibility:public"])
 
 cc_binary(
-    name = "test_ioss",
+    name = "test_proto",
     srcs = [
-        "test_ioss.cpp",
+        "test_proto.cpp",
     ],
     linkopts = [
         "-lpthread",
@@ -21,6 +21,8 @@ cc_binary(
         "//modules/calc/ioss",
         "//modules/calc/proto:bus_cc_proto",
         "//modules/calc/proto:ioss_cc_proto",
+        "//modules/calc/proto:geo_cc_proto",
+        "//modules/calc/proto:nav_cc_proto",
     ],
 )
 

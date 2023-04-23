@@ -25,6 +25,7 @@ cc_library(
         "//modules/calc/lib/Timer:Timer",
         "//modules/calc/lib/Trigger:Trigger",  
         "//modules/calc/lib/String:String",  
+        "//modules/calc/lib/Value:Value",  
 
     ],
 )

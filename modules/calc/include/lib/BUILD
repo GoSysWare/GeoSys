@@ -24,6 +24,6 @@ cc_library(
         "Trigger.h",
         "Geometry.h",
         "String.h",
-
+        "Value.h",
     ],
 )

@@ -43,10 +43,10 @@
         },
       
         {
-            "name": "Test IOSS",
+            "name": "Test Proto",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/bazel-bin/modules/calc/test/test_ioss",
+            "program": "${workspaceFolder}/bazel-bin/modules/calc/test/test_proto",
             "args": [],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",

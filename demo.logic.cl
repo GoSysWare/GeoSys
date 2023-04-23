@@ -1,9 +1,9 @@
 infos {
-  cmd_id: 345
+  cmd_id: 370
   edit_type: SET
   proj {
     proj_name: "rotbot-engine-project"
-    proj_uuid: "{3ce7551f-9c9e-4319-8d20-3c38eaa9ff80}"
+    proj_uuid: "{41fe0927-764c-4a53-b573-0f9a4e375ee2}"
   }
 }
 infos {
@@ -5488,7 +5488,7 @@ infos {
   }
 }
 infos {
-  cmd_id: 345
+  cmd_id: 346
   element: FB
   edit_type: MV
   fb {
@@ -5498,7 +5498,328 @@ infos {
     fb_name: "\347\263\273\347\273\237\347\233\221\346\265\213"
   }
   pos {
-    x: 31
+    x: 20
     y: 1
+  }
+}
+infos {
+  cmd_id: 347
+  element: TASK
+  edit_type: ADD
+  task {
+    mod_id: 11
+    task_id: 183
+    task_name: "Periodic Check"
+    interval: 500
+  }
+}
+infos {
+  cmd_id: 348
+  element: FB
+  edit_type: ADD
+  fb {
+    mod_id: 11
+    task_id: 183
+    fb_id: 184
+    flib_name: "System"
+    fc_name: "SYS_STATE"
+  }
+  pos {
+    x: 9
+    y: 10
+  }
+}
+infos {
+  cmd_id: 349
+  element: FB
+  edit_type: ADD
+  fb {
+    mod_id: 11
+    task_id: 183
+    fb_id: 185
+    flib_name: "Timer"
+    fc_name: "TON"
+  }
+  pos {
+    x: 51
+    y: 41
+  }
+}
+infos {
+  cmd_id: 350
+  element: PIN
+  edit_type: SET
+  pin {
+    mod_id: 11
+    task_id: 183
+    fb_id: 185
+    pin_index: 1
+    pin_val {
+      v {
+        t: T_BOOL
+        b: true
+      }
+      tm: 1682079063252481080
+    }
+  }
+}
+infos {
+  cmd_id: 351
+  element: PIN
+  edit_type: SET
+  pin {
+    mod_id: 11
+    task_id: 183
+    fb_id: 185
+    pin_index: 2
+    pin_val {
+      v {
+        t: T_TIME
+        tm: 4000
+      }
+      tm: 1682079070804377857
+    }
+  }
+}
+infos {
+  cmd_id: 352
+  element: FB
+  edit_type: ADD
+  fb {
+    mod_id: 11
+    task_id: 183
+    fb_id: 186
+    flib_name: "Logic"
+    fc_name: "AND"
+  }
+  pos {
+    x: 84
+    y: 48
+  }
+}
+infos {
+  cmd_id: 355
+  element: LK
+  edit_type: ADD
+  lk {
+    mod_id: 11
+    task_id: 183
+    lk_id: 187
+    src_fb_id: 185
+    src_pin_index: 1
+    target_fb_id: 186
+    target_pin_index: 1
+  }
+  pos {
+    x: 69
+    y: 48
+  }
+  pos {
+    x: 75
+    y: 48
+  }
+  pos {
+    x: 75
+    y: 47
+  }
+  pos {
+    x: 81
+    y: 47
+  }
+}
+infos {
+  cmd_id: 358
+  element: FB
+  edit_type: MV
+  fb {
+    mod_id: 11
+    task_id: 183
+    fb_id: 185
+  }
+  pos {
+    x: 38
+    y: 44
+  }
+}
+infos {
+  cmd_id: 360
+  element: FB
+  edit_type: MV
+  fb {
+    mod_id: 11
+    task_id: 183
+    fb_id: 186
+  }
+  pos {
+    x: 75
+    y: 44
+  }
+}
+infos {
+  cmd_id: 361
+  element: LK
+  edit_type: MV
+  lk {
+    mod_id: 11
+    task_id: 183
+    lk_id: 187
+  }
+  pos {
+    x: 56
+    y: 51
+  }
+  pos {
+    x: 75
+    y: 51
+  }
+}
+infos {
+  cmd_id: 362
+  element: FB
+  edit_type: ADD
+  fb {
+    mod_id: 11
+    task_id: 183
+    fb_id: 188
+    flib_name: "Counter"
+    fc_name: "CTUD_INT"
+  }
+  pos {
+    x: 56
+    y: 29
+  }
+}
+infos {
+  cmd_id: 363
+  element: FB
+  edit_type: MV
+  fb {
+    mod_id: 11
+    task_id: 183
+    fb_id: 188
+  }
+  pos {
+    x: 53
+    y: 23
+  }
+}
+infos {
+  cmd_id: 364
+  element: LK
+  edit_type: RM
+  lk {
+    mod_id: 11
+    task_id: 183
+    lk_id: 187
+  }
+}
+infos {
+  cmd_id: 365
+  element: FB
+  edit_type: RM
+  fb {
+    mod_id: 11
+    task_id: 183
+    fb_id: 185
+  }
+}
+infos {
+  cmd_id: 366
+  element: FB
+  edit_type: ADD
+  fb {
+    mod_id: 11
+    task_id: 183
+    fb_id: 189
+    flib_name: "Timer"
+    fc_name: "TIMER"
+  }
+  pos {
+    x: 27
+    y: 51
+  }
+}
+infos {
+  cmd_id: 367
+  element: LK
+  edit_type: ADD
+  lk {
+    mod_id: 11
+    task_id: 183
+    lk_id: 190
+    src_fb_id: 189
+    src_pin_index: 1
+    target_fb_id: 186
+    target_pin_index: 1
+  }
+  pos {
+    x: 45
+    y: 58
+  }
+  pos {
+    x: 60
+    y: 58
+  }
+  pos {
+    x: 60
+    y: 51
+  }
+  pos {
+    x: 75
+    y: 51
+  }
+}
+infos {
+  cmd_id: 368
+  element: PIN
+  edit_type: SET
+  pin {
+    mod_id: 11
+    task_id: 183
+    fb_id: 189
+    pin_index: 2
+    pin_val {
+      v {
+        t: T_TIME
+        tm: 4000
+      }
+      tm: 1682080108893097613
+    }
+  }
+}
+infos {
+  cmd_id: 369
+  element: PIN
+  edit_type: SET
+  pin {
+    mod_id: 11
+    task_id: 183
+    fb_id: 189
+    pin_index: 1
+    pin_val {
+      v {
+        t: T_BOOL
+        b: true
+      }
+      tm: 1682080112077970442
+    }
+  }
+}
+infos {
+  cmd_id: 370
+  element: PIN
+  edit_type: SET
+  pin {
+    mod_id: 11
+    task_id: 183
+    fb_id: 186
+    pin_index: 2
+    pin_val {
+      v {
+        t: T_BOOL
+        b: true
+      }
+      tm: 1682080116350014614
+    }
   }
 }

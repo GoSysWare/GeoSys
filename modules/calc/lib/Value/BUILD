@@ -5,23 +5,18 @@ package(default_visibility = ["//visibility:public"])
 
 
 cc_library(
-    name = "Timer",
+    name = "Value",
     includes = [
     ],
     hdrs = [
-        # "DELAY",
-        # "SPO",
-        # "TOFF",
-        "TON",
-        "TP",
-        "TIMER",
+        "V_GET_ANY",
     ],
     srcs = [
-        "Timer.cpp",
+        "Value.cpp",
     ],
     deps = [
         "//modules/calc/include:calc_include",
         "//modules/calc/include/lib:lib_include",
         "//modules/calc/proto:bus_cc_proto",
-    ],
+         ],
 )
