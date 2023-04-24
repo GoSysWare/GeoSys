@@ -4,8 +4,8 @@
 #include <string>
 
 #ifndef __aarch64__
-#include "adv_trigger.h"
-#include "modules/drivers/camera/util.h"
+// #include "adv_trigger.h"
+#include "modules/calc/devices/camera/util.h"
 #endif
 #include "modules/calc/devices/camera/usb_cam.h"
 
@@ -400,20 +400,20 @@ bool UsbCam::init_device(void) {
 }
 
 #ifndef __aarch64__
-bool UsbCam::set_adv_trigger() {
-  AINFO << "Trigger enable, dev:" << config_->camera_dev()
-        << ", fps:" << config_->trigger_fps()
-        << ", internal:" << config_->trigger_internal();
-  int ret = adv_trigger_enable(
-      config_->camera_dev().c_str(),
-      static_cast<unsigned char>(config_->trigger_fps()),
-      static_cast<unsigned char>(config_->trigger_internal()));
-  if (ret != 0) {
-    AERROR << "trigger failed:" << ret;
-    return false;
-  }
-  return true;
-}
+// bool UsbCam::set_adv_trigger() {
+//   AINFO << "Trigger enable, dev:" << config_->camera_dev()
+//         << ", fps:" << config_->trigger_fps()
+//         << ", internal:" << config_->trigger_internal();
+//   int ret = adv_trigger_enable(
+//       config_->camera_dev().c_str(),
+//       static_cast<unsigned char>(config_->trigger_fps()),
+//       static_cast<unsigned char>(config_->trigger_internal()));
+//   if (ret != 0) {
+//     AERROR << "trigger failed:" << ret;
+//     return false;
+//   }
+//   return true;
+// }
 #endif
 
 int UsbCam::xioctl(int fd, int request, void* arg) {
@@ -1093,7 +1093,7 @@ bool UsbCam::wait_for_device() {
   }
 #ifndef __aarch64__
   // will continue when trigger failed for self-trigger camera
-  set_adv_trigger();
+  // set_adv_trigger();
 #endif
   return true;
 }

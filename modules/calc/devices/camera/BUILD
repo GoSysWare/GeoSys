@@ -19,11 +19,13 @@ cc_library(
     hdrs = [
         "usb_cam.h",
         "camera_component.h",
+        "util.h"
     ],
     srcs = [
         "usb_cam.cc",
         "camera_component.cc",
         "device.cpp",
+        "util.cc"
     ],
     linkopts = [
         "-lpthread",

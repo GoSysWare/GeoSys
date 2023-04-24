@@ -14,14 +14,11 @@
  * limitations under the License.
  *****************************************************************************/
 
-#include "modules/drivers/camera/util.h"
+#include "modules/calc/devices/camera/util.h"
 
 #include <cstdarg>
 #include <cstdint>
 
-namespace apollo {
-namespace drivers {
-namespace camera {
 
 void print_m256(__m256i a) {
   unsigned char snoop[32];
@@ -151,7 +148,3 @@ void yuyv2rgb_avx(unsigned char* YUV, unsigned char* RGB, int NumPixels) {
     }
   }
 }
-
-}  // namespace camera
-}  // namespace drivers
-}  // namespace apollo

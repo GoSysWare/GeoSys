@@ -34,9 +34,6 @@
 #include <immintrin.h>
 #include <x86intrin.h>
 
-namespace apollo {
-namespace drivers {
-namespace camera {
 
 void yuyv2rgb_avx(unsigned char *YUV, unsigned char *RGB, int NumPixels);
 
@@ -522,6 +519,3 @@ SIMD_INLINE __m256i LoadPermuted(const __m256i *p) {
   return _mm256_permute4x64_epi64(Load<align>(p), 0xD8);
 }
 
-}  // namespace camera
-}  // namespace drivers
-}  // namespace apollo
