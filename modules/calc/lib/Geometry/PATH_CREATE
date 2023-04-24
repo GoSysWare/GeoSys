@@ -1,0 +1,38 @@
+// 1 严禁直接操作管脚指针
+// 2 严禁给管脚指针赋空值 如
+// pb->d[2].v = nullptr;
+// 3 严禁给输入管脚赋值
+// pb->d[2].v = otherptr
+// 4 无需设置管脚值类型
+// 5 注意管脚索引的排序 不要弄错,输入输出分别有两个系统默认管脚
+//   用户可用管脚从1开始计数
+static void run_PATH_CREATE(void *p) {
+
+  fb_t *pb = (fb_t *)p;
+  vam_t &enable = pb->ins[0].v;
+  vam_t &status = pb->outs[0].v;
+  if (enable->v().b() == false)
+    return;
+  vam_t &in = pb->ins[1].v;
+  vam_t &out = pb->outs[1].v;
+  unsigned int count = in->v().ui();
+  Geo::Path path;
+  for (auto i = 0; i < count; i++) {
+    Geo::Pose *pose = path.add_poses();
+    pose->mutable_orientation()->set_x(0.21 + i);
+    pose->mutable_orientation()->set_y(0.22 + i);
+    pose->mutable_orientation()->set_z(0.23 + i);
+    pose->mutable_orientation()->set_w(0.24 + i);
+    pose->mutable_position()->set_x(0.25 + i);
+    pose->mutable_position()->set_y(0.26 + i);
+    pose->mutable_position()->set_z(0.27 + i);
+  }
+  out->mutable_v()->mutable_any()->PackFrom(path);
+}
+
+static fb_t fb_PATH_CREATE = {
+    {"Geometry", "PATH_CREATE", "", 0, 0, 0, 0, run_PATH_CREATE},
+    {{"EN", PIN_NO_LOCK, T_BOOL, "", nullptr},
+     {"IN", PIN_NO_LOCK, T_UINT32, "", nullptr}},
+    {{"STATUS", PIN_NO_LOCK, T_INT32, "", nullptr},
+     {"OUT", PIN_NO_LOCK, T_ANY, "", nullptr}}};

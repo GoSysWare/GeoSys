@@ -279,7 +279,9 @@
         "timer": "cpp",
         "proto_get_any": "cpp",
         "v_get_any": "cpp",
-        "v_get_float64": "cpp"
+        "v_get_float64": "cpp",
+        "v_get_double": "cpp",
+        "path_create": "cpp"
     },
     "C_Cpp.errorSquiggles": "disabled"
 }

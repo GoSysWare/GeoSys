@@ -80,8 +80,13 @@ int main() {
     reflection = field_message->GetReflection();
     field_descriptor = descriptor->FindFieldByName(string_list[i]);
     if (field_descriptor->is_repeated()) {
+        
+      if(3 >= reflection->FieldSize(*field_message, field_descriptor)){
+        std::cout << "outof range" <<std::endl;
+        return 0;
+      }
       field_message = &(
-          reflection->GetRepeatedMessage(*field_message, field_descriptor, 1));
+          reflection->GetRepeatedMessage(*field_message, field_descriptor, 3));
     } else {
       field_message =
           &(reflection->GetMessage(*field_message, field_descriptor));

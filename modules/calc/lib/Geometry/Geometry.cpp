@@ -7,12 +7,13 @@
 #include "PATH_MERGE"
 
 #include "PATH_SPLIT"
-
+#include "PATH_CREATE"
 
 
 static void *fb_table[]={
 	&fb_PATH_SPLIT,
 	&fb_PATH_MERGE,
+	&fb_PATH_CREATE,
 
 };
 

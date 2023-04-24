@@ -12,30 +12,7 @@ static void split(const string &s, std::vector<string> &tokens,
     pos = s.find_first_of(delimiters, lastPos);
   }
 }
-static void return_V_GET_ANY(vam_t &status,int s, bool is_out_lock,
-                             apollo::cyber::base::ReentrantRWLock *out_lock,
-                             vam_t &out, const Message *field_message,
-                             Message *any_msg) {
-  status->mutable_v()->set_i(s);
-  if (is_out_lock == PIN_HAS_LOCK) {
-    apollo::cyber::base::ReadLockGuard<apollo::cyber::base::ReentrantRWLock> lg(
-        *(out_lock));
-    if (field_message) {
-      out->mutable_v()->mutable_any()->PackFrom(*field_message);
-    } else {
-      out->mutable_v()->mutable_any()->Clear();
-    }
-  } else {
-    if (field_message) {
-      out->mutable_v()->mutable_any()->PackFrom(*field_message);
-    } else {
-      out->mutable_v()->mutable_any()->Clear();
-    }
-  }
-  if (any_msg)
-    delete any_msg;
-  return;
-}
+
 static void run_V_GET_ANY(void *p) {
 
   fb_t *pb = (fb_t *)p;
@@ -52,30 +29,18 @@ static void run_V_GET_ANY(void *p) {
   vam_t &out_any = pb->outs[1].v;
   bool is_out_any_lock = pb->outs[1].s;
   apollo::cyber::base::ReentrantRWLock *out_any_lock = pb->outs[1].l;
-  int index = in_index->v().ui();
+
   if (in_any->v().t() != v_type::T_ANY) {
-    return_V_GET_ANY(status,1, is_out_any_lock, out_any_lock, out_any, 0, 0);
-    return;
+    status->mutable_v()->set_i(1);
+    return ;
   }
   string type_name;
   internal::ParseAnyTypeUrl(in_any->v().any().type_url(), &type_name);
   const Descriptor *new_descriptor =
       DescriptorPool::generated_pool()->FindMessageTypeByName(type_name);
-  if (!new_descriptor) {
-    return_V_GET_ANY(status,-2, is_out_any_lock, out_any_lock, out_any, 0, 0);
-    return;
-  }
   const Message *new_prototype =
       MessageFactory::generated_factory()->GetPrototype(new_descriptor);
-  if (!new_prototype) {
-    return_V_GET_ANY(status,-3, is_out_any_lock, out_any_lock, out_any, 0, 0);
-    return;
-  }
   Message *any_msg = new_prototype->New();
-  if (!any_msg) {
-    return_V_GET_ANY(status,-4, is_out_any_lock, out_any_lock, out_any, 0, 0);
-    return;
-  }
   if (is_in_any_lock == PIN_HAS_LOCK) {
     apollo::cyber::base::ReadLockGuard<apollo::cyber::base::ReentrantRWLock> lg(
         *(in_any_lock));
@@ -96,25 +61,21 @@ static void run_V_GET_ANY(void *p) {
     descriptor = field_message->GetDescriptor();
     reflection = field_message->GetReflection();
     field_descriptor = descriptor->FindFieldByName(string_list[i]);
-    if (!field_descriptor) {
-      return_V_GET_ANY(status,-5, is_out_any_lock, out_any_lock, out_any, 0, any_msg);
-      return;
-    }
     if (field_descriptor->is_repeated()) {
-      if (index >= reflection->FieldSize(*field_message, field_descriptor)) {
-        return_V_GET_ANY(status,-6, is_out_any_lock, out_any_lock, out_any, 0,
-                         any_msg);
-        return;
-      }
-      field_message = &(reflection->GetRepeatedMessage(
-          *field_message, field_descriptor, index));
+      field_message = &(
+          reflection->GetRepeatedMessage(*field_message, field_descriptor, 1));
     } else {
       field_message =
           &(reflection->GetMessage(*field_message, field_descriptor));
     }
   }
-  return_V_GET_ANY(status,0, is_out_any_lock, out_any_lock, out_any, field_message,
-                   any_msg);
+  if (is_out_any_lock == PIN_HAS_LOCK) {
+    apollo::cyber::base::ReadLockGuard<apollo::cyber::base::ReentrantRWLock> lg(
+        *(out_any_lock));
+    out_any->mutable_v()->mutable_any()->PackFrom(*field_message);
+  } else {
+    out_any->mutable_v()->mutable_any()->PackFrom(*field_message);
+  }
   return;
 }
 

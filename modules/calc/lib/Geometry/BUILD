@@ -11,6 +11,7 @@ cc_library(
     hdrs = [
         "PATH_MERGE",
         "PATH_SPLIT",
+        "PATH_CREATE",
 
     ],
     srcs = [
