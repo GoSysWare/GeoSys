@@ -90,7 +90,7 @@ void CameraComponent::run() {
       AERROR << "camera device poll failed";
       continue;
     }
-    AERROR << "camera device poll succ spin_rate_" << spin_rate_;
+    // AERROR << "camera device poll succ spin_rate_" << spin_rate_;
     apollo::cyber::Time image_time(raw_image_->tv_sec, 1000 * raw_image_->tv_usec);
 
     if (index_ >= buffer_size_) {

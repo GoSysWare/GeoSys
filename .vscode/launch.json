@@ -29,6 +29,10 @@
                 {
                     "name": "GLOG_log_dir",
                     "value": "/home/shuimujie/Works/GeoSys/logs"
+                },
+                {
+                    "name": "LD_LIBRARY_PATH",
+                    "value": "/usr/local/lib"
                 }
             ],
             "externalConsole": false,
@@ -140,6 +144,10 @@
                 {
                     "name": "GLOG_log_dir",
                     "value": "/home/shuimujie/Works/GeoSys/logs"
+                },
+                {
+                    "name": "LD_LIBRARY_PATH",
+                    "value": "/usr/local/lib"
                 }
             ],
             "externalConsole": false,

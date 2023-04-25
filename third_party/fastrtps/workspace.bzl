@@ -9,15 +9,15 @@ def repo():
     native.new_local_repository(
         name = "fastcdr",
         build_file = clean_dep("//third_party/fastrtps:fastcdr.BUILD"),
-        path = "/usr/local/fast-rtps/include",
+        path = "/usr/local/include",
     )
     native.new_local_repository(
         name = "fastrtps",
         build_file = clean_dep("//third_party/fastrtps:fastrtps.BUILD"),
-        path = "/usr/local/fast-rtps/include",
+        path = "/usr/local/include",
     )
     native.new_local_repository(
         name = "fastdds",
         build_file = clean_dep("//third_party/fastrtps:fastdds.BUILD"),
-        path = "/usr/local/fast-rtps/include",
+        path = "/usr/local/include",
     )

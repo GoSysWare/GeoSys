@@ -6,7 +6,7 @@ cc_library(
         ".",
     ],
     linkopts = [
-        "-L/usr/local/fast-rtps/lib",
+        "-L/usr/local/lib",
         "-lfastrtps",
     ],
     visibility = ["//visibility:public"],

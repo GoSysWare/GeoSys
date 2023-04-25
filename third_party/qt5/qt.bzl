@@ -16,7 +16,7 @@ def qt_cc_library(name, srcs, hdrs, copts = [], uis = [], res = [], normal_hdrs 
         base_name = _base_name(_file_name(hItem))
         cmd = """
         if grep -q Q_OBJECT $(location %s); then \
-            /usr/local/Qt-5.14.2/bin/moc $(location %s) -o $@ -f'%s'; \
+            /usr/local/Qt5.14.2/5.14.2/gcc_64/bin/moc $(location %s) -o $@ -f'%s'; \
         else \
             echo '' > $@ ; \
         fi""" % (hItem, hItem, "%s/%s" % (native.package_name(), hItem))
@@ -35,7 +35,7 @@ def qt_cc_library(name, srcs, hdrs, copts = [], uis = [], res = [], normal_hdrs 
             name = "%s_ui" % base_name,
             srcs = [uitem],
             outs = ["ui_%s.h" % base_name],
-            cmd = "/usr/local/Qt-5.14.2/bin/uic $(locations %s) -o $@" % uitem,
+            cmd = "/usr/local/Qt5.14.2/5.14.2/gcc_64/bin/uic $(locations %s) -o $@" % uitem,
         )
         hdrs.append("ui_%s.h" % base_name)
 
@@ -45,7 +45,7 @@ def qt_cc_library(name, srcs, hdrs, copts = [], uis = [], res = [], normal_hdrs 
             name = "%s_res" % base_name,
             srcs = [ritem] + deps,
             outs = ["res_%s.cpp" % base_name],
-            cmd = "/usr/local/Qt-5.14.2/bin/rcc --name res --output $(OUTS) $(location %s)" % ritem,
+            cmd = "/usr/local/Qt5.14.2/5.14.2/gcc_64/bin/rcc --name res --output $(OUTS) $(location %s)" % ritem,
         )
         srcs.append("res_%s.cpp" % base_name)
 
