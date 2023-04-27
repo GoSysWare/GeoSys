@@ -19,6 +19,6 @@ cc_library(
         "//modules/calc/include/lib:lib_include",
         "//modules/calc/proto:bus_cc_proto",
         "//modules/calc/devices/sim:device_sim",
-        "@dlib"
+        "@dlib",
     ],
 )

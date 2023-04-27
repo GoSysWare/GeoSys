@@ -13,15 +13,15 @@ cc_binary(
         "-ldl",
         "-lpng",
         "-ljpeg",
-
+        "-lcudnn",
     ],
-    linkstatic = False,
     deps = [
         "//cyber",
         "//modules/calc/include/lib:lib_include",
         "//modules/calc/ioss",
         "//modules/calc/kernel:calc_kernel",
         "//modules/calc/lib:calc_library",
+        "@cuda",
     ],
 )
 
