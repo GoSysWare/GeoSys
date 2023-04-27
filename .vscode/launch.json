@@ -32,7 +32,7 @@
                 },
                 {
                     "name": "LD_LIBRARY_PATH",
-                    "value": "/usr/local/lib"
+                    "value": "/usr/local/fast-rtps/lib"
                 }
             ],
             "externalConsole": false,
@@ -147,7 +147,7 @@
                 },
                 {
                     "name": "LD_LIBRARY_PATH",
-                    "value": "/usr/local/lib"
+                    "value": "/usr/local/fast-rtps/lib"
                 }
             ],
             "externalConsole": false,

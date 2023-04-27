@@ -14,8 +14,12 @@ cc_binary(
         "-ldl",
         "-lpng",
         "-ljpeg",     
+        "-lcudnn",
+
     ],
     deps = [
         "//modules/draw/src:draw",
+        "@cuda",
+ 
     ],
 )

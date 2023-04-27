@@ -47,7 +47,7 @@ void CadPanel::zoom(int mode) {
   h = (DEF_HEIGHT + 2) * step;
   setMinimumSize(w, h);
 
-  int ch = step * 0.6;
+  int ch = step * 0.9;
   if (ch < 4) {
     ch = 4;
   }
