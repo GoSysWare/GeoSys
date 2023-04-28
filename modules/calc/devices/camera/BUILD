@@ -5,7 +5,7 @@ package(default_visibility = ["//visibility:public"])
 
 
 cc_binary(
-    name = "libusb_camera.so",
+    name = "usb_camera",
     linkshared = True,
     linkstatic = False,
     deps = [":usb_camera_lib"],

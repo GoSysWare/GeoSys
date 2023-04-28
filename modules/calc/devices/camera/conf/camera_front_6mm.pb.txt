@@ -5,8 +5,8 @@ frame_id: "camera_front_6mm"
 pixel_format: "yuyv"
 io_method: IO_METHOD_MMAP
 #io_method: IO_METHOD_USERPTR
-width: 1280
-height: 720
+width: 640
+height: 480
 frame_rate: 1
 monochrome: false
 brightness: -1
@@ -25,7 +25,7 @@ trigger_internal: 0
 trigger_fps: 20
 channel_name: "/apollo/sensor/camera/front_6mm/image"
 device_wait_ms: 2000
-spin_rate: 1000
+spin_rate: 5
 output_type: RGB
 
 compress_conf {

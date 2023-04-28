@@ -1,8 +1,8 @@
+#include "cyber/time/time.h"
 #include <google/protobuf/text_format.h>
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include "cyber/time/time.h"
 
 #include "modules/calc/include/k_datatype.h"
 #include "modules/calc/include/k_evdata.h"
@@ -13,17 +13,16 @@ static evnode_t *p_vn_select = &vn_head;
 
 std::string type2str(v_type it) { return v_type_Name(it); }
 
-void vam_init(vam_t * vam,v_type t, std::string u){
- 
-  vam->reset( new value_tm );
+void vam_init(vam_t *vam, v_type t, std::string u) {
+
+  vam->reset(new value_tm);
   vam->get()->set_tm(apollo::cyber::Time::Now().ToNanosecond());
-  vam->get()->mutable_v()->set_t(t); 
+  vam->get()->mutable_v()->set_t(t);
   vam->get()->mutable_v()->clear_var();
-  if(t == v_type::T_ANY){
+  if (t == v_type::T_ANY) {
     vam->get()->mutable_v()->mutable_any()->set_type_url(u);
   }
 }
-
 
 v_type str2type(const std::string &str) {
   v_type it;
@@ -53,7 +52,8 @@ value_tm setvar(v_type t, std::string value) {
   vam.mutable_v()->set_t(t);
   switch (t) {
   case v_type::T_BOOL:
-    vam.mutable_v()->set_b(value == "false"|| value == "FALSE" || value == "0" ? false : true);
+    vam.mutable_v()->set_b(
+        value == "false" || value == "FALSE" || value == "0" ? false : true);
     break;
   case v_type::T_INT32:
     vam.mutable_v()->set_i(std::stoi(value));
@@ -250,26 +250,36 @@ int ev_img_size() {
   return s;
 }
 
-int ev_to_snapshot(Bus::ProjSnapshotRsp *snapshot ) {
+int ev_to_snapshot(Bus::ProjSnapshotRsp *snapshot) {
   evnode_t *p_vn;
   p_vn = vn_head.p_next;
   while (p_vn != &vn_head) {
-    Bus::EVNodeValue * val_sp = snapshot->add_vals();
+    if (IS_NOT_UPLOAD_TYPE(p_vn->v->v().t())){
+      p_vn = p_vn->p_next;
+      continue;
+    }
+    Bus::EVNodeValue *val_sp = snapshot->add_vals();
     val_sp->set_ev_id(p_vn->id);
-    apollo::cyber::base::ReadLockGuard<apollo::cyber::base::ReentrantRWLock> lock(p_vn->mutex);
+    apollo::cyber::base::ReadLockGuard<apollo::cyber::base::ReentrantRWLock>
+        lock(p_vn->mutex);
     val_sp->mutable_val()->CopyFrom(*(p_vn->v));
     p_vn = p_vn->p_next;
   }
   return 0;
 }
 
-int ev_from_snapshot(Bus::ProjSnapshotRsp *snapshot ) {
+int ev_from_snapshot(Bus::ProjSnapshotRsp *snapshot) {
   evnode_t *p_vn;
   int i = 0;
   p_vn = vn_head.p_next;
   while (p_vn != &vn_head) {
+    if (IS_NOT_UPLOAD_TYPE(p_vn->v->v().t())){
+      p_vn = p_vn->p_next;
+      continue;
+    }
     p_vn->id = snapshot->mutable_vals(i)->ev_id();
-    apollo::cyber::base::WriteLockGuard<apollo::cyber::base::ReentrantRWLock> lock(p_vn->mutex);
+    apollo::cyber::base::WriteLockGuard<apollo::cyber::base::ReentrantRWLock>
+        lock(p_vn->mutex);
     p_vn->v.get()->CopyFrom(snapshot->mutable_vals(i)->val());
     p_vn = p_vn->p_next;
     i++;

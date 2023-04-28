@@ -39,7 +39,7 @@ class CameraComponent {
     return pb_image_buffer_.at(index_-1 < 0 ? buffer_size_ :index_ -1 );
   }
   bool IsNew(){
-    return raw_image_->is_new;
+    return raw_image_->is_new == 1 ? true:false;
   }
  private:
   void run();
@@ -48,6 +48,7 @@ class CameraComponent {
   std::shared_ptr<Config> camera_config_;
   std::vector<std::shared_ptr<Image>> pb_image_buffer_;
   int index_ = 0;
+  int last_index = 0;
 
   uint32_t spin_rate_ = 200;
   uint32_t device_wait_ = 2000;

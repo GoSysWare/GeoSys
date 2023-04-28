@@ -458,6 +458,7 @@ int prj_to_snapshot(Bus::ProjSnapshotRsp *snapshot) {
           val_sp->mutable_v()->set_ull(p_fb->h.flag);
 
           for (i = 0; i < p_fb->ins.size(); i++) {
+            if(IS_NOT_UPLOAD_TYPE(p_fb->ins[i].t)) continue;
             val_sp = task_sp->add_vals();
             if (p_fb->ins[i].s == PIN_HAS_LOCK) {
               apollo::cyber::base::ReadLockGuard<
@@ -470,6 +471,7 @@ int prj_to_snapshot(Bus::ProjSnapshotRsp *snapshot) {
             }
           }
           for (i = 0; i < p_fb->outs.size(); i++) {
+            if(IS_NOT_UPLOAD_TYPE(p_fb->outs[i].t)) continue;
             val_sp = task_sp->add_vals();
             if (p_fb->outs[i].s == PIN_HAS_LOCK) {
               apollo::cyber::base::ReadLockGuard<
@@ -482,6 +484,8 @@ int prj_to_snapshot(Bus::ProjSnapshotRsp *snapshot) {
             }
           }
           for (i = 0; i < p_fb->props.size(); i++) {
+            if(IS_NOT_UPLOAD_TYPE(p_fb->props[i].t)) continue;
+
             val_sp = task_sp->add_vals();
             if (p_fb->props[i].s == PIN_HAS_LOCK) {
               apollo::cyber::base::ReadLockGuard<
@@ -549,6 +553,8 @@ int prj_from_snapshot(Bus::ProjSnapshotRsp *snapshot) {
           p_fb->h.expend_time = task_sp.vals(k++).v().ull();
           p_fb->h.flag = task_sp.vals(k++).v().i();
           for (i = 0; i < p_fb->ins.size(); i++) {
+            if(IS_NOT_UPLOAD_TYPE(p_fb->ins[i].t)) continue;
+
             if (p_fb->ins[i].s == PIN_HAS_LOCK) {
               apollo::cyber::base::WriteLockGuard<
                   apollo::cyber::base::ReentrantRWLock>
@@ -559,6 +565,8 @@ int prj_from_snapshot(Bus::ProjSnapshotRsp *snapshot) {
             }
           }
           for (i = 0; i < p_fb->outs.size(); i++) {
+            if(IS_NOT_UPLOAD_TYPE(p_fb->outs[i].t)) continue;
+
             if (p_fb->outs[i].s == PIN_HAS_LOCK) {
               apollo::cyber::base::WriteLockGuard<
                   apollo::cyber::base::ReentrantRWLock>
@@ -569,6 +577,8 @@ int prj_from_snapshot(Bus::ProjSnapshotRsp *snapshot) {
             }
           }
           for (i = 0; i < p_fb->props.size(); i++) {
+            if(IS_NOT_UPLOAD_TYPE(p_fb->props[i].t)) continue;
+
             if (p_fb->props[i].s == PIN_HAS_LOCK) {
               apollo::cyber::base::WriteLockGuard<
                   apollo::cyber::base::ReentrantRWLock>

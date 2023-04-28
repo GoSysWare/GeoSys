@@ -91,15 +91,26 @@ static void run_DLIB_FACE_DETECT(void *p) {
   } else {
     value = in_img->v().img().data();
   }
+  std::cout << "run_DLIB_FACE_DETECT begin" <<std::endl;
 
+  uint64_t begin = apollo::cyber::Time::Now().ToNanosecond();
+                    
+  uint64_t t_now ;
   std::istringstream si_sp(sp_file->v().file());
   std::istringstream si_anet(anet_file->v().file());
+
+  t_now = apollo::cyber::Time::Now().ToNanosecond();
+  std::cout << "run_DLIB_FACE_DETECT 1:" << t_now - begin <<std::endl;;
 
   dlib::shape_predictor sp;
   dlib::frontal_face_detector detector = dlib::get_frontal_face_detector();
   dlib::deserialize(si_sp) >> sp;
+  t_now = apollo::cyber::Time::Now().ToNanosecond();
+  std::cout << "run_DLIB_FACE_DETECT 2:" << t_now - begin<<std::endl;;
   anet_type net;
   dlib::deserialize(si_anet) >> net;
+  t_now = apollo::cyber::Time::Now().ToNanosecond();
+  std::cout << "run_DLIB_FACE_DETECT 3:" << t_now - begin<<std::endl;;
   dlib::matrix<rgb_pixel> dlib_img;
   dlib_img.set_size(height, width);
 
@@ -113,6 +124,8 @@ static void run_DLIB_FACE_DETECT(void *p) {
       pix.blue = value[index * 3 + 2];
     }
   }
+  t_now = apollo::cyber::Time::Now().ToNanosecond();
+  std::cout << "run_DLIB_FACE_DETECT 4:" << t_now - begin<<std::endl;;
   std::vector<dlib::matrix<dlib::rgb_pixel>> faces;
   int count = 0;
   for (auto face : detector(dlib_img)) {
@@ -125,7 +138,8 @@ static void run_DLIB_FACE_DETECT(void *p) {
     faces.push_back(move(face_chip));
     count++;
   }
-
+  t_now = apollo::cyber::Time::Now().ToNanosecond();
+  std::cout << "run_DLIB_FACE_DETECT 5:" << t_now - begin<<std::endl;;
   for (auto i = 0; i < faces.size(); i++) {
     out_tmp_width = faces[i].nc();
     out_tmp_height = faces[i].nr();
@@ -175,6 +189,8 @@ static void run_DLIB_FACE_DETECT(void *p) {
     } else {
     }
   }
+  t_now = apollo::cyber::Time::Now().ToNanosecond();
+  std::cout << "run_DLIB_FACE_DETECT 6:" << t_now - begin<<std::endl;;
   out_width->mutable_v()->set_ui(out_tmp_width);
   out_height->mutable_v()->set_ui(out_tmp_width);
   if (faces.size() == 0) {

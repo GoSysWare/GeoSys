@@ -72,8 +72,7 @@ bool CameraComponent::Init(std::string config) {
 
     pb_image_buffer_.push_back(pb_image);
   }
-
-  async_result_ = apollo::cyber::Async(&CameraComponent::run, this);
+  async_result_ = std::async(std::launch::async,&CameraComponent::run, this);
   return true;
 }
 
@@ -90,12 +89,13 @@ void CameraComponent::run() {
       AERROR << "camera device poll failed";
       continue;
     }
-    // AERROR << "camera device poll succ spin_rate_" << spin_rate_;
+    AERROR << "camera device poll succ spin_rate_" << spin_rate_;
     apollo::cyber::Time image_time(raw_image_->tv_sec, 1000 * raw_image_->tv_usec);
 
     if (index_ >= buffer_size_) {
       index_ = 0;
-    }
+    }    
+
     std::shared_ptr<Image> & pb_image = pb_image_buffer_.at(index_++);
     pb_image->set_measurement_time(image_time.ToSecond());
     pb_image->set_data(raw_image_->image, raw_image_->image_size);

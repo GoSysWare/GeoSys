@@ -20,12 +20,13 @@ int main(int argc, char *argv[]) {
   apollo::cyber::Init(argv[0]);
   // create talker node
   auto engine_node = apollo::cyber::CreateNode("robot_engine");
+
   ioss_init();
   prj_init(0);
   lib_init();
   bus_init(std::move(engine_node));
   // Bus::EditInfos edit_infos;
-  // apollo::cyber::common::GetProtoFromFile("/home/shuimujie/Works/GeoSys/demo.logic.cl",&edit_infos);
+  // apollo::cyber::common::GetProtoFromFile("/home/shuimujie/Works/GeoSys/camera.logic.cl",&edit_infos);
   // cmds_dispatch(edit_infos);
 
   

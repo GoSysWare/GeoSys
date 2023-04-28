@@ -31,6 +31,10 @@
                     "value": "/home/shuimujie/Works/GeoSys/logs"
                 },
                 {
+                    "name": "GLOG_minloglevel",
+                    "value": "0"
+                },
+                {
                     "name": "LD_LIBRARY_PATH",
                     "value": "/usr/local/fast-rtps/lib"
                 }

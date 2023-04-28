@@ -112,6 +112,7 @@ class AsyncTask : public AsyncTaskBase {
   std::string response_channel_;
   //不支持多并发
   std::mutex task_handle_request_mutex_;
+  std::future<void> async_result_;
 
   volatile bool inited_ = false;
   void Enqueue(std::function<void()>&& task);
@@ -120,6 +121,7 @@ class AsyncTask : public AsyncTaskBase {
 template <typename Request, typename Response>
 void AsyncTask<Request, Response>::destroy() {
   inited_ = false;
+  async_result_.wait();
 }
 
 
@@ -156,7 +158,7 @@ bool AsyncTask<Request, Response>::Init() {
         auto task = [this, request, message_info]() {
           this->HandleRequest(request, message_info);
         };
-        Async(std::move(task));
+        async_result_ = Async(std::move(task));
       },
       proto::OptionalMode::INTRA);
   inited_ = true;

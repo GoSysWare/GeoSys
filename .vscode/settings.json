@@ -281,7 +281,10 @@
         "v_get_any": "cpp",
         "v_get_float64": "cpp",
         "v_get_double": "cpp",
-        "path_create": "cpp"
+        "path_create": "cpp",
+        "executor": "cpp",
+        "io_context": "cpp",
+        "__nullptr": "cpp"
     },
     "C_Cpp.errorSquiggles": "disabled"
 }

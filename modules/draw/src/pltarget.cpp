@@ -88,7 +88,7 @@ PLTarget::PLTarget(QObject *parent) : QTimer(parent) {
   bOnline = false;
   bMonitor = false;
 
-  setInterval(200);
+  setInterval(100);
 }
 
 PLTarget::~PLTarget() {}
