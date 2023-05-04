@@ -86,7 +86,7 @@ void CameraComponent::run() {
     }
 
     if (!camera_device_->poll(raw_image_)) {
-      AERROR << "camera device poll failed";
+      // AERROR << "camera device poll failed";
       continue;
     }
     AERROR << "camera device poll succ spin_rate_" << spin_rate_;

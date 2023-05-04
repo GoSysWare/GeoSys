@@ -181,7 +181,6 @@ void prj_stop() {
   }
 }
 
-
 bool prj_check_stop() {
   pnode_t *p_pn;
   p_pn = pn_head.p_next;
@@ -195,9 +194,9 @@ bool prj_check_stop() {
   }
   return true;
 }
-void prj_join(){
-  while(!prj_check_stop()){
-    apollo::cyber::USleep(10*1000);
+void prj_join() {
+  while (!prj_check_stop()) {
+    apollo::cyber::USleep(10 * 1000);
   }
 }
 
@@ -420,7 +419,8 @@ pnode_t *prj_mod_info_find(int idmod) {
   return p_pn_select;
 }
 
-int prj_to_snapshot(const std::vector<int> ev_ids,Bus::ProjSnapshotRsp *snapshot) {
+int prj_to_snapshot(const std::vector<int> ev_ids,
+                    Bus::ProjSnapshotRsp *snapshot) {
   pnode_t *p_pn = 0;
   mnode_t *p_mn = 0;
   enode_t *p_en = 0;
@@ -436,7 +436,8 @@ int prj_to_snapshot(const std::vector<int> ev_ids,Bus::ProjSnapshotRsp *snapshot
     mod_sp->set_mod_id(p_pn->id);
     p_mn = p_pn->p_mod->mn_head.p_next;
     while (p_mn != &p_pn->p_mod->mn_head) {
-     apollo::cyber::base::ReadLockGuard<apollo::cyber::base::AtomicRWLock> lg( p_mn->mutex);
+      apollo::cyber::base::ReadLockGuard<apollo::cyber::base::AtomicRWLock> lg(
+          p_mn->mutex);
       Bus::TaskSnapshot *task_sp = mod_sp->add_tasks();
       task_sp->set_mod_id(p_pn->id);
       task_sp->set_task_id(p_mn->id);
@@ -459,57 +460,41 @@ int prj_to_snapshot(const std::vector<int> ev_ids,Bus::ProjSnapshotRsp *snapshot
           val_sp->mutable_v()->set_ull(p_fb->h.flag);
 
           for (i = 0; i < p_fb->ins.size(); i++) {
-            if(IS_NOT_UPLOAD_TYPE(p_fb->ins[i].t)) continue;
+            if (IS_NOT_UPLOAD_TYPE(p_fb->ins[i].t))
+              continue;
             val_sp = task_sp->add_vals();
             if (p_fb->ins[i].s == PIN_HAS_LOCK) {
               apollo::cyber::base::ReadLockGuard<
                   apollo::cyber::base::ReentrantRWLock>
                   lg(*(p_fb->ins[i].l));
-
               val_sp->CopyFrom(*(p_fb->ins[i].v));
             } else {
               val_sp->CopyFrom(*(p_fb->ins[i].v));
             }
           }
           for (i = 0; i < p_fb->outs.size(); i++) {
-            if(IS_NOT_UPLOAD_TYPE(p_fb->outs[i].t)) continue;
+            if (IS_NOT_UPLOAD_TYPE(p_fb->outs[i].t))
+              continue;
             val_sp = task_sp->add_vals();
             if (p_fb->outs[i].s == PIN_HAS_LOCK) {
               apollo::cyber::base::ReadLockGuard<
                   apollo::cyber::base::ReentrantRWLock>
                   lg(*(p_fb->outs[i].l));
-
               val_sp->CopyFrom(*(p_fb->outs[i].v));
             } else {
-              val_sp->CopyFrom(*(p_fb->outs[i].v));
-            }
-          }
-          for (i = 0; i < p_fb->props.size(); i++) {
-            if(IS_NOT_UPLOAD_TYPE(p_fb->props[i].t)) continue;
 
-            val_sp = task_sp->add_vals();
-            if (p_fb->props[i].s == PIN_HAS_LOCK) {
-              apollo::cyber::base::ReadLockGuard<
-                  apollo::cyber::base::ReentrantRWLock>
-                  lg(*(p_fb->props[i].l));
-              val_sp->CopyFrom(*(p_fb->props[i].v));
-            } else {
-              val_sp->CopyFrom(*(p_fb->props[i].v));
+              val_sp->CopyFrom(*(p_fb->outs[i].v));
             }
           }
         }
         p_en = p_en->p_next;
       }
-
       p_mn = p_mn->p_next;
     }
     p_pn = p_pn->p_next;
   }
 
-  ev_to_snapshot(ev_ids,snapshot);
-  // std::cout << "prj_to_snapshot" <<std::endl;
-  // std::cout << snapshot->ShortDebugString()<<std::endl;
-
+  ev_to_snapshot(ev_ids, snapshot);
   return 0;
 }
 
@@ -523,7 +508,8 @@ int info_cmp(prjinfo_t *info, Bus::ProjectInfoRsp *bus_proj_info) {
   return 0;
 }
 
-int prj_from_snapshot(const std::vector<int> ev_ids,Bus::ProjSnapshotRsp *snapshot) {
+int prj_from_snapshot(const std::vector<int> ev_ids,
+                      Bus::ProjSnapshotRsp *snapshot) {
   pnode_t *p_pn = 0;
   mnode_t *p_mn = 0;
   enode_t *p_en = 0;
@@ -543,7 +529,8 @@ int prj_from_snapshot(const std::vector<int> ev_ids,Bus::ProjSnapshotRsp *snapsh
     assert(mod_sp.mod_id() == p_pn->id);
     n = 0;
     while (p_mn != &p_pn->p_mod->mn_head) {
-      apollo::cyber::base::WriteLockGuard<apollo::cyber::base::AtomicRWLock> lg( p_mn->mutex);
+      apollo::cyber::base::WriteLockGuard<apollo::cyber::base::AtomicRWLock> lg(
+          p_mn->mutex);
 
       p_en = p_mn->p_prg->en_head.p_next;
       Bus::TaskSnapshot task_sp = mod_sp.tasks(n++);
@@ -557,7 +544,8 @@ int prj_from_snapshot(const std::vector<int> ev_ids,Bus::ProjSnapshotRsp *snapsh
           p_fb->h.expend_time = task_sp.vals(k++).v().ull();
           p_fb->h.flag = task_sp.vals(k++).v().i();
           for (i = 0; i < p_fb->ins.size(); i++) {
-            if(IS_NOT_UPLOAD_TYPE(p_fb->ins[i].t)) continue;
+            if (IS_NOT_UPLOAD_TYPE(p_fb->ins[i].t))
+              continue;
 
             if (p_fb->ins[i].s == PIN_HAS_LOCK) {
               apollo::cyber::base::WriteLockGuard<
@@ -569,8 +557,8 @@ int prj_from_snapshot(const std::vector<int> ev_ids,Bus::ProjSnapshotRsp *snapsh
             }
           }
           for (i = 0; i < p_fb->outs.size(); i++) {
-            if(IS_NOT_UPLOAD_TYPE(p_fb->outs[i].t)) continue;
-
+            if (IS_NOT_UPLOAD_TYPE(p_fb->outs[i].t))
+              continue;
             if (p_fb->outs[i].s == PIN_HAS_LOCK) {
               apollo::cyber::base::WriteLockGuard<
                   apollo::cyber::base::ReentrantRWLock>
@@ -578,18 +566,6 @@ int prj_from_snapshot(const std::vector<int> ev_ids,Bus::ProjSnapshotRsp *snapsh
               p_fb->outs[i].v->CopyFrom(task_sp.vals(k++));
             } else {
               p_fb->outs[i].v->CopyFrom(task_sp.vals(k++));
-            }
-          }
-          for (i = 0; i < p_fb->props.size(); i++) {
-            if(IS_NOT_UPLOAD_TYPE(p_fb->props[i].t)) continue;
-
-            if (p_fb->props[i].s == PIN_HAS_LOCK) {
-              apollo::cyber::base::WriteLockGuard<
-                  apollo::cyber::base::ReentrantRWLock>
-                  lg(*(p_fb->props[i].l));
-              p_fb->props[i].v->CopyFrom(task_sp.vals(k++));
-            } else {
-              p_fb->props[i].v->CopyFrom(task_sp.vals(k++));
             }
           }
         }
@@ -600,7 +576,7 @@ int prj_from_snapshot(const std::vector<int> ev_ids,Bus::ProjSnapshotRsp *snapsh
     p_pn = p_pn->p_next;
   }
 
-  ev_from_snapshot(ev_ids,snapshot);
+  ev_from_snapshot(ev_ids, snapshot);
 
   return 0;
 }

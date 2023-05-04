@@ -14,7 +14,8 @@ void PLTarget::timerEvent(QTimerEvent *e) {
     idCmdTarget = info_res->cmd_id();
     uuidTarget = QString::fromStdString(info_res->prj_uuid());
     qDebug() << "Target cmd_id:" << idCmdTarget << "uuid" << uuidTarget;
-    qDebug() << "HMI cmd_id:" << gMainModel->cmdID << "uuid" << gMainModel->project.uuid;
+    qDebug() << "HMI cmd_id:" << gMainModel->cmdID << "uuid"
+             << gMainModel->project.uuid;
 
   } else {
     online(false, NULL);
@@ -22,12 +23,12 @@ void PLTarget::timerEvent(QTimerEvent *e) {
 
   if (bMonitor) {
     std::shared_ptr<Bus::ProjSnapshotRsp> sp_res =
-        bus_proj_snapshot_send(gNode, gclient_proj_snapshot,ev_ids);
+        bus_proj_snapshot_send(gNode, gclient_proj_snapshot, ev_ids);
 
     if (sp_res != nullptr && sp_res->has_result() &&
         sp_res->result().code() == Bus::ResultCode::OK) {
 
-      prj_from_snapshot(ev_ids,sp_res.get());
+      prj_from_snapshot(ev_ids, sp_res.get());
       // prj_dump();
       int i, j, k, n, m;
       // load fbs value
@@ -60,10 +61,10 @@ void PLTarget::timerEvent(QTimerEvent *e) {
               // qDebug() << "fb" << fb->id << "pin" << k << "val"
               //          << fb->output[k].value.v().i();
             }
-            // property
-            for (k = 0; k < fb->property.size(); k++) {
-              fb->property[k].value = *(p_fb->props[k].v);
-            }
+            // // property
+            // for (k = 0; k < fb->property.size(); k++) {
+            //   fb->property[k].value = *(p_fb->props[k].v);
+            // }
           }
         }
       }
@@ -82,15 +83,97 @@ void PLTarget::timerEvent(QTimerEvent *e) {
   }
 }
 
-PLTarget::PLTarget(QObject *parent) : QTimer(parent) {
+PLTarget::PLTarget(QObject *parent) {
 
   bOnline = false;
   bMonitor = false;
 
-  setInterval(100);
+  apollo::cyber::TimerOption opt;
+  opt.oneshot = false;
+  opt.callback = [this]() {
+    std::shared_ptr<Bus::ProjectInfoRsp> info_res =
+        bus_proj_info_send(gNode, gclient_proj_info);
+
+    if (info_res != nullptr && info_res->has_result() &&
+        info_res->result().code() == Bus::ResultCode::OK) {
+      this->idCmdTarget = info_res->cmd_id();
+      this->uuidTarget = QString::fromStdString(info_res->prj_uuid());
+      qDebug() << "Target cmd_id:" << this->idCmdTarget << "uuid"
+               << this->uuidTarget;
+      qDebug() << "HMI cmd_id:" << gMainModel->cmdID << "uuid"
+               << gMainModel->project.uuid;
+
+    } else {
+      this->online(false, NULL);
+    }
+
+    if (this->bMonitor) {
+
+      std::shared_ptr<Bus::ProjSnapshotRsp> sp_res =
+          bus_proj_snapshot_send(gNode, gclient_proj_snapshot, this->ev_ids);
+
+      if (sp_res != nullptr && sp_res->has_result() &&
+          sp_res->result().code() == Bus::ResultCode::OK) {
+
+        prj_from_snapshot(this->ev_ids, sp_res.get());
+        // prj_dump();
+        int i, j, k, n, m;
+        // load fbs value
+        PLModule *mod;
+
+        PLProgram *prg;
+        PLFunctionBlock *fb;
+        fb_t *p_fb;
+        for (m = 0; m < gMainModel->modList.size(); m++) {
+          mod = &gMainModel->modList[m];
+
+          for (i = 0; i < mod->prgList.size(); i++) {
+            prg = &mod->prgList[i];
+            for (j = 0; j < prg->fbs.size(); j++) {
+              fb = &prg->fbs[j];
+              p_fb = prj_fbfind(fb->idMod, fb->idPrg, fb->id);
+              // header
+              fb->flag = p_fb->h.flag;
+              fb->cycle_time = p_fb->h.cycle_time;
+              fb->begin_time = p_fb->h.begin_time;
+              fb->expend_time = p_fb->h.expend_time;
+
+              // input
+              for (k = 0; k < fb->input.size(); k++) {
+                fb->input[k].value = *(p_fb->ins[k].v);
+              }
+              // output
+              for (k = 0; k < fb->output.size(); k++) {
+                fb->output[k].value = *(p_fb->outs[k].v);
+                // qDebug() << "fb" << fb->id << "pin" << k << "val"
+                //          << fb->output[k].value.v().i();
+              }
+              // // property
+              // for (k = 0; k < fb->property.size(); k++) {
+              //   fb->property[k].value = *(p_fb->props[k].v);
+              // }
+            }
+          }
+        }
+        // load evs value
+        PLEVData *ev;
+        value_tm *p_ev;
+        for (int i = 0; i < gMainModel->evList.size(); i++) {
+          ev = &gMainModel->evList[i];
+          p_ev = ev_find_v(ev->id)->get();
+          ev->value = *p_ev;
+        }
+        gMainFrame->updateCadView();
+      } else {
+        this->online(false, NULL);
+      }
+    }
+  };
+  opt.period = 200;
+  timer.SetTimerOption(opt);
 }
 
-PLTarget::~PLTarget() {}
+PLTarget::~PLTarget() { timer.Stop(); }
 
 bool PLTarget::online(bool mode, char *ip) {
   if (mode == bOnline) {
@@ -105,10 +188,10 @@ bool PLTarget::online(bool mode, char *ip) {
     if (res != nullptr && res->has_result() &&
         res->result().code() == Bus::ResultCode::OK) {
       bOnline = true;
-      start();
+      timer.Start();
     }
   } else {
-    stop();
+    timer.Stop();
     bus_disconnect_send(gNode, gclient_proj_cmd);
     bOnline = false;
     bMonitor = false;
@@ -167,7 +250,7 @@ bool PLTarget::sync() {
     return false;
   }
 
-  stop();
+  timer.Stop();
   std::shared_ptr<Bus::ProjectCmdRsp> online_res =
       bus_stop_send(gNode, gclient_proj_cmd);
 
@@ -182,7 +265,7 @@ bool PLTarget::sync() {
 
   if (run_res == nullptr || run_res->has_result() == false ||
       run_res->result().code() != Bus::ResultCode::OK) {
-    start();
+    timer.Start();
     return true;
   } else {
     online(false, NULL);
@@ -240,7 +323,7 @@ bool PLTarget::download() {
   }
 
   // 停掉hmi的本地逻辑
-  stop();
+  timer.Stop();
   // 停掉remote的引擎
   std::shared_ptr<Bus::ProjectCmdRsp> stop_res =
       bus_stop_send(gNode, gclient_proj_cmd);
@@ -276,7 +359,7 @@ bool PLTarget::download() {
       return false;
     } else {
       //启动draw的逻辑
-      start();
+      timer.Start();
       return true;
     }
 
@@ -322,7 +405,8 @@ bool PLTarget::isMatch() {
 
 bool PLTarget::isSync() {
   if (isMatch()) {
-    if (idCmdTarget == gMainModel->cmdID && uuidTarget == gMainModel->project.uuid) {
+    if (idCmdTarget == gMainModel->cmdID &&
+        uuidTarget == gMainModel->project.uuid) {
       return true;
     }
   }

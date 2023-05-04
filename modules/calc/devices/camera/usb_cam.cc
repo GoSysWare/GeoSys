@@ -807,7 +807,7 @@ bool UsbCam::read_frame(CameraImagePtr raw_image) {
               static_cast<double>(camera_timestamp - last_nsec_) / 1e9;
           // drop image by frame_rate
           if (diff < frame_drop_interval_) {
-            AINFO << "drop image:" << camera_timestamp;
+            // AINFO << "drop image:" << camera_timestamp;
             if (-1 == xioctl(fd_, VIDIOC_QBUF, &buf)) {
               AERROR << "VIDIOC_QBUF ERROR";
             }

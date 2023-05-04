@@ -1,9 +1,9 @@
 #ifndef PLTARGET_H
 #define PLTARGET_H
-
-#include <QTimer>
+#include "cyber/cyber.h"
+#include <QObject>
 #include "modules/calc/proto/cmd.pb.h"
-class PLTarget : public QTimer
+class PLTarget : public QObject
 {
     Q_OBJECT
 public:
@@ -25,6 +25,7 @@ public:
 public slots:
    void setOnlineValueSlot(int idMod,int idPrg,int idFb,int idPin, value_tm val);
 private:
+    apollo::cyber::Timer timer;
     bool bOnline;
     bool bMonitor;
     QString uuidTarget;

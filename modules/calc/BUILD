@@ -9,11 +9,11 @@ cc_binary(
         "main.cpp",
     ],
     linkopts = [
-        "-lpthread",
         "-ldl",
         "-lpng",
         "-ljpeg",
         "-lcudnn",
+        "-lpthread",
     ],
     deps = [
         "//cyber",
