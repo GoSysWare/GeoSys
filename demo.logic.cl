@@ -1,5 +1,5 @@
 infos {
-  cmd_id: 388
+  cmd_id: 389
   edit_type: SET
   proj {
     proj_name: "rotbot-engine-project"
@@ -6021,6 +6021,24 @@ infos {
         b: false
       }
       tm: 1682651337189843504
+    }
+  }
+}
+infos {
+  cmd_id: 389
+  element: PIN
+  edit_type: SET
+  pin {
+    mod_id: 117
+    task_id: 160
+    fb_id: 164
+    pin_index: 5
+    pin_val {
+      v {
+        t: T_BOOL
+        b: true
+      }
+      tm: 1683178958078734582
     }
   }
 }

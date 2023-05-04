@@ -1,5 +1,6 @@
 
 #include "dlgevshow.h"
+#include "gdefine.h"
 #include <QByteArray>
 #include <QDebug>
 #include <QMessageBox>
@@ -39,6 +40,8 @@ void DlgEvShow::setValueData(PLEVData ev) {
   int width;
   int index;
   int step;
+
+
 
   switch (ev.value.v().t()) {
   case v_type::T_BOOL:

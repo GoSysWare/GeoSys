@@ -250,11 +250,29 @@ int ev_img_size() {
   return s;
 }
 
-int ev_to_snapshot(Bus::ProjSnapshotRsp *snapshot) {
+int ev_to_snapshot(const std::vector<int> ev_ids, Bus::ProjSnapshotRsp *snapshot) {
   evnode_t *p_vn;
   p_vn = vn_head.p_next;
+  bool is_upload = true;
+
   while (p_vn != &vn_head) {
-    if (IS_NOT_UPLOAD_TYPE(p_vn->v->v().t())){
+    //对大内存数据类型特殊处理
+    if (IS_NOT_UPLOAD_TYPE(p_vn->v->v().t())) {
+      //如果请求中含有需要上传的ev
+      is_upload = false;
+      for (auto id : ev_ids) {
+        if (id == p_vn->id) {
+          is_upload = true;
+          break;
+        }
+      }
+      if (is_upload) {
+        Bus::EVNodeValue *val_sp = snapshot->add_vals();
+        val_sp->set_ev_id(p_vn->id);
+        apollo::cyber::base::ReadLockGuard<apollo::cyber::base::ReentrantRWLock>
+            lock(p_vn->mutex);
+        val_sp->mutable_val()->CopyFrom(*(p_vn->v));
+      }
       p_vn = p_vn->p_next;
       continue;
     }
@@ -268,12 +286,33 @@ int ev_to_snapshot(Bus::ProjSnapshotRsp *snapshot) {
   return 0;
 }
 
-int ev_from_snapshot(Bus::ProjSnapshotRsp *snapshot) {
+int ev_from_snapshot(const std::vector<int> ev_ids,
+                     Bus::ProjSnapshotRsp *snapshot) {
   evnode_t *p_vn;
   int i = 0;
+  bool is_upload = true;
+
   p_vn = vn_head.p_next;
   while (p_vn != &vn_head) {
-    if (IS_NOT_UPLOAD_TYPE(p_vn->v->v().t())){
+    if (IS_NOT_UPLOAD_TYPE(p_vn->v->v().t())) {
+
+      //如果请求中含有需要上传的ev
+      is_upload = false;
+      for (auto id : ev_ids) {
+        if (id == p_vn->id) {
+          is_upload = true;
+          break;
+        }
+      }
+      if (is_upload) {
+        p_vn->id = snapshot->mutable_vals(i)->ev_id();
+        apollo::cyber::base::WriteLockGuard<
+            apollo::cyber::base::ReentrantRWLock>
+            lock(p_vn->mutex);
+        p_vn->v.get()->CopyFrom(snapshot->mutable_vals(i)->val());
+        i++;
+      }
+
       p_vn = p_vn->p_next;
       continue;
     }

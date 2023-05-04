@@ -81,8 +81,8 @@ mod_t *prj_modfind(std::string mod_name);
 pnode_t *prj_mod_info_find(std::string mod_name);
 pnode_t *prj_mod_info_find(int idmod);
 
-int prj_to_snapshot(Bus::ProjSnapshotRsp *snapshot);
-int prj_from_snapshot(Bus::ProjSnapshotRsp *snapshot);
+int prj_to_snapshot(const  std::vector<int> ev_ids,Bus::ProjSnapshotRsp *snapshot);
+int prj_from_snapshot(const  std::vector<int> ev_ids,Bus::ProjSnapshotRsp *snapshot);
 
 // int prj_img_size();
 // int prj_to_img(prjimg_t *img);

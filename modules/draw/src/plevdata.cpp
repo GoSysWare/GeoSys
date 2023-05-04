@@ -1,5 +1,4 @@
 #include "plevdata.h"
-
 PLEVData::PLEVData() {
   initValue.mutable_v()->set_t(v_type::T_NONE);
   value.mutable_v()->set_t(v_type::T_NONE);

@@ -20,6 +20,7 @@ public:
     bool isSync();
 
     void timerEvent(QTimerEvent *e);
+    std::vector<int> ev_ids;
 
 public slots:
    void setOnlineValueSlot(int idMod,int idPrg,int idFb,int idPin, value_tm val);
@@ -28,6 +29,7 @@ private:
     bool bMonitor;
     QString uuidTarget;
     int idCmdTarget;
+   
 };
 
 #endif // PLTARGET_H

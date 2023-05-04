@@ -21,14 +21,13 @@ void PLTarget::timerEvent(QTimerEvent *e) {
   }
 
   if (bMonitor) {
-
     std::shared_ptr<Bus::ProjSnapshotRsp> sp_res =
-        bus_proj_snapshot_send(gNode, gclient_proj_snapshot);
+        bus_proj_snapshot_send(gNode, gclient_proj_snapshot,ev_ids);
 
     if (sp_res != nullptr && sp_res->has_result() &&
         sp_res->result().code() == Bus::ResultCode::OK) {
 
-      prj_from_snapshot(sp_res.get());
+      prj_from_snapshot(ev_ids,sp_res.get());
       // prj_dump();
       int i, j, k, n, m;
       // load fbs value

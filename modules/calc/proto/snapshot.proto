@@ -4,6 +4,8 @@ import "modules/calc/proto/return.proto";
 
 package Bus;
 
+
+
 message TaskSnapshot
 {
     int32 mod_id = 1;
@@ -35,6 +37,7 @@ message ProjSnapshotReq
     string process_id = 3;
     string prj_name = 4;
     repeated int32 mod_id = 5;
+    repeated int32 ev_id = 6;
 }
 
 

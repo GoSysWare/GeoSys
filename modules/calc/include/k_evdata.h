@@ -42,8 +42,8 @@ void ev_dump();
 evnode_t *ev_gethead();
 int ev_img_size();
 
-int ev_to_snapshot(Bus::ProjSnapshotRsp *snapshot);
-int ev_from_snapshot(Bus::ProjSnapshotRsp *snapshot);
+int ev_to_snapshot(const  std::vector<int> ev_ids, Bus::ProjSnapshotRsp *snapshot);
+int ev_from_snapshot(const  std::vector<int> ev_ids, Bus::ProjSnapshotRsp *snapshot);
 
 // char *ev_to_img(char *buf);
 // char *ev_from_img(char *buf);

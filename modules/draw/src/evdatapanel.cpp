@@ -156,9 +156,11 @@ void EVDataPanel::showEVData(bool check)
     DlgEvShow dlgShow(this);
     dlgShow.setTitle(evCur.name);
     dlgShow.setValueData(evCur);
-
+    if(IS_NOT_UPLOAD_TYPE(evCur.value.v().t())){
+        gTarget->ev_ids.push_back(evCur.id);
+    }
     if (dlgShow.exec() != QDialog::Accepted) {
-
+        gTarget->ev_ids.clear();
     }
 
     // gMainModel->modelEVData.beginReset();

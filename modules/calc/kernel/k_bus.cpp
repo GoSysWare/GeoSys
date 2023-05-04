@@ -100,8 +100,12 @@ int bus_init(std::shared_ptr<apollo::cyber::Node> node) {
              std::shared_ptr<Bus::ProjSnapshotRsp> &response) {
             // std::cout << "get project snapshot:" << std::endl;
             // std::cout << "request:" << request->DebugString() << std::endl;
+            std::vector<int> evs;
+            for(auto ev:request->ev_id()){
+              evs.push_back(ev);
+            }
 
-            prj_to_snapshot(response.get());
+            prj_to_snapshot(evs,response.get());
             response->mutable_result()->set_code(Bus::ResultCode::OK);
           });
   prj_cmd_srv = node->CreateService<Bus::ProjectCmdReq, Bus::ProjectCmdRsp>(
@@ -305,13 +309,15 @@ std::shared_ptr<Bus::ProjSnapshotRsp> bus_proj_snapshot_send(
     std::shared_ptr<apollo::cyber::Node> node,
     std::shared_ptr<
         apollo::cyber::Client<Bus::ProjSnapshotReq, Bus::ProjSnapshotRsp>>
-        bus_cmd) {
+        bus_cmd,std::vector<int> ev_ids) {
   std::shared_ptr<Bus::ProjSnapshotReq> proj_sp_req =
       std::make_shared<Bus::ProjSnapshotReq>();
   proj_sp_req->set_host_name("test host name");
   proj_sp_req->set_host_ip("test host ip");
   proj_sp_req->set_process_id("test process id");
   proj_sp_req->set_prj_name("test proj name");
+
+  proj_sp_req->mutable_ev_id()->CopyFrom({ev_ids.begin(),ev_ids.end()});
   return bus_cmd->SendRequest(proj_sp_req);
 }
 
