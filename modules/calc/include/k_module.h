@@ -33,6 +33,7 @@ typedef struct MNode {
   bool stop;
   proginfo_t info;
   prog_t *p_prg;
+  apollo::cyber::base::AtomicRWLock mutex;
 } mnode_t;
 
 // typedef struct MNode{

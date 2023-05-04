@@ -436,6 +436,7 @@ int prj_to_snapshot(const std::vector<int> ev_ids,Bus::ProjSnapshotRsp *snapshot
     mod_sp->set_mod_id(p_pn->id);
     p_mn = p_pn->p_mod->mn_head.p_next;
     while (p_mn != &p_pn->p_mod->mn_head) {
+     apollo::cyber::base::ReadLockGuard<apollo::cyber::base::AtomicRWLock> lg( p_mn->mutex);
       Bus::TaskSnapshot *task_sp = mod_sp->add_tasks();
       task_sp->set_mod_id(p_pn->id);
       task_sp->set_task_id(p_mn->id);
@@ -499,6 +500,7 @@ int prj_to_snapshot(const std::vector<int> ev_ids,Bus::ProjSnapshotRsp *snapshot
         }
         p_en = p_en->p_next;
       }
+
       p_mn = p_mn->p_next;
     }
     p_pn = p_pn->p_next;
@@ -541,6 +543,8 @@ int prj_from_snapshot(const std::vector<int> ev_ids,Bus::ProjSnapshotRsp *snapsh
     assert(mod_sp.mod_id() == p_pn->id);
     n = 0;
     while (p_mn != &p_pn->p_mod->mn_head) {
+      apollo::cyber::base::WriteLockGuard<apollo::cyber::base::AtomicRWLock> lg( p_mn->mutex);
+
       p_en = p_mn->p_prg->en_head.p_next;
       Bus::TaskSnapshot task_sp = mod_sp.tasks(n++);
       assert(task_sp.task_id() == p_mn->id);

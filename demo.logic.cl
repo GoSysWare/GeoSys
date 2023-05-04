@@ -4609,7 +4609,7 @@ infos {
     mod_id: 117
     task_id: 160
     task_name: "IMAGE"
-    interval: 50
+    interval: 200
   }
 }
 infos {
