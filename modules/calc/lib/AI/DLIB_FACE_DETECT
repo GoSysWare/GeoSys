@@ -91,26 +91,25 @@ static void run_DLIB_FACE_DETECT(void *p) {
   } else {
     value = in_img->v().img().data();
   }
-  std::cout << "run_DLIB_FACE_DETECT begin" <<std::endl;
+  std::cout << "run_DLIB_FACE_DETECT begin" << std::endl;
 
   uint64_t begin = apollo::cyber::Time::Now().ToNanosecond();
-                    
-  uint64_t t_now ;
+
+  uint64_t t_now;
   std::istringstream si_sp(sp_file->v().file());
   std::istringstream si_anet(anet_file->v().file());
 
   t_now = apollo::cyber::Time::Now().ToNanosecond();
-  std::cout << "run_DLIB_FACE_DETECT 1:" << t_now - begin <<std::endl;;
-
+  std::cout << "run_DLIB_FACE_DETECT 1:" << t_now - begin << std::endl;
   dlib::shape_predictor sp;
   dlib::frontal_face_detector detector = dlib::get_frontal_face_detector();
   dlib::deserialize(si_sp) >> sp;
   t_now = apollo::cyber::Time::Now().ToNanosecond();
-  std::cout << "run_DLIB_FACE_DETECT 2:" << t_now - begin<<std::endl;;
+  std::cout << "run_DLIB_FACE_DETECT 2:" << t_now - begin << std::endl;
   anet_type net;
   dlib::deserialize(si_anet) >> net;
   t_now = apollo::cyber::Time::Now().ToNanosecond();
-  std::cout << "run_DLIB_FACE_DETECT 3:" << t_now - begin<<std::endl;;
+  std::cout << "run_DLIB_FACE_DETECT 3:" << t_now - begin << std::endl;
   dlib::matrix<rgb_pixel> dlib_img;
   dlib_img.set_size(height, width);
 
@@ -125,7 +124,7 @@ static void run_DLIB_FACE_DETECT(void *p) {
     }
   }
   t_now = apollo::cyber::Time::Now().ToNanosecond();
-  std::cout << "run_DLIB_FACE_DETECT 4:" << t_now - begin<<std::endl;;
+  std::cout << "run_DLIB_FACE_DETECT 4:" << t_now - begin << std::endl;
   std::vector<dlib::matrix<dlib::rgb_pixel>> faces;
   int count = 0;
   for (auto face : detector(dlib_img)) {
@@ -139,7 +138,7 @@ static void run_DLIB_FACE_DETECT(void *p) {
     count++;
   }
   t_now = apollo::cyber::Time::Now().ToNanosecond();
-  std::cout << "run_DLIB_FACE_DETECT 5:" << t_now - begin<<std::endl;;
+  std::cout << "run_DLIB_FACE_DETECT 5:" << t_now - begin << std::endl;
   for (auto i = 0; i < faces.size(); i++) {
     out_tmp_width = faces[i].nc();
     out_tmp_height = faces[i].nr();
@@ -148,8 +147,20 @@ static void run_DLIB_FACE_DETECT(void *p) {
     } else if (encoding == "rgb8") {
       img_step = out_tmp_width * 3;
     }
-    std::ostringstream ss;
-    dlib::serialize(faces[i], ss);
+    std::string tmp_value;
+    int index;
+    int img_len = faces[i].size()*3;
+    tmp_value.resize(img_len);
+    for (int m = 0; m < out_tmp_height; m++) {
+      for (int n = 0; n < out_tmp_width; n++) {
+        index = m * out_tmp_width + n;
+        dlib::rgb_pixel &pix = faces[i](m, n);
+        tmp_value[index * 3 + 0] = pix.red;
+        tmp_value[index * 3 + 1] = pix.green;
+        tmp_value[index * 3 + 2] = pix.blue;
+      }
+    }
+
     if (i == 0) {
       if (pb->outs[4].s == PIN_HAS_LOCK) {
         apollo::cyber::base::WriteLockGuard<
@@ -159,42 +170,40 @@ static void run_DLIB_FACE_DETECT(void *p) {
         out_img_1->mutable_v()->mutable_img()->set_step(img_step);
         out_img_1->mutable_v()->mutable_img()->set_width(out_tmp_width);
         out_img_1->mutable_v()->mutable_img()->set_height(out_tmp_height);
-        out_img_1->mutable_v()->mutable_img()->set_data(ss.str());
+        out_img_1->mutable_v()->mutable_img()->set_data(tmp_value.data(),img_len);
       } else {
         out_img_1->mutable_v()->mutable_img()->set_encoding(encoding);
         out_img_1->mutable_v()->mutable_img()->set_step(img_step);
         out_img_1->mutable_v()->mutable_img()->set_width(out_tmp_width);
         out_img_1->mutable_v()->mutable_img()->set_height(out_tmp_height);
-        out_img_1->mutable_v()->mutable_img()->set_data(ss.str());
+        out_img_1->mutable_v()->mutable_img()->set_data(tmp_value.data(),img_len);
       }
-
     } else if (i == 1) {
       out_img_2->mutable_v()->mutable_img()->set_encoding(encoding);
       out_img_2->mutable_v()->mutable_img()->set_step(img_step);
       out_img_2->mutable_v()->mutable_img()->set_width(out_tmp_width);
       out_img_2->mutable_v()->mutable_img()->set_height(out_tmp_height);
-      out_img_2->mutable_v()->mutable_img()->set_data(ss.str());
+      out_img_2->mutable_v()->mutable_img()->set_data(tmp_value.data(),img_len);
     } else if (i == 2) {
       out_img_3->mutable_v()->mutable_img()->set_encoding(encoding);
       out_img_3->mutable_v()->mutable_img()->set_step(img_step);
       out_img_3->mutable_v()->mutable_img()->set_width(out_tmp_width);
       out_img_3->mutable_v()->mutable_img()->set_height(out_tmp_height);
-      out_img_3->mutable_v()->mutable_img()->set_data(ss.str());
+      out_img_3->mutable_v()->mutable_img()->set_data(tmp_value.data(),img_len);
     } else if (i == 3) {
       out_img_4->mutable_v()->mutable_img()->set_encoding(encoding);
       out_img_4->mutable_v()->mutable_img()->set_step(img_step);
       out_img_4->mutable_v()->mutable_img()->set_width(out_tmp_width);
       out_img_4->mutable_v()->mutable_img()->set_height(out_tmp_height);
-      out_img_4->mutable_v()->mutable_img()->set_data(ss.str());
+      out_img_4->mutable_v()->mutable_img()->set_data(tmp_value.data(),img_len);
     } else {
     }
   }
   t_now = apollo::cyber::Time::Now().ToNanosecond();
-  std::cout << "run_DLIB_FACE_DETECT 6:" << t_now - begin<<std::endl;;
+  std::cout << "run_DLIB_FACE_DETECT 6:" << t_now - begin << std::endl;
   out_width->mutable_v()->set_ui(out_tmp_width);
   out_height->mutable_v()->set_ui(out_tmp_width);
   if (faces.size() == 0) {
-
     status->mutable_v()->set_i(1);
   } else {
     status->mutable_v()->set_i(0);

@@ -4,81 +4,64 @@ import "modules/calc/proto/return.proto";
 
 package Bus;
 
-
-
-message TaskSnapshot
-{
-    int32 mod_id = 1;
-    int32 task_id = 2;
-	int32 status =3;
-	uint64 begin_time =4 ;
-	uint64 expend_time = 5;
-    string creator =6;
-    repeated value_tm vals = 7;
+message TaskSnapshot {
+  int32 mod_id = 1;
+  int32 task_id = 2;
+  int32 status = 3;
+  uint64 begin_time = 4;
+  uint64 expend_time = 5;
+  string creator = 6;
+  repeated value_tm vals = 7;
 }
-message ModSnapshot
-{
-    int32 mod_id =1;
-    repeated TaskSnapshot tasks = 2;
+message ModSnapshot {
+  int32 mod_id = 1;
+  repeated TaskSnapshot tasks = 2;
 }
-message ProjSnapshotRsp
-{
-    Result result =1;   
-    ProjectInfoRsp proj_info = 2;
-    repeated ModSnapshot mods = 3;
-    repeated EVNodeValue vals = 4;
-    repeated int32 mod_id = 5;
-    repeated int32 ev_id = 6;
+message ProjSnapshotRsp {
+  Result result = 1;
+  ProjectInfoRsp proj_info = 2;
+  repeated ModSnapshot mods = 3;
+  repeated EVNodeValue vals = 4;
+  repeated int32 mod_id = 5;
+  repeated int32 ev_id = 6;
 }
 
-message ProjSnapshotReq
-{
-    string host_name = 1;
-    string host_ip = 2;
-    string process_id = 3;
-    string prj_name = 4;
-    repeated int32 mod_id = 5;
-    repeated int32 ev_id = 6;
+message ProjSnapshotReq {
+  string host_name = 1;
+  string host_ip = 2;
+  string process_id = 3;
+  string prj_name = 4;
+  repeated int32 mod_id = 5;
+  repeated int32 ev_id = 6;
 }
 
-
-message EVNodeValue
-{
-    int32 ev_id = 1;
-    value_tm val = 2;
+message EVNodeValue {
+  int32 ev_id = 1;
+  value_tm val = 2;
 }
 
-message EVNodeSnapshot
-{
-    repeated EVNodeValue vals = 1;  
+message EVNodeSnapshot { repeated EVNodeValue vals = 1; }
+
+message ModInfo {
+  string mod_id = 1;
+  string mod_name = 2;
+  string mod_uuid = 3;
+  uint32 cmd_id = 4;
 }
 
-message ModInfo
-{
-    string mod_id = 1;
-    string mod_name = 2;
-    string mod_uuid = 3;
-    uint32 cmd_id = 4;
-   
-
+message ProjectInfoReq {
+  string host_name = 1;
+  string host_ip = 2;
+  string process_id = 3;
+  string prj_name = 4;
 }
-
-
-message ProjectInfoReq
-{
-    string host_name = 1;
-    string host_ip = 2;
-    string process_id = 3;
-    string prj_name = 4;
-}
-message ProjectInfoRsp
-{
-    Result result =1;       
-    string host_name = 2;
-    string host_ip = 3;
-    string process_id = 4;
-    string prj_name = 5;
-    string prj_uuid = 6;
-    uint32 cmd_id = 7;
-    repeated ModInfo mod_info = 8;
+message ProjectInfoRsp {
+  Result result = 1;
+  string host_name = 2;
+  string host_ip = 3;
+  string process_id = 4;
+  string prj_name = 5;
+  string prj_uuid = 6;
+  uint32 cmd_id = 7;
+  repeated ModInfo mod_info = 8;
 }
