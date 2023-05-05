@@ -419,7 +419,7 @@ pnode_t *prj_mod_info_find(int idmod) {
   return p_pn_select;
 }
 
-int prj_to_snapshot(const std::vector<int> ev_ids,
+int prj_to_snapshot(Bus::ProjSnapshotReq * snapshot_req,
                     Bus::ProjSnapshotRsp *snapshot) {
   pnode_t *p_pn = 0;
   mnode_t *p_mn = 0;
@@ -457,7 +457,7 @@ int prj_to_snapshot(const std::vector<int> ev_ids,
           val_sp->mutable_v()->set_ull(p_fb->h.expend_time);
           val_sp = task_sp->add_vals();
           val_sp->mutable_v()->set_t(v_type::T_INT32);
-          val_sp->mutable_v()->set_ull(p_fb->h.flag);
+          val_sp->mutable_v()->set_i(p_fb->h.flag);
 
           for (i = 0; i < p_fb->ins.size(); i++) {
             if (IS_NOT_UPLOAD_TYPE(p_fb->ins[i].t))
@@ -494,7 +494,7 @@ int prj_to_snapshot(const std::vector<int> ev_ids,
     p_pn = p_pn->p_next;
   }
 
-  ev_to_snapshot(ev_ids, snapshot);
+  ev_to_snapshot(snapshot_req, snapshot);
   return 0;
 }
 
@@ -508,7 +508,7 @@ int info_cmp(prjinfo_t *info, Bus::ProjectInfoRsp *bus_proj_info) {
   return 0;
 }
 
-int prj_from_snapshot(const std::vector<int> ev_ids,
+int prj_from_snapshot(
                       Bus::ProjSnapshotRsp *snapshot) {
   pnode_t *p_pn = 0;
   mnode_t *p_mn = 0;
@@ -576,7 +576,7 @@ int prj_from_snapshot(const std::vector<int> ev_ids,
     p_pn = p_pn->p_next;
   }
 
-  ev_from_snapshot(ev_ids, snapshot);
+  ev_from_snapshot(snapshot);
 
   return 0;
 }

@@ -100,12 +100,10 @@ int bus_init(std::shared_ptr<apollo::cyber::Node> node) {
              std::shared_ptr<Bus::ProjSnapshotRsp> &response) {
             // std::cout << "get project snapshot:" << std::endl;
             // std::cout << "request:" << request->DebugString() << std::endl;
-            std::vector<int> evs;
-            for(auto ev:request->ev_id()){
-              evs.push_back(ev);
-            }
 
-            prj_to_snapshot(evs,response.get());
+
+            prj_to_snapshot(request.get(),response.get());
+            response->mutable_ev_id()->CopyFrom(request->ev_id());
             response->mutable_result()->set_code(Bus::ResultCode::OK);
           });
   prj_cmd_srv = node->CreateService<Bus::ProjectCmdReq, Bus::ProjectCmdRsp>(

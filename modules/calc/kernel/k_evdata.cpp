@@ -250,7 +250,7 @@ int ev_img_size() {
   return s;
 }
 
-int ev_to_snapshot(const std::vector<int> ev_ids,
+int ev_to_snapshot(Bus::ProjSnapshotReq * snapshot_req,
                    Bus::ProjSnapshotRsp *snapshot) {
   evnode_t *p_vn;
   p_vn = vn_head.p_next;
@@ -259,19 +259,16 @@ int ev_to_snapshot(const std::vector<int> ev_ids,
   while (p_vn != &vn_head) {
     //对大内存数据类型特殊处理
     if (IS_NOT_UPLOAD_TYPE(p_vn->v->v().t())) {
-      if(ev_ids.size()> 0){
-          std::cout << "ev_to_snapshot  ev_ids:" << ev_ids.size() << std::endl;
-      }
+
       //如果请求中含有需要上传的ev
       is_upload = false;
-      for (auto id : ev_ids) {
+      for (auto id : snapshot_req->ev_id()) {
         if (id == p_vn->id) {
           is_upload = true;
           break;
         }
       }
       if (is_upload) {
-         std::cout << "ev_to_snapshot  is:" << ev_ids[0] << std::endl;
         Bus::EVNodeValue *val_sp = snapshot->add_vals();
         val_sp->set_ev_id(p_vn->id);
         apollo::cyber::base::ReadLockGuard<apollo::cyber::base::ReentrantRWLock>
@@ -291,7 +288,7 @@ int ev_to_snapshot(const std::vector<int> ev_ids,
   return 0;
 }
 
-int ev_from_snapshot(const std::vector<int> ev_ids,
+int ev_from_snapshot(
                      Bus::ProjSnapshotRsp *snapshot) {
   evnode_t *p_vn;
   int i = 0;
@@ -303,7 +300,7 @@ int ev_from_snapshot(const std::vector<int> ev_ids,
 
       //如果请求中含有需要上传的ev
       is_upload = false;
-      for (auto id : ev_ids) {
+      for (auto id : snapshot->ev_id()) {
         if (id == p_vn->id) {
           is_upload = true;
           break;

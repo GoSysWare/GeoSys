@@ -28,7 +28,7 @@ void PLTarget::timerEvent(QTimerEvent *e) {
     if (sp_res != nullptr && sp_res->has_result() &&
         sp_res->result().code() == Bus::ResultCode::OK) {
 
-      prj_from_snapshot(ev_ids, sp_res.get());
+      prj_from_snapshot( sp_res.get());
       // prj_dump();
       int i, j, k, n, m;
       // load fbs value
@@ -115,7 +115,7 @@ PLTarget::PLTarget(QObject *parent) {
       if (sp_res != nullptr && sp_res->has_result() &&
           sp_res->result().code() == Bus::ResultCode::OK) {
 
-        prj_from_snapshot(this->ev_ids, sp_res.get());
+        prj_from_snapshot(sp_res.get());
         // prj_dump();
         int i, j, k, n, m;
         // load fbs value
