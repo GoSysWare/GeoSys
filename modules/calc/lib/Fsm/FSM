@@ -8,26 +8,47 @@ static void run_FSM(void *p) {
   vam_t &to_singal = pb->outs[1].v;
   vam_t &action_singal = pb->outs[2].v;
 
+  // if (cur_state->v().i() == targe_state->v().i()) {
+  //   to_singal->mutable_v()->set_b(true);
+  // } else {
+  //   to_singal->mutable_v()->set_b(false);
+  // }
+
+  // if (from_singal->v().b() == false) {
+  //   if (cur_state->v().i() == targe_state->v().i()) {
+  //     action_singal->mutable_v()->set_b(true);
+  //   } else {
+  //     action_singal->mutable_v()->set_b(false);
+  //   }
+  // } else {
+  //   if (condition->v().b() == false) {
+  //     action_singal->mutable_v()->set_b(false);
+  //   } else {
+  //     action_singal->mutable_v()->set_b(true);
+  //     cur_state->mutable_v()->set_i(targe_state->v().i());
+  //   }
+  // }
   if (cur_state->v().i() == targe_state->v().i()) {
     to_singal->mutable_v()->set_b(true);
-  } else {
-    to_singal->mutable_v()->set_b(false);
+    action_singal->mutable_v()->set_b(true);
+    return;
   }
 
   if (from_singal->v().b() == false) {
-    if (cur_state->v().i() == targe_state->v().i()) {
-      action_singal->mutable_v()->set_b(true);
-    } else {
-      action_singal->mutable_v()->set_b(false);
-    }
-  } else {
-    if (condition->v().b() == false) {
-      action_singal->mutable_v()->set_b(false);
-    } else {
-      action_singal->mutable_v()->set_b(true);
-      cur_state->mutable_v()->set_i(targe_state->v().i());
-    }
+    to_singal->mutable_v()->set_b(false);
+    action_singal->mutable_v()->set_b(false);
+    return;
   }
+  if (condition->v().b() == false) {
+    to_singal->mutable_v()->set_b(false);
+    action_singal->mutable_v()->set_b(false);
+    return;
+  }
+
+  to_singal->mutable_v()->set_b(true);
+  action_singal->mutable_v()->set_b(true);
+  cur_state->mutable_v()->set_i(targe_state->v().i());
+
   return;
 }
 

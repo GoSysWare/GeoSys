@@ -106,10 +106,10 @@ static void run_DLIB_FACE_DETECT(void *p) {
   dlib::deserialize(si_sp) >> sp;
   t_now = apollo::cyber::Time::Now().ToNanosecond();
   std::cout << "run_DLIB_FACE_DETECT 2:" << t_now - begin << std::endl;
-  anet_type net;
-  dlib::deserialize(si_anet) >> net;
-  t_now = apollo::cyber::Time::Now().ToNanosecond();
-  std::cout << "run_DLIB_FACE_DETECT 3:" << t_now - begin << std::endl;
+  // anet_type net;
+  // dlib::deserialize(si_anet) >> net;
+  // t_now = apollo::cyber::Time::Now().ToNanosecond();
+  // std::cout << "run_DLIB_FACE_DETECT 3:" << t_now - begin << std::endl;
   dlib::matrix<rgb_pixel> dlib_img;
   dlib_img.set_size(height, width);
 

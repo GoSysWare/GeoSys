@@ -1,9 +1,9 @@
 infos {
-  cmd_id: 389
+  cmd_id: 421
   edit_type: SET
   proj {
     proj_name: "rotbot-engine-project"
-    proj_uuid: "{b7a5ef1c-2a96-4694-a2dd-c078bba9eaca}"
+    proj_uuid: "{32f4c189-84bd-474b-9ccf-8fc6c5f3a6cd}"
   }
 }
 infos {
@@ -4609,7 +4609,7 @@ infos {
     mod_id: 117
     task_id: 160
     task_name: "IMAGE"
-    interval: 200
+    interval: 3000
   }
 }
 infos {
@@ -6039,6 +6039,222 @@ infos {
         b: true
       }
       tm: 1683178958078734582
+    }
+  }
+}
+infos {
+  cmd_id: 390
+  element: PIN
+  edit_type: SET
+  pin {
+    mod_id: 117
+    task_id: 160
+    fb_id: 164
+    pin_index: 5
+    pin_val {
+      v {
+        t: T_BOOL
+        b: false
+      }
+      tm: 1683269426387667906
+    }
+  }
+}
+infos {
+  cmd_id: 391
+  element: PIN
+  edit_type: SET
+  pin {
+    mod_id: 117
+    task_id: 160
+    fb_id: 164
+    pin_index: 5
+    pin_val {
+      v {
+        t: T_BOOL
+        b: true
+      }
+      tm: 1683339484452920278
+    }
+  }
+}
+infos {
+  cmd_id: 392
+  element: TASK
+  edit_type: ADD
+  task {
+    mod_id: 11
+    task_id: 194
+    task_name: "SystemMonitor"
+    interval: 50
+  }
+}
+infos {
+  cmd_id: 393
+  element: FB
+  edit_type: ADD
+  fb {
+    mod_id: 11
+    task_id: 194
+    fb_id: 195
+    flib_name: "System"
+    fc_name: "SYS_STATE"
+  }
+  pos {
+    x: 17
+    y: 13
+  }
+}
+infos {
+  cmd_id: 394
+  element: PIN
+  edit_type: SET
+  pin {
+    mod_id: 117
+    task_id: 160
+    fb_id: 164
+    pin_index: 4
+    pin_val {
+      v {
+        t: T_TIME
+        tm: 3000
+      }
+      tm: 1683369830212408563
+    }
+  }
+}
+infos {
+  cmd_id: 415
+  element: FB
+  edit_type: MV
+  fb {
+    mod_id: 11
+    task_id: 50
+    fb_id: 51
+    fb_name: "\347\212\266\346\200\201==1"
+  }
+  pos {
+    x: 50
+    y: 107
+  }
+}
+infos {
+  cmd_id: 416
+  element: LK
+  edit_type: MV
+  lk {
+    mod_id: 11
+    task_id: 50
+    lk_id: 77
+  }
+  pos {
+    x: 71
+    y: 114
+  }
+  pos {
+    x: 128
+    y: 114
+  }
+}
+infos {
+  cmd_id: 417
+  element: LK
+  edit_type: MV
+  lk {
+    mod_id: 11
+    task_id: 50
+    lk_id: 82
+  }
+  pos {
+    x: 35
+    y: 114
+  }
+  pos {
+    x: 50
+    y: 114
+  }
+}
+infos {
+  cmd_id: 418
+  element: LK
+  edit_type: MV
+  lk {
+    mod_id: 11
+    task_id: 50
+    lk_id: 85
+  }
+  pos {
+    x: 71
+    y: 114
+  }
+  pos {
+    x: 89
+    y: 114
+  }
+  pos {
+    x: 89
+    y: 142
+  }
+  pos {
+    x: 129
+    y: 142
+  }
+}
+infos {
+  cmd_id: 419
+  element: LK
+  edit_type: MV
+  lk {
+    mod_id: 11
+    task_id: 50
+    lk_id: 95
+  }
+  pos {
+    x: 71
+    y: 116
+  }
+  pos {
+    x: 71
+    y: 199
+  }
+  pos {
+    x: 86
+    y: 199
+  }
+}
+infos {
+  cmd_id: 420
+  element: EV
+  edit_type: SET
+  ev {
+    ev_id: 7
+    ev_name: "FSM_State"
+    ev_type: 2
+    ev_desc: "Desc"
+    init_val {
+      v {
+        t: T_INT32
+        i: 1
+      }
+      tm: 1683371840240541215
+    }
+  }
+}
+infos {
+  cmd_id: 421
+  element: EV
+  edit_type: SET
+  ev {
+    ev_id: 7
+    ev_name: "FSM_State"
+    ev_type: 2
+    ev_desc: "Desc"
+    init_val {
+      v {
+        t: T_INT32
+        i: 1
+      }
+      tm: 1683372024974779622
     }
   }
 }
