@@ -13,15 +13,11 @@ static evnode_t *p_vn_select = &vn_head;
 
 std::string type2str(v_type it) { return v_type_Name(it); }
 
-void vam_init(vam_t *vam, v_type t, std::string u) {
+void vam_init(vam_t &vam, v_type t, std::string u) {
 
-  vam->reset(new value_tm);
-  vam->get()->set_tm(apollo::cyber::Time::Now().ToNanosecond());
-  vam->get()->mutable_v()->set_t(t);
-  vam->get()->mutable_v()->clear_var();
-  if (t == v_type::T_ANY) {
-    vam->get()->mutable_v()->mutable_any()->set_type_url(u);
-  }
+  vam.reset(new value_tm);
+  vam->set_tm(apollo::cyber::Time::Now().ToNanosecond());
+  vam->mutable_v()->set_t(t);
 }
 
 v_type str2type(const std::string &str) {
@@ -97,11 +93,15 @@ value_tm setvar(v_type t, std::string value) {
 }
 
 static evnode_t *v_new() {
-  return new evnode_t;
-  ;
+  evnode_t *p_ev = new evnode_t;
+  p_ev->v.reset(new value_tm);
+  return p_ev;
 }
 
-static void v_delete(evnode_t *p_vn) { delete p_vn; }
+static void v_delete(evnode_t *p_ev) {
+  p_ev->v.reset();
+  delete p_ev;
+}
 
 static void v_addbefore(evnode_t *p, evnode_t *p_ref) {
   p->p_prev = p_ref->p_prev;
@@ -168,7 +168,7 @@ int ev_add(int id, const std::string &str, const std::string &name) {
 
   p_vn->id = id;
   p_vn->name = name;
-  p_vn->v = std::make_shared<value_tm>(str2var(str));
+  p_vn->v->CopyFrom(str2var(str));
 
   v_addbefore(p_vn, &vn_head);
 
@@ -184,7 +184,7 @@ int ev_add(int id, const std::string &name, const value_tm &val) {
 
   p_vn->id = id;
   p_vn->name = name;
-  p_vn->v.reset(new value_tm(val));
+  p_vn->v->CopyFrom(val);
 
   v_addbefore(p_vn, &vn_head);
 
@@ -250,7 +250,7 @@ int ev_img_size() {
   return s;
 }
 
-int ev_to_snapshot(Bus::ProjSnapshotReq * snapshot_req,
+int ev_to_snapshot(Bus::ProjSnapshotReq *snapshot_req,
                    Bus::ProjSnapshotRsp *snapshot) {
   evnode_t *p_vn;
   p_vn = vn_head.p_next;
@@ -288,8 +288,7 @@ int ev_to_snapshot(Bus::ProjSnapshotReq * snapshot_req,
   return 0;
 }
 
-int ev_from_snapshot(
-                     Bus::ProjSnapshotRsp *snapshot) {
+int ev_from_snapshot(Bus::ProjSnapshotRsp *snapshot) {
   evnode_t *p_vn;
   int i = 0;
   bool is_upload = true;

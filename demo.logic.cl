@@ -1,5 +1,5 @@
 infos {
-  cmd_id: 421
+  cmd_id: 423
   edit_type: SET
   proj {
     proj_name: "rotbot-engine-project"
@@ -6256,5 +6256,37 @@ infos {
       }
       tm: 1683372024974779622
     }
+  }
+}
+infos {
+  cmd_id: 422
+  element: LK
+  edit_type: RM
+  lk {
+    mod_id: 11
+    task_id: 50
+    lk_id: 82
+  }
+}
+infos {
+  cmd_id: 423
+  element: LK
+  edit_type: ADD
+  lk {
+    mod_id: 11
+    task_id: 50
+    lk_id: 196
+    src_fb_id: 58
+    src_pin_index: 1
+    target_fb_id: 51
+    target_pin_index: 1
+  }
+  pos {
+    x: 35
+    y: 114
+  }
+  pos {
+    x: 50
+    y: 114
   }
 }

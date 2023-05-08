@@ -6,9 +6,10 @@
 #include <string.h>
 
 
-static void fb_init_pin(pin_t *pin) {
+ void fb_init_pin(pin_t *pin) {
+  pin->l = 0;
   pin->s = PIN_NO_LOCK;
-  vam_init(&pin->v,pin->t,pin->u);
+  vam_init(pin->v,pin->t,pin->u);
 }
 
 // static void fb_init_pin(pin_t *pin) {
@@ -93,7 +94,7 @@ fb_t *fb_new(fb_t *p_source) {
     p_dst->h = p_source->h;
     p_dst->ins = p_source->ins;
     for (auto &&pin : p_dst->ins) {
-      fb_init_pin(&pin);      
+      fb_init_pin(&pin);
     }
     // 默认EN 管脚是true
     p_dst->ins[0].v->mutable_v()->set_b(true);

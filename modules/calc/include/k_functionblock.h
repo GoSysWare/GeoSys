@@ -62,7 +62,8 @@ typedef struct FB{
 	std::vector<pin_t> props;
 } fb_t;
 
-
+ void fb_init_pin(pin_t *pin);
+ 
 void fb_reset(fb_t *p_fb);
 fb_t *fb_new(fb_t *p_source);
 void fb_delete(fb_t *p_fb);

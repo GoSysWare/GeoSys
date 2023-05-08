@@ -86,26 +86,29 @@ void prg_exec(prog_t *p_prg, proginfo_t *p_prog_info) {
                 .ToNanosecond();
       }
     }
-    //  else {
-    //   // 当是pin之间link链接时
-    //   //
-    //   if (p_en->p_vsrc->s == PIN_HAS_LOCK) {
-    //     apollo::cyber::base::ReadLockGuard<apollo::cyber::base::ReentrantRWLock>
-    //         lg(*(p_en->p_vsrc->l));
-    //     if (p_en->p_vtgt->s == PIN_HAS_LOCK) {
-    //       apollo::cyber::base::WriteLockGuard<
-    //           apollo::cyber::base::ReentrantRWLock>
-    //           lg(*(p_en->p_vtgt->l));
-    //       p_en->p_vtgt->v = p_en->p_vsrc->v;
+     else {
+      // 当是pin之间link链接时
+      //
+      // if (p_en->p_vsrc->s == PIN_HAS_LOCK) {
+      //   apollo::cyber::base::ReadLockGuard<apollo::cyber::base::ReentrantRWLock>
+      //       lg(*(p_en->p_vsrc->l));
+      //   if (p_en->p_vtgt->s == PIN_HAS_LOCK) {
+      //     apollo::cyber::base::WriteLockGuard<
+      //         apollo::cyber::base::ReentrantRWLock>
+      //         lg(*(p_en->p_vtgt->l));
+      //     p_en->p_vtgt->v = p_en->p_vsrc->v;
 
-    //     } else {
-    //       p_en->p_vtgt->v = p_en->p_vsrc->v;
-    //     }
-    //   } else {
-    //     p_en->p_vtgt->v = p_en->p_vsrc->v;
-    //   }
-    //   p_en = p_en->p_next;
-    // }
+      //   } else {
+      //     p_en->p_vtgt->v = p_en->p_vsrc->v;
+      //   }
+      // } else {
+      //   p_en->p_vtgt->v = p_en->p_vsrc->v;
+      // }
+      // p_en = p_en->p_next;
+    p_en->p_vtgt->s = p_en->p_vsrc->s;
+    p_en->p_vtgt->l = p_en->p_vsrc->l;
+    p_en->p_vtgt->v = p_en->p_vsrc->v;   
+    }
   p_en = p_en->p_next;
   }
 }
@@ -331,7 +334,7 @@ int prg_viadd(prog_t *p_prg, int idev, int idfb, int pin) {
   evnode_t *p_ev;
 
   p_ev = ev_find_n(idev);
-  if (p_ev == nullptr) {
+  if (p_ev == 0) {
     return -1;
   }
   p_fb = prg_fbfind(p_prg, idfb);
@@ -362,9 +365,8 @@ int prg_viremove(prog_t *p_prg, int idfb, int pin) {
     return -1;
   }
 
-  vam_init(&p_pin->v, p_pin->t, p_pin->u);
-  p_pin->s = PIN_NO_LOCK;
-  p_pin->l = 0;
+  fb_init_pin(p_pin);
+
   return 0;
 }
 
@@ -406,16 +408,16 @@ int prg_voremove(prog_t *p_prg, int idfb, int pin) {
     return -1;
   }
 
-  vam_init(&p_pin->v, p_pin->t, p_pin->u);
-  p_pin->s = PIN_NO_LOCK;
-  p_pin->l = 0;
+  fb_init_pin(p_pin);
+
 
   return 0;
 }
 int prg_lkadd(prog_t *p_prg, int id, int fbsrc, int pinsrc, int fbtgt,
               int pintgt) {
-  enode_t en, *p_en, *p_mv;
+  enode_t *p_en,*p_mv;
   enode_t *p_src, *p_tgt;
+  pin_t * pin_src,*pin_tgt;
 
   /* get link map */
   prg_enselect(p_prg, fbsrc);
@@ -426,8 +428,8 @@ int prg_lkadd(prog_t *p_prg, int id, int fbsrc, int pinsrc, int fbtgt,
   if (p_src->p_fb == 0) {
     return -1;
   }
-  en.p_vsrc = fb_getpin(p_src->p_fb, PINOUTPUT, pinsrc);
-  if (en.p_vsrc == 0) {
+  pin_src = fb_getpin(p_src->p_fb, PINOUTPUT, pinsrc);
+  if (pin_src == 0) {
     return -1;
   }
 
@@ -439,28 +441,29 @@ int prg_lkadd(prog_t *p_prg, int id, int fbsrc, int pinsrc, int fbtgt,
   if (p_tgt->p_fb == 0) {
     return -1;
   }
-  en.p_vtgt = fb_getpin(p_tgt->p_fb, PININPUT, pintgt);
-  if (en.p_vtgt == 0) {
+  pin_tgt = fb_getpin(p_tgt->p_fb, PININPUT, pintgt);
+  if (pin_tgt == 0) {
     return -1;
   }
 
-  if (en.p_vsrc->t != en.p_vtgt->t) {
+  if (pin_src->t != pin_tgt->t) {
     return -1;
   }
 
-  en.id = id;
-  en.idsrc = fbsrc;
-  en.p_ensrc = p_src;
-  en.idtgt = fbtgt;
-  en.p_entgt = p_tgt;
-  en.p_fb = 0;
+
 
   p_en = en_new();
   if (p_en == 0) {
     return -1;
   }
-  *p_en = en;
-
+  p_en->id = id;
+  p_en->idsrc = fbsrc;
+  p_en->p_ensrc = p_src;
+  p_en->idtgt = fbtgt;
+  p_en->p_entgt = p_tgt;
+  p_en->p_fb = 0;
+  p_en->p_vsrc = pin_src;
+  p_en->p_vtgt = pin_tgt;
   p_en->p_vtgt->s = p_en->p_vsrc->s;
   p_en->p_vtgt->l = p_en->p_vsrc->l;
   p_en->p_vtgt->v = p_en->p_vsrc->v;
@@ -495,9 +498,7 @@ int prg_lkremove(prog_t *p_prg, int id) {
   if (p_rm->p_fb != 0) {
     fb_delete(p_rm->p_fb);
   } else {
-    p_rm->p_vtgt->s = PIN_NO_LOCK;
-    p_rm->p_vtgt->l = 0;
-    vam_init(&p_rm->p_vtgt->v, p_rm->p_vtgt->t, p_rm->p_vtgt->u);
+    fb_init_pin(p_rm->p_vtgt);
   }
   en_remove(p_rm);
   en_delete(p_rm);
