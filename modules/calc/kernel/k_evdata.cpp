@@ -17,7 +17,7 @@ void vam_init(vam_t &vam, v_type t, std::string u) {
 
   vam.reset(new value_tm);
   vam->set_tm(apollo::cyber::Time::Now().ToNanosecond());
-  vam->mutable_v()->set_t(t);
+  vam->set_t(t);
 }
 
 v_type str2type(const std::string &str) {
@@ -35,7 +35,7 @@ value_tm str2var(const std::string &str) {
 }
 
 int setvar(vam_t vam, v_type t, value_tm val) {
-  if (t != val.v().t()) {
+  if (t != val.t()) {
     return -1;
   }
   vam->CopyFrom(val);
@@ -45,7 +45,7 @@ int setvar(vam_t vam, v_type t, value_tm val) {
 value_tm setvar(v_type t, std::string value) {
   value_tm vam;
   vam.set_tm(apollo::cyber::Time::Now().ToNanosecond());
-  vam.mutable_v()->set_t(t);
+  vam.set_t(t);
   switch (t) {
   case v_type::T_BOOL:
     vam.mutable_v()->set_b(
@@ -258,7 +258,7 @@ int ev_to_snapshot(Bus::ProjSnapshotReq *snapshot_req,
 
   while (p_vn != &vn_head) {
     //对大内存数据类型特殊处理
-    if (IS_NOT_UPLOAD_TYPE(p_vn->v->v().t())) {
+    if (IS_NOT_UPLOAD_TYPE(p_vn->v->t())) {
 
       //如果请求中含有需要上传的ev
       is_upload = false;
@@ -295,7 +295,7 @@ int ev_from_snapshot(Bus::ProjSnapshotRsp *snapshot) {
 
   p_vn = vn_head.p_next;
   while (p_vn != &vn_head) {
-    if (IS_NOT_UPLOAD_TYPE(p_vn->v->v().t())) {
+    if (IS_NOT_UPLOAD_TYPE(p_vn->v->t())) {
 
       //如果请求中含有需要上传的ev
       is_upload = false;

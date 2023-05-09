@@ -21,8 +21,9 @@ PLPin::PLPin(const PLPin &pin)
 
 QString PLPin::getStrValue()
 {
- v_type t = value.v().t();
-
+ v_type t = value.t();
+  std::string val;
+  
   switch (t) {
   case v_type::T_BOOL:
   case v_type::T_INT32:
@@ -33,14 +34,15 @@ QString PLPin::getStrValue()
   case v_type::T_FLOAT64:
   case v_type::T_TIME:
   case v_type::T_STRING:
-    return QString::fromStdString(value.v().ShortDebugString());
-    break;
   case v_type::T_BYTES:
+    val = value.v().ShortDebugString();
+    return QString::fromStdString(val);
+    break;
   case v_type::T_IMAGE:
   case v_type::T_LIDAR:
   case v_type::T_SONAR:
   case v_type::T_FILE:
-    return QString::fromStdString("t: " + v_type_Name(value.v().t()) + " Len: " + std::to_string(value.v().ByteSizeLong()));
+    return QString::fromStdString(" Len: " + std::to_string(value.v().ByteSizeLong()));
     break;
   default:
     return QString::fromStdString(value.v().ShortDebugString());

@@ -43,7 +43,7 @@ void DlgEvShow::setValueData(PLEVData ev) {
 
 
 
-  switch (ev.value.v().t()) {
+  switch (ev.value.t()) {
   case v_type::T_BOOL:
     value = ev.value.v().b() ? "true" : "false";
     break;

@@ -2,6 +2,8 @@
 #define PLTARGET_H
 #include "cyber/cyber.h"
 #include <QObject>
+#include <QMutex>
+
 #include "modules/calc/proto/cmd.pb.h"
 class PLTarget : public QObject
 {
@@ -21,6 +23,7 @@ public:
 
     void timerEvent(QTimerEvent *e);
     std::vector<int> ev_ids;
+    QMutex mutex;
 
 public slots:
    void setOnlineValueSlot(int idMod,int idPrg,int idFb,int idPin, value_tm val);

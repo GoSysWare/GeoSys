@@ -108,7 +108,7 @@ void DlgEVData::setValue(PLEVData &ev, int m)
     textName->setText(ev.name);
     textComment->setText(ev.desc);
     std::string value;
-    switch(ev.initValue.v().t()){
+    switch(ev.initValue.t()){
     case v_type::T_BOOL:
         listType->setCurrentRow(0);
         value = ev.initValue.v().b()?"true":"false";
@@ -181,72 +181,72 @@ void DlgEVData::getValue(PLEVData &ev)
     switch(listType->currentIndex().row()){
     case 0:
         ev.type = v_type::T_BOOL;
-        ev.initValue.mutable_v()->set_t(v_type::T_BOOL);
+        ev.initValue.set_t(v_type::T_BOOL);
         ev.initValue.mutable_v()->set_b(value == "false" || value == "0"? false:true);
         break;
     case 1:
         ev.type = v_type::T_INT32;
-        ev.initValue.mutable_v()->set_t(v_type::T_INT32);
+        ev.initValue.set_t(v_type::T_INT32);
         ev.initValue.mutable_v()->set_i(std::stoi(value));
         break;
     case 2:
         ev.type = v_type::T_UINT32;
-        ev.initValue.mutable_v()->set_t(v_type::T_UINT32);
+        ev.initValue.set_t(v_type::T_UINT32);
         ev.initValue.mutable_v()->set_ui((uint32_t)std::stoul(value));
         break;
     case 3:
         ev.type = v_type::T_INT64;
-        ev.initValue.mutable_v()->set_t(v_type::T_INT64);
+        ev.initValue.set_t(v_type::T_INT64);
         ev.initValue.mutable_v()->set_ll(std::stoll(value));
         break;
     case 4:
         ev.type = v_type::T_UINT64;
-        ev.initValue.mutable_v()->set_t(v_type::T_UINT64);
+        ev.initValue.set_t(v_type::T_UINT64);
         ev.initValue.mutable_v()->set_ull((uint32_t)std::stoull(value));
         break;
     case 5:
         ev.type = v_type::T_FLOAT32;
-        ev.initValue.mutable_v()->set_t(v_type::T_FLOAT32);
+        ev.initValue.set_t(v_type::T_FLOAT32);
         ev.initValue.mutable_v()->set_f((float)std::stof(value));
         break;
     case 6:
         ev.type = v_type::T_FLOAT64;
-        ev.initValue.mutable_v()->set_t(v_type::T_FLOAT64);
+        ev.initValue.set_t(v_type::T_FLOAT64);
         ev.initValue.mutable_v()->set_d(std::stof(value));
         break;
     case 7:
         ev.type = v_type::T_TIME;
-        ev.initValue.mutable_v()->set_t(v_type::T_TIME);
+        ev.initValue.set_t(v_type::T_TIME);
         ev.initValue.mutable_v()->set_tm(std::stoull(value));
         break;
     case 8:
         ev.type = v_type::T_STRING;
-        ev.initValue.mutable_v()->set_t(v_type::T_STRING);
+        ev.initValue.set_t(v_type::T_STRING);
         ev.initValue.mutable_v()->set_str(value);
         break;
     case 9:
         ev.type = v_type::T_BYTES;
-        ev.initValue.mutable_v()->set_t(v_type::T_BYTES);
+        ev.initValue.set_t(v_type::T_BYTES);
         ev.initValue.mutable_v()->set_blob(value);
         break;
     case 10:
         ev.type = v_type::T_IMAGE;
-        ev.initValue.mutable_v()->set_t(v_type::T_IMAGE);
+        ev.initValue.set_t(v_type::T_IMAGE);
         ev.initValue.mutable_v()->mutable_img()->set_data(value);
         break;
     case 11:
         ev.type = v_type::T_LIDAR;
-        ev.initValue.mutable_v()->set_t(v_type::T_LIDAR);
+        ev.initValue.set_t(v_type::T_LIDAR);
         ev.initValue.mutable_v()->set_lidar(value);
         break;
     case 12:
         ev.type = v_type::T_SONAR;
-        ev.initValue.mutable_v()->set_t(v_type::T_SONAR);
+        ev.initValue.set_t(v_type::T_SONAR);
         ev.initValue.mutable_v()->set_sonar(value);
         break;
     case 13:
         ev.type = v_type::T_FILE;
-        ev.initValue.mutable_v()->set_t(v_type::T_FILE);
+        ev.initValue.set_t(v_type::T_FILE);
         ev.initValue.mutable_v()->set_file(value);
         break;
     default:

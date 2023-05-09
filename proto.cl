@@ -52,8 +52,8 @@ infos {
     fb_id: 3
     pin_index: 1
     pin_val {
+      t: T_UINT32
       v {
-        t: T_UINT32
         ui: 5
       }
       tm: 1682307353925003873
@@ -130,8 +130,8 @@ infos {
     fb_id: 4
     pin_index: 3
     pin_val {
+      t: T_UINT32
       v {
-        t: T_UINT32
         ui: 2
       }
       tm: 1682307402243611464
@@ -148,8 +148,8 @@ infos {
     fb_id: 4
     pin_index: 2
     pin_val {
+      t: T_STRING
       v {
-        t: T_STRING
         str: "poses"
       }
       tm: 1682307410962449796
@@ -212,8 +212,8 @@ infos {
     fb_id: 6
     pin_index: 2
     pin_val {
+      t: T_STRING
       v {
-        t: T_STRING
         str: "position"
       }
       tm: 1682307444409353484
@@ -276,8 +276,8 @@ infos {
     fb_id: 8
     pin_index: 2
     pin_val {
+      t: T_STRING
       v {
-        t: T_STRING
         str: "x"
       }
       tm: 1682307466936131208
@@ -294,8 +294,8 @@ infos {
     fb_id: 4
     pin_index: 3
     pin_val {
+      t: T_UINT32
       v {
-        t: T_UINT32
         ui: 7
       }
       tm: 1682318485469164812
@@ -358,8 +358,8 @@ infos {
     fb_id: 10
     pin_index: 2
     pin_val {
+      t: T_STRING
       v {
-        t: T_STRING
         str: "position.x"
       }
       tm: 1682324643266737966

@@ -1,9 +1,9 @@
 infos {
-  cmd_id: 423
+  cmd_id: 438
   edit_type: SET
   proj {
     proj_name: "rotbot-engine-project"
-    proj_uuid: "{32f4c189-84bd-474b-9ccf-8fc6c5f3a6cd}"
+    proj_uuid: "{f488a48f-9b27-458e-a00b-5b87dbed6dc5}"
   }
 }
 infos {
@@ -16,8 +16,8 @@ infos {
     ev_type: 7
     ev_desc: "Desc"
     init_val {
+      t: T_FLOAT64
       v {
-        t: T_FLOAT64
         d: 0
       }
       tm: 1681390059182250282
@@ -34,8 +34,8 @@ infos {
     ev_type: 7
     ev_desc: "Desc"
     init_val {
+      t: T_FLOAT64
       v {
-        t: T_FLOAT64
         d: 0
       }
       tm: 1681390217274104541
@@ -52,8 +52,8 @@ infos {
     ev_type: 3
     ev_desc: "\345\275\223\345\211\215\350\275\246\351\200\237"
     init_val {
+      t: T_UINT32
       v {
-        t: T_UINT32
         ui: 0
       }
       tm: 1681391756514041211
@@ -70,8 +70,8 @@ infos {
     ev_type: 3
     ev_desc: "ceshi"
     init_val {
+      t: T_UINT32
       v {
-        t: T_UINT32
         ui: 0
       }
       tm: 1681391940976818792
@@ -88,8 +88,8 @@ infos {
     ev_type: 1
     ev_desc: "ceshi"
     init_val {
+      t: T_BOOL
       v {
-        t: T_BOOL
         b: false
       }
       tm: 1681392151285941025
@@ -106,8 +106,8 @@ infos {
     ev_type: 1
     ev_desc: "ceshi"
     init_val {
+      t: T_BOOL
       v {
-        t: T_BOOL
         b: true
       }
       tm: 1681392250886556508
@@ -124,8 +124,8 @@ infos {
     ev_type: 2
     ev_desc: "Desc"
     init_val {
+      t: T_INT32
       v {
-        t: T_INT32
         i: 0
       }
       tm: 1681392704066944665
@@ -142,8 +142,8 @@ infos {
     ev_type: 1
     ev_desc: "Desc"
     init_val {
+      t: T_BOOL
       v {
-        t: T_BOOL
         b: false
       }
       tm: 1681438468239537302
@@ -160,8 +160,8 @@ infos {
     ev_type: 2
     ev_desc: "Desc"
     init_val {
+      t: T_INT32
       v {
-        t: T_INT32
         i: 0
       }
       tm: 1681461667230464344
@@ -178,8 +178,8 @@ infos {
     ev_type: 2
     ev_desc: "Desc"
     init_val {
+      t: T_INT32
       v {
-        t: T_INT32
         i: 0
       }
       tm: 1681461921877235658
@@ -2865,8 +2865,8 @@ infos {
     fb_id: 15
     pin_index: 1
     pin_val {
+      t: T_STRING
       v {
-        t: T_STRING
         str: "SIM"
       }
       tm: 1681389273012321844
@@ -2883,8 +2883,8 @@ infos {
     fb_id: 13
     pin_index: 2
     pin_val {
+      t: T_INT32
       v {
-        t: T_INT32
         i: 100
       }
       tm: 1681389348653948686
@@ -2901,8 +2901,8 @@ infos {
     fb_id: 17
     pin_index: 2
     pin_val {
+      t: T_INT32
       v {
-        t: T_INT32
         i: 10
       }
       tm: 1681389379553786801
@@ -2919,8 +2919,8 @@ infos {
     fb_id: 18
     pin_index: 2
     pin_val {
+      t: T_INT32
       v {
-        t: T_INT32
         i: 5
       }
       tm: 1681389410669280526
@@ -2937,8 +2937,8 @@ infos {
     fb_id: 15
     pin_index: 2
     pin_val {
+      t: T_STRING
       v {
-        t: T_STRING
         str: "$SECOND"
       }
       tm: 1681389913251943706
@@ -2955,8 +2955,8 @@ infos {
     fb_id: 15
     pin_index: 6
     pin_val {
+      t: T_STRING
       v {
-        t: T_STRING
         str: "RANDOM(10,30)"
       }
       tm: 1681390081110505874
@@ -2973,8 +2973,8 @@ infos {
     fb_id: 19
     pin_index: 2
     pin_val {
+      t: T_FLOAT64
       v {
-        t: T_FLOAT64
         d: 4
       }
       tm: 1681390122567857142
@@ -2991,8 +2991,8 @@ infos {
     fb_id: 22
     pin_index: 1
     pin_val {
+      t: T_FLOAT64
       v {
-        t: T_FLOAT64
         d: -1.5670000314712524
       }
       tm: 1681390525958231642
@@ -3009,8 +3009,8 @@ infos {
     fb_id: 15
     pin_index: 9
     pin_val {
+      t: T_STRING
       v {
-        t: T_STRING
         str: "\357\277\245SECOND"
       }
       tm: 1681391838813644311
@@ -3027,8 +3027,8 @@ infos {
     fb_id: 15
     pin_index: 9
     pin_val {
+      t: T_STRING
       v {
-        t: T_STRING
         str: "$SECOND"
       }
       tm: 1681391855396405663
@@ -3045,8 +3045,8 @@ infos {
     fb_id: 24
     pin_index: 2
     pin_val {
+      t: T_UINT32
       v {
-        t: T_UINT32
         ui: 30
       }
       tm: 1681391985968155815
@@ -3063,8 +3063,8 @@ infos {
     fb_id: 25
     pin_index: 2
     pin_val {
+      t: T_UINT32
       v {
-        t: T_UINT32
         ui: 20
       }
       tm: 1681392098535057673
@@ -3081,8 +3081,8 @@ infos {
     fb_id: 26
     pin_index: 3
     pin_val {
+      t: T_BOOL
       v {
-        t: T_BOOL
         b: true
       }
       tm: 1681392126501870835
@@ -3099,8 +3099,8 @@ infos {
     fb_id: 26
     pin_index: 4
     pin_val {
+      t: T_BOOL
       v {
-        t: T_BOOL
         b: true
       }
       tm: 1681392129150109025
@@ -3117,8 +3117,8 @@ infos {
     fb_id: 27
     pin_index: 2
     pin_val {
+      t: T_BOOL
       v {
-        t: T_BOOL
         b: true
       }
       tm: 1681392205670493028
@@ -3135,8 +3135,8 @@ infos {
     fb_id: 51
     pin_index: 4
     pin_val {
+      t: T_INT32
       v {
-        t: T_INT32
         i: 1
       }
       tm: 1681393707260383526
@@ -3153,8 +3153,8 @@ infos {
     fb_id: 52
     pin_index: 4
     pin_val {
+      t: T_INT32
       v {
-        t: T_INT32
         i: 2
       }
       tm: 1681393710948686277
@@ -3171,8 +3171,8 @@ infos {
     fb_id: 53
     pin_index: 4
     pin_val {
+      t: T_INT32
       v {
-        t: T_INT32
         i: 3
       }
       tm: 1681393714188719332
@@ -3189,8 +3189,8 @@ infos {
     fb_id: 54
     pin_index: 4
     pin_val {
+      t: T_INT32
       v {
-        t: T_INT32
         i: 4
       }
       tm: 1681393717228645616
@@ -3207,8 +3207,8 @@ infos {
     fb_id: 55
     pin_index: 4
     pin_val {
+      t: T_INT32
       v {
-        t: T_INT32
         i: 1
       }
       tm: 1681393721228594723
@@ -3225,8 +3225,8 @@ infos {
     fb_id: 56
     pin_index: 1
     pin_val {
+      t: T_STRING
       v {
-        t: T_STRING
         str: "SIM"
       }
       tm: 1681393788453108669
@@ -3243,8 +3243,8 @@ infos {
     fb_id: 56
     pin_index: 5
     pin_val {
+      t: T_STRING
       v {
-        t: T_STRING
         str: "$SECOND"
       }
       tm: 1681393806069276312
@@ -3261,8 +3261,8 @@ infos {
     fb_id: 51
     pin_index: 1
     pin_val {
+      t: T_BOOL
       v {
-        t: T_BOOL
         b: true
       }
       tm: 1681393863909547899
@@ -3279,8 +3279,8 @@ infos {
     fb_id: 51
     pin_index: 2
     pin_val {
+      t: T_BOOL
       v {
-        t: T_BOOL
         b: true
       }
       tm: 1681393867853697168
@@ -3297,8 +3297,8 @@ infos {
     fb_id: 58
     pin_index: 1
     pin_val {
+      t: T_UINT32
       v {
-        t: T_UINT32
         ui: 0
       }
       tm: 1681393928855174418
@@ -3315,8 +3315,8 @@ infos {
     fb_id: 59
     pin_index: 2
     pin_val {
+      t: T_UINT32
       v {
-        t: T_UINT32
         ui: 10
       }
       tm: 1681394047775741897
@@ -3333,8 +3333,8 @@ infos {
     fb_id: 60
     pin_index: 2
     pin_val {
+      t: T_UINT32
       v {
-        t: T_UINT32
         ui: 30
       }
       tm: 1681394188496796381
@@ -3351,8 +3351,8 @@ infos {
     fb_id: 64
     pin_index: 2
     pin_val {
+      t: T_UINT32
       v {
-        t: T_UINT32
         ui: 10
       }
       tm: 1681437647745303500
@@ -3369,8 +3369,8 @@ infos {
     fb_id: 65
     pin_index: 2
     pin_val {
+      t: T_BOOL
       v {
-        t: T_BOOL
         b: true
       }
       tm: 1681438207742837028
@@ -3387,8 +3387,8 @@ infos {
     fb_id: 65
     pin_index: 2
     pin_val {
+      t: T_BOOL
       v {
-        t: T_BOOL
         b: false
       }
       tm: 1681438214604689424
@@ -3405,8 +3405,8 @@ infos {
     fb_id: 67
     pin_index: 1
     pin_val {
+      t: T_BOOL
       v {
-        t: T_BOOL
         b: true
       }
       tm: 1681438498540371972
@@ -3423,8 +3423,8 @@ infos {
     fb_id: 68
     pin_index: 2
     pin_val {
+      t: T_UINT32
       v {
-        t: T_UINT32
         ui: 40
       }
       tm: 1681438674968002811
@@ -3441,8 +3441,8 @@ infos {
     fb_id: 69
     pin_index: 2
     pin_val {
+      t: T_UINT32
       v {
-        t: T_UINT32
         ui: 55
       }
       tm: 1681438713754148278
@@ -3459,8 +3459,8 @@ infos {
     fb_id: 62
     pin_index: 4
     pin_val {
+      t: T_INT32
       v {
-        t: T_INT32
         i: 5
       }
       tm: 1681438974157492659
@@ -3477,8 +3477,8 @@ infos {
     fb_id: 63
     pin_index: 4
     pin_val {
+      t: T_INT32
       v {
-        t: T_INT32
         i: 4
       }
       tm: 1681438977918042531
@@ -3495,8 +3495,8 @@ infos {
     fb_id: 71
     pin_index: 2
     pin_val {
+      t: T_STRING
       v {
-        t: T_STRING
         str: "MOD1"
       }
       tm: 1681457900307994766
@@ -3513,8 +3513,8 @@ infos {
     fb_id: 71
     pin_index: 3
     pin_val {
+      t: T_STRING
       v {
-        t: T_STRING
         str: "P1"
       }
       tm: 1681457908452281043
@@ -3531,8 +3531,8 @@ infos {
     fb_id: 71
     pin_index: 4
     pin_val {
+      t: T_TIME
       v {
-        t: T_TIME
         tm: 3000
       }
       tm: 1681457920186104840
@@ -3549,8 +3549,8 @@ infos {
     fb_id: 71
     pin_index: 2
     pin_val {
+      t: T_STRING
       v {
-        t: T_STRING
         str: "SUBTASK"
       }
       tm: 1681459259174030695
@@ -3567,8 +3567,8 @@ infos {
     fb_id: 71
     pin_index: 3
     pin_val {
+      t: T_STRING
       v {
-        t: T_STRING
         str: "TASK_1"
       }
       tm: 1681459270749673850
@@ -3585,8 +3585,8 @@ infos {
     fb_id: 73
     pin_index: 2
     pin_val {
+      t: T_STRING
       v {
-        t: T_STRING
         str: "SUBTASK"
       }
       tm: 1681459341165580334
@@ -3603,8 +3603,8 @@ infos {
     fb_id: 73
     pin_index: 3
     pin_val {
+      t: T_STRING
       v {
-        t: T_STRING
         str: "Task_2"
       }
       tm: 1681459361284969917
@@ -3621,8 +3621,8 @@ infos {
     fb_id: 71
     pin_index: 3
     pin_val {
+      t: T_STRING
       v {
-        t: T_STRING
         str: "Task_2"
       }
       tm: 1681459370261742789
@@ -3639,8 +3639,8 @@ infos {
     fb_id: 73
     pin_index: 4
     pin_val {
+      t: T_TIME
       v {
-        t: T_TIME
         tm: 1000
       }
       tm: 1681459378022089384
@@ -3657,8 +3657,8 @@ infos {
     fb_id: 73
     pin_index: 5
     pin_val {
+      t: T_BOOL
       v {
-        t: T_BOOL
         b: true
       }
       tm: 1681459381965500669
@@ -3675,8 +3675,8 @@ infos {
     fb_id: 71
     pin_index: 5
     pin_val {
+      t: T_BOOL
       v {
-        t: T_BOOL
         b: false
       }
       tm: 1681459385237447710
@@ -3693,8 +3693,8 @@ infos {
     fb_id: 71
     pin_index: 3
     pin_val {
+      t: T_STRING
       v {
-        t: T_STRING
         str: "Task_1"
       }
       tm: 1681459725996581085
@@ -3711,8 +3711,8 @@ infos {
     fb_id: 126
     pin_index: 2
     pin_val {
+      t: T_INT32
       v {
-        t: T_INT32
         i: 1
       }
       tm: 1681461676558953246
@@ -3729,8 +3729,8 @@ infos {
     fb_id: 133
     pin_index: 1
     pin_val {
+      t: T_BOOL
       v {
-        t: T_BOOL
         b: true
       }
       tm: 1681461777734632515
@@ -3747,8 +3747,8 @@ infos {
     fb_id: 133
     pin_index: 2
     pin_val {
+      t: T_STRING
       v {
-        t: T_STRING
         str: "SUBTASK"
       }
       tm: 1681461793343256511
@@ -3765,8 +3765,8 @@ infos {
     fb_id: 133
     pin_index: 3
     pin_val {
+      t: T_STRING
       v {
-        t: T_STRING
         str: "Task_4"
       }
       tm: 1681461800542901419
@@ -3783,8 +3783,8 @@ infos {
     fb_id: 133
     pin_index: 4
     pin_val {
+      t: T_TIME
       v {
-        t: T_TIME
         tm: 3000
       }
       tm: 1681461808702853656
@@ -3801,8 +3801,8 @@ infos {
     fb_id: 133
     pin_index: 5
     pin_val {
+      t: T_BOOL
       v {
-        t: T_BOOL
         b: false
       }
       tm: 1681461813103258319
@@ -3819,8 +3819,8 @@ infos {
     fb_id: 134
     pin_index: 2
     pin_val {
+      t: T_STRING
       v {
-        t: T_STRING
         str: "SUBTASK"
       }
       tm: 1681461840734779625
@@ -3837,8 +3837,8 @@ infos {
     fb_id: 134
     pin_index: 3
     pin_val {
+      t: T_STRING
       v {
-        t: T_STRING
         str: "Task_5"
       }
       tm: 1681461848661264429
@@ -3855,8 +3855,8 @@ infos {
     fb_id: 134
     pin_index: 4
     pin_val {
+      t: T_TIME
       v {
-        t: T_TIME
         tm: 2000
       }
       tm: 1681461862712496476
@@ -3873,8 +3873,8 @@ infos {
     fb_id: 134
     pin_index: 5
     pin_val {
+      t: T_BOOL
       v {
-        t: T_BOOL
         b: false
       }
       tm: 1681461867048733795
@@ -3891,8 +3891,8 @@ infos {
     fb_id: 144
     pin_index: 2
     pin_val {
+      t: T_INT32
       v {
-        t: T_INT32
         i: 2
       }
       tm: 1681461934909480525
@@ -3909,8 +3909,8 @@ infos {
     fb_id: 135
     pin_index: 5
     pin_val {
+      t: T_BOOL
       v {
-        t: T_BOOL
         b: false
       }
       tm: 1681462637030798117
@@ -3927,8 +3927,8 @@ infos {
     fb_id: 135
     pin_index: 2
     pin_val {
+      t: T_STRING
       v {
-        t: T_STRING
         str: "SUBTASK"
       }
       tm: 1681462645167425757
@@ -3945,8 +3945,8 @@ infos {
     fb_id: 135
     pin_index: 3
     pin_val {
+      t: T_STRING
       v {
-        t: T_STRING
         str: "Task_3"
       }
       tm: 1681462654711414668
@@ -3963,8 +3963,8 @@ infos {
     fb_id: 149
     pin_index: 2
     pin_val {
+      t: T_STRING
       v {
-        t: T_STRING
         str: "SUBTASK"
       }
       tm: 1681462707504407676
@@ -3981,8 +3981,8 @@ infos {
     fb_id: 149
     pin_index: 3
     pin_val {
+      t: T_STRING
       v {
-        t: T_STRING
         str: "Task_6"
       }
       tm: 1681462714472249183
@@ -3999,8 +3999,8 @@ infos {
     fb_id: 149
     pin_index: 4
     pin_val {
+      t: T_TIME
       v {
-        t: T_TIME
         tm: 1000
       }
       tm: 1681462720800377823
@@ -4017,8 +4017,8 @@ infos {
     fb_id: 149
     pin_index: 5
     pin_val {
+      t: T_BOOL
       v {
-        t: T_BOOL
         b: false
       }
       tm: 1681462725761100538
@@ -4035,8 +4035,8 @@ infos {
     fb_id: 152
     pin_index: 2
     pin_val {
+      t: T_TIME
       v {
-        t: T_TIME
         tm: 5000
       }
       tm: 1681462744169052378
@@ -4053,8 +4053,8 @@ infos {
     fb_id: 149
     pin_index: 1
     pin_val {
+      t: T_BOOL
       v {
-        t: T_BOOL
         b: true
       }
       tm: 1681462860635700260
@@ -4071,8 +4071,8 @@ infos {
     fb_id: 133
     pin_index: 5
     pin_val {
+      t: T_BOOL
       v {
-        t: T_BOOL
         b: true
       }
       tm: 1681464343654313345
@@ -4089,8 +4089,8 @@ infos {
     fb_id: 134
     pin_index: 5
     pin_val {
+      t: T_BOOL
       v {
-        t: T_BOOL
         b: true
       }
       tm: 1681464347534268252
@@ -4107,8 +4107,8 @@ infos {
     fb_id: 135
     pin_index: 5
     pin_val {
+      t: T_BOOL
       v {
-        t: T_BOOL
         b: true
       }
       tm: 1681464350550442107
@@ -4125,8 +4125,8 @@ infos {
     fb_id: 149
     pin_index: 5
     pin_val {
+      t: T_BOOL
       v {
-        t: T_BOOL
         b: true
       }
       tm: 1681464356654517059
@@ -4143,8 +4143,8 @@ infos {
     fb_id: 127
     pin_index: 2
     pin_val {
+      t: T_INT32
       v {
-        t: T_INT32
         i: 5
       }
       tm: 1681571290289475773
@@ -4161,8 +4161,8 @@ infos {
     fb_id: 156
     pin_index: 1
     pin_val {
+      t: T_STRING
       v {
-        t: T_STRING
         str: "SIM"
       }
       tm: 1681661859661370485
@@ -4179,8 +4179,8 @@ infos {
     fb_id: 156
     pin_index: 6
     pin_val {
+      t: T_STRING
       v {
-        t: T_STRING
         str: "RANDOM(10,20)"
       }
       tm: 1681661872311180155
@@ -4197,8 +4197,8 @@ infos {
     fb_id: 155
     pin_index: 2
     pin_val {
+      t: T_INT32
       v {
-        t: T_INT32
         i: 5
       }
       tm: 1681661900178199578
@@ -4215,8 +4215,8 @@ infos {
     fb_id: 136
     pin_index: 2
     pin_val {
+      t: T_STRING
       v {
-        t: T_STRING
         str: "SUBTASK"
       }
       tm: 1681661939628326986
@@ -4233,8 +4233,8 @@ infos {
     fb_id: 136
     pin_index: 3
     pin_val {
+      t: T_STRING
       v {
-        t: T_STRING
         str: "Task_7"
       }
       tm: 1681661948294361904
@@ -4251,8 +4251,8 @@ infos {
     fb_id: 136
     pin_index: 4
     pin_val {
+      t: T_TIME
       v {
-        t: T_TIME
         tm: 5000
       }
       tm: 1681661956011417861
@@ -4269,8 +4269,8 @@ infos {
     fb_id: 136
     pin_index: 5
     pin_val {
+      t: T_BOOL
       v {
-        t: T_BOOL
         b: true
       }
       tm: 1681661961394800770
@@ -4287,8 +4287,8 @@ infos {
     fb_id: 29
     pin_index: 1
     pin_val {
+      t: T_BOOL
       v {
-        t: T_BOOL
         b: true
       }
       tm: 1681712039698874580
@@ -4305,8 +4305,8 @@ infos {
     fb_id: 120
     pin_index: 1
     pin_val {
+      t: T_STRING
       v {
-        t: T_STRING
         str: "SIM"
       }
       tm: 1681712333227796179
@@ -4323,8 +4323,8 @@ infos {
     fb_id: 120
     pin_index: 7
     pin_val {
+      t: T_STRING
       v {
-        t: T_STRING
         str: "RANDOM(95,105)"
       }
       tm: 1681712364076251057
@@ -4341,8 +4341,8 @@ infos {
     fb_id: 119
     pin_index: 3
     pin_val {
+      t: T_FLOAT64
       v {
-        t: T_FLOAT64
         d: 100
       }
       tm: 1681712378291623872
@@ -4359,8 +4359,8 @@ infos {
     fb_id: 119
     pin_index: 1
     pin_val {
+      t: T_BOOL
       v {
-        t: T_BOOL
         b: false
       }
       tm: 1681712381123919158
@@ -4377,8 +4377,8 @@ infos {
     fb_id: 119
     pin_index: 2
     pin_val {
+      t: T_BOOL
       v {
-        t: T_BOOL
         b: false
       }
       tm: 1681712383643871410
@@ -4395,8 +4395,8 @@ infos {
     fb_id: 119
     pin_index: 5
     pin_val {
+      t: T_FLOAT64
       v {
-        t: T_FLOAT64
         d: 0
       }
       tm: 1681712387051262673
@@ -4413,8 +4413,8 @@ infos {
     fb_id: 119
     pin_index: 6
     pin_val {
+      t: T_BOOL
       v {
-        t: T_BOOL
         b: true
       }
       tm: 1681712390035455692
@@ -4431,8 +4431,8 @@ infos {
     fb_id: 119
     pin_index: 7
     pin_val {
+      t: T_BOOL
       v {
-        t: T_BOOL
         b: true
       }
       tm: 1681712392475950470
@@ -4449,8 +4449,8 @@ infos {
     fb_id: 119
     pin_index: 8
     pin_val {
+      t: T_BOOL
       v {
-        t: T_BOOL
         b: true
       }
       tm: 1681712394787441993
@@ -4467,8 +4467,8 @@ infos {
     fb_id: 119
     pin_index: 9
     pin_val {
+      t: T_BOOL
       v {
-        t: T_BOOL
         b: false
       }
       tm: 1681712400443879936
@@ -4485,8 +4485,8 @@ infos {
     fb_id: 119
     pin_index: 10
     pin_val {
+      t: T_FLOAT64
       v {
-        t: T_FLOAT64
         d: 0.5
       }
       tm: 1681712411508177553
@@ -4503,8 +4503,8 @@ infos {
     fb_id: 119
     pin_index: 11
     pin_val {
+      t: T_FLOAT64
       v {
-        t: T_FLOAT64
         d: 100
       }
       tm: 1681712419179938528
@@ -4521,8 +4521,8 @@ infos {
     fb_id: 119
     pin_index: 12
     pin_val {
+      t: T_FLOAT64
       v {
-        t: T_FLOAT64
         d: 50
       }
       tm: 1681712423371808218
@@ -4539,8 +4539,8 @@ infos {
     fb_id: 119
     pin_index: 13
     pin_val {
+      t: T_FLOAT64
       v {
-        t: T_FLOAT64
         d: 0
       }
       tm: 1681712426635853521
@@ -4557,8 +4557,8 @@ infos {
     fb_id: 119
     pin_index: 14
     pin_val {
+      t: T_FLOAT64
       v {
-        t: T_FLOAT64
         d: 10
       }
       tm: 1681712434884673759
@@ -4575,8 +4575,8 @@ infos {
     fb_id: 119
     pin_index: 15
     pin_val {
+      t: T_FLOAT64
       v {
-        t: T_FLOAT64
         d: -10
       }
       tm: 1681712439995807827
@@ -4593,8 +4593,8 @@ infos {
     fb_id: 119
     pin_index: 16
     pin_val {
+      t: T_FLOAT64
       v {
-        t: T_FLOAT64
         d: 5
       }
       tm: 1681712444964485191
@@ -4638,8 +4638,8 @@ infos {
     fb_id: 161
     pin_index: 1
     pin_val {
+      t: T_STRING
       v {
-        t: T_STRING
         str: "front camera"
       }
       tm: 1681907178192761419
@@ -4748,8 +4748,8 @@ infos {
     fb_id: 164
     pin_index: 2
     pin_val {
+      t: T_STRING
       v {
-        t: T_STRING
         str: "Module 2"
       }
       tm: 1681907223633851166
@@ -4766,8 +4766,8 @@ infos {
     fb_id: 164
     pin_index: 3
     pin_val {
+      t: T_STRING
       v {
-        t: T_STRING
         str: "DETECT"
       }
       tm: 1681907235306342623
@@ -4796,8 +4796,8 @@ infos {
     fb_id: 164
     pin_index: 4
     pin_val {
+      t: T_TIME
       v {
-        t: T_TIME
         tm: 0
       }
       tm: 1681907275516154939
@@ -4814,8 +4814,8 @@ infos {
     fb_id: 164
     pin_index: 4
     pin_val {
+      t: T_TIME
       v {
-        t: T_TIME
         tm: 0
       }
       tm: 1681907287156675904
@@ -4832,8 +4832,8 @@ infos {
     fb_id: 164
     pin_index: 5
     pin_val {
+      t: T_BOOL
       v {
-        t: T_BOOL
         b: true
       }
       tm: 1681907289788474660
@@ -4972,8 +4972,8 @@ infos {
     fb_id: 168
     pin_index: 1
     pin_val {
+      t: T_STRING
       v {
-        t: T_STRING
         str: "/home/shuimujie/Works/GeoSys/shape_predictor_5_face_landmarks.dat"
       }
       tm: 1681907362887885120
@@ -4990,8 +4990,8 @@ infos {
     fb_id: 168
     pin_index: 2
     pin_val {
+      t: T_UINT32
       v {
-        t: T_UINT32
         ui: 0
       }
       tm: 1681907366295917216
@@ -5008,8 +5008,8 @@ infos {
     fb_id: 168
     pin_index: 3
     pin_val {
+      t: T_BOOL
       v {
-        t: T_BOOL
         b: true
       }
       tm: 1681907368976479961
@@ -5026,8 +5026,8 @@ infos {
     fb_id: 167
     pin_index: 1
     pin_val {
+      t: T_STRING
       v {
-        t: T_STRING
         str: "/home/shuimujie/Works/GeoSys/dlib_face_recognition_resnet_model_v1.dat"
       }
       tm: 1681907378640605084
@@ -5044,8 +5044,8 @@ infos {
     fb_id: 167
     pin_index: 2
     pin_val {
+      t: T_UINT32
       v {
-        t: T_UINT32
         ui: 0
       }
       tm: 1681907382488838253
@@ -5062,8 +5062,8 @@ infos {
     fb_id: 167
     pin_index: 3
     pin_val {
+      t: T_BOOL
       v {
-        t: T_BOOL
         b: true
       }
       tm: 1681907385953475536
@@ -5080,8 +5080,8 @@ infos {
     ev_type: 11
     ev_desc: "Desc"
     init_val {
+      t: T_IMAGE
       v {
-        t: T_IMAGE
         img {
           data: "0"
         }
@@ -5156,8 +5156,8 @@ infos {
     ev_type: 11
     ev_desc: "Desc"
     init_val {
+      t: T_IMAGE
       v {
-        t: T_IMAGE
         img {
           data: "0"
         }
@@ -5176,8 +5176,8 @@ infos {
     ev_type: 11
     ev_desc: "Desc"
     init_val {
+      t: T_IMAGE
       v {
-        t: T_IMAGE
         img {
           data: "0"
         }
@@ -5391,27 +5391,12 @@ infos {
     fb_id: 181
     pin_index: 2
     pin_val {
+      t: T_INT32
       v {
-        t: T_INT32
         i: 1
       }
       tm: 1681990138855253870
     }
-  }
-}
-infos {
-  cmd_id: 339
-  element: FB
-  edit_type: MV
-  fb {
-    mod_id: 117
-    task_id: 160
-    fb_id: 164
-    fb_name: "dlib_dectect"
-  }
-  pos {
-    x: 140
-    y: 54
   }
 }
 infos {
@@ -5523,8 +5508,8 @@ infos {
     fb_id: 185
     pin_index: 1
     pin_val {
+      t: T_BOOL
       v {
-        t: T_BOOL
         b: true
       }
       tm: 1682079063252481080
@@ -5541,8 +5526,8 @@ infos {
     fb_id: 185
     pin_index: 2
     pin_val {
+      t: T_TIME
       v {
-        t: T_TIME
         tm: 4000
       }
       tm: 1682079070804377857
@@ -5747,8 +5732,8 @@ infos {
     fb_id: 189
     pin_index: 2
     pin_val {
+      t: T_TIME
       v {
-        t: T_TIME
         tm: 4000
       }
       tm: 1682080108893097613
@@ -5765,8 +5750,8 @@ infos {
     fb_id: 189
     pin_index: 1
     pin_val {
+      t: T_BOOL
       v {
-        t: T_BOOL
         b: true
       }
       tm: 1682080112077970442
@@ -5783,8 +5768,8 @@ infos {
     fb_id: 186
     pin_index: 2
     pin_val {
+      t: T_BOOL
       v {
-        t: T_BOOL
         b: true
       }
       tm: 1682080116350014614
@@ -5818,28 +5803,6 @@ infos {
   pos {
     x: 58
     y: 40
-  }
-}
-infos {
-  cmd_id: 378
-  element: LK
-  edit_type: MV
-  lk {
-    mod_id: 117
-    task_id: 118
-    lk_id: 122
-  }
-  pos {
-    x: 78
-    y: 57
-  }
-  pos {
-    x: 127
-    y: 57
-  }
-  pos {
-    x: 127
-    y: 68
   }
 }
 infos {
@@ -5884,8 +5847,8 @@ infos {
     fb_id: 162
     pin_index: 1
     pin_val {
+      t: T_BOOL
       v {
-        t: T_BOOL
         b: true
       }
       tm: 1682602888422757916
@@ -5922,8 +5885,8 @@ infos {
     fb_id: 164
     pin_index: 1
     pin_val {
+      t: T_BOOL
       v {
-        t: T_BOOL
         b: true
       }
       tm: 1682602959050574148
@@ -6016,8 +5979,8 @@ infos {
     fb_id: 164
     pin_index: 5
     pin_val {
+      t: T_BOOL
       v {
-        t: T_BOOL
         b: false
       }
       tm: 1682651337189843504
@@ -6034,8 +5997,8 @@ infos {
     fb_id: 164
     pin_index: 5
     pin_val {
+      t: T_BOOL
       v {
-        t: T_BOOL
         b: true
       }
       tm: 1683178958078734582
@@ -6052,8 +6015,8 @@ infos {
     fb_id: 164
     pin_index: 5
     pin_val {
+      t: T_BOOL
       v {
-        t: T_BOOL
         b: false
       }
       tm: 1683269426387667906
@@ -6070,8 +6033,8 @@ infos {
     fb_id: 164
     pin_index: 5
     pin_val {
+      t: T_BOOL
       v {
-        t: T_BOOL
         b: true
       }
       tm: 1683339484452920278
@@ -6115,8 +6078,8 @@ infos {
     fb_id: 164
     pin_index: 4
     pin_val {
+      t: T_TIME
       v {
-        t: T_TIME
         tm: 3000
       }
       tm: 1683369830212408563
@@ -6232,8 +6195,8 @@ infos {
     ev_type: 2
     ev_desc: "Desc"
     init_val {
+      t: T_INT32
       v {
-        t: T_INT32
         i: 1
       }
       tm: 1683371840240541215
@@ -6250,8 +6213,8 @@ infos {
     ev_type: 2
     ev_desc: "Desc"
     init_val {
+      t: T_INT32
       v {
-        t: T_INT32
         i: 1
       }
       tm: 1683372024974779622
@@ -6288,5 +6251,79 @@ infos {
   pos {
     x: 50
     y: 114
+  }
+}
+infos {
+  cmd_id: 432
+  element: FB
+  edit_type: MV
+  fb {
+    mod_id: 117
+    task_id: 160
+    fb_id: 164
+    fb_name: "dlib_dectect"
+  }
+  pos {
+    x: 144
+    y: 66
+  }
+}
+infos {
+  cmd_id: 433
+  element: LK
+  edit_type: MV
+  lk {
+    mod_id: 117
+    task_id: 160
+    lk_id: 193
+  }
+  pos {
+    x: 117
+    y: 73
+  }
+  pos {
+    x: 144
+    y: 73
+  }
+}
+infos {
+  cmd_id: 437
+  element: FB
+  edit_type: MV
+  fb {
+    mod_id: 117
+    task_id: 118
+    fb_id: 119
+    fb_name: "PID\344\275\215\347\275\256\345\274\217\350\260\203\350\212\202"
+  }
+  pos {
+    x: 138
+    y: 48
+  }
+}
+infos {
+  cmd_id: 438
+  element: LK
+  edit_type: MV
+  lk {
+    mod_id: 117
+    task_id: 118
+    lk_id: 122
+  }
+  pos {
+    x: 78
+    y: 57
+  }
+  pos {
+    x: 112
+    y: 57
+  }
+  pos {
+    x: 112
+    y: 61
+  }
+  pos {
+    x: 138
+    y: 61
   }
 }

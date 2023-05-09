@@ -284,7 +284,12 @@
         "path_create": "cpp",
         "executor": "cpp",
         "io_context": "cpp",
-        "__nullptr": "cpp"
+        "__nullptr": "cpp",
+        "__bit_reference": "cpp",
+        "__functional_base": "cpp",
+        "__memory": "cpp",
+        "qmutex": "cpp",
+        "qscopedpointer": "cpp"
     },
     "C_Cpp.errorSquiggles": "disabled"
 }

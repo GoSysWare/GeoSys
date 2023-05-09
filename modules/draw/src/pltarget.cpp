@@ -2,7 +2,7 @@
 #include "gdefine.h"
 #include "modules/calc/include/k_bus.h"
 #include "modules/calc/include/k_command.h"
-
+#include <QDateTime>
 //定时器中刷新各个引脚和变量的值，并更新画面
 void PLTarget::timerEvent(QTimerEvent *e) {
 
@@ -129,6 +129,7 @@ PLTarget::PLTarget(QObject *parent) {
 
           for (i = 0; i < mod->prgList.size(); i++) {
             prg = &mod->prgList[i];
+            QMutexLocker locker(prg->mutex.get());
             for (j = 0; j < prg->fbs.size(); j++) {
               fb = &prg->fbs[j];
               p_fb = prj_fbfind(fb->idMod, fb->idPrg, fb->id);

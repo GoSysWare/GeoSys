@@ -110,7 +110,7 @@ void DlgPinSet::ok(bool check)
     }
     for(int i=0; i<gMainModel->evList.size(); i++){
         if(gMainModel->evList.at(i).name == textVariable->text()){
-            if(evData.initValue.v().t() == gMainModel->evList.at(i).initValue.v().t()){
+            if(evData.initValue.t() == gMainModel->evList.at(i).initValue.t()){
                 evData = gMainModel->evList.at(i);
                 accept();
                 return;
@@ -122,7 +122,7 @@ void DlgPinSet::ok(bool check)
     }
     DlgEVData dlgEVData(this);
     evData.name = textVariable->text();
-    switch(evData.initValue.v().t()){
+    switch(evData.initValue.t()){
     case T_BOOL:
         evData.initValue.mutable_v()->set_b(0);
         break;
@@ -179,7 +179,7 @@ void DlgPinSet::cancel(bool Check)
 void DlgPinSet::tableDoubleClicked(const QModelIndex &index)
 {
     int row = index.row();
-    if(gMainModel->evList.at(row).initValue.v().t() == evData.initValue.v().t()){
+    if(gMainModel->evList.at(row).initValue.t() == evData.initValue.t()){
         rbVariable->setChecked(true);
         evData = gMainModel->evList.at(row);
         accept();
@@ -191,7 +191,7 @@ void DlgPinSet::tableDoubleClicked(const QModelIndex &index)
 void DlgPinSet::tableClicked(const QModelIndex & index)
 {
     int row = index.row();
-    if(gMainModel->evList.at(row).initValue.v().t() == evData.initValue.v().t()){
+    if(gMainModel->evList.at(row).initValue.t() == evData.initValue.t()){
         rbVariable->setChecked(true);
         textConst->setEnabled(false);
         textVariable->setEnabled(true);

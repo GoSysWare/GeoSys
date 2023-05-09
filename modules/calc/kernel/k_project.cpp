@@ -447,16 +447,16 @@ int prj_to_snapshot(Bus::ProjSnapshotReq * snapshot_req,
           p_fb = p_en->p_fb;
           // 解析fb的header
           value_tm *val_sp = task_sp->add_vals();
-          val_sp->mutable_v()->set_t(v_type::T_UINT64);
+          val_sp->set_t(v_type::T_UINT64);
           val_sp->mutable_v()->set_ull(p_fb->h.cycle_time);
           val_sp = task_sp->add_vals();
-          val_sp->mutable_v()->set_t(v_type::T_UINT64);
+          val_sp->set_t(v_type::T_UINT64);
           val_sp->mutable_v()->set_ull(p_fb->h.begin_time);
           val_sp = task_sp->add_vals();
-          val_sp->mutable_v()->set_t(v_type::T_UINT64);
+          val_sp->set_t(v_type::T_UINT64);
           val_sp->mutable_v()->set_ull(p_fb->h.expend_time);
           val_sp = task_sp->add_vals();
-          val_sp->mutable_v()->set_t(v_type::T_INT32);
+          val_sp->set_t(v_type::T_INT32);
           val_sp->mutable_v()->set_i(p_fb->h.flag);
 
           for (i = 0; i < p_fb->ins.size(); i++) {

@@ -68,7 +68,7 @@ EVDataPanel::EVDataPanel()
     evLast.name = "EV";
     evLast.desc = "Desc";
     evLast.type = v_type::T_INT32;
-    evLast.initValue.mutable_v()->set_t(T_INT32);
+    evLast.initValue.set_t(T_INT32);
     evLast.initValue.mutable_v()->set_i(0);
 }
 
@@ -156,7 +156,7 @@ void EVDataPanel::showEVData(bool check)
     DlgEvShow dlgShow(this);
     dlgShow.setTitle(evCur.name);
     dlgShow.setValueData(evCur);
-    if(IS_NOT_UPLOAD_TYPE(evCur.value.v().t())){
+    if(IS_NOT_UPLOAD_TYPE(evCur.value.t())){
         gTarget->ev_ids.push_back(evCur.id);
     }
     if (dlgShow.exec() != QDialog::Accepted) {

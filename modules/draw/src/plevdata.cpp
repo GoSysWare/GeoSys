@@ -1,7 +1,7 @@
 #include "plevdata.h"
 PLEVData::PLEVData() {
-  initValue.mutable_v()->set_t(v_type::T_NONE);
-  value.mutable_v()->set_t(v_type::T_NONE);
+  initValue.set_t(v_type::T_NONE);
+  value.set_t(v_type::T_NONE);
 }
 
 PLEVData::PLEVData(const PLEVData &ev) {
@@ -19,7 +19,7 @@ PLEVData::PLEVData(const PLEVData &ev) {
 PLEVData::~PLEVData() {}
 
 QString PLEVData::getStrValue() {
-  v_type t = value.v().t();
+  v_type t = value.t();
 
   switch (t) {
   case v_type::T_BOOL:
@@ -38,7 +38,7 @@ QString PLEVData::getStrValue() {
   case v_type::T_LIDAR:
   case v_type::T_SONAR:
   case v_type::T_FILE:
-    return QString::fromStdString("t: " + v_type_Name(value.v().t()) + " Len: " + std::to_string(value.v().ByteSizeLong()));
+    return QString::fromStdString(" Len: " + std::to_string(value.v().ByteSizeLong()));
     break;
   default:
     return QString::fromStdString(value.v().ShortDebugString());
@@ -46,7 +46,7 @@ QString PLEVData::getStrValue() {
 }
 
 QString PLEVData::getStrInitValue() {
-  v_type t = initValue.v().t();
+  v_type t = initValue.t();
 
   switch (t) {
   case v_type::T_BOOL:
@@ -65,7 +65,7 @@ QString PLEVData::getStrInitValue() {
   case v_type::T_LIDAR:
   case v_type::T_SONAR:
   case v_type::T_FILE:
-    return QString::fromStdString("t: " + v_type_Name(value.v().t()) + " Len: " + std::to_string(value.v().ByteSizeLong()));
+    return QString::fromStdString( " Len: " + std::to_string(value.v().ByteSizeLong()));
     break;
   default:
     return QString::fromStdString(value.v().ShortDebugString());

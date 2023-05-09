@@ -24,27 +24,27 @@ enum v_type {
 }
 
 message value_t {
-  v_type t = 1;
   oneof var {
-    bool b = 2;
-    int32 i = 3;
-    uint32 ui = 4;
-    int64 ll = 5;
-    uint64 ull = 6;
-    float f = 7;
-    double d = 8;
-    uint64 tm = 9;
-    string str = 10;
-    bytes blob = 11;
-    Image img = 12;
-    bytes lidar = 13;
-    bytes sonar = 14;
-    bytes file = 15;
-    google.protobuf.Any any =16;
+    bool b = 1;
+    int32 i = 2;
+    uint32 ui = 3;
+    int64 ll = 4;
+    uint64 ull = 5;
+    float f = 6;
+    double d = 7;
+    uint64 tm = 8;
+    string str = 9;
+    bytes blob = 10;
+    Image img = 11;
+    bytes lidar = 12;
+    bytes sonar = 13;
+    bytes file = 14;
+    google.protobuf.Any any =15;
   }
 }
 
 message value_tm {
-  value_t v = 1;
-  uint64 tm = 2;
+  v_type t = 1;
+  value_t v = 2;
+  uint64 tm = 3;
 }
