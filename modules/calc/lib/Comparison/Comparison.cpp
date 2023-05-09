@@ -1,9 +1,6 @@
 #include "modules/calc/include/k_functionblock.h"
 #include <stddef.h>
 
-
-#include "EQ_DOUBLE"
-#include "EQ_FLOAT"
 #include "EQ_INT"
 #include "EQ_INT64"
 #include "EQ_TIME"
@@ -37,8 +34,6 @@
 #include "LT_TIME"
 #include "LT_UINT"
 #include "LT_UINT64"
-#include "NE_DOUBLE"
-#include "NE_FLOAT"
 #include "NE_INT"
 #include "NE_INT64"
 #include "NE_TIME"
@@ -46,15 +41,14 @@
 #include "NE_UINT64"
 
 static void *fb_table[] = {
-    &fb_EQ_DOUBLE, &fb_EQ_FLOAT,  &fb_EQ_INT,    &fb_EQ_INT64,  &fb_EQ_TIME,
-    &fb_EQ_UINT,   &fb_EQ_UINT64, &fb_GE_DOUBLE, &fb_GE_FLOAT,  &fb_GE_INT,
-    &fb_GE_INT64,  &fb_GE_TIME,   &fb_GE_UINT,   &fb_GE_UINT64, &fb_GT_DOUBLE,
-    &fb_GT_FLOAT,  &fb_GT_INT,    &fb_GT_INT64,  &fb_GT_TIME,   &fb_GT_UINT,
-    &fb_GT_UINT64, &fb_LE_DOUBLE, &fb_LE_FLOAT,  &fb_LE_INT,    &fb_LE_INT64,
-    &fb_LE_TIME,   &fb_LE_UINT,   &fb_LE_UINT64, &fb_LT_DOUBLE, &fb_LT_FLOAT,
-    &fb_LT_INT,    &fb_LT_INT64,  &fb_LT_TIME,   &fb_LT_UINT,   &fb_LT_UINT64,
-    &fb_NE_DOUBLE, &fb_NE_FLOAT,  &fb_NE_INT,    &fb_NE_INT64,  &fb_NE_TIME,
-    &fb_NE_UINT,   &fb_NE_UINT64,
+    &fb_EQ_INT,    &fb_EQ_INT64,  &fb_EQ_TIME,   &fb_EQ_UINT,   &fb_EQ_UINT64,
+    &fb_GE_DOUBLE, &fb_GE_FLOAT,  &fb_GE_INT,    &fb_GE_INT64,  &fb_GE_TIME,
+    &fb_GE_UINT,   &fb_GE_UINT64, &fb_GT_DOUBLE, &fb_GT_FLOAT,  &fb_GT_INT,
+    &fb_GT_INT64,  &fb_GT_TIME,   &fb_GT_UINT,   &fb_GT_UINT64, &fb_LE_DOUBLE,
+    &fb_LE_FLOAT,  &fb_LE_INT,    &fb_LE_INT64,  &fb_LE_TIME,   &fb_LE_UINT,
+    &fb_LE_UINT64, &fb_LT_DOUBLE, &fb_LT_FLOAT,  &fb_LT_INT,    &fb_LT_INT64,
+    &fb_LT_TIME,   &fb_LT_UINT,   &fb_LT_UINT64, &fb_NE_INT,    &fb_NE_INT64,
+    &fb_NE_TIME,   &fb_NE_UINT,   &fb_NE_UINT64,
 };
 
 static size_t cursor;

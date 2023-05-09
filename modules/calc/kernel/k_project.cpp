@@ -471,6 +471,7 @@ int prj_to_snapshot(Bus::ProjSnapshotReq * snapshot_req,
             } else {
               val_sp->CopyFrom(*(p_fb->ins[i].v));
             }
+            std::string tmp = val_sp->ShortDebugString();
           }
           for (i = 0; i < p_fb->outs.size(); i++) {
             if (IS_NOT_UPLOAD_TYPE(p_fb->outs[i].t))
@@ -485,6 +486,8 @@ int prj_to_snapshot(Bus::ProjSnapshotReq * snapshot_req,
 
               val_sp->CopyFrom(*(p_fb->outs[i].v));
             }
+            std::string tmp = val_sp->ShortDebugString();
+
           }
         }
         p_en = p_en->p_next;

@@ -1,9 +1,9 @@
 infos {
-  cmd_id: 405
+  cmd_id: 424
   edit_type: SET
   proj {
     proj_name: "rotbot-engine-project"
-    proj_uuid: "{5ab48e72-a435-49f9-bef1-6c224c54c039}"
+    proj_uuid: "{cc6a38f3-43b9-4231-8a7a-55196813b7f3}"
   }
 }
 infos {
@@ -1716,20 +1716,6 @@ infos {
   }
 }
 infos {
-  cmd_id: 321
-  element: FB
-  edit_type: MV
-  fb {
-    mod_id: 17
-    task_id: 18
-    fb_id: 52
-  }
-  pos {
-    x: 77
-    y: 52
-  }
-}
-infos {
   cmd_id: 322
   element: LK
   edit_type: ADD
@@ -1784,46 +1770,6 @@ infos {
   }
 }
 infos {
-  cmd_id: 340
-  element: FB
-  edit_type: MV
-  fb {
-    mod_id: 17
-    task_id: 18
-    fb_id: 27
-  }
-  pos {
-    x: 118
-    y: 105
-  }
-}
-infos {
-  cmd_id: 342
-  element: LK
-  edit_type: MV
-  lk {
-    mod_id: 17
-    task_id: 18
-    lk_id: 30
-  }
-  pos {
-    x: 43
-    y: 88
-  }
-  pos {
-    x: 51
-    y: 88
-  }
-  pos {
-    x: 51
-    y: 114
-  }
-  pos {
-    x: 118
-    y: 114
-  }
-}
-infos {
   cmd_id: 343
   element: LK
   edit_type: ADD
@@ -1854,32 +1800,6 @@ infos {
   }
 }
 infos {
-  cmd_id: 348
-  element: LK
-  edit_type: MV
-  lk {
-    mod_id: 17
-    task_id: 18
-    lk_id: 50
-  }
-  pos {
-    x: 69
-    y: 59
-  }
-  pos {
-    x: 72
-    y: 59
-  }
-  pos {
-    x: 72
-    y: 86
-  }
-  pos {
-    x: 79
-    y: 86
-  }
-}
-infos {
   cmd_id: 360
   element: FB
   edit_type: MV
@@ -1891,24 +1811,6 @@ infos {
   pos {
     x: 177
     y: 103
-  }
-}
-infos {
-  cmd_id: 361
-  element: LK
-  edit_type: MV
-  lk {
-    mod_id: 17
-    task_id: 18
-    lk_id: 29
-  }
-  pos {
-    x: 139
-    y: 112
-  }
-  pos {
-    x: 177
-    y: 112
   }
 }
 infos {
@@ -2442,5 +2344,147 @@ infos {
       }
       tm: 1683615568902996375
     }
+  }
+}
+infos {
+  cmd_id: 409
+  element: FB
+  edit_type: MV
+  fb {
+    mod_id: 17
+    task_id: 18
+    fb_id: 52
+  }
+  pos {
+    x: 74
+    y: 101
+  }
+}
+infos {
+  cmd_id: 410
+  element: LK
+  edit_type: MV
+  lk {
+    mod_id: 17
+    task_id: 18
+    lk_id: 53
+  }
+  pos {
+    x: 69
+    y: 59
+  }
+  pos {
+    x: 69
+    y: 108
+  }
+  pos {
+    x: 74
+    y: 108
+  }
+}
+infos {
+  cmd_id: 412
+  element: LK
+  edit_type: MV
+  lk {
+    mod_id: 17
+    task_id: 18
+    lk_id: 50
+  }
+  pos {
+    x: 69
+    y: 59
+  }
+  pos {
+    x: 69
+    y: 86
+  }
+  pos {
+    x: 79
+    y: 86
+  }
+}
+infos {
+  cmd_id: 421
+  element: FB
+  edit_type: MV
+  fb {
+    mod_id: 17
+    task_id: 18
+    fb_id: 27
+  }
+  pos {
+    x: 117
+    y: 107
+  }
+}
+infos {
+  cmd_id: 422
+  element: LK
+  edit_type: MV
+  lk {
+    mod_id: 17
+    task_id: 18
+    lk_id: 29
+  }
+  pos {
+    x: 138
+    y: 114
+  }
+  pos {
+    x: 177
+    y: 114
+  }
+  pos {
+    x: 177
+    y: 112
+  }
+}
+infos {
+  cmd_id: 423
+  element: LK
+  edit_type: MV
+  lk {
+    mod_id: 17
+    task_id: 18
+    lk_id: 30
+  }
+  pos {
+    x: 43
+    y: 88
+  }
+  pos {
+    x: 51
+    y: 88
+  }
+  pos {
+    x: 51
+    y: 116
+  }
+  pos {
+    x: 117
+    y: 116
+  }
+}
+infos {
+  cmd_id: 424
+  element: LK
+  edit_type: MV
+  lk {
+    mod_id: 17
+    task_id: 18
+    lk_id: 54
+  }
+  pos {
+    x: 92
+    y: 108
+  }
+  pos {
+    x: 92
+    y: 114
+  }
+  pos {
+    x: 117
+    y: 114
   }
 }

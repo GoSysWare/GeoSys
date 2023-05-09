@@ -8,8 +8,6 @@ cc_library(
         "Comparison.cpp",
     ],
     hdrs = [
-        "EQ_DOUBLE",
-        "EQ_FLOAT",
         "EQ_INT",
         "EQ_INT64",
         "EQ_TIME",
@@ -43,8 +41,6 @@ cc_library(
         "LT_TIME",
         "LT_UINT",
         "LT_UINT64",
-        "NE_DOUBLE",
-        "NE_FLOAT",
         "NE_INT",
         "NE_INT64",
         "NE_TIME",
