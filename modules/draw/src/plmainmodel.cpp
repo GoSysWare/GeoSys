@@ -254,6 +254,9 @@ void PLMainModel::makeViRemoveCmd(PLCommand &cmd, PLVLink &vlk) {
   cmd.editInfo.mutable_vi()->set_vi_id(vlk.id);
   cmd.editInfo.mutable_vi()->set_mod_id(vlk.idMod);
   cmd.editInfo.mutable_vi()->set_task_id(vlk.idPrg);
+  cmd.editInfo.mutable_vi()->set_fb_id(vlk.idFb);
+  cmd.editInfo.mutable_vi()->set_pin_index(vlk.idPin);
+  cmd.editInfo.mutable_vi()->set_ev_id(vlk.idEv);
 }
 
 void PLMainModel::makeVoNewCmd(PLCommand &cmd, PLVLink &vlk, bool newId) {
@@ -285,6 +288,9 @@ void PLMainModel::makeVoRemoveCmd(PLCommand &cmd, PLVLink &vlk) {
   cmd.editInfo.mutable_vo()->set_vo_id(vlk.id);
   cmd.editInfo.mutable_vo()->set_mod_id(vlk.idMod);
   cmd.editInfo.mutable_vo()->set_task_id(vlk.idPrg);
+  cmd.editInfo.mutable_vo()->set_fb_id(vlk.idFb);
+  cmd.editInfo.mutable_vo()->set_pin_index(vlk.idPin);
+  cmd.editInfo.mutable_vo()->set_ev_id(vlk.idEv);
 }
 
 void PLMainModel::makeEvNewCmd(PLCommand &cmd, PLEVData &ev, bool newId) {

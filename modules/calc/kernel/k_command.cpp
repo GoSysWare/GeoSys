@@ -19,7 +19,6 @@ int cmd_dispatch(const Bus::EditInfo &edit_info) {
     } else if (type == Bus::EditType::RM) {
 
     } else if (type == Bus::EditType::SET) {
-    std::cout << "cmd_dispatch:" << edit_info.DebugString() << std::endl;
       prjinfo_t *info;
       info = prj_info();
       info->uuid = edit_info.proj().proj_uuid();
@@ -223,6 +222,9 @@ int cmd_dispatch(const Bus::EditInfo &edit_info) {
     } else {
       ret = 0;
     }
+  }
+  if(ret == -1){
+    std::cout << "cmd_dispatch error:" << edit_info.DebugString() << std::endl;
   }
 
   return ret;

@@ -1,5 +1,4 @@
-static void run_SLEEP(void *p)
-{	
+static void run_SLEEP(void *p) {
   fb_t *pb = (fb_t *)p;
   vam_t &enable = pb->ins[0].v;
   vam_t &status = pb->outs[0].v;
@@ -11,25 +10,18 @@ static void run_SLEEP(void *p)
   vam_t &in_time = pb->outs[2].v;
   vam_t &out_time = pb->outs[3].v;
 
-  apollo::cyber::croutine::CRoutine * this_croutine = apollo::cyber::croutine::CRoutine::GetCurrentRoutine();
-  if(this_croutine){
-    in_time->mutable_v()->set_tm(apollo::cyber::Time::Now().ToNanosecond());
-    this_croutine->Sleep(apollo::cyber::croutine::Duration(timeout->v().tm()*1000));
-    out_time->mutable_v()->set_tm(apollo::cyber::Time::Now().ToNanosecond());
-  }
-  else{
-    status->mutable_v()->set_i(1);
-  }  
+  in_time->mutable_v()->set_tm(apollo::cyber::Time::Now().ToNanosecond());
+  apollo::cyber::USleep(timeout->v().tm() * 1000);
+  out_time->mutable_v()->set_tm(apollo::cyber::Time::Now().ToNanosecond());
 
   out->mutable_v()->set_b(in->v().b());
 }
 
-
-static fb_t fb_SLEEP = {{"TASK","SLEEP", "",0,0,0,0,run_SLEEP},
-                        {{"EN",PIN_NO_LOCK, T_BOOL, "", nullptr},
-                         {"IN", PIN_NO_LOCK,T_BOOL, "", nullptr},
-                         {"TIMEOUT", PIN_NO_LOCK,T_TIME, "", nullptr}},
-                        {{"STATUS", PIN_NO_LOCK,T_INT32, "", nullptr},
-                         {"OUT", PIN_NO_LOCK,T_BOOL, "", nullptr},
-                         {"IN_TIME", PIN_NO_LOCK,T_TIME, "", nullptr},
-                         {"OUT_TIME", PIN_NO_LOCK,T_TIME, "", nullptr}}};
+static fb_t fb_SLEEP = {{"TASK", "SLEEP", "", 0, 0, 0, 0, run_SLEEP},
+                        {{"EN", PIN_NO_LOCK, T_BOOL, "", nullptr},
+                         {"IN", PIN_NO_LOCK, T_BOOL, "", nullptr},
+                         {"TIMEOUT", PIN_NO_LOCK, T_TIME, "", nullptr}},
+                        {{"STATUS", PIN_NO_LOCK, T_INT32, "", nullptr},
+                         {"OUT", PIN_NO_LOCK, T_BOOL, "", nullptr},
+                         {"IN_TIME", PIN_NO_LOCK, T_TIME, "", nullptr},
+                         {"OUT_TIME", PIN_NO_LOCK, T_TIME, "", nullptr}}};

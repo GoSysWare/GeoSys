@@ -557,9 +557,9 @@ double CExpression::vexp(arbore a) {
   case 173:
     return (fabs(vexp(a->left)));
   case 160:
-    return tm.tm_year;
+    return tm.tm_year + 1900;
   case 161:
-    return tm.tm_mon;
+    return tm.tm_mon + 1;
   case 162:
     return tm.tm_mday;
   case 163:
