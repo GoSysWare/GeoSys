@@ -62,7 +62,7 @@ static void mod_init(mnode_t *p_mnode, int id, std::string name, int type,
   p_mnode->type = type;
   p_mnode->desc = desc;
   p_mnode->enable = true;
-  p_mnode->stop = false;
+  p_mnode->stop.store(true);
 }
 static void mod_uninit(mnode_t *p_mnode) {}
 
@@ -113,7 +113,7 @@ static int mod_prgselect(mod_t *p_mod, std::string prog_name) {
   return -1;
 }
 
-void mod_start(PNode *p_pn, mod_t *p_mod) {
+void mod_run(PNode *p_pn, mod_t *p_mod) {
   mnode_t *p_mn;
 
   p_mn = p_mod->mn_head.p_next;
@@ -123,7 +123,7 @@ void mod_start(PNode *p_pn, mod_t *p_mod) {
     if (!p_mn->enable)
       continue;
     // task 初始化
-    p_mn->info.status = TaskStatus::READY;
+    p_mn->info.status.store(TaskStatus::READY);
 
     prg_init(p_mn->p_prg, &p_mn->info);
 
@@ -133,11 +133,11 @@ void mod_start(PNode *p_pn, mod_t *p_mod) {
       opt.oneshot = false;
       opt.callback = [p_mn]() {
         //发出停止命令
-        if (p_mn->stop) {
-          p_mn->info.status = TaskStatus::ABORT;
+        if (p_mn->stop.load()) {
+          p_mn->info.status.store(TaskStatus::ABORT);
           return;
         }
-        p_mn->info.status = TaskStatus::START;
+        p_mn->info.status.store(TaskStatus::START);
 
         p_mn->info.status = p_mn->info.begin_time =
             apollo::cyber::Time::Now().ToNanosecond();
@@ -148,18 +148,18 @@ void mod_start(PNode *p_pn, mod_t *p_mod) {
         p_mn->info.prev_time = p_mn->info.begin_time;
 
         {
-          apollo::cyber::base::WriteLockGuard<apollo::cyber::base::AtomicRWLock> lg( p_mn->mutex);
+          apollo::cyber::base::WriteLockGuard<apollo::cyber::base::AtomicRWLock>
+              lg(p_mn->mutex);
 
           prg_exec(p_mn->p_prg, &p_mn->info);
         }
-
 
         // prg_dump(p_mn->p_prg);
         p_mn->info.expend_time = (apollo::cyber::Time::Now() -
                                   apollo::cyber::Time(p_mn->info.begin_time))
                                      .ToNanosecond();
         // task完成一次运算周期
-        p_mn->info.status = TaskStatus::FINISH;
+        p_mn->info.status.store(TaskStatus::FINISH);
 
         // AERROR << "Async task name:" << p_mn->name
         //        << " begin_time:" << p_mn->info.begin_time
@@ -192,12 +192,11 @@ void mod_start(PNode *p_pn, mod_t *p_mod) {
       auto f = [p_mn](const std::shared_ptr<TaskReqParam> &request,
                       std::shared_ptr<TaskRspParam> &response) {
         //发出停止命令
-        if (p_mn->stop) {
-          p_mn->info.status = TaskStatus::ABORT;
+        if (p_mn->stop.load()) {
+          p_mn->info.status.store(TaskStatus::ABORT);
           return;
         }
-        p_mn->info.status = TaskStatus::START;
-
+        p_mn->info.status.store(TaskStatus::START);
         ((task_node_t *)p_mn)->client = request->client();
         p_mn->info.begin_time = apollo::cyber::Time::Now().ToNanosecond();
         p_mn->info.cycle_time =
@@ -206,18 +205,18 @@ void mod_start(PNode *p_pn, mod_t *p_mod) {
                 .ToNanosecond();
         p_mn->info.prev_time = p_mn->info.begin_time;
         {
-          apollo::cyber::base::WriteLockGuard<apollo::cyber::base::AtomicRWLock> lg( p_mn->mutex);
+          apollo::cyber::base::WriteLockGuard<apollo::cyber::base::AtomicRWLock>
+              lg(p_mn->mutex);
 
           prg_exec(p_mn->p_prg, &p_mn->info);
         }
-
 
         p_mn->info.expend_time = (apollo::cyber::Time::Now() -
                                   apollo::cyber::Time(p_mn->info.begin_time))
                                      .ToNanosecond();
         response->set_timestamp(apollo::cyber::Time::Now().ToNanosecond());
 
-        p_mn->info.status = TaskStatus::FINISH;
+        p_mn->info.status.store(TaskStatus::FINISH);
 
         // AERROR << "Async task name:" << p_mn->name
         //        << " client:" << request->client()
@@ -234,11 +233,11 @@ void mod_start(PNode *p_pn, mod_t *p_mod) {
   }
 }
 
-void mod_run(mod_t *p_mod) {
+void mod_start(mod_t *p_mod) {
   mnode_t *p_mn;
   p_mn = p_mod->mn_head.p_next;
   while (p_mn != &p_mod->mn_head) {
-    p_mn->stop = false;
+    p_mn->stop.store(false);
     p_mn = p_mn->p_next;
   }
 }
@@ -247,7 +246,7 @@ void mod_stop(mod_t *p_mod) {
   mnode_t *p_mn;
   p_mn = p_mod->mn_head.p_next;
   while (p_mn != &p_mod->mn_head) {
-    p_mn->stop = true;
+    p_mn->stop.store(true);
     p_mn = p_mn->p_next;
   }
 }
@@ -257,9 +256,9 @@ bool mod_check_stop(mod_t *p_mod) {
   p_mn = p_mod->mn_head.p_next;
   while (p_mn != &p_mod->mn_head) {
     // task的使能
-    if (p_mn->info.status != TaskStatus::READY &&
-        p_mn->info.status != TaskStatus::ABORT &&
-        p_mn->info.status != TaskStatus::FINISH) {
+    if (p_mn->info.status.load() != TaskStatus::READY &&
+        p_mn->info.status.load() != TaskStatus::ABORT &&
+        p_mn->info.status.load() != TaskStatus::FINISH) {
       return false;
     }
     p_mn = p_mn->p_next;
@@ -290,19 +289,6 @@ void mod_exit(PNode *p_pn, mod_t *p_mod) {
   }
 }
 
-void mod_reset(mod_t *p_mod) {
-  mnode_t *p_mn, *p_del;
-  p_mod->p_mn_select = &p_mod->mn_head;
-  p_mn = p_mod->mn_head.p_next;
-  while (p_mn != &p_mod->mn_head) {
-    p_del = p_mn;
-    p_mn = p_mn->p_next;
-    mn_remove(p_del);
-    prg_delete(p_del->p_prg);
-    mn_delete(p_del);
-  }
-  ev_reset();
-}
 
 mod_t *mod_new() {
   mod_t *p_new;

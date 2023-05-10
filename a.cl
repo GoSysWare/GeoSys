@@ -1,9 +1,9 @@
 infos {
-  cmd_id: 676
+  cmd_id: 724
   edit_type: SET
   proj {
     proj_name: "rotbot-engine-project"
-    proj_uuid: "{a445b483-ed52-4cf3-8780-a100e85c9470}"
+    proj_uuid: "{0b862d23-5556-4062-bab5-09441bbec5d4}"
   }
 }
 infos {
@@ -72,20 +72,6 @@ infos {
   pos {
     x: 53
     y: 22
-  }
-}
-infos {
-  cmd_id: 6
-  element: FB
-  edit_type: MV
-  fb {
-    mod_id: 1
-    task_id: 2
-    fb_id: 3
-  }
-  pos {
-    x: 5
-    y: 3
   }
 }
 infos {
@@ -367,32 +353,6 @@ infos {
   }
 }
 infos {
-  cmd_id: 50
-  element: LK
-  edit_type: MV
-  lk {
-    mod_id: 1
-    task_id: 2
-    lk_id: 10
-  }
-  pos {
-    x: 27
-    y: 39
-  }
-  pos {
-    x: 41
-    y: 39
-  }
-  pos {
-    x: 41
-    y: 58
-  }
-  pos {
-    x: 90
-    y: 58
-  }
-}
-infos {
   cmd_id: 54
   element: FB
   edit_type: ADD
@@ -445,32 +405,6 @@ infos {
   }
   pos {
     x: 42
-    y: 75
-  }
-  pos {
-    x: 58
-    y: 75
-  }
-}
-infos {
-  cmd_id: 59
-  element: LK
-  edit_type: MV
-  lk {
-    mod_id: 1
-    task_id: 2
-    lk_id: 14
-  }
-  pos {
-    x: 27
-    y: 39
-  }
-  pos {
-    x: 41
-    y: 39
-  }
-  pos {
-    x: 41
     y: 75
   }
   pos {
@@ -1710,38 +1644,6 @@ infos {
   }
 }
 infos {
-  cmd_id: 323
-  element: FB
-  edit_type: MV
-  fb {
-    mod_id: 17
-    task_id: 18
-    fb_id: 21
-  }
-  pos {
-    x: 79
-    y: 79
-  }
-}
-infos {
-  cmd_id: 324
-  element: LK
-  edit_type: MV
-  lk {
-    mod_id: 17
-    task_id: 18
-    lk_id: 24
-  }
-  pos {
-    x: 43
-    y: 88
-  }
-  pos {
-    x: 79
-    y: 88
-  }
-}
-infos {
   cmd_id: 343
   element: LK
   edit_type: ADD
@@ -1981,28 +1883,6 @@ infos {
   pos {
     x: 153
     y: 76
-  }
-}
-infos {
-  cmd_id: 381
-  element: LK
-  edit_type: MV
-  lk {
-    mod_id: 17
-    task_id: 18
-    lk_id: 25
-  }
-  pos {
-    x: 100
-    y: 86
-  }
-  pos {
-    x: 100
-    y: 85
-  }
-  pos {
-    x: 153
-    y: 85
   }
 }
 infos {
@@ -2623,98 +2503,6 @@ infos {
   }
 }
 infos {
-  cmd_id: 447
-  element: FB
-  edit_type: MV
-  fb {
-    mod_id: 17
-    task_id: 18
-    fb_id: 42
-  }
-  pos {
-    y: 34
-  }
-}
-infos {
-  cmd_id: 448
-  element: FB
-  edit_type: MV
-  fb {
-    mod_id: 17
-    task_id: 18
-    fb_id: 44
-  }
-  pos {
-    y: 46
-  }
-}
-infos {
-  cmd_id: 449
-  element: FB
-  edit_type: MV
-  fb {
-    mod_id: 17
-    task_id: 18
-    fb_id: 71
-  }
-  pos {
-    x: 27
-    y: 41
-  }
-}
-infos {
-  cmd_id: 450
-  element: LK
-  edit_type: MV
-  lk {
-    mod_id: 17
-    task_id: 18
-    lk_id: 72
-  }
-  pos {
-    x: 19
-    y: 41
-  }
-  pos {
-    x: 25
-    y: 41
-  }
-  pos {
-    x: 25
-    y: 48
-  }
-  pos {
-    x: 27
-    y: 48
-  }
-}
-infos {
-  cmd_id: 451
-  element: LK
-  edit_type: MV
-  lk {
-    mod_id: 17
-    task_id: 18
-    lk_id: 73
-  }
-  pos {
-    x: 19
-    y: 53
-  }
-  pos {
-    x: 25
-    y: 53
-  }
-  pos {
-    x: 25
-    y: 50
-  }
-  pos {
-    x: 27
-    y: 50
-  }
-}
-infos {
   cmd_id: 459
   element: LK
   edit_type: ADD
@@ -2733,64 +2521,6 @@ infos {
   }
   pos {
     x: 78
-    y: 86
-  }
-  pos {
-    x: 79
-    y: 86
-  }
-}
-infos {
-  cmd_id: 463
-  element: FB
-  edit_type: MV
-  fb {
-    mod_id: 17
-    task_id: 18
-    fb_id: 74
-  }
-  pos {
-    x: 55
-    y: 49
-  }
-}
-infos {
-  cmd_id: 464
-  element: LK
-  edit_type: MV
-  lk {
-    mod_id: 17
-    task_id: 18
-    lk_id: 75
-  }
-  pos {
-    x: 46
-    y: 48
-  }
-  pos {
-    x: 55
-    y: 48
-  }
-  pos {
-    x: 55
-    y: 56
-  }
-}
-infos {
-  cmd_id: 465
-  element: LK
-  edit_type: MV
-  lk {
-    mod_id: 17
-    task_id: 18
-    lk_id: 77
-  }
-  pos {
-    x: 74
-    y: 56
-  }
-  pos {
-    x: 74
     y: 86
   }
   pos {
@@ -2858,46 +2588,6 @@ infos {
   pos {
     x: 36
     y: 73
-  }
-}
-infos {
-  cmd_id: 476
-  element: FB
-  edit_type: MV
-  fb {
-    mod_id: 17
-    task_id: 18
-    fb_id: 78
-  }
-  pos {
-    x: 53
-    y: 63
-  }
-}
-infos {
-  cmd_id: 477
-  element: LK
-  edit_type: MV
-  lk {
-    mod_id: 17
-    task_id: 18
-    lk_id: 79
-  }
-  pos {
-    x: 46
-    y: 48
-  }
-  pos {
-    x: 47
-    y: 48
-  }
-  pos {
-    x: 47
-    y: 70
-  }
-  pos {
-    x: 53
-    y: 70
   }
 }
 infos {
@@ -3000,28 +2690,6 @@ infos {
   }
   pos {
     x: 94
-    y: 114
-  }
-  pos {
-    x: 117
-    y: 114
-  }
-}
-infos {
-  cmd_id: 484
-  element: LK
-  edit_type: MV
-  lk {
-    mod_id: 17
-    task_id: 18
-    lk_id: 83
-  }
-  pos {
-    x: 72
-    y: 70
-  }
-  pos {
-    x: 72
     y: 114
   }
   pos {
@@ -5228,5 +4896,451 @@ infos {
       }
       tm: 1683689346858203980
     }
+  }
+}
+infos {
+  cmd_id: 677
+  element: PIN
+  edit_type: SET
+  pin {
+    mod_id: 1
+    task_id: 2
+    fb_id: 6
+    pin_index: 4
+    pin_val {
+      t: T_STRING
+      v {
+        str: "$YEAR"
+      }
+      tm: 1683689979452984652
+    }
+  }
+}
+infos {
+  cmd_id: 678
+  element: PIN
+  edit_type: SET
+  pin {
+    mod_id: 1
+    task_id: 2
+    fb_id: 6
+    pin_index: 5
+    pin_val {
+      t: T_STRING
+      v {
+        str: "$MONTH"
+      }
+      tm: 1683689985787983310
+    }
+  }
+}
+infos {
+  cmd_id: 679
+  element: PIN
+  edit_type: SET
+  pin {
+    mod_id: 1
+    task_id: 2
+    fb_id: 6
+    pin_index: 6
+    pin_val {
+      t: T_STRING
+      v {
+        str: "$HOUR"
+      }
+      tm: 1683689991863517492
+    }
+  }
+}
+infos {
+  cmd_id: 680
+  element: PIN
+  edit_type: SET
+  pin {
+    mod_id: 1
+    task_id: 2
+    fb_id: 6
+    pin_index: 7
+    pin_val {
+      t: T_STRING
+      v {
+        str: "$MINUTE"
+      }
+      tm: 1683690027813165747
+    }
+  }
+}
+infos {
+  cmd_id: 681
+  element: PIN
+  edit_type: SET
+  pin {
+    mod_id: 1
+    task_id: 2
+    fb_id: 6
+    pin_index: 8
+    pin_val {
+      t: T_STRING
+      v {
+        str: "$DAY"
+      }
+      tm: 1683690037867173214
+    }
+  }
+}
+infos {
+  cmd_id: 682
+  element: LK
+  edit_type: MV
+  lk {
+    mod_id: 1
+    task_id: 2
+    lk_id: 14
+  }
+  pos {
+    x: 27
+    y: 39
+  }
+  pos {
+    x: 45
+    y: 39
+  }
+  pos {
+    x: 45
+    y: 75
+  }
+  pos {
+    x: 58
+    y: 75
+  }
+}
+infos {
+  cmd_id: 683
+  element: LK
+  edit_type: MV
+  lk {
+    mod_id: 1
+    task_id: 2
+    lk_id: 10
+  }
+  pos {
+    x: 27
+    y: 39
+  }
+  pos {
+    x: 45
+    y: 39
+  }
+  pos {
+    x: 45
+    y: 58
+  }
+  pos {
+    x: 90
+    y: 58
+  }
+}
+infos {
+  cmd_id: 690
+  element: FB
+  edit_type: MV
+  fb {
+    mod_id: 17
+    task_id: 18
+    fb_id: 44
+  }
+  pos {
+    x: 6
+    y: 46
+  }
+}
+infos {
+  cmd_id: 694
+  element: FB
+  edit_type: MV
+  fb {
+    mod_id: 17
+    task_id: 18
+    fb_id: 42
+  }
+  pos {
+    x: 6
+    y: 34
+  }
+}
+infos {
+  cmd_id: 706
+  element: FB
+  edit_type: MV
+  fb {
+    mod_id: 17
+    task_id: 18
+    fb_id: 21
+  }
+  pos {
+    x: 86
+    y: 79
+  }
+}
+infos {
+  cmd_id: 707
+  element: FB
+  edit_type: MV
+  fb {
+    mod_id: 17
+    task_id: 18
+    fb_id: 74
+  }
+  pos {
+    x: 62
+    y: 49
+  }
+}
+infos {
+  cmd_id: 708
+  element: FB
+  edit_type: MV
+  fb {
+    mod_id: 17
+    task_id: 18
+    fb_id: 78
+  }
+  pos {
+    x: 60
+    y: 63
+  }
+}
+infos {
+  cmd_id: 709
+  element: LK
+  edit_type: MV
+  lk {
+    mod_id: 17
+    task_id: 18
+    lk_id: 24
+  }
+  pos {
+    x: 43
+    y: 88
+  }
+  pos {
+    x: 86
+    y: 88
+  }
+}
+infos {
+  cmd_id: 710
+  element: LK
+  edit_type: MV
+  lk {
+    mod_id: 17
+    task_id: 18
+    lk_id: 25
+  }
+  pos {
+    x: 107
+    y: 86
+  }
+  pos {
+    x: 107
+    y: 85
+  }
+  pos {
+    x: 153
+    y: 85
+  }
+}
+infos {
+  cmd_id: 712
+  element: LK
+  edit_type: MV
+  lk {
+    mod_id: 17
+    task_id: 18
+    lk_id: 77
+  }
+  pos {
+    x: 81
+    y: 56
+  }
+  pos {
+    x: 81
+    y: 86
+  }
+  pos {
+    x: 86
+    y: 86
+  }
+}
+infos {
+  cmd_id: 714
+  element: LK
+  edit_type: MV
+  lk {
+    mod_id: 17
+    task_id: 18
+    lk_id: 82
+  }
+  pos {
+    x: 44
+    y: 73
+  }
+  pos {
+    x: 48
+    y: 73
+  }
+  pos {
+    x: 48
+    y: 72
+  }
+  pos {
+    x: 60
+    y: 72
+  }
+}
+infos {
+  cmd_id: 715
+  element: LK
+  edit_type: MV
+  lk {
+    mod_id: 17
+    task_id: 18
+    lk_id: 83
+  }
+  pos {
+    x: 79
+    y: 70
+  }
+  pos {
+    x: 79
+    y: 114
+  }
+  pos {
+    x: 117
+    y: 114
+  }
+}
+infos {
+  cmd_id: 717
+  element: FB
+  edit_type: MV
+  fb {
+    mod_id: 17
+    task_id: 18
+    fb_id: 71
+  }
+  pos {
+    x: 30
+    y: 41
+  }
+}
+infos {
+  cmd_id: 718
+  element: LK
+  edit_type: MV
+  lk {
+    mod_id: 17
+    task_id: 18
+    lk_id: 72
+  }
+  pos {
+    x: 25
+    y: 41
+  }
+  pos {
+    x: 25
+    y: 48
+  }
+  pos {
+    x: 30
+    y: 48
+  }
+}
+infos {
+  cmd_id: 720
+  element: LK
+  edit_type: MV
+  lk {
+    mod_id: 17
+    task_id: 18
+    lk_id: 75
+  }
+  pos {
+    x: 49
+    y: 48
+  }
+  pos {
+    x: 62
+    y: 48
+  }
+  pos {
+    x: 62
+    y: 56
+  }
+}
+infos {
+  cmd_id: 721
+  element: LK
+  edit_type: MV
+  lk {
+    mod_id: 17
+    task_id: 18
+    lk_id: 79
+  }
+  pos {
+    x: 49
+    y: 48
+  }
+  pos {
+    x: 51
+    y: 48
+  }
+  pos {
+    x: 51
+    y: 70
+  }
+  pos {
+    x: 60
+    y: 70
+  }
+}
+infos {
+  cmd_id: 722
+  element: LK
+  edit_type: MV
+  lk {
+    mod_id: 17
+    task_id: 18
+    lk_id: 73
+  }
+  pos {
+    x: 25
+    y: 53
+  }
+  pos {
+    x: 27
+    y: 53
+  }
+  pos {
+    x: 27
+    y: 50
+  }
+  pos {
+    x: 30
+    y: 50
+  }
+}
+infos {
+  cmd_id: 724
+  element: FB
+  edit_type: MV
+  fb {
+    mod_id: 1
+    task_id: 2
+    fb_id: 3
+  }
+  pos {
+    x: 14
+    y: 3
   }
 }

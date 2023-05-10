@@ -1,9 +1,9 @@
 infos {
-  cmd_id: 722
+  cmd_id: 726
   edit_type: SET
   proj {
     proj_name: "rotbot-engine-project"
-    proj_uuid: "{db1c9a0a-a828-40cf-a40a-71b8df05b190}"
+    proj_uuid: "{f9ec54d3-4508-43a5-8b5e-cbffcde72ffa}"
   }
 }
 infos {
@@ -72,20 +72,6 @@ infos {
   pos {
     x: 53
     y: 22
-  }
-}
-infos {
-  cmd_id: 6
-  element: FB
-  edit_type: MV
-  fb {
-    mod_id: 1
-    task_id: 2
-    fb_id: 3
-  }
-  pos {
-    x: 5
-    y: 3
   }
 }
 infos {
@@ -5342,5 +5328,18 @@ infos {
   pos {
     x: 30
     y: 50
+  }
+}
+infos {
+  cmd_id: 726
+  element: FB
+  edit_type: MV
+  fb {
+    mod_id: 1
+    task_id: 2
+    fb_id: 3
+  }
+  pos {
+    x: 4
   }
 }

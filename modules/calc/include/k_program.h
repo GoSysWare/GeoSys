@@ -66,7 +66,7 @@ typedef struct VNode{
 
 // prg的动态运行信息
 typedef struct ProgramInfo{
-	int status;					// 状态
+	std::atomic_int status;					// 状态
 	unsigned int thread_id;  	// 线程id
 	u_int64_t prev_time;		// 上次开始执行时间 = begin_time
 	u_int64_t cycle_time;		// 上次执行周期总时长 = timer + expend_time = begin_time - prev_time

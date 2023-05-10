@@ -224,7 +224,7 @@ int cmd_dispatch(const Bus::EditInfo &edit_info) {
     }
   }
   if(ret == -1){
-    std::cout << "cmd_dispatch error:" << edit_info.DebugString() << std::endl;
+    AINFO << "cmd_dispatch error:" << edit_info.DebugString();
   }
 
   return ret;

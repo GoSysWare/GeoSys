@@ -28,9 +28,8 @@ int main(int argc, char *argv[]) {
   // Bus::EditInfos edit_infos;
   // apollo::cyber::common::GetProtoFromFile("/home/shuimujie/Works/GeoSys/test.logic.cl",&edit_infos);
   // cmds_dispatch(edit_infos);
-
-  
   prj_start();
+  prj_run();
 
   
   apollo::cyber::WaitForShutdown();

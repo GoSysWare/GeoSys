@@ -30,7 +30,7 @@ typedef struct MNode {
   int type;
   std::string desc;
   bool enable;
-  bool stop;
+  std::atomic_bool stop;
   proginfo_t info;
   prog_t *p_prg;
   apollo::cyber::base::AtomicRWLock mutex;
@@ -97,13 +97,12 @@ typedef struct Module {
 } mod_t;
 
 
-void mod_start(PNode *p_pn,mod_t *p_mod);
-void mod_run(mod_t *p_mod);
+void mod_run(PNode *p_pn,mod_t *p_mod);
+void mod_start(mod_t *p_mod);
 void mod_stop(mod_t *p_mod);
 bool mod_check_stop(mod_t *p_mod);
 
 void mod_exit(PNode *p_pn,mod_t *p_mod);
-void mod_reset(mod_t *p_mod);
 
 mod_t *mod_new();
 void mod_delete(mod_t *p_mod);

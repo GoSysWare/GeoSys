@@ -149,23 +149,23 @@ int prj_prgremove(int idmod, int idprg) {
   return mod_prgremove(p_pn_select->p_mod, idprg);
 }
 
-void prj_start() {
-  pnode_t *p_pn;
-  p_pn = pn_head.p_next;
-  while (p_pn != &pn_head) {
-    if (p_pn->enable) {
-      mod_start(p_pn, p_pn->p_mod);
-    }
-    p_pn = p_pn->p_next;
-  }
-}
-
 void prj_run() {
   pnode_t *p_pn;
   p_pn = pn_head.p_next;
   while (p_pn != &pn_head) {
     if (p_pn->enable) {
-      mod_run(p_pn->p_mod);
+      mod_run(p_pn, p_pn->p_mod);
+    }
+    p_pn = p_pn->p_next;
+  }
+}
+
+void prj_start() {
+  pnode_t *p_pn;
+  p_pn = pn_head.p_next;
+  while (p_pn != &pn_head) {
+    if (p_pn->enable) {
+      mod_start(p_pn->p_mod);
     }
     p_pn = p_pn->p_next;
   }
@@ -435,6 +435,7 @@ int prj_to_snapshot(Bus::ProjSnapshotReq * snapshot_req,
     Bus::ModSnapshot *mod_sp = snapshot->add_mods();
     mod_sp->set_mod_id(p_pn->id);
     p_mn = p_pn->p_mod->mn_head.p_next;
+    if(p_mn->stop.load()) continue;
     while (p_mn != &p_pn->p_mod->mn_head) {
       apollo::cyber::base::ReadLockGuard<apollo::cyber::base::AtomicRWLock> lg(
           p_mn->mutex);

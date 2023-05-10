@@ -5,62 +5,63 @@
 #include "modules/calc/include/k_command.h"
 
 static int on_bus_connect() {
-  std::cout << "on_bus_connect " << std::endl;
+  AINFO << "on_bus_connect ";
 
   return 0;
 }
 static int on_bus_disconnect() {
-  std::cout << "on_bus_disconnect " << std::endl;
+  AINFO << "on_bus_disconnect ";
 
   return 0;
 }
 static int on_bus_reset() {
-  std::cout << "on_bus_reset " << std::endl;
+  AINFO << "on_bus_reset ";
   prj_reset();
   return 0;
 }
 static int on_bus_run() {
-  std::cout << "on_bus_run " << std::endl;
+  AINFO << "on_bus_run ";
+  prj_run();
   prj_start();
   return 0;
 }
 static int on_bus_stop() {
-  std::cout << "on_bus_stop " << std::endl;
+  AINFO << "on_bus_stop ";
   prj_stop();
   prj_join();
   prj_exit();
-  std::cout << "proj exit" << std::endl;
+  AINFO << "proj exit";
 
   return 0;
 }
 static int on_bus_download(Bus::EditInfos infos) {
   int ret = -1;
-  std::cout << "on_bus_download " << infos.ShortDebugString() << std::endl;
+  AINFO << "on_bus_download " << infos.ShortDebugString();
   ret = cmds_dispatch(infos);
   // archive logic
   if(ret == 0){
-    std::cout << "on_bus_download succ" << std::endl;
+    AINFO << "on_bus_download succ";
      cmds_append(infos);
   }
   else{
-    std::cout << "on_bus_download error" << std::endl;
+    AINFO << "on_bus_download error" ;
 
   }
   return ret;
 }
 
 static int on_bus_upload(Bus::EditInfos *infos) {
-  std::cout << "on_bus_upload " << std::endl;
+  AINFO << "on_bus_upload " ;
   return cmds_load(infos);
 }
 
 static int on_bus_set_val(Bus::EditInfos infos) {
-  std::cout << "on_bus_set_val " << std::endl;
+  AINFO << "on_bus_set_val " ;
   return cmds_set_val(infos);
 }
 
 static int on_bus_sync() {
-  std::cout << "on_bus_sync " << std::endl;
+  AINFO << "on_bus_sync ";
 
   return 0;
 }
@@ -109,8 +110,8 @@ int bus_init(std::shared_ptr<apollo::cyber::Node> node) {
   prj_cmd_srv = node->CreateService<Bus::ProjectCmdReq, Bus::ProjectCmdRsp>(
       FLAGS_prj_cmd_name, [](const std::shared_ptr<Bus::ProjectCmdReq> &request,
                              std::shared_ptr<Bus::ProjectCmdRsp> &response) {
-        std::cout << "prject  cmd:" << std::endl;
-        std::cout << "request:" << request->DebugString() << std::endl;
+        AINFO << "prject  cmd:" ;
+        AINFO << "request:" << request->DebugString() ;
         Bus::EditInfos info;
 
         switch (request->cmd_type()) {

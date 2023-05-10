@@ -33,7 +33,7 @@ void prj_reset();
 void prj_start();
 void prj_run();
 void prj_stop();
-bool mod_check_stop();
+bool prj_check_stop();
 void prj_join();
 void prj_exit();
 
