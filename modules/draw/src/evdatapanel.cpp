@@ -69,7 +69,7 @@ EVDataPanel::EVDataPanel()
     evLast.desc = "Desc";
     evLast.type = v_type::T_INT32;
     evLast.initValue.set_t(T_INT32);
-    evLast.initValue.mutable_v()->set_i(0);
+    // evLast.initValue.mutable_v()->set_i(0);
 }
 
 void EVDataPanel::updateState()
