@@ -35,6 +35,6 @@ int main(int argc, char *argv[])
     gclient_proj_info = bus_init_client_info(gNode);
     gclient_proj_cmd = bus_init_client_cmd(gNode);
     gclient_proj_snapshot = bus_init_client_snapshot(gNode);
-
+    
     return app.exec();
 }

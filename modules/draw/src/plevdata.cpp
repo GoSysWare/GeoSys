@@ -31,6 +31,7 @@ QString PLEVData::getStrValue() {
   case v_type::T_FLOAT64:
   case v_type::T_TIME:
   case v_type::T_STRING:
+  case v_type::T_ANY:
     return QString::fromStdString(value.v().ShortDebugString());
     break;
   case v_type::T_BYTES:
@@ -58,6 +59,7 @@ QString PLEVData::getStrInitValue() {
   case v_type::T_FLOAT64:
   case v_type::T_TIME:
   case v_type::T_STRING:
+  case v_type::T_ANY:
     return QString::fromStdString(value.v().ShortDebugString());
     break;
   case v_type::T_BYTES:

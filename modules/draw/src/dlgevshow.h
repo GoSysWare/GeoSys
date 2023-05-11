@@ -6,7 +6,7 @@
 #include <QBoxLayout>
 #include <QPushButton>
 #include <QLabel>
-#include <QLineEdit>
+#include <QTextEdit>
 #include <QImage>
 #include <QDialogButtonBox>
 #include <QPainter>
@@ -23,7 +23,7 @@ public:
 private:
     QVBoxLayout *layout;
     QLabel *label;
-    QLineEdit  *str_value;
+    QTextEdit  *str_value;
     QLabel *img_value;
 };
 

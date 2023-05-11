@@ -214,12 +214,13 @@ void Service<Request, Response>::HandleRequest(
     // LOG_DEBUG << "not inited error.";
     return;
   }
-  ADEBUG << "handling request:" << request_channel_;
+  AINFO << "handling request:" << request_channel_;
   std::lock_guard<std::mutex> lk(service_handle_request_mutex_);
   auto response = std::make_shared<Response>();
   service_callback_(request, response);
   transport::MessageInfo msg_info(message_info);
   msg_info.set_sender_id(response_transmitter_->id());
+  AINFO << "SendResponse response size:" << response->ByteSizeLong();
   SendResponse(msg_info, response);
 }
 

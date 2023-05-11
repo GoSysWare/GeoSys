@@ -129,7 +129,6 @@ PLTarget::PLTarget(QObject *parent) {
 
           for (i = 0; i < mod->prgList.size(); i++) {
             prg = &mod->prgList[i];
-            QMutexLocker locker(prg->mutex.get());
             for (j = 0; j < prg->fbs.size(); j++) {
               fb = &prg->fbs[j];
               p_fb = prj_fbfind(fb->idMod, fb->idPrg, fb->id);

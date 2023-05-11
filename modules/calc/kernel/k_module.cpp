@@ -197,7 +197,7 @@ void mod_run(PNode *p_pn, mod_t *p_mod) {
           return;
         }
         p_mn->info.status.store(TaskStatus::START);
-        ((task_node_t *)p_mn)->client = request->client();
+        // ((task_node_t *)p_mn)->client = request->client();
         p_mn->info.begin_time = apollo::cyber::Time::Now().ToNanosecond();
         p_mn->info.cycle_time =
             apollo::cyber::Duration(

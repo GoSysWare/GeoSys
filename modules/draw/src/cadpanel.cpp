@@ -69,7 +69,6 @@ void CadPanel::paintEvent(QPaintEvent *) {
   if (gMainModel->prgCurrent == NULL) {
     return;
   }
-  QMutexLocker locker(gMainModel->prgCurrent->mutex.get());
   int i;
   // draw links
   for (i = 0; i < gMainModel->prgCurrent->lks.size(); i++) {

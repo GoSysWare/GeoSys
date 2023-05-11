@@ -3,7 +3,6 @@
 
 PLProgram::PLProgram()
 {
-    mutex.reset(new QMutex());
 }
 PLProgram::PLProgram(const PLProgram& other)
 {
@@ -19,7 +18,6 @@ PLProgram::PLProgram(const PLProgram& other)
      lks= other.lks;
      vis= other.vis;
      vos= other.vos;
-     mutex= other.mutex; 
 }
 
 PLProgram::~PLProgram()

@@ -499,6 +499,25 @@ int prj_to_snapshot(Bus::ProjSnapshotReq * snapshot_req,
   }
 
   ev_to_snapshot(snapshot_req, snapshot);
+  std::string buff;
+  size_t len = snapshot->ByteSizeLong();
+  AINFO<< "snapshot size before:" << len;
+  buff.resize(len);
+  uint8_t * target = reinterpret_cast<uint8_t*>(&(buff[0]));
+    google::protobuf::io::EpsCopyOutputStream out(
+        target, len,
+        google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic());
+    auto res = snapshot->_InternalSerialize(target, &out);
+    GOOGLE_DCHECK(target + len == res);
+    if(target + len == res){
+      AINFO<< "target + len == res";
+    }else{
+      AINFO<< "target + len != res";
+    }
+  
+  len = snapshot->ByteSizeLong();
+  AINFO<< "snapshot size after:" << len;
+
   return 0;
 }
 

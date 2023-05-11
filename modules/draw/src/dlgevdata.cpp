@@ -30,9 +30,10 @@ DlgEVData::DlgEVData(QWidget *parent, Qt::WindowFlags f)
     listType->addItem(QString::fromStdString(v_type_Name(v_type::T_LIDAR)));
     listType->addItem(QString::fromStdString(v_type_Name(v_type::T_SONAR)));
     listType->addItem(QString::fromStdString(v_type_Name(v_type::T_FILE)));
+    listType->addItem(QString::fromStdString(v_type_Name(v_type::T_ANY)));
     listType->setMaximumHeight(120);
     listType->setBatchSize(5);
-    textValue = new QLineEdit;
+    textValue = new QTextEdit;
     // textValue->setMaxLength(32);
     //textValue->setInputMask("################################");
     textComment = new QLineEdit;
@@ -151,7 +152,7 @@ void DlgEVData::setValue(PLEVData &ev, int m)
         break;
     case v_type::T_IMAGE:
         listType->setCurrentRow(10);
-        value = ev.initValue.v().img().data();
+         ev.initValue.v().img().SerializeToString(&value);
         break;
     case v_type::T_LIDAR:
         listType->setCurrentRow(11);
@@ -165,6 +166,10 @@ void DlgEVData::setValue(PLEVData &ev, int m)
         listType->setCurrentRow(13);
         value = ev.initValue.v().file();
         break;
+    case v_type::T_ANY:
+        listType->setCurrentRow(14);
+         ev.initValue.v().any().SerializeToString(&value);
+        break;
     default:
         QMessageBox::critical(this, "Error", "Unknown data type");
     }
@@ -176,7 +181,7 @@ void DlgEVData::getValue(PLEVData &ev)
 {
     ev.name = textName->text();
     ev.desc = textComment->text();
-    const std::string value = textValue->text().toStdString();
+    const std::string value = textValue->toPlainText().toStdString();
     ev.initValue.set_tm(apollo::cyber::Time::Now().ToNanosecond());
     switch(listType->currentIndex().row()){
     case 0:
@@ -232,7 +237,7 @@ void DlgEVData::getValue(PLEVData &ev)
     case 10:
         ev.type = v_type::T_IMAGE;
         ev.initValue.set_t(v_type::T_IMAGE);
-        ev.initValue.mutable_v()->mutable_img()->set_data(value);
+        ev.initValue.mutable_v()->mutable_img()->ParseFromString(value);
         break;
     case 11:
         ev.type = v_type::T_LIDAR;
@@ -248,6 +253,11 @@ void DlgEVData::getValue(PLEVData &ev)
         ev.type = v_type::T_FILE;
         ev.initValue.set_t(v_type::T_FILE);
         ev.initValue.mutable_v()->set_file(value);
+        break;
+    case 14:
+        ev.type = v_type::T_ANY;
+        ev.initValue.set_t(v_type::T_ANY);
+        ev.initValue.mutable_v()->mutable_any()->ParseFromString(value);
         break;
     default:
         ;

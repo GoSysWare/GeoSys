@@ -290,7 +290,11 @@
         "__memory": "cpp",
         "qmutex": "cpp",
         "qscopedpointer": "cpp",
-        "ne_uint64": "cpp"
+        "ne_uint64": "cpp",
+        "__functional_03": "cpp",
+        "target": "cpp",
+        "__node_handle": "cpp",
+        "locale": "cpp"
     },
     "C_Cpp.errorSquiggles": "disabled"
 }

@@ -6,6 +6,7 @@
 #include <QPushButton>
 #include <QLabel>
 #include <QLineEdit>
+#include <QTextEdit>
 #include <QDialogButtonBox>
 #include <QListWidget>
 #include <QLayout>
@@ -31,7 +32,7 @@ private:
     QLabel *labelComment;
     QLineEdit *textName;
     QListWidget *listType;
-    QLineEdit *textValue;
+    QTextEdit *textValue;
     QLineEdit *textComment;
     QDialogButtonBox *buttonBox;
     QGridLayout *layout;

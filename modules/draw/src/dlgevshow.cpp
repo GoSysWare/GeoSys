@@ -8,7 +8,7 @@
 DlgEvShow::DlgEvShow(QWidget *parent, Qt::WindowFlags f) : QDialog(parent, f) {
 
   label = new QLabel(tr("Show Value Deatil:"));
-  str_value = new QLineEdit;
+  str_value = new QTextEdit;
   str_value->setReadOnly(true);
   img_value = new QLabel;
   img_value->setFixedSize(1000, 800);
@@ -45,34 +45,20 @@ void DlgEvShow::setValueData(PLEVData ev) {
 
   switch (ev.value.t()) {
   case v_type::T_BOOL:
-    value = ev.value.v().b() ? "true" : "false";
-    break;
   case v_type::T_INT32:
-    value = std::to_string(ev.value.v().i());
-    break;
   case v_type::T_UINT32:
-    value = std::to_string(ev.value.v().ui());
-    break;
   case v_type::T_INT64:
-    value = std::to_string(ev.value.v().ll());
-    break;
   case v_type::T_UINT64:
-    value = std::to_string(ev.value.v().ull());
-    break;
   case v_type::T_FLOAT32:
-    value = std::to_string(ev.value.v().f());
-    break;
   case v_type::T_FLOAT64:
-    value = std::to_string(ev.value.v().d());
-    break;
   case v_type::T_TIME:
-    value = std::to_string(ev.value.v().tm());
-    break;
   case v_type::T_STRING:
-    value = ev.value.v().str();
-    break;
   case v_type::T_BYTES:
-    value = ev.value.v().blob();
+  case v_type::T_LIDAR:
+  case v_type::T_SONAR:
+  case v_type::T_FILE:
+  case v_type::T_ANY:
+   value = ev.value.DebugString();
     break;
   case v_type::T_IMAGE:
     value.clear();
@@ -84,15 +70,6 @@ void DlgEvShow::setValueData(PLEVData ev) {
     pixmap = QPixmap::fromImage(img);
     // pixmap = pixmap.scaled(img_value->size(),Qt::KeepAspectRatio,Qt::SmoothTransformation);
     img_value->setPixmap(pixmap);
-    break;
-  case v_type::T_LIDAR:
-    value = ev.value.v().lidar();
-    break;
-  case v_type::T_SONAR:
-    value = ev.value.v().sonar();
-    break;
-  case v_type::T_FILE:
-    value = ev.value.v().file();
     break;
   default:
     QMessageBox::critical(this, "Error", "Unknown data type");
