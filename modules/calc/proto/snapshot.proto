@@ -21,7 +21,7 @@ message ProjSnapshotRsp {
   Result result = 1;
   ProjectInfoRsp proj_info = 2;
   repeated ModSnapshot mods = 3;
-  repeated EVNodeValue vals = 4;
+  repeated EVNodeValue evs = 4;
   repeated int32 mod_id = 5;
   repeated int32 ev_id = 6;
 }

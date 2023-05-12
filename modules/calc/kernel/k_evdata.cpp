@@ -18,6 +18,9 @@ void vam_init(vam_t &vam, v_type t, std::string u) {
   vam.reset(new value_tm);
   vam->set_tm(apollo::cyber::Time::Now().ToNanosecond());
   vam->set_t(t);
+  if(t == T_BOOL){
+    vam->mutable_v()->set_b(false);
+  }
 }
 
 v_type str2type(const std::string &str) {
@@ -269,7 +272,7 @@ int ev_to_snapshot(Bus::ProjSnapshotReq *snapshot_req,
         }
       }
       if (is_upload) {
-        Bus::EVNodeValue *val_sp = snapshot->add_vals();
+        Bus::EVNodeValue *val_sp = snapshot->add_evs();
         val_sp->set_ev_id(p_vn->id);
         apollo::cyber::base::ReadLockGuard<apollo::cyber::base::ReentrantRWLock>
             lock(p_vn->mutex);
@@ -278,7 +281,7 @@ int ev_to_snapshot(Bus::ProjSnapshotReq *snapshot_req,
       p_vn = p_vn->p_next;
       continue;
     }
-    Bus::EVNodeValue *val_sp = snapshot->add_vals();
+    Bus::EVNodeValue *val_sp = snapshot->add_evs();
     val_sp->set_ev_id(p_vn->id);
     apollo::cyber::base::ReadLockGuard<apollo::cyber::base::ReentrantRWLock>
         lock(p_vn->mutex);
@@ -292,7 +295,9 @@ int ev_from_snapshot(Bus::ProjSnapshotRsp *snapshot) {
   evnode_t *p_vn;
   int i = 0;
   bool is_upload = true;
-
+  if(snapshot->evs_size() <= 0){
+    return 0;
+  }
   p_vn = vn_head.p_next;
   while (p_vn != &vn_head) {
     if (IS_NOT_UPLOAD_TYPE(p_vn->v->t())) {
@@ -306,21 +311,21 @@ int ev_from_snapshot(Bus::ProjSnapshotRsp *snapshot) {
         }
       }
       if (is_upload) {
-        p_vn->id = snapshot->mutable_vals(i)->ev_id();
+        p_vn->id = snapshot->mutable_evs(i)->ev_id();
         apollo::cyber::base::WriteLockGuard<
             apollo::cyber::base::ReentrantRWLock>
             lock(p_vn->mutex);
-        p_vn->v.get()->CopyFrom(snapshot->mutable_vals(i)->val());
+        p_vn->v.get()->CopyFrom(snapshot->mutable_evs(i)->val());
         i++;
       }
 
       p_vn = p_vn->p_next;
       continue;
     }
-    p_vn->id = snapshot->mutable_vals(i)->ev_id();
+    p_vn->id = snapshot->mutable_evs(i)->ev_id();
     apollo::cyber::base::WriteLockGuard<apollo::cyber::base::ReentrantRWLock>
         lock(p_vn->mutex);
-    p_vn->v.get()->CopyFrom(snapshot->mutable_vals(i)->val());
+    p_vn->v.get()->CopyFrom(snapshot->mutable_evs(i)->val());
     p_vn = p_vn->p_next;
     i++;
   }
