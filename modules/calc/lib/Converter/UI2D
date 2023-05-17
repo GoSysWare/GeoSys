@@ -9,7 +9,7 @@ static void run_UI2D(void *p) {
   pb->outs[1].v->mutable_v()->set_d((double)pb->ins[1].v->v().ui());
 }
 static fb_t fb_UI2D = {{"Converter", "UI2D", "", 0, 0, 0, 0, run_UI2D},
-                      {{"EN", PIN_NO_LOCK, T_BOOL, "", nullptr},
-                       {"IN", PIN_NO_LOCK, T_UINT32, "", nullptr}},
-                      {{"STATUS", PIN_NO_LOCK, T_INT32, "", nullptr},
-                       {"OUT", PIN_NO_LOCK, T_FLOAT64, "", nullptr}}};
+                      {{"EN", PIN_NO_LOCK, T_BOOL, "", "",nullptr,0},
+                       {"IN", PIN_NO_LOCK, T_UINT32, "", "",nullptr,0}},
+                      {{"STATUS", PIN_NO_LOCK, T_INT32, "", "",nullptr,0},
+                       {"OUT", PIN_NO_LOCK, T_FLOAT64, "", "",nullptr,0}}};

@@ -17,16 +17,17 @@ static void run_ADD_UINT(void *p) {
   vam_t in1 = pb->ins[1].v;
   vam_t in2 = pb->ins[2].v;
   uint64_t l = in1->v().ui() + in2->v().ui();
-  if( l > UINT_MAX  ){
-	status->mutable_v()->set_i(-2);
-  }else{
-  	out->mutable_v()->set_ui(in1->v().ui() + in2->v().ui());
-  }}
+  if (l > UINT_MAX) {
+    status->mutable_v()->set_i(-2);
+  } else {
+    out->mutable_v()->set_ui(in1->v().ui() + in2->v().ui());
+  }
+}
 
 static fb_t fb_ADD_UINT = {
-    {"Arithmetic","ADD_UINT","", 0,0,0,0, run_ADD_UINT},
-    {{"EN", PIN_NO_LOCK,T_BOOL,"", nullptr},
-     {"IN1", PIN_NO_LOCK,T_UINT32, "",nullptr},
-     {"IN2", PIN_NO_LOCK,T_UINT32,"", nullptr}},
-    {{"STATUS", PIN_NO_LOCK,T_INT32,"", nullptr}, 
-    {"OUT", PIN_NO_LOCK,T_UINT32, "",nullptr}}};
+    {"Arithmetic", "ADD_UINT", "", 0, 0, 0, 0, run_ADD_UINT},
+    {{"EN", PIN_NO_LOCK, T_BOOL, "", "", nullptr, 0},
+     {"IN1", PIN_NO_LOCK, T_UINT32, "","", nullptr,0},
+     {"IN2", PIN_NO_LOCK, T_UINT32, "", "", nullptr, 0}},
+    {{"STATUS", PIN_NO_LOCK, T_INT32, "", "", nullptr, 0},
+     {"OUT", PIN_NO_LOCK, T_UINT32, "", "", nullptr, 0}}};

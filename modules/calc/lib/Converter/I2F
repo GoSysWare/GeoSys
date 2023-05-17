@@ -7,8 +7,8 @@ static void run_I2F(void *p) {
   pb->outs[1].v->mutable_v()->set_f((float)pb->ins[1].v->v().i());
 }
 static fb_t fb_I2F = {{"Converter", "I2F", "", 0, 0, 0, 0, run_I2F},
-                      {{"EN", PIN_NO_LOCK, T_BOOL, "", nullptr},
-                       {"IN", PIN_NO_LOCK, T_INT32, "", nullptr}},
-                      {{"STATUS", PIN_NO_LOCK, T_INT32, "", nullptr},
-                       {"OUT", PIN_NO_LOCK, T_FLOAT32, "", nullptr}}};
+                      {{"EN", PIN_NO_LOCK, T_BOOL, "", "",nullptr,0},
+                       {"IN", PIN_NO_LOCK, T_INT32, "", "",nullptr,0}},
+                      {{"STATUS", PIN_NO_LOCK, T_INT32, "", "",nullptr,0},
+                       {"OUT", PIN_NO_LOCK, T_FLOAT32, "", "",nullptr,0}}};
 

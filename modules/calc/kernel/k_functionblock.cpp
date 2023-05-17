@@ -9,7 +9,7 @@
  void fb_init_pin(pin_t *pin) {
   pin->l = 0;
   pin->s = PIN_NO_LOCK;
-  vam_init(pin->v,pin->t,pin->u);
+  vam_init(pin->v,pin->t,pin->u,pin->i);
 }
 
 // static void fb_init_pin(pin_t *pin) {

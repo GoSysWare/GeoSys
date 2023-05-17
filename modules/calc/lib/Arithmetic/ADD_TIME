@@ -13,8 +13,8 @@ static void run_ADD_TIME(void *p) {
 
 static fb_t fb_ADD_TIME = {
     {"Arithmetic", "ADD_TIME", "", 0, 0, 0, 0, run_ADD_TIME},
-    {{"EN", PIN_NO_LOCK, T_BOOL, "", nullptr},
-     {"IN1", PIN_NO_LOCK, T_TIME, "", nullptr},
-     {"IN2", PIN_NO_LOCK, T_TIME, "", nullptr}},
-    {{"STATUS", PIN_NO_LOCK, T_INT32, "", nullptr},
-     {"OUT", PIN_NO_LOCK, T_TIME, "", nullptr}}};
+    {{"EN", PIN_NO_LOCK, T_BOOL, "", "",nullptr,0},
+     {"IN1", PIN_NO_LOCK, T_TIME, "", "",nullptr,0},
+     {"IN2", PIN_NO_LOCK, T_TIME, "", "",nullptr,0}},
+    {{"STATUS", PIN_NO_LOCK, T_INT32, "", "",nullptr,0},
+     {"OUT", PIN_NO_LOCK, T_TIME, "", "",nullptr,0}}};

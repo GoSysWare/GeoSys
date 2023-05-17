@@ -16,8 +16,8 @@ static void run_STR_COPY(void *p) {
 
 static fb_t fb_STR_COPY = {
     {"String", "STR_COPY", "", 0, 0, 0, 0, run_STR_COPY},
-    {{"EN", PIN_NO_LOCK, T_BOOL, "", nullptr},
-     {"IN", PIN_NO_LOCK, T_STRING, "", nullptr}},
-    {{"STATUS", PIN_NO_LOCK, T_INT32, "", nullptr},
-     {"OUT", PIN_NO_LOCK, T_STRING, "", nullptr},
-     {"LENGTH", PIN_NO_LOCK, T_UINT32, "", nullptr}}};
+    {{"EN", PIN_NO_LOCK, T_BOOL, "", "",nullptr,0},
+     {"IN", PIN_NO_LOCK, T_STRING, "", "",nullptr,0}},
+    {{"STATUS", PIN_NO_LOCK, T_INT32, "", "",nullptr,0},
+     {"OUT", PIN_NO_LOCK, T_STRING, "", "",nullptr,0},
+     {"LENGTH", PIN_NO_LOCK, T_UINT32, "", "",nullptr,0}}};

@@ -53,11 +53,11 @@ static void run_FSM(void *p) {
 }
 
 static fb_t fb_FSM = {{"Fsm", "FSM", "", 0, 0, 0, 0, run_FSM},
-                      {{"EN", PIN_NO_LOCK, T_BOOL, "", nullptr},
-                       {"COND", PIN_NO_LOCK, T_BOOL, "", nullptr},
-                       {"FROM", PIN_NO_LOCK, T_BOOL, "", nullptr},
-                       {"STATE", PIN_NO_LOCK, T_INT32, "", nullptr},
-                       {"SET", PIN_NO_LOCK, T_INT32, "", nullptr}},
-                      {{"STATUS", PIN_NO_LOCK, T_INT32, "", nullptr},
-                       {"TO", PIN_NO_LOCK, T_BOOL, "", nullptr},
-                       {"ACTION", PIN_NO_LOCK, T_BOOL, "", nullptr}}};
+                      {{"EN", PIN_NO_LOCK, T_BOOL, "", "",nullptr,0},
+                       {"COND", PIN_NO_LOCK, T_BOOL, "", "",nullptr,0},
+                       {"FROM", PIN_NO_LOCK, T_BOOL, "", "",nullptr,0},
+                       {"STATE", PIN_NO_LOCK, T_INT32, "", "",nullptr,0},
+                       {"SET", PIN_NO_LOCK, T_INT32, "", "",nullptr,0}},
+                      {{"STATUS", PIN_NO_LOCK, T_INT32, "", "",nullptr,0},
+                       {"TO", PIN_NO_LOCK, T_BOOL, "", "",nullptr,0},
+                       {"ACTION", PIN_NO_LOCK, T_BOOL, "", "",nullptr,0}}};

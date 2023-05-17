@@ -55,13 +55,13 @@ static void run_TWOSEL(void *p) {
 }
 
 static fb_t fb_TWOSEL = {{"Logic", "TWOSEL", "", 0, 0, 0, 0, run_TWOSEL},
-                         {{"EN", PIN_NO_LOCK, T_BOOL, "", nullptr},
-                          {"IN1", PIN_NO_LOCK, T_FLOAT32, "", nullptr},
-                          {"IN2", PIN_NO_LOCK, T_FLOAT32, "", nullptr},
-                          {"IN1_ERR", PIN_NO_LOCK, T_BOOL, "", nullptr},
-                          {"IN2_ERR", PIN_NO_LOCK, T_BOOL, "", nullptr},
-                          {"MODE", PIN_NO_LOCK, T_INT32, "", nullptr},
-                          {"DL", PIN_NO_LOCK, T_FLOAT32, "", nullptr}},
-                         {{"STATUS", PIN_NO_LOCK, T_INT32, "", nullptr},
-                          {"OUT", PIN_NO_LOCK, T_FLOAT32, "", nullptr},
-                          {"ERR", PIN_NO_LOCK, T_BOOL, "", nullptr}}};
+                         {{"EN", PIN_NO_LOCK, T_BOOL, "", "",nullptr,0},
+                          {"IN1", PIN_NO_LOCK, T_FLOAT32, "", "",nullptr,0},
+                          {"IN2", PIN_NO_LOCK, T_FLOAT32, "", "",nullptr,0},
+                          {"IN1_ERR", PIN_NO_LOCK, T_BOOL, "", "",nullptr,0},
+                          {"IN2_ERR", PIN_NO_LOCK, T_BOOL, "", "",nullptr,0},
+                          {"MODE", PIN_NO_LOCK, T_INT32, "", "",nullptr,0},
+                          {"DL", PIN_NO_LOCK, T_FLOAT32, "", "",nullptr,0}},
+                         {{"STATUS", PIN_NO_LOCK, T_INT32, "", "",nullptr,0},
+                          {"OUT", PIN_NO_LOCK, T_FLOAT32, "", "",nullptr,0},
+                          {"ERR", PIN_NO_LOCK, T_BOOL, "", "",nullptr,0}}};

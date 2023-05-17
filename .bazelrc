@@ -14,6 +14,8 @@ build --compilation_mode=dbg
 
 build --nokeep_state_after_build
 
+build:optimize --copt=-march=native
+build:optimize --host_copt=-march=native
 
 
 # Enable C++14

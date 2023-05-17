@@ -11,8 +11,8 @@ static void run_NE_UINT64(void *p) {
 }
 static fb_t fb_NE_UINT64 = {
     {"Comparision", "NE_UINT64", "", 0, 0, 0, 0, run_NE_UINT64},
-    {{"EN", PIN_NO_LOCK, T_BOOL, "", nullptr},
-     {"IN1", PIN_NO_LOCK, T_INT64, "", nullptr},
-     {"IN2", PIN_NO_LOCK, T_INT64, "", nullptr}},
-    {{"STATUS", PIN_NO_LOCK, T_INT32, "", nullptr},
-     {"OUT", PIN_NO_LOCK, T_BOOL, "", nullptr}}};
+    {{"EN", PIN_NO_LOCK, T_BOOL, "", "",nullptr,0},
+     {"IN1", PIN_NO_LOCK, T_INT64, "", "",nullptr,0},
+     {"IN2", PIN_NO_LOCK, T_INT64, "", "",nullptr,0}},
+    {{"STATUS", PIN_NO_LOCK, T_INT32, "", "",nullptr,0},
+     {"OUT", PIN_NO_LOCK, T_BOOL, "", "",nullptr,0}}};

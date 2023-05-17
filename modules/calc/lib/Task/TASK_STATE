@@ -80,13 +80,13 @@ static void run_TASK_STATE(void *p) {
 }
 
 static fb_t fb_TASK_STATE = {{"TASK", "TASK_STATE", "", 0, 0, 0, 0, run_TASK_STATE},
-                           {{"EN", PIN_NO_LOCK, T_BOOL, "", nullptr}},
-                           {{"STATUS", PIN_NO_LOCK, T_INT32, "", nullptr},
-                            {"COUNT", PIN_NO_LOCK, T_UINT32, "", nullptr},
-                            {"PEROID_TIME", PIN_NO_LOCK, T_TIME, "", nullptr},
-                            {"THRAD", PIN_NO_LOCK, T_UINT32, "", nullptr},
-                            {"DATETIME", PIN_NO_LOCK, T_STRING, "", nullptr},
-                            {"BEGINE_TIME", PIN_NO_LOCK, T_STRING, "", nullptr},
-                            {"CROUTINE_ID", PIN_NO_LOCK, T_UINT64, "", nullptr},
-                            {"CROUTINE_NAME", PIN_NO_LOCK, T_STRING, "", nullptr},
-                            {"CROUTINE_PID", PIN_NO_LOCK, T_INT32, "", nullptr}}};
+                           {{"EN", PIN_NO_LOCK, T_BOOL, "", "",nullptr,0}},
+                           {{"STATUS", PIN_NO_LOCK, T_INT32, "", "",nullptr,0},
+                            {"COUNT", PIN_NO_LOCK, T_UINT32, "", "",nullptr,0},
+                            {"PEROID_TIME", PIN_NO_LOCK, T_TIME, "", "",nullptr,0},
+                            {"THRAD", PIN_NO_LOCK, T_UINT32, "", "",nullptr,0},
+                            {"DATETIME", PIN_NO_LOCK, T_STRING, "", "",nullptr,0},
+                            {"BEGINE_TIME", PIN_NO_LOCK, T_STRING, "", "",nullptr,0},
+                            {"CROUTINE_ID", PIN_NO_LOCK, T_UINT64, "", "",nullptr,0},
+                            {"CROUTINE_NAME", PIN_NO_LOCK, T_STRING, "", "",nullptr,0},
+                            {"CROUTINE_PID", PIN_NO_LOCK, T_INT32, "", "",nullptr,0}}};

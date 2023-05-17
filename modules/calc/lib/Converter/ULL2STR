@@ -9,7 +9,7 @@ static void run_ULL2STR(void *p) {
       std::to_string(pb->ins[1].v->v().ull()));
 }
 static fb_t fb_ULL2STR = {{"Converter", "ULL2STR", "", 0, 0, 0, 0, run_ULL2STR},
-                      {{"EN", PIN_NO_LOCK, T_BOOL, "", nullptr},
-                       {"IN", PIN_NO_LOCK, T_UINT64, "", nullptr}},
-                      {{"STATUS", PIN_NO_LOCK, T_INT32, "", nullptr},
-                       {"OUT", PIN_NO_LOCK, T_STRING, "", nullptr}}};
+                      {{"EN", PIN_NO_LOCK, T_BOOL, "", "",nullptr,0},
+                       {"IN", PIN_NO_LOCK, T_UINT64, "", "",nullptr,0}},
+                      {{"STATUS", PIN_NO_LOCK, T_INT32, "", "",nullptr,0},
+                       {"OUT", PIN_NO_LOCK, T_STRING, "", "",nullptr,0}}};

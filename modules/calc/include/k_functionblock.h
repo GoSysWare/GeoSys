@@ -51,6 +51,7 @@ typedef struct Pin{
 	int s;		// 是否有被引用
 	v_type t;	// 内置类型
 	std::string u;	// 次级类型，主要用作Any类型限定
+	std::string i;	// 初始化值
 	vam_t v;	// 管脚的值
 	apollo::cyber::base::ReentrantRWLock *l;
 } pin_t;

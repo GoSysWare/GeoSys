@@ -12,8 +12,8 @@ static void run_ULL2I(void *p) {
   pb->outs[1].v->mutable_v()->set_i((int)pb->ins[1].v->v().ull());
 }
 static fb_t fb_ULL2I = {{"Converter", "ULL2I", "", 0, 0, 0, 0, run_ULL2I},
-                      {{"EN", PIN_NO_LOCK, T_BOOL, "", nullptr},
-                       {"IN", PIN_NO_LOCK, T_UINT64, "", nullptr}},
-                      {{"STATUS", PIN_NO_LOCK, T_INT32, "", nullptr},
-                       {"OUT", PIN_NO_LOCK, T_INT32, "", nullptr}}};
+                      {{"EN", PIN_NO_LOCK, T_BOOL, "", "",nullptr,0},
+                       {"IN", PIN_NO_LOCK, T_UINT64, "", "",nullptr,0}},
+                      {{"STATUS", PIN_NO_LOCK, T_INT32, "", "",nullptr,0},
+                       {"OUT", PIN_NO_LOCK, T_INT32, "", "",nullptr,0}}};
 

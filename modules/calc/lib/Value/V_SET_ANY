@@ -81,9 +81,9 @@ static void run_V_GET_ANY(void *p) {
 
 static fb_t fb_V_GET_ANY = {
     {"Value", "V_GET_ANY", "", 0, 0, 0, FB_EXEC, run_V_GET_ANY},
-    {{"EN", PIN_NO_LOCK, T_BOOL, "", nullptr},
-     {"IN", PIN_NO_LOCK, T_ANY, "", nullptr},
-     {"FIELD", PIN_NO_LOCK, T_STRING, "", nullptr},
-     {"INDEX", PIN_NO_LOCK, T_UINT32, "", nullptr}},
-    {{"STATUS", PIN_NO_LOCK, T_INT32, "", nullptr},
-     {"OUT", PIN_NO_LOCK, T_ANY, "", nullptr}}};
+    {{"EN", PIN_NO_LOCK, T_BOOL, "", "",nullptr,0},
+     {"IN", PIN_NO_LOCK, T_ANY, "", "",nullptr,0},
+     {"FIELD", PIN_NO_LOCK, T_STRING, "", "",nullptr,0},
+     {"INDEX", PIN_NO_LOCK, T_UINT32, "", "",nullptr,0}},
+    {{"STATUS", PIN_NO_LOCK, T_INT32, "", "",nullptr,0},
+     {"OUT", PIN_NO_LOCK, T_ANY, "", "",nullptr,0}}};

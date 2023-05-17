@@ -20,11 +20,11 @@ static void run_STR_REPLACE(void *p) {
 
 static fb_t fb_STR_REPLACE = {
     {"String","STR_REPLACE","", 0,0,0,0, run_STR_REPLACE},
-    {{"EN", PIN_NO_LOCK,T_BOOL,"", nullptr},
-     {"IN1", PIN_NO_LOCK,T_STRING, "",nullptr},
-     {"IN2", PIN_NO_LOCK,T_STRING,"", nullptr},
-     {"POS", PIN_NO_LOCK,T_UINT32,"", nullptr},
-     {"LEN", PIN_NO_LOCK,T_UINT32,"", nullptr}},
-    {{"STATUS", PIN_NO_LOCK,T_INT32,"", nullptr},
-    {"OUT", PIN_NO_LOCK,T_STRING, "",nullptr},
-    {"LENGTH", PIN_NO_LOCK,T_UINT32, "",nullptr}}};
+    {{"EN", PIN_NO_LOCK,T_BOOL,"", "",nullptr,0},
+     {"IN1", PIN_NO_LOCK,T_STRING, "","",nullptr,0},
+     {"IN2", PIN_NO_LOCK,T_STRING,"", "",nullptr,0},
+     {"POS", PIN_NO_LOCK,T_UINT32,"", "",nullptr,0},
+     {"LEN", PIN_NO_LOCK,T_UINT32,"", "",nullptr,0}},
+    {{"STATUS", PIN_NO_LOCK,T_INT32,"", "",nullptr,0},
+    {"OUT", PIN_NO_LOCK,T_STRING, "","",nullptr,0},
+    {"LENGTH", PIN_NO_LOCK,T_UINT32, "","",nullptr,0}}};

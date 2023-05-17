@@ -9,7 +9,7 @@ typedef std::shared_ptr<value_tm> vam_t;
 
 #define IS_NOT_UPLOAD_TYPE(type)                                               \
   (type == v_type::T_FILE || type == v_type::T_IMAGE ||                        \
-   type == v_type::T_LIDAR || type == v_type::T_SONAR)
+   type == v_type::T_LIDAR || type == v_type::T_SONAR ||type == v_type::T_ANY)
 /* Variable Node */
 typedef struct EVNode {
   struct EVNode *p_prev;
@@ -29,7 +29,7 @@ value_tm str2var(const std::string &str);
 //这个是明文可读的string
 value_tm setvar(v_type t, std::string value);
 
-void vam_init(vam_t &vam, v_type t, std::string u);
+void vam_init(vam_t &vam, v_type t, std::string u, std::string value);
 
 vam_t *ev_find_v(int id);
 evnode_t *ev_find_n(int id);

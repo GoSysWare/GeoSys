@@ -21,8 +21,8 @@ static void run_PATH_MERGE(void *p) {
 
 static fb_t fb_PATH_MERGE = {
     {"Geometry", "PATH_MERGE", "", 0, 0, 0, 0, run_PATH_MERGE},
-    {{"EN", PIN_NO_LOCK, T_BOOL, "", nullptr},
-     {"IN1", PIN_NO_LOCK, T_ANY, "Geo.Path", nullptr},
-     {"IN2", PIN_NO_LOCK, T_ANY, "Geo.Path", nullptr}},
-    {{"STATUS", PIN_NO_LOCK, T_INT32, "", nullptr},
-     {"OUT", PIN_NO_LOCK, T_ANY, "Geo.Path", nullptr}}};
+    {{"EN", PIN_NO_LOCK, T_BOOL, "", "",nullptr,0},
+     {"IN1", PIN_NO_LOCK, T_ANY, "Geo.Path", "",nullptr,0},
+     {"IN2", PIN_NO_LOCK, T_ANY, "Geo.Path", "",nullptr,0}},
+    {{"STATUS", PIN_NO_LOCK, T_INT32, "", "",nullptr,0},
+     {"OUT", PIN_NO_LOCK, T_ANY, "Geo.Path", "",nullptr,0}}};

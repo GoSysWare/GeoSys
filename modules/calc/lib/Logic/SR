@@ -20,8 +20,8 @@ static void run_SR(void *p) {
 
 static fb_t fb_SR= {
     {"Logic", "SR", "", 0, 0, 0, 0, run_SR},
-    {{"EN", PIN_NO_LOCK, T_BOOL, "", nullptr},
-     {"S", PIN_NO_LOCK, T_BOOL, "", nullptr},
-     {"R", PIN_NO_LOCK, T_BOOL, "", nullptr}},
-    {{"STATUS", PIN_NO_LOCK, T_INT32, "", nullptr},
-     {"Q", PIN_NO_LOCK, T_BOOL, "", nullptr}}};
+    {{"EN", PIN_NO_LOCK, T_BOOL, "", "",nullptr,0},
+     {"S", PIN_NO_LOCK, T_BOOL, "", "",nullptr,0},
+     {"R", PIN_NO_LOCK, T_BOOL, "", "",nullptr,0}},
+    {{"STATUS", PIN_NO_LOCK, T_INT32, "", "",nullptr,0},
+     {"Q", PIN_NO_LOCK, T_BOOL, "", "",nullptr,0}}};

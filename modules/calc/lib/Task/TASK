@@ -101,13 +101,13 @@ static void run_TASK(void *p) {
 }
 
 static fb_t fb_TASK = {{"Task", "TASK", "", 0, 0, 0, 0, run_TASK},
-                       {{"EN", PIN_NO_LOCK, T_BOOL, "", nullptr},
-                        {"FIRE", PIN_NO_LOCK, T_BOOL, "", nullptr},
-                        {"MOD_NAME", PIN_NO_LOCK, T_STRING, "", nullptr},
-                        {"TASK_NAME", PIN_NO_LOCK, T_STRING, "", nullptr},
-                        {"TIMEOUT", PIN_NO_LOCK, T_TIME, "", nullptr},
-                        {"IS_ASYC", PIN_NO_LOCK, T_BOOL, "", nullptr}},
-                       {{"STATUS", PIN_NO_LOCK, T_INT32, "", nullptr},
-                        {"NEXT", PIN_NO_LOCK, T_BOOL, "", nullptr},
-                        {"REQ_TIME", PIN_NO_LOCK, T_TIME, "", nullptr},
-                        {"RSP_TIME", PIN_NO_LOCK, T_TIME, "", nullptr}}};
+                       {{"EN", PIN_NO_LOCK, T_BOOL, "", "",nullptr,0},
+                        {"FIRE", PIN_NO_LOCK, T_BOOL, "", "",nullptr,0},
+                        {"MOD_NAME", PIN_NO_LOCK, T_STRING, "", "",nullptr,0},
+                        {"TASK_NAME", PIN_NO_LOCK, T_STRING, "", "",nullptr,0},
+                        {"TIMEOUT", PIN_NO_LOCK, T_TIME, "", "",nullptr,0},
+                        {"IS_ASYC", PIN_NO_LOCK, T_BOOL, "", "",nullptr,0}},
+                       {{"STATUS", PIN_NO_LOCK, T_INT32, "", "",nullptr,0},
+                        {"NEXT", PIN_NO_LOCK, T_BOOL, "", "",nullptr,0},
+                        {"REQ_TIME", PIN_NO_LOCK, T_TIME, "", "",nullptr,0},
+                        {"RSP_TIME", PIN_NO_LOCK, T_TIME, "", "",nullptr,0}}};

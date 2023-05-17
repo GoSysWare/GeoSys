@@ -12,8 +12,8 @@ static void run_TM2LL(void *p) {
   pb->outs[1].v->mutable_v()->set_ll((int64_t)pb->ins[1].v->v().tm());
 }
 static fb_t fb_TM2LL = {{"Converter", "TM2LL", "", 0, 0, 0, 0, run_TM2LL},
-                      {{"EN", PIN_NO_LOCK, T_BOOL, "", nullptr},
-                       {"IN", PIN_NO_LOCK, T_TIME, "", nullptr}},
-                      {{"STATUS", PIN_NO_LOCK, T_INT32, "", nullptr},
-                       {"OUT", PIN_NO_LOCK, T_INT64, "", nullptr}}};
+                      {{"EN", PIN_NO_LOCK, T_BOOL, "", "",nullptr,0},
+                       {"IN", PIN_NO_LOCK, T_TIME, "", "",nullptr,0}},
+                      {{"STATUS", PIN_NO_LOCK, T_INT32, "", "",nullptr,0},
+                       {"OUT", PIN_NO_LOCK, T_INT64, "", "",nullptr,0}}};
 

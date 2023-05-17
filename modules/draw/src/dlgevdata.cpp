@@ -207,7 +207,7 @@ void DlgEVData::getValue(PLEVData &ev)
     case 4:
         ev.type = v_type::T_UINT64;
         ev.initValue.set_t(v_type::T_UINT64);
-        ev.initValue.mutable_v()->set_ull((uint32_t)std::stoull(value));
+        ev.initValue.mutable_v()->set_ull((uint64_t)std::stoull(value));
         break;
     case 5:
         ev.type = v_type::T_FLOAT32;
@@ -217,7 +217,7 @@ void DlgEVData::getValue(PLEVData &ev)
     case 6:
         ev.type = v_type::T_FLOAT64;
         ev.initValue.set_t(v_type::T_FLOAT64);
-        ev.initValue.mutable_v()->set_d(std::stof(value));
+        ev.initValue.mutable_v()->set_d(std::stod(value));
         break;
     case 7:
         ev.type = v_type::T_TIME;

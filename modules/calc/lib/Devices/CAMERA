@@ -36,10 +36,10 @@ static void run_CAMERA(void *p) {
 }
 
 static fb_t fb_CAMERA = {{"Devices","CAMERA", "",0,0,0,0,run_CAMERA},
-                        {{"EN",PIN_NO_LOCK, T_BOOL, "", nullptr},
-                         {"NAME", PIN_NO_LOCK,T_STRING, "", nullptr}},
-                        {{"STATUS", PIN_NO_LOCK,T_INT32, "", nullptr},
-                         {"IMG", PIN_NO_LOCK,T_IMAGE, "", nullptr},
-                         {"WIDTH", PIN_NO_LOCK,T_UINT32, "", nullptr},
-                         {"HEIGHT", PIN_NO_LOCK,T_UINT32, "", nullptr},
-                         {"ISNEW", PIN_NO_LOCK,T_BOOL, "", nullptr}}};
+                        {{"EN",PIN_NO_LOCK, T_BOOL, "", "",nullptr,0},
+                         {"NAME", PIN_NO_LOCK,T_STRING, "", "",nullptr,0}},
+                        {{"STATUS", PIN_NO_LOCK,T_INT32, "", "",nullptr,0},
+                         {"IMG", PIN_NO_LOCK,T_IMAGE, "", "",nullptr,0},
+                         {"WIDTH", PIN_NO_LOCK,T_UINT32, "", "",nullptr,0},
+                         {"HEIGHT", PIN_NO_LOCK,T_UINT32, "", "",nullptr,0},
+                         {"ISNEW", PIN_NO_LOCK,T_BOOL, "", "",nullptr,0}}};

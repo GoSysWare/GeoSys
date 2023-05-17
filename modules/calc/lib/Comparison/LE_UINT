@@ -11,8 +11,8 @@ static void run_LE_UINT(void *p) {
 }
 static fb_t fb_LE_UINT = {
     {"Comparision", "LE_UINT", "", 0, 0, 0, 0, run_LE_UINT},
-    {{"EN", PIN_NO_LOCK, T_BOOL, "", nullptr},
-     {"IN1", PIN_NO_LOCK, T_UINT32, "", nullptr},
-     {"IN2", PIN_NO_LOCK, T_UINT32, "", nullptr}},
-    {{"STATUS", PIN_NO_LOCK, T_INT32, "", nullptr},
-     {"OUT", PIN_NO_LOCK, T_BOOL, "", nullptr}}};
+    {{"EN", PIN_NO_LOCK, T_BOOL, "", "",nullptr,0},
+     {"IN1", PIN_NO_LOCK, T_UINT32, "", "",nullptr,0},
+     {"IN2", PIN_NO_LOCK, T_UINT32, "", "",nullptr,0}},
+    {{"STATUS", PIN_NO_LOCK, T_INT32, "", "",nullptr,0},
+     {"OUT", PIN_NO_LOCK, T_BOOL, "", "",nullptr,0}}};

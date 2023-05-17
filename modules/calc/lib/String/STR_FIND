@@ -14,9 +14,9 @@ static void run_STR_FIND(void *p) {
 
 static fb_t fb_STR_FIND = {
     {"String","STR_FIND","", 0,0,0,0, run_STR_FIND},
-    {{"EN", PIN_NO_LOCK,T_BOOL,"", nullptr},
-     {"IN1", PIN_NO_LOCK,T_STRING, "",nullptr},
-     {"IN2", PIN_NO_LOCK,T_STRING,"", nullptr},
-     {"POS", PIN_NO_LOCK,T_UINT32,"", nullptr}},
-    {{"STATUS", PIN_NO_LOCK,T_INT32,"", nullptr}, 
-    {"OUT", PIN_NO_LOCK,T_INT32, "",nullptr}}};
+    {{"EN", PIN_NO_LOCK,T_BOOL,"", "",nullptr,0},
+     {"IN1", PIN_NO_LOCK,T_STRING, "","",nullptr,0},
+     {"IN2", PIN_NO_LOCK,T_STRING,"", "",nullptr,0},
+     {"POS", PIN_NO_LOCK,T_UINT32,"", "",nullptr,0}},
+    {{"STATUS", PIN_NO_LOCK,T_INT32,"", "",nullptr,0}, 
+    {"OUT", PIN_NO_LOCK,T_INT32, "","",nullptr,0}}};

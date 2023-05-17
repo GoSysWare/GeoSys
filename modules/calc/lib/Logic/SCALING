@@ -17,9 +17,9 @@ static void run_SCALING(void *p) {
 }
 
 static fb_t fb_SCALING = {{"Logic", "SCALING", "", 0, 0, 0, 0, run_SCALING},
-                          {{"EN", PIN_NO_LOCK, T_BOOL, "", nullptr},
-                           {"IN", PIN_NO_LOCK, T_FLOAT32, "", nullptr},
-                           {"MAX", PIN_NO_LOCK, T_FLOAT32, "", nullptr},
-                           {"MIN", PIN_NO_LOCK, T_FLOAT32, "", nullptr}},
-                          {{"STATUS", PIN_NO_LOCK, T_INT32, "", nullptr},
-                           {"OUT", PIN_NO_LOCK, T_FLOAT32, "", nullptr}}};
+                          {{"EN", PIN_NO_LOCK, T_BOOL, "", "",nullptr,0},
+                           {"IN", PIN_NO_LOCK, T_FLOAT32, "", "",nullptr,0},
+                           {"MAX", PIN_NO_LOCK, T_FLOAT32, "", "",nullptr,0},
+                           {"MIN", PIN_NO_LOCK, T_FLOAT32, "", "",nullptr,0}},
+                          {{"STATUS", PIN_NO_LOCK, T_INT32, "", "",nullptr,0},
+                           {"OUT", PIN_NO_LOCK, T_FLOAT32, "", "",nullptr,0}}};
