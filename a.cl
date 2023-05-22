@@ -1,9 +1,9 @@
 infos {
-  cmd_id: 911
+  cmd_id: 913
   edit_type: SET
   proj {
     proj_name: "rotbot-engine-project"
-    proj_uuid: "{3f5ae2c6-60bf-46ff-940a-17049e6406b4}"
+    proj_uuid: "{e7bba985-76c8-4c38-bd60-997895932322}"
   }
 }
 infos {
@@ -7078,5 +7078,37 @@ infos {
   pos {
     x: 84
     y: 58
+  }
+}
+infos {
+  cmd_id: 912
+  element: EV
+  edit_type: ADD
+  ev {
+    ev_id: 175
+    ev_name: "Path_Val"
+    ev_type: 15
+    ev_desc: "Desc"
+    init_val {
+      t: T_ANY
+      v {
+        any {
+        }
+      }
+      tm: 1683803444694371602
+    }
+  }
+}
+infos {
+  cmd_id: 913
+  element: VO
+  edit_type: ADD
+  vo {
+    mod_id: 162
+    task_id: 163
+    fb_id: 164
+    pin_index: 1
+    ev_id: 175
+    vo_id: 176
   }
 }

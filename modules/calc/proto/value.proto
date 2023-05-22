@@ -26,13 +26,13 @@ enum v_type {
 message value_t {
   oneof var {
     bool b = 1;
-    int32 i = 2;
-    uint32 ui = 3;
-    int64 ll = 4;
-    uint64 ull = 5;
+    sfixed32 i = 2;
+    fixed32 ui = 3;
+    sfixed64 ll = 4;
+    fixed64 ull = 5;
     float f = 6;
     double d = 7;
-    uint64 tm = 8;
+    fixed64 tm = 8;
     string str = 9;
     bytes blob = 10;
     Image img = 11;

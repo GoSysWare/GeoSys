@@ -7,9 +7,9 @@
 typedef std::shared_ptr<value_t> var_t;
 typedef std::shared_ptr<value_tm> vam_t;
 
-#define IS_NOT_UPLOAD_TYPE(type)                                               \
-  (type == v_type::T_FILE || type == v_type::T_IMAGE ||                        \
-   type == v_type::T_LIDAR || type == v_type::T_SONAR ||type == v_type::T_ANY)
+#define IS_NOT_UPLOAD_TYPE(type)                         \
+  (type == v_type::T_FILE || type == v_type::T_IMAGE ||  \
+   type == v_type::T_LIDAR || type == v_type::T_SONAR )
 /* Variable Node */
 typedef struct EVNode {
   struct EVNode *p_prev;
@@ -42,8 +42,9 @@ void ev_dump();
 evnode_t *ev_gethead();
 int ev_img_size();
 
-int ev_to_snapshot(Bus::ProjSnapshotReq * snapshot_req, Bus::ProjSnapshotRsp *snapshot);
-int ev_from_snapshot( Bus::ProjSnapshotRsp *snapshot);
+int ev_to_snapshot(Bus::ProjSnapshotReq *snapshot_req,
+                   Bus::ProjSnapshotRsp *snapshot);
+int ev_from_snapshot(Bus::ProjSnapshotRsp *snapshot);
 
 // char *ev_to_img(char *buf);
 // char *ev_from_img(char *buf);

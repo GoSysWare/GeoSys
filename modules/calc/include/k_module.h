@@ -6,14 +6,11 @@
 
 #include "cyber/cyber.h"
 #include "k_config.h"
-#include "k_program.h"
 #include "k_datatype.h"
-
-#include "modules/calc/proto/task_def.pb.h"
+#include "k_program.h"
 #include "modules/calc/proto/cmd.pb.h"
 #include "modules/calc/proto/edit.pb.h"
-
-
+#include "modules/calc/proto/task_def.pb.h"
 
 struct PNode;
 
@@ -80,7 +77,6 @@ typedef struct MFsmNode : MNode {
   apollo::cyber::Timer timer;
 } fsm_node_t;
 
-
 typedef struct Module {
   mnode_t mn_head;
   task_node_t mn_task_head;
@@ -96,13 +92,12 @@ typedef struct Module {
   fsm_node_t *p_mn_fsm;
 } mod_t;
 
-
-void mod_run(PNode *p_pn,mod_t *p_mod);
+void mod_run(PNode *p_pn, mod_t *p_mod);
 void mod_start(mod_t *p_mod);
 void mod_stop(mod_t *p_mod);
 bool mod_check_stop(mod_t *p_mod);
 
-void mod_exit(PNode *p_pn,mod_t *p_mod);
+void mod_exit(PNode *p_pn, mod_t *p_mod);
 
 mod_t *mod_new();
 void mod_delete(mod_t *p_mod);
@@ -113,13 +108,13 @@ int mod_prgremove(mod_t *p_mod, int id);
 
 int mod_fbadd(mod_t *p_mod, int idprg, int id, std::string libname,
               std::string fcname, std::string fbname);
-int mod_fbremove(mod_t *p_mod, int idprg, int id);               
+int mod_fbremove(mod_t *p_mod, int idprg, int id);
 
 int mod_lkadd(mod_t *p_mod, int idprg, int id, int fbsrc, int pinsrc, int fbtgt,
               int pintgt);
 int mod_lkremove(mod_t *p_mod, int idprg, int id);
 
-int mod_viadd(mod_t *p_mod, int idprg,int idev, int idfb, int pin);
+int mod_viadd(mod_t *p_mod, int idprg, int idev, int idfb, int pin);
 int mod_viremove(mod_t *p_mod, int idprg, int idfb, int pin);
 int mod_voadd(mod_t *p_mod, int idprg, int idev, int idfb, int pin);
 int mod_voremove(mod_t *p_mod, int idprg, int idfb, int pin);

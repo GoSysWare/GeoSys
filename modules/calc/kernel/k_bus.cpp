@@ -89,10 +89,11 @@ int bus_init(std::shared_ptr<apollo::cyber::Node> node) {
         // std::cout << "get project info:" << std::endl;
         // std::cout << "request:" << request->DebugString() << std::endl;
 
-        prjinfo_t *info = prj_info();
-        response->set_prj_uuid(info->uuid);
-        response->set_cmd_id(info->cmd_id);
+        prjinfo_to_snapshot(response.get());
+
         response->mutable_result()->set_code(Bus::ResultCode::OK);
+        response->mutable_result()->set_msg("success");
+
       });
   prj_snapshot_srv =
       node->CreateService<Bus::ProjSnapshotReq, Bus::ProjSnapshotRsp>(
@@ -102,10 +103,15 @@ int bus_init(std::shared_ptr<apollo::cyber::Node> node) {
             // std::cout << "get project snapshot:" << std::endl;
             // std::cout << "request:" << request->DebugString() << std::endl;
 
-
-            prj_to_snapshot(request.get(),response.get());
-            response->mutable_ev_id()->CopyFrom(request->ev_id());
             response->mutable_result()->set_code(Bus::ResultCode::OK);
+            response->mutable_result()->set_msg("success");
+            if(request->ev_id_size()){
+              response->mutable_ev_id()->CopyFrom(request->ev_id());
+            }
+            prj_to_snapshot(request.get(),response.get());
+   
+            // response->mutable_result()->set_code(Bus::ResultCode::OK);
+            // response->mutable_result()->set_msg("success");
           });
   prj_cmd_srv = node->CreateService<Bus::ProjectCmdReq, Bus::ProjectCmdRsp>(
       FLAGS_prj_cmd_name, [](const std::shared_ptr<Bus::ProjectCmdReq> &request,

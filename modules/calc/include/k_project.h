@@ -81,6 +81,7 @@ mod_t *prj_modfind(std::string mod_name);
 pnode_t *prj_mod_info_find(std::string mod_name);
 pnode_t *prj_mod_info_find(int idmod);
 
+int prjinfo_to_snapshot(Bus::ProjectInfoRsp *project_info);
 int prj_to_snapshot(Bus::ProjSnapshotReq * snapshot_req,Bus::ProjSnapshotRsp *snapshot);
 int prj_from_snapshot(Bus::ProjSnapshotRsp *snapshot);
 
