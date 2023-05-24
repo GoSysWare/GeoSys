@@ -1,9 +1,11 @@
+#include "modules/calc/include/k_project.h"
+
 #include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
+
 #include <string>
 
-#include "modules/calc/include/k_project.h"
 #include "modules/calc/include/k_util.h"
 
 static prjinfo_t info;
@@ -419,19 +421,17 @@ pnode_t *prj_mod_info_find(int idmod) {
   return p_pn_select;
 }
 
-int prjinfo_to_snapshot(Bus::ProjectInfoRsp *project_info)
-{
+int prjinfo_to_snapshot(Bus::ProjectInfoRsp *project_info) {
   prjinfo_t *info = prj_info();
   project_info->set_prj_uuid(info->uuid);
   project_info->set_cmd_id(info->cmd_id);
-  project_info->set_host_name("");
-  project_info->set_host_ip("");
-  project_info->set_process_id("");
-  project_info->set_prj_name("");
-
+  project_info->set_host_name("test host name");
+  project_info->set_host_ip("test host ip");
+  project_info->set_process_id("test process id");
+  project_info->set_prj_name("test proj name");
 }
 
-int prj_to_snapshot(Bus::ProjSnapshotReq * snapshot_req,
+int prj_to_snapshot(Bus::ProjSnapshotReq *snapshot_req,
                     Bus::ProjSnapshotRsp *snapshot) {
   pnode_t *p_pn = 0;
   mnode_t *p_mn = 0;
@@ -446,9 +446,10 @@ int prj_to_snapshot(Bus::ProjSnapshotReq * snapshot_req,
     Bus::ModSnapshot *mod_sp = snapshot->add_mods();
     mod_sp->set_mod_id(p_pn->id);
     p_mn = p_pn->p_mod->mn_head.p_next;
-    if(p_mn->stop.load()) continue;
+    if (p_mn->stop.load()) continue;
     while (p_mn != &p_pn->p_mod->mn_head) {
-      // apollo::cyber::base::ReadLockGuard<apollo::cyber::base::AtomicRWLock> lg(
+      // apollo::cyber::base::ReadLockGuard<apollo::cyber::base::AtomicRWLock>
+      // lg(
       //     p_mn->mutex);
       Bus::TaskSnapshot *task_sp = mod_sp->add_tasks();
       task_sp->set_mod_id(p_pn->id);
@@ -456,6 +457,8 @@ int prj_to_snapshot(Bus::ProjSnapshotReq * snapshot_req,
       task_sp->set_status(p_mn->info.status.load());
       task_sp->set_begin_time(p_mn->info.begin_time);
       task_sp->set_expend_time(p_mn->info.expend_time);
+      task_sp->set_creator("test creator");
+
       p_en = p_mn->p_prg->en_head.p_next;
       while (p_en != &p_mn->p_prg->en_head) {
         if (p_en->p_fb != ((void *)0)) {
@@ -475,33 +478,48 @@ int prj_to_snapshot(Bus::ProjSnapshotReq * snapshot_req,
           val_sp->mutable_v()->set_i(p_fb->h.flag);
 
           for (i = 0; i < p_fb->ins.size(); i++) {
-            if (IS_NOT_UPLOAD_TYPE(p_fb->ins[i].t))
-              continue;
+            if (IS_NOT_UPLOAD_TYPE(p_fb->ins[i].t)) continue;
             val_sp = task_sp->add_vals();
             if (p_fb->ins[i].s == PIN_HAS_LOCK) {
               apollo::cyber::base::ReadLockGuard<
                   apollo::cyber::base::ReentrantRWLock>
                   lg(*(p_fb->ins[i].l));
               val_sp->CopyFrom(*(p_fb->ins[i].v));
+              size_t len1 = val_sp->ByteSizeLong();
+              size_t len2 = p_fb->ins[i].v->ByteSizeLong();
+              if (len1 != len2) {
+                AERROR << "i" << i << "++++ " << len1 << "--- " << len2;
+              }
             } else {
               val_sp->CopyFrom(*(p_fb->ins[i].v));
+              size_t len1 = val_sp->ByteSizeLong();
+              size_t len2 = p_fb->ins[i].v->ByteSizeLong();
+              if (len1 != len2) {
+                AERROR << "i" << i << "++++ " << len1 << "--- " << len2;
+              }
             }
           }
           for (i = 0; i < p_fb->outs.size(); i++) {
-            if (IS_NOT_UPLOAD_TYPE(p_fb->outs[i].t))
-              continue;
+            if (IS_NOT_UPLOAD_TYPE(p_fb->outs[i].t)) continue;
             val_sp = task_sp->add_vals();
             if (p_fb->outs[i].s == PIN_HAS_LOCK) {
               apollo::cyber::base::ReadLockGuard<
                   apollo::cyber::base::ReentrantRWLock>
                   lg(*(p_fb->outs[i].l));
               val_sp->CopyFrom(*(p_fb->outs[i].v));
+              size_t len1 = val_sp->ByteSizeLong();
+              size_t len2 = p_fb->outs[i].v->ByteSizeLong();
+              if (len1 != len2) {
+                AERROR << "i" << i << "++++ " << len1 << "--- " << len2;
+              }
             } else {
-
               val_sp->CopyFrom(*(p_fb->outs[i].v));
+              size_t len1 = val_sp->ByteSizeLong();
+              size_t len2 = p_fb->outs[i].v->ByteSizeLong();
+              if (len1 != len2) {
+                AERROR << "i" << i << "++++ " << len1 << "--- " << len2;
+              }
             }
-            std::string tmp = val_sp->ShortDebugString();
-
           }
         }
         p_en = p_en->p_next;
@@ -513,27 +531,32 @@ int prj_to_snapshot(Bus::ProjSnapshotReq * snapshot_req,
 
   ev_to_snapshot(snapshot_req, snapshot);
   Bus::ProjSnapshotRsp tmp_snapshot;
+  AINFO << "snapshot len" << snapshot->ByteSizeLong();
+  // AINFO  << snapshot->DebugString();
 
-  tmp_snapshot.CopyFrom(*snapshot);
-
+  tmp_snapshot = *snapshot;
   std::string buff;
   size_t len = tmp_snapshot.ByteSizeLong();
-  AINFO<< "snapshot size before:" << len;
+  AINFO << "snapshot size before:" << len;
+  // AINFO  << tmp_snapshot.DebugString();
+
+
   buff.resize(len);
-  uint8_t * target = reinterpret_cast<uint8_t*>(&(buff[0]));
-    google::protobuf::io::EpsCopyOutputStream out(
-        target, len,
-        google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic());
-    auto res = tmp_snapshot._InternalSerialize(target, &out);
-    if(target + len == res){
-      AINFO<< "target + len == res";
-    }else{
-      AINFO<< "target + len != res";
-    }
-    GOOGLE_DCHECK(target + len == res);
+  uint8_t *target = reinterpret_cast<uint8_t *>(&(buff[0]));
+  google::protobuf::io::EpsCopyOutputStream out(
+      target, len,
+      google::protobuf::io::CodedOutputStream::
+          IsDefaultSerializationDeterministic());
+  auto res = tmp_snapshot._InternalSerialize(target, &out);
+  if (target + len == res) {
+    AINFO << "target + len == res";
+  } else {
+    AINFO << "target + len != res";
+  }
+  GOOGLE_DCHECK(target + len == res);
 
   len = tmp_snapshot.ByteSizeLong();
-  AINFO<< "snapshot size after:" << len;
+  AINFO << "snapshot size after:" << len;
 
   return 0;
 }
@@ -548,8 +571,7 @@ int info_cmp(prjinfo_t *info, Bus::ProjectInfoRsp *bus_proj_info) {
   return 0;
 }
 
-int prj_from_snapshot(
-                      Bus::ProjSnapshotRsp *snapshot) {
+int prj_from_snapshot(Bus::ProjSnapshotRsp *snapshot) {
   pnode_t *p_pn = 0;
   mnode_t *p_mn = 0;
   enode_t *p_en = 0;
@@ -569,7 +591,8 @@ int prj_from_snapshot(
     assert(mod_sp.mod_id() == p_pn->id);
     n = 0;
     while (p_mn != &p_pn->p_mod->mn_head) {
-      // apollo::cyber::base::WriteLockGuard<apollo::cyber::base::AtomicRWLock> lg(
+      // apollo::cyber::base::WriteLockGuard<apollo::cyber::base::AtomicRWLock>
+      // lg(
       //     p_mn->mutex);
 
       p_en = p_mn->p_prg->en_head.p_next;
@@ -588,8 +611,7 @@ int prj_from_snapshot(
           p_fb->h.expend_time = task_sp.vals(k++).v().ull();
           p_fb->h.flag = task_sp.vals(k++).v().i();
           for (i = 0; i < p_fb->ins.size(); i++) {
-            if (IS_NOT_UPLOAD_TYPE(p_fb->ins[i].t))
-              continue;
+            if (IS_NOT_UPLOAD_TYPE(p_fb->ins[i].t)) continue;
 
             if (p_fb->ins[i].s == PIN_HAS_LOCK) {
               apollo::cyber::base::WriteLockGuard<
@@ -601,8 +623,7 @@ int prj_from_snapshot(
             }
           }
           for (i = 0; i < p_fb->outs.size(); i++) {
-            if (IS_NOT_UPLOAD_TYPE(p_fb->outs[i].t))
-              continue;
+            if (IS_NOT_UPLOAD_TYPE(p_fb->outs[i].t)) continue;
             if (p_fb->outs[i].s == PIN_HAS_LOCK) {
               apollo::cyber::base::WriteLockGuard<
                   apollo::cyber::base::ReentrantRWLock>

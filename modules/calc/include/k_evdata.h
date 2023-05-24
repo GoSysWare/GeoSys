@@ -9,7 +9,8 @@ typedef std::shared_ptr<value_tm> vam_t;
 
 #define IS_NOT_UPLOAD_TYPE(type)                         \
   (type == v_type::T_FILE || type == v_type::T_IMAGE ||  \
-   type == v_type::T_LIDAR || type == v_type::T_SONAR )
+   type == v_type::T_LIDAR || type == v_type::T_SONAR  ||  \
+   type == v_type::T_BYTES )
 /* Variable Node */
 typedef struct EVNode {
   struct EVNode *p_prev;

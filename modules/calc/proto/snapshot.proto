@@ -20,10 +20,10 @@ message ModSnapshot {
 message ProjSnapshotRsp {
   Result result = 1;
   ProjectInfoRsp proj_info = 2;
-  repeated ModSnapshot mods = 3;
-  repeated EVNodeValue evs = 4;
-  repeated int32 mod_id = 5;
-  repeated int32 ev_id = 6;
+  repeated int32 mod_id = 3;
+  repeated int32 ev_id = 4;
+  repeated ModSnapshot mods = 5;
+  repeated EVNodeValue evs = 6;
 }
 
 message ProjSnapshotReq {

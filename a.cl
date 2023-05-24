@@ -3,7 +3,7 @@ infos {
   edit_type: SET
   proj {
     proj_name: "rotbot-engine-project"
-    proj_uuid: "{e7bba985-76c8-4c38-bd60-997895932322}"
+    proj_uuid: "{e87d1f57-aac3-400b-a717-ee5407a162cd}"
   }
 }
 infos {

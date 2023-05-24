@@ -46,7 +46,7 @@ void vam_init(vam_t &vam, v_type t, std::string u, std::string value) {
     vam->mutable_v()->set_tm(std::stoull(value.empty()? "0":value));
     break;
   case T_STRING:
-    vam->mutable_v()->set_str(value);
+    vam->mutable_v()->set_str(value.empty()? "defualt":value);
     break;
   case T_BYTES:
     vam->mutable_v()->set_blob(value);
@@ -64,7 +64,7 @@ void vam_init(vam_t &vam, v_type t, std::string u, std::string value) {
     vam->mutable_v()->set_file(value);
     break;
   case T_ANY:
-    vam->mutable_v()->mutable_any()->set_type_url(u);
+    vam->mutable_v()->mutable_any()->set_type_url(u.empty()? "defualt":u);
     vam->mutable_v()->mutable_any()->set_value(value);
     break;
   default:

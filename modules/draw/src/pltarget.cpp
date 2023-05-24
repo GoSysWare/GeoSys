@@ -98,9 +98,9 @@ PLTarget::PLTarget(QObject *parent) {
         info_res->result().code() == Bus::ResultCode::OK) {
       this->idCmdTarget = info_res->cmd_id();
       this->uuidTarget = QString::fromStdString(info_res->prj_uuid());
-      qDebug() << "Target cmd_id:" << this->idCmdTarget << "uuid"
+      qDebug() << QTime::currentTime() << " Target cmd_id:" << this->idCmdTarget << "uuid"
                << this->uuidTarget;
-      qDebug() << "HMI cmd_id:" << gMainModel->cmdID << "uuid"
+      qDebug() << QTime::currentTime() << " HMI cmd_id:" << gMainModel->cmdID << "uuid"
                << gMainModel->project.uuid;
 
     } else {
@@ -148,10 +148,6 @@ PLTarget::PLTarget(QObject *parent) {
                 // qDebug() << "fb" << fb->id << "pin" << k << "val"
                 //          << fb->output[k].value.v().i();
               }
-              // // property
-              // for (k = 0; k < fb->property.size(); k++) {
-              //   fb->property[k].value = *(p_fb->props[k].v);
-              // }
             }
           }
         }

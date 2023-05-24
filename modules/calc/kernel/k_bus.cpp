@@ -109,7 +109,9 @@ int bus_init(std::shared_ptr<apollo::cyber::Node> node) {
               response->mutable_ev_id()->CopyFrom(request->ev_id());
             }
             prj_to_snapshot(request.get(),response.get());
-   
+
+            AINFO << "prj_snapshot_name response size:" << response->ByteSizeLong();
+
             // response->mutable_result()->set_code(Bus::ResultCode::OK);
             // response->mutable_result()->set_msg("success");
           });
@@ -200,7 +202,10 @@ std::shared_ptr<Bus::ProjectCmdRsp> bus_online_send(
   std::shared_ptr<Bus::ProjectCmdReq> req =
       std::make_shared<Bus::ProjectCmdReq>();
   req->set_cmd_type(Bus::RunType::ONLINE);
-
+  req->set_host_name("test host name");
+  req->set_host_ip("test host ip");
+  req->set_process_id("test process id");
+  req->set_prj_name("test proj name");
   return bus_cmd->SendRequest(req);
 }
 std::shared_ptr<Bus::ProjectCmdRsp> bus_disconnect_send(
@@ -211,7 +216,10 @@ std::shared_ptr<Bus::ProjectCmdRsp> bus_disconnect_send(
   std::shared_ptr<Bus::ProjectCmdReq> req =
       std::make_shared<Bus::ProjectCmdReq>();
   req->set_cmd_type(Bus::RunType::OFFLINE);
-
+  req->set_host_name("test host name");
+  req->set_host_ip("test host ip");
+  req->set_process_id("test process id");
+  req->set_prj_name("test proj name");
   return bus_cmd->SendRequest(req);
 }
 std::shared_ptr<Bus::ProjectCmdRsp>
@@ -222,7 +230,10 @@ bus_run_send(std::shared_ptr<apollo::cyber::Node> node,
   std::shared_ptr<Bus::ProjectCmdReq> req =
       std::make_shared<Bus::ProjectCmdReq>();
   req->set_cmd_type(Bus::RunType::RUN);
-
+  req->set_host_name("test host name");
+  req->set_host_ip("test host ip");
+  req->set_process_id("test process id");
+  req->set_prj_name("test proj name");
   return bus_cmd->SendRequest(req);
 }
 
@@ -234,7 +245,10 @@ bus_stop_send(std::shared_ptr<apollo::cyber::Node> node,
   std::shared_ptr<Bus::ProjectCmdReq> req =
       std::make_shared<Bus::ProjectCmdReq>();
   req->set_cmd_type(Bus::RunType::STOP);
-
+  req->set_host_name("test host name");
+  req->set_host_ip("test host ip");
+  req->set_process_id("test process id");
+  req->set_prj_name("test proj name");
   return bus_cmd->SendRequest(req,std::chrono::seconds(20));
 }
 
@@ -246,7 +260,10 @@ std::shared_ptr<Bus::ProjectCmdRsp> bus_reset_send(
   std::shared_ptr<Bus::ProjectCmdReq> req =
       std::make_shared<Bus::ProjectCmdReq>();
   req->set_cmd_type(Bus::RunType::RESET);
-
+  req->set_host_name("test host name");
+  req->set_host_ip("test host ip");
+  req->set_process_id("test process id");
+  req->set_prj_name("test proj name");
   return bus_cmd->SendRequest(req);
 }
 
@@ -258,7 +275,10 @@ bus_sync_send(std::shared_ptr<apollo::cyber::Node> node,
   std::shared_ptr<Bus::ProjectCmdReq> req =
       std::make_shared<Bus::ProjectCmdReq>();
   req->set_cmd_type(Bus::RunType::SYNC);
-
+  req->set_host_name("test host name");
+  req->set_host_ip("test host ip");
+  req->set_process_id("test process id");
+  req->set_prj_name("test proj name");
   return bus_cmd->SendRequest(req);
 }
 
