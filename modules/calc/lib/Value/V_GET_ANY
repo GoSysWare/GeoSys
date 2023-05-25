@@ -117,7 +117,7 @@ static void run_V_GET_ANY(void *p) {
       return;
     }
     if(field_descriptor->cpp_type() !=  FieldDescriptor:::CPPTYPE_MESSAGE){
-       return_V_GET_DOUBLE(status, -9, is_out_any_lock, out_any_lock, out_any, 0,
+      return_V_GET_ANY(status, -9, is_out_any_lock, out_any_lock, out_any, 0,
                           any_msg);
       return;
     }
