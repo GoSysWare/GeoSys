@@ -23,13 +23,13 @@ static void return_V_GET_ANY(vam_t &status,int s, bool is_out_lock,
     if (field_message) {
       out->mutable_v()->mutable_any()->PackFrom(*field_message);
     } else {
-      out->mutable_v()->mutable_any()->Clear();
+      out->clear_v();
     }
   } else {
     if (field_message) {
       out->mutable_v()->mutable_any()->PackFrom(*field_message);
     } else {
-      out->mutable_v()->mutable_any()->Clear();
+      out->clear_v();
     }
   }
   if (any_msg)

@@ -18,58 +18,59 @@ void vam_init(vam_t &vam, v_type t, std::string u, std::string value) {
   vam.reset(new value_tm);
   vam->set_tm(apollo::cyber::Time::Now().ToNanosecond());
   vam->set_t(t);
-  switch (t) {
-  case T_NONE:
-    break;
-  case T_BOOL:
-    vam->mutable_v()->set_b(value == "false" || value == "0"? false:true);
-    break;
-  case T_INT32:
-    vam->mutable_v()->set_i(std::stoi(value.empty()? "0":value));
-    break;
-  case T_UINT32:
-    vam->mutable_v()->set_ui((uint32_t)std::stoul(value.empty()? "0":value));
-    break;
-  case T_INT64:
-    vam->mutable_v()->set_ll(std::stoll(value.empty()? "0":value));
-    break;
-  case T_UINT64:
-    vam->mutable_v()->set_ull(std::stoull(value.empty()? "0":value));
-    break;
-  case T_FLOAT32:
-    vam->mutable_v()->set_i(std::stof(value.empty()? "0":value));
-    break;
-  case T_FLOAT64:
-    vam->mutable_v()->set_d(std::stod(value.empty()? "0":value));
-    break;
-  case T_TIME:
-    vam->mutable_v()->set_tm(std::stoull(value.empty()? "0":value));
-    break;
-  case T_STRING:
-    vam->mutable_v()->set_str(value.empty()? "defualt":value);
-    break;
-  case T_BYTES:
-    vam->mutable_v()->set_blob(value);
-    break;
-  case T_IMAGE:
-    vam->mutable_v()->mutable_img()->set_data(value);
-    break;
-  case T_LIDAR:
-    vam->mutable_v()->set_lidar(value);
-    break;
-  case T_SONAR:
-    vam->mutable_v()->set_sonar(value);
-    break;
-  case T_FILE:
-    vam->mutable_v()->set_file(value);
-    break;
-  case T_ANY:
-    vam->mutable_v()->mutable_any()->set_type_url(u.empty()? "defualt":u);
-    vam->mutable_v()->mutable_any()->set_value(value);
-    break;
-  default:
-    break;
-  }
+  vam->clear_v();
+  // switch (t) {
+  // case T_NONE:
+  //   break;
+  // case T_BOOL:
+  //   vam->mutable_v()->set_b(value == "false" || value == "0"? false:true);
+  //   break;
+  // case T_INT32:
+  //   vam->mutable_v()->set_i(std::stoi(value.empty()? "0":value));
+  //   break;
+  // case T_UINT32:
+  //   vam->mutable_v()->set_ui((uint32_t)std::stoul(value.empty()? "0":value));
+  //   break;
+  // case T_INT64:
+  //   vam->mutable_v()->set_ll(std::stoll(value.empty()? "0":value));
+  //   break;
+  // case T_UINT64:
+  //   vam->mutable_v()->set_ull(std::stoull(value.empty()? "0":value));
+  //   break;
+  // case T_FLOAT32:
+  //   vam->mutable_v()->set_i(std::stof(value.empty()? "0":value));
+  //   break;
+  // case T_FLOAT64:
+  //   vam->mutable_v()->set_d(std::stod(value.empty()? "0":value));
+  //   break;
+  // case T_TIME:
+  //   vam->mutable_v()->set_tm(std::stoull(value.empty()? "0":value));
+  //   break;
+  // case T_STRING:
+  //   vam->mutable_v()->set_str(value.empty()? "defualt":value);
+  //   break;
+  // case T_BYTES:
+  //   vam->mutable_v()->set_blob(value);
+  //   break;
+  // case T_IMAGE:
+  //   vam->mutable_v()->mutable_img()->set_data(value);
+  //   break;
+  // case T_LIDAR:
+  //   vam->mutable_v()->set_lidar(value);
+  //   break;
+  // case T_SONAR:
+  //   vam->mutable_v()->set_sonar(value);
+  //   break;
+  // case T_FILE:
+  //   vam->mutable_v()->set_file(value);
+  //   break;
+  // case T_ANY:
+  //   vam->mutable_v()->mutable_any()->set_type_url(u.empty()? "defualt":u);
+  //   vam->mutable_v()->mutable_any()->set_value(value);
+  //   break;
+  // default:
+  //   break;
+  // }
 }
 
 v_type str2type(const std::string &str) {

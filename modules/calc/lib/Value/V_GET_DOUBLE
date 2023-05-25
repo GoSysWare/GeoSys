@@ -13,13 +13,13 @@ static void return_V_GET_DOUBLE(vam_t &status,int s, bool is_out_lock,
     if (field_message) {
       out->mutable_v()->set_d(value);
     } else {
-      out->mutable_v()->clear_d();
+      out->clear_v();
     }
   } else {
     if (field_message) {
       out->mutable_v()->set_d(value);
     } else {
-      out->mutable_v()->clear_d();
+      out->clear_v();
     }
   }
   if (any_msg)
