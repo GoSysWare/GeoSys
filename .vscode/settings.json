@@ -296,7 +296,8 @@
         "__node_handle": "cpp",
         "locale": "cpp",
         "__functional_base_03": "cpp",
-        "__config": "cpp"
+        "__config": "cpp",
+        "v_set_any": "cpp"
     },
     "C_Cpp.errorSquiggles": "disabled"
 }

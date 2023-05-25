@@ -54,7 +54,7 @@ int main() {
   pose->mutable_position()->set_y(1.26);
   pose->mutable_position()->set_z(1.27);
 
-  value.mutable_v()->set_t(v_type::T_ANY);
+  value.set_t(v_type::T_ANY);
   value.mutable_v()->mutable_any()->PackFrom(path);
 
   string type_name;
@@ -66,6 +66,8 @@ int main() {
   Message *any_msg = new_prototype->New();
   value.v().any().UnpackTo(any_msg);
 
+
+
   std::vector<std::string> string_list;
   split("poses.position",string_list, ".");
   const Descriptor *descriptor;
@@ -73,6 +75,7 @@ int main() {
   const FieldDescriptor *field_descriptor;
 
   const Message *field_message = any_msg;
+  // const Message *field_message = value.mutable_v()->mutable_any();
 
   //
   for (int i = 0; i < string_list.size(); i++) {
@@ -100,7 +103,7 @@ int main() {
   double x =position_msg_reflection->GetDouble(*field_message,postion_x_descriptor);
 
   value_tm out_any;
-  out_any.mutable_v()->set_t(v_type::T_ANY);
+  out_any.set_t(v_type::T_ANY);
   out_any.mutable_v()->mutable_any()->PackFrom(*field_message);
 
   // const Descriptor *position_msg_descriptor = poistion_msg.GetDescriptor();

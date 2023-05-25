@@ -1,17 +1,4 @@
 
-#include <regex>
-using namespace google::protobuf;
-
-static void split(const string &s, std::vector<string> &tokens,
-                  const string &delimiters = " ") {
-  string::size_type lastPos = s.find_first_not_of(delimiters, 0);
-  string::size_type pos = s.find_first_of(delimiters, lastPos);
-  while (string::npos != pos || string::npos != lastPos) {
-    tokens.emplace_back(s.substr(lastPos, pos - lastPos));
-    lastPos = s.find_first_not_of(delimiters, pos);
-    pos = s.find_first_of(delimiters, lastPos);
-  }
-}
 static void return_V_GET_ANY(vam_t &status, int s, bool is_out_lock,
                              apollo::cyber::base::ReentrantRWLock *out_lock,
                              vam_t &out, const Message *field_message,
@@ -89,8 +76,8 @@ static void run_V_GET_ANY(void *p) {
 
   const Message *field_message = any_msg;
 
-  //
-  for (int i = 0; i < string_list.size(); i++) {
+  //在最后一个field之前都不能存在 repeated
+  for (int i = 0; i < string_list.size() - 1; i++) {
     descriptor = field_message->GetDescriptor();
     reflection = field_message->GetReflection();
     field_descriptor = descriptor->FindFieldByName(string_list[i]);
@@ -100,22 +87,44 @@ static void run_V_GET_ANY(void *p) {
       return;
     }
     if (field_descriptor->is_repeated()) {
-      if (index >= reflection->FieldSize(*field_message, field_descriptor)) {
-        return_V_GET_ANY(status, -6, is_out_any_lock, out_any_lock, out_any, 0,
-                         any_msg);
-        return;
-      } else if (index < 0) {
-        return_V_GET_ANY(status, -7, is_out_any_lock, out_any_lock, out_any, 0,
-                         0);
-        return;
-      } else {
-        field_message = &(reflection->GetRepeatedMessage(
-            *field_message, field_descriptor, index));
-      }
+      return_V_GET_ANY(status, -8, is_out_any_lock, out_any_lock, out_any, 0,
+                       any_msg);
+      return;
     } else {
       field_message =
           &(reflection->GetMessage(*field_message, field_descriptor));
     }
+  }
+  //最后一个独立处理
+  descriptor = field_message->GetDescriptor();
+  reflection = field_message->GetReflection();
+  field_descriptor =
+      descriptor->FindFieldByName(string_list[string_list.size() - 1]);
+  if (!field_descriptor) {
+    return_V_GET_ANY(status, -5, is_out_any_lock, out_any_lock, out_any, 0,
+                     any_msg);
+    return;
+  }
+
+  if (field_descriptor->is_repeated()) {
+    if (index >= reflection->FieldSize(*field_message, field_descriptor)) {
+      return_V_GET_ANY(status, -6, is_out_any_lock, out_any_lock, out_any, 0,
+                       any_msg);
+      return;
+    } else if (index < 0) {
+      return_V_GET_ANY(status, -7, is_out_any_lock, out_any_lock, out_any, 0,
+                       any_msg);
+      return;
+    }
+    if(field_descriptor->cpp_type() !=  FieldDescriptor:::CPPTYPE_MESSAGE){
+       return_V_GET_DOUBLE(status, -9, is_out_any_lock, out_any_lock, out_any, 0,
+                          any_msg);
+      return;
+    }
+    field_message = &(reflection->GetRepeatedMessage(*field_message,
+                                                     field_descriptor, index));
+  } else {
+    field_message = &(reflection->GetMessage(*field_message, field_descriptor));
   }
   return_V_GET_ANY(status, 0, is_out_any_lock, out_any_lock, out_any,
                    field_message, any_msg);
