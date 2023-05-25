@@ -54,6 +54,9 @@ int main() {
   pose->mutable_position()->set_y(1.26);
   pose->mutable_position()->set_z(1.27);
 
+
+
+
   value.set_t(v_type::T_ANY);
   value.mutable_v()->mutable_any()->PackFrom(path);
 
@@ -69,10 +72,18 @@ int main() {
 
 
   std::vector<std::string> string_list;
-  split("poses.position",string_list, ".");
+  split("poses",string_list, ".");
   const Descriptor *descriptor;
   const Reflection *reflection;
   const FieldDescriptor *field_descriptor;
+
+
+    descriptor = pose->GetDescriptor();
+    reflection = pose->GetReflection();
+
+    field_descriptor = descriptor->FindFieldByName("Point.x");
+
+
 
   const Message *field_message = any_msg;
   // const Message *field_message = value.mutable_v()->mutable_any();
@@ -84,12 +95,12 @@ int main() {
     field_descriptor = descriptor->FindFieldByName(string_list[i]);
     if (field_descriptor->is_repeated()) {
         
-      if(3 >= reflection->FieldSize(*field_message, field_descriptor)){
+      if(0 >= reflection->FieldSize(*field_message, field_descriptor)){
         std::cout << "outof range" <<std::endl;
         return 0;
       }
       field_message = &(
-          reflection->GetRepeatedMessage(*field_message, field_descriptor, 3));
+          reflection->GetRepeatedMessage(*field_message, field_descriptor, 0));
     } else {
       field_message =
           &(reflection->GetMessage(*field_message, field_descriptor));
@@ -99,7 +110,7 @@ int main() {
   const Descriptor *position_msg_descriptor = field_message->GetDescriptor();
   const Reflection* position_msg_reflection = field_message->GetReflection();
   const FieldDescriptor *postion_x_descriptor =
-  position_msg_descriptor->FindFieldByName("x"); 
+  position_msg_descriptor->FindFieldByName("Geo.Pose.Point.x"); 
   double x =position_msg_reflection->GetDouble(*field_message,postion_x_descriptor);
 
   value_tm out_any;

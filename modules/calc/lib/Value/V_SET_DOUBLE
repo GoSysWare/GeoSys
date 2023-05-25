@@ -1,46 +1,72 @@
-
-#include <regex>
-using namespace google::protobuf;
-
-// static void split(const string &s, std::vector<string> &tokens,
-//                   const string &delimiters = " ") {
-//   string::size_type lastPos = s.find_first_not_of(delimiters, 0);
-//   string::size_type pos = s.find_first_of(delimiters, lastPos);
-//   while (string::npos != pos || string::npos != lastPos) {
-//     tokens.emplace_back(s.substr(lastPos, pos - lastPos));
-//     lastPos = s.find_first_not_of(delimiters, pos);
-//     pos = s.find_first_of(delimiters, lastPos);
-//   }
-// }
+static void return_V_SET_DOUBLE(vam_t &status, int s, bool is_out_lock,
+                                apollo::cyber::base::ReentrantRWLock *out_lock,
+                                vam_t &out, const Message *field_message,
+                                Message *any_msg, double value = 0) {
+  status->mutable_v()->set_i(s);
+  if (is_out_lock == PIN_HAS_LOCK) {
+    apollo::cyber::base::ReadLockGuard<apollo::cyber::base::ReentrantRWLock> lg(
+        *(out_lock));
+    if (field_message) {
+      out->mutable_v()->mutable_any()->PackFrom(*any_msg);
+    } else {
+      out->clear_v();
+    }
+  } else {
+    if (field_message) {
+      out->mutable_v()->mutable_any()->PackFrom(*any_msg);
+    } else {
+      out->clear_v();
+    }
+  }
+  if (any_msg) delete any_msg;
+  return;
+}
 
 static void run_V_SET_DOUBLE(void *p) {
-
   fb_t *pb = (fb_t *)p;
   vam_t &enable = pb->ins[0].v;
   vam_t &status = pb->outs[0].v;
-  if (enable->v().b() == false)
-    return;
-  vam_t in_double = pb->ins[1].v;
+  if (enable->v().b() == false) return;
+  vam_t in_any = pb->ins[1].v;
   bool is_in_any_lock = pb->ins[1].s;
   apollo::cyber::base::ReentrantRWLock *in_any_lock = pb->ins[1].l;
 
   vam_t in_field = pb->ins[2].v;
   vam_t in_index = pb->ins[3].v;
+  vam_t in_set_val = pb->ins[4].v;
+
   vam_t &out_any = pb->outs[1].v;
   bool is_out_any_lock = pb->outs[1].s;
   apollo::cyber::base::ReentrantRWLock *out_any_lock = pb->outs[1].l;
-  int index = in_index->v().ui();
-  if (in_any->v().t() != v_type::T_ANY) {
-    status->mutable_v()->set_i(1);
+
+  int index = in_index->v().i();
+  if (in_any->t() != v_type::T_ANY) {
+    return_V_SET_DOUBLE(status, 1, is_out_any_lock, out_any_lock, out_any, 0,
+                        0);
     return;
   }
   string type_name;
   internal::ParseAnyTypeUrl(in_any->v().any().type_url(), &type_name);
   const Descriptor *new_descriptor =
       DescriptorPool::generated_pool()->FindMessageTypeByName(type_name);
+  if (!new_descriptor) {
+    return_V_SET_DOUBLE(status, -2, is_out_any_lock, out_any_lock, out_any, 0,
+                        0);
+    return;
+  }
   const Message *new_prototype =
       MessageFactory::generated_factory()->GetPrototype(new_descriptor);
+  if (!new_prototype) {
+    return_V_SET_DOUBLE(status, -3, is_out_any_lock, out_any_lock, out_any, 0,
+                        0);
+    return;
+  }
   Message *any_msg = new_prototype->New();
+  if (!any_msg) {
+    return_V_SET_DOUBLE(status, -4, is_out_any_lock, out_any_lock, out_any, 0,
+                        0);
+    return;
+  }
   if (is_in_any_lock == PIN_HAS_LOCK) {
     apollo::cyber::base::ReadLockGuard<apollo::cyber::base::ReentrantRWLock> lg(
         *(in_any_lock));
@@ -54,47 +80,70 @@ static void run_V_SET_DOUBLE(void *p) {
   const Reflection *reflection;
   const FieldDescriptor *field_descriptor;
 
-  const Message *field_message = any_msg;
+  Message *field_message = any_msg;
 
   //
   for (int i = 0; i < string_list.size() - 1; i++) {
     descriptor = field_message->GetDescriptor();
     reflection = field_message->GetReflection();
     field_descriptor = descriptor->FindFieldByName(string_list[i]);
+    if (!field_descriptor) {
+      return_V_SET_DOUBLE(status, -5, is_out_any_lock, out_any_lock, out_any, 0,
+                          any_msg);
+      return;
+    }
     if (field_descriptor->is_repeated()) {
-      field_message = &(
-          reflection->GetRepeatedMessage(*field_message, field_descriptor, index));
+      return_V_SET_DOUBLE(status, -8, is_out_any_lock, out_any_lock, out_any, 0,
+                          any_msg);
+      return;
     } else {
       field_message =
-          &(reflection->GetMessage(*field_message, field_descriptor));
+          reflection->MutableMessage(field_message, field_descriptor);
     }
   }
   //最后一个为内置类型
-  double field_v;
+  double field_v = in_set_val->v().d();
   descriptor = field_message->GetDescriptor();
   reflection = field_message->GetReflection();
-  field_descriptor = descriptor->FindFieldByName(string_list[string_list.size() - 1]);
+  field_descriptor =
+      descriptor->FindFieldByName(string_list[string_list.size() - 1]);
+  if (!field_descriptor) {
+    return_V_SET_DOUBLE(status, -5, is_out_any_lock, out_any_lock, out_any, 0,
+                        any_msg);
+    return;
+  }
+
   if (field_descriptor->is_repeated()) {
-    field_v =
-        reflection->GetRepeatedDouble(*field_message, field_descriptor, index);
+    if (index >= reflection->FieldSize(*field_message, field_descriptor)) {
+      return_V_SET_DOUBLE(status, -6, is_out_any_lock, out_any_lock, out_any, 0,
+                          any_msg);
+      return;
+    } else if (index < 0) {
+      return_V_SET_DOUBLE(status, -7, is_out_any_lock, out_any_lock, out_any, 0,
+                          any_msg);
+      return;
+    }
+    if (field_descriptor->cpp_type() != FieldDescriptor::CPPTYPE_DOUBLE) {
+      return_V_SET_DOUBLE(status, -9, is_out_any_lock, out_any_lock, out_any, 0,
+                          any_msg);
+      return;
+    }
+    reflection->SetRepeatedDouble(field_message, field_descriptor, index,
+                                  field_v);
   } else {
-    field_v = reflection->GetDouble(*field_message, field_descriptor);
+    reflection->SetDouble(field_message, field_descriptor, field_v);
   }
-  if (is_out_any_lock == PIN_HAS_LOCK) {
-    apollo::cyber::base::ReadLockGuard<apollo::cyber::base::ReentrantRWLock> lg(
-        *(out_any_lock));
-   out_any->mutable_v()->set_d(field_v);
-  } else {
-   out_any->mutable_v()->set_d(field_v);
-  }
+  return_V_SET_DOUBLE(status, 0, is_out_any_lock, out_any_lock, out_any,
+                      field_message, any_msg, field_v);
   return;
 }
 
 static fb_t fb_V_SET_DOUBLE = {
     {"Value", "V_SET_DOUBLE", "", 0, 0, 0, FB_EXEC, run_V_SET_DOUBLE},
-    {{"EN", PIN_NO_LOCK, T_BOOL, "", "",nullptr,0},
-     {"IN", PIN_NO_LOCK, T_FLOAT64, "", "",nullptr,0},
-     {"FIELD", PIN_NO_LOCK, T_STRING, "", "",nullptr,0},
-     {"INDEX", PIN_NO_LOCK, T_UINT32, "", "",nullptr,0}},
-    {{"STATUS", PIN_NO_LOCK, T_INT32, "", "",nullptr,0},
-     {"OUT", PIN_NO_LOCK, T_ANY, "", "",nullptr,0}}};
+    {{"EN", PIN_NO_LOCK, T_BOOL, "", "", nullptr, 0},
+     {"IN", PIN_NO_LOCK, T_ANY, "", "", nullptr, 0},
+     {"FIELD", PIN_NO_LOCK, T_STRING, "", "", nullptr, 0},
+     {"INDEX", PIN_NO_LOCK, T_INT32, "", "", nullptr, 0},
+     {"SET_VAL", PIN_NO_LOCK, T_FLOAT64, "", "", nullptr, 0}},
+    {{"STATUS", PIN_NO_LOCK, T_INT32, "", "", nullptr, 0},
+     {"OUT", PIN_NO_LOCK, T_ANY, "", "", nullptr, 0}}};

@@ -1,5 +1,5 @@
 infos {
-  cmd_id: 913
+  cmd_id: 920
   edit_type: SET
   proj {
     proj_name: "rotbot-engine-project"
@@ -7110,5 +7110,133 @@ infos {
     pin_index: 1
     ev_id: 175
     vo_id: 176
+  }
+}
+infos {
+  cmd_id: 914
+  element: EV
+  edit_type: ADD
+  ev {
+    ev_id: 177
+    ev_name: "Pose_1"
+    ev_type: 15
+    ev_desc: "Desc"
+    init_val {
+      t: T_ANY
+      v {
+        any {
+        }
+      }
+      tm: 1685019172797065696
+    }
+  }
+}
+infos {
+  cmd_id: 915
+  element: VO
+  edit_type: ADD
+  vo {
+    mod_id: 162
+    task_id: 163
+    fb_id: 171
+    pin_index: 1
+    ev_id: 177
+    vo_id: 178
+  }
+}
+infos {
+  cmd_id: 916
+  element: FB
+  edit_type: ADD
+  fb {
+    mod_id: 162
+    task_id: 163
+    fb_id: 179
+    flib_name: "Value"
+    fc_name: "V_SET_DOUBLE"
+  }
+  pos {
+    x: 143
+    y: 48
+  }
+}
+infos {
+  cmd_id: 917
+  element: FB
+  edit_type: MV
+  fb {
+    mod_id: 162
+    task_id: 163
+    fb_id: 179
+  }
+  pos {
+    x: 139
+    y: 47
+  }
+}
+infos {
+  cmd_id: 918
+  element: LK
+  edit_type: ADD
+  lk {
+    mod_id: 162
+    task_id: 163
+    lk_id: 180
+    src_fb_id: 171
+    src_pin_index: 1
+    target_fb_id: 179
+    target_pin_index: 1
+  }
+  pos {
+    x: 105
+    y: 30
+  }
+  pos {
+    x: 122
+    y: 30
+  }
+  pos {
+    x: 122
+    y: 54
+  }
+  pos {
+    x: 139
+    y: 54
+  }
+}
+infos {
+  cmd_id: 919
+  element: PIN
+  edit_type: SET
+  pin {
+    mod_id: 162
+    task_id: 163
+    fb_id: 179
+    pin_index: 4
+    pin_val {
+      t: T_FLOAT64
+      v {
+        d: 9.1230001449584961
+      }
+      tm: 1685019519505502251
+    }
+  }
+}
+infos {
+  cmd_id: 920
+  element: PIN
+  edit_type: SET
+  pin {
+    mod_id: 162
+    task_id: 163
+    fb_id: 179
+    pin_index: 2
+    pin_val {
+      t: T_STRING
+      v {
+        str: "y"
+      }
+      tm: 1685019524969982680
+    }
   }
 }

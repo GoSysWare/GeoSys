@@ -11,6 +11,9 @@ cc_library(
     hdrs = [
         "V_GET_ANY",
         "V_GET_DOUBLE",
+        "V_SET_ANY",
+        "V_SET_DOUBLE",
+
     ],
     srcs = [
         "Value.cpp",

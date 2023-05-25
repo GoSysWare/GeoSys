@@ -16,9 +16,16 @@ using namespace google::protobuf;
 
 #include "V_GET_ANY"
 #include "V_GET_DOUBLE"
+
+#include "V_SET_ANY"
+#include "V_SET_DOUBLE"
+
 static void *fb_table[]={
 	&fb_V_GET_ANY,
 	&fb_V_GET_DOUBLE,
+	&fb_V_SET_ANY,
+	&fb_V_SET_DOUBLE,
+
 	};
 
 static size_t cursor;
