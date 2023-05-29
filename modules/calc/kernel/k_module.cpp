@@ -161,7 +161,7 @@ void mod_run(PNode *p_pn, mod_t *p_mod) {
         // task完成一次运算周期
         p_mn->info.status.store(TaskStatus::FINISH);
 
-        AERROR << "Async task name:" << p_mn->name
+        AINFO << "Async task name:" << p_mn->name
                << " begin_time:" << p_mn->info.begin_time
                << " cycle_time:" << p_mn->info.cycle_time
                << " expend_time:" << p_mn->info.expend_time;

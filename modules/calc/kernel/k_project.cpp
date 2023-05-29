@@ -488,14 +488,19 @@ int prj_to_snapshot(Bus::ProjSnapshotReq *snapshot_req,
               size_t len1 = val_sp->ByteSizeLong();
               size_t len2 = p_fb->ins[i].v->ByteSizeLong();
               if (len1 != len2) {
-                AERROR << "i" << i << "++++ " << len1 << "--- " << len2;
+                AERROR << "fb.libname:"<< p_fb->h.libname << " fb.fbname:" << p_fb->h.fbname << " fb.fcname:" << p_fb->h.fcname  << " i:" << i << " ++++ " << len1 << " --- " << len2;
+                AINFO << "val origin :" << p_fb->ins[i].v->ShortDebugString();
+                AINFO << "val == :" << val_sp->ShortDebugString();
+
               }
             } else {
               val_sp->CopyFrom(*(p_fb->ins[i].v));
               size_t len1 = val_sp->ByteSizeLong();
               size_t len2 = p_fb->ins[i].v->ByteSizeLong();
               if (len1 != len2) {
-                AERROR << "i" << i << "++++ " << len1 << "--- " << len2;
+                AERROR << "fb.libname:"<< p_fb->h.libname << " fb.fbname:" << p_fb->h.fbname << " fb.fcname:" << p_fb->h.fcname  << " i:" << i << " ++++ " << len1 << " --- " << len2;
+                AINFO << "val origin :" << p_fb->ins[i].v->ShortDebugString();
+                AINFO << "val == :" << val_sp->ShortDebugString();
               }
             }
           }
@@ -510,14 +515,18 @@ int prj_to_snapshot(Bus::ProjSnapshotReq *snapshot_req,
               size_t len1 = val_sp->ByteSizeLong();
               size_t len2 = p_fb->outs[i].v->ByteSizeLong();
               if (len1 != len2) {
-                AERROR << "i" << i << "++++ " << len1 << "--- " << len2;
+                AERROR << "fb.libname:"<< p_fb->h.libname << " fb.fbname:" << p_fb->h.fbname << " fb.fcname:" << p_fb->h.fcname  << " i:" << i << " ++++ " << len1 << " --- " << len2;
+                AINFO << "val origin :" << p_fb->outs[i].v->ShortDebugString();
+                AINFO << "val == :" << val_sp->ShortDebugString();
               }
             } else {
               val_sp->CopyFrom(*(p_fb->outs[i].v));
               size_t len1 = val_sp->ByteSizeLong();
               size_t len2 = p_fb->outs[i].v->ByteSizeLong();
               if (len1 != len2) {
-                AERROR << "i" << i << "++++ " << len1 << "--- " << len2;
+                AERROR << "fb.libname:"<< p_fb->h.libname << " fb.fbname:" << p_fb->h.fbname << " fb.fcname:" << p_fb->h.fcname  << " i:" << i << " ++++ " << len1 << " --- " << len2;
+                AINFO << "val origin :" << p_fb->outs[i].v->ShortDebugString();
+                AINFO << "val == :" << val_sp->ShortDebugString();
               }
             }
           }
@@ -530,34 +539,7 @@ int prj_to_snapshot(Bus::ProjSnapshotReq *snapshot_req,
   }
 
   ev_to_snapshot(snapshot_req, snapshot);
-  Bus::ProjSnapshotRsp tmp_snapshot;
-  AINFO << "snapshot len" << snapshot->ByteSizeLong();
-  // AINFO  << snapshot->DebugString();
-
-  tmp_snapshot = *snapshot;
-  std::string buff;
-  size_t len = tmp_snapshot.ByteSizeLong();
-  AINFO << "snapshot size before:" << len;
-  // AINFO  << tmp_snapshot.DebugString();
-
-
-  buff.resize(len);
-  uint8_t *target = reinterpret_cast<uint8_t *>(&(buff[0]));
-  google::protobuf::io::EpsCopyOutputStream out(
-      target, len,
-      google::protobuf::io::CodedOutputStream::
-          IsDefaultSerializationDeterministic());
-  auto res = tmp_snapshot._InternalSerialize(target, &out);
-  if (target + len == res) {
-    AINFO << "target + len == res";
-  } else {
-    AINFO << "target + len != res";
-  }
-  GOOGLE_DCHECK(target + len == res);
-
-  len = tmp_snapshot.ByteSizeLong();
-  AINFO << "snapshot size after:" << len;
-
+  
   return 0;
 }
 

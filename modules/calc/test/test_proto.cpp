@@ -36,6 +36,11 @@ int main() {
   value_tm value;
   value.set_tm(20230718);
   Geo::Path path;
+
+  value.mutable_v()->mutable_any()->PackFrom(path);
+  std::cout << "any :" << value.ShortDebugString()<<std::endl;
+
+
   Geo::Pose *pose = path.add_poses();
   pose->mutable_orientation()->set_x(0.21);
   pose->mutable_orientation()->set_y(0.22);
@@ -59,6 +64,7 @@ int main() {
 
   value.set_t(v_type::T_ANY);
   value.mutable_v()->mutable_any()->PackFrom(path);
+  std::cout << "any :" << value.ShortDebugString()<<std::endl;
 
   string type_name;
   internal::ParseAnyTypeUrl(value.v().any().type_url(), &type_name);
