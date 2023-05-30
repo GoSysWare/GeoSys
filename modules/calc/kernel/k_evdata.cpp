@@ -315,14 +315,14 @@ int ev_to_snapshot(Bus::ProjSnapshotReq *snapshot_req,
 
       //如果请求中含有需要上传的ev
       is_upload = false;
-      for (auto id : snapshot_req->ev_id()) {
+      for (auto id : snapshot_req->evs()) {
         if (id == p_vn->id) {
           is_upload = true;
           break;
         }
       }
       if (is_upload) {
-        Bus::EVNodeValue *val_sp = snapshot->add_evs();
+        Bus::EVNodeSnapshot *val_sp = snapshot->add_evs();
         val_sp->set_ev_id(p_vn->id);
         apollo::cyber::base::ReadLockGuard<apollo::cyber::base::ReentrantRWLock>
             lock(p_vn->mutex);
@@ -331,7 +331,7 @@ int ev_to_snapshot(Bus::ProjSnapshotReq *snapshot_req,
       p_vn = p_vn->p_next;
       continue;
     }
-    Bus::EVNodeValue *val_sp = snapshot->add_evs();
+    Bus::EVNodeSnapshot *val_sp = snapshot->add_evs();
     val_sp->set_ev_id(p_vn->id);
     apollo::cyber::base::ReadLockGuard<apollo::cyber::base::ReentrantRWLock>
         lock(p_vn->mutex);

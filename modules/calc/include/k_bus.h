@@ -2,7 +2,6 @@
 #define k_bus_h
 
 #include "cyber/cyber.h"
-
 #include "k_project.h"
 #include "modules/calc/proto/cmd.pb.h"
 #include "modules/calc/proto/snapshot.pb.h"
@@ -32,17 +31,17 @@ std::shared_ptr<Bus::ProjectCmdRsp> bus_disconnect_send(
         apollo::cyber::Client<Bus::ProjectCmdReq, Bus::ProjectCmdRsp>>
         bus_cmd);
 
-std::shared_ptr<Bus::ProjectCmdRsp>
-bus_run_send(std::shared_ptr<apollo::cyber::Node> node,
-             std::shared_ptr<
-                 apollo::cyber::Client<Bus::ProjectCmdReq, Bus::ProjectCmdRsp>>
-                 bus_cmd);
+std::shared_ptr<Bus::ProjectCmdRsp> bus_run_send(
+    std::shared_ptr<apollo::cyber::Node> node,
+    std::shared_ptr<
+        apollo::cyber::Client<Bus::ProjectCmdReq, Bus::ProjectCmdRsp>>
+        bus_cmd);
 
-std::shared_ptr<Bus::ProjectCmdRsp>
-bus_stop_send(std::shared_ptr<apollo::cyber::Node> node,
-              std::shared_ptr<
-                  apollo::cyber::Client<Bus::ProjectCmdReq, Bus::ProjectCmdRsp>>
-                  bus_cmd);
+std::shared_ptr<Bus::ProjectCmdRsp> bus_stop_send(
+    std::shared_ptr<apollo::cyber::Node> node,
+    std::shared_ptr<
+        apollo::cyber::Client<Bus::ProjectCmdReq, Bus::ProjectCmdRsp>>
+        bus_cmd);
 
 std::shared_ptr<Bus::ProjectCmdRsp> bus_reset_send(
     std::shared_ptr<apollo::cyber::Node> node,
@@ -50,11 +49,11 @@ std::shared_ptr<Bus::ProjectCmdRsp> bus_reset_send(
         apollo::cyber::Client<Bus::ProjectCmdReq, Bus::ProjectCmdRsp>>
         bus_cmd);
 
-std::shared_ptr<Bus::ProjectCmdRsp>
-bus_sync_send(std::shared_ptr<apollo::cyber::Node> node,
-              std::shared_ptr<
-                  apollo::cyber::Client<Bus::ProjectCmdReq, Bus::ProjectCmdRsp>>
-                  bus_cmd);
+std::shared_ptr<Bus::ProjectCmdRsp> bus_sync_send(
+    std::shared_ptr<apollo::cyber::Node> node,
+    std::shared_ptr<
+        apollo::cyber::Client<Bus::ProjectCmdReq, Bus::ProjectCmdRsp>>
+        bus_cmd);
 
 std::shared_ptr<Bus::ProjectCmdRsp> bus_download_send(
     std::shared_ptr<apollo::cyber::Node> node,
@@ -81,7 +80,7 @@ std::shared_ptr<Bus::ProjSnapshotRsp> bus_proj_snapshot_send(
     std::shared_ptr<
         apollo::cyber::Client<Bus::ProjSnapshotReq, Bus::ProjSnapshotRsp>>
         bus_cmd,
-    std::vector<int> ev_ids);
+    std::vector<int> ev_ids, std::vector<Bus::TaskInfo> task_infos);
 
 std::shared_ptr<Bus::ProjectInfoRsp> bus_proj_info_send(
     std::shared_ptr<apollo::cyber::Node> node,

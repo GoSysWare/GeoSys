@@ -148,8 +148,8 @@ void mod_run(PNode *p_pn, mod_t *p_mod) {
         p_mn->info.prev_time = p_mn->info.begin_time;
 
         {
-          // apollo::cyber::base::WriteLockGuard<apollo::cyber::base::AtomicRWLock>
-          //     lg(p_mn->mutex);
+          apollo::cyber::base::WriteLockGuard<apollo::cyber::base::AtomicRWLock>
+              lg(p_mn->mutex);
 
           prg_exec(p_mn->p_prg, &p_mn->info);
         }
@@ -205,8 +205,8 @@ void mod_run(PNode *p_pn, mod_t *p_mod) {
                 .ToNanosecond();
         p_mn->info.prev_time = p_mn->info.begin_time;
         {
-          // apollo::cyber::base::WriteLockGuard<apollo::cyber::base::AtomicRWLock>
-          //     lg(p_mn->mutex);
+          apollo::cyber::base::WriteLockGuard<apollo::cyber::base::AtomicRWLock>
+              lg(p_mn->mutex);
 
           prg_exec(p_mn->p_prg, &p_mn->info);
         }

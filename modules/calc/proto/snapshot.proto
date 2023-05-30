@@ -20,10 +20,9 @@ message ModSnapshot {
 message ProjSnapshotRsp {
   Result result = 1;
   ProjectInfoRsp proj_info = 2;
-  repeated int32 mod_id = 3;
-  repeated int32 ev_id = 4;
-  repeated ModSnapshot mods = 5;
-  repeated EVNodeValue evs = 6;
+  repeated int32 ev_id = 3;
+  repeated TaskSnapshot tasks = 4;
+  repeated EVNodeSnapshot evs = 5;
 }
 
 message ProjSnapshotReq {
@@ -31,24 +30,28 @@ message ProjSnapshotReq {
   string host_ip = 2;
   string process_id = 3;
   string prj_name = 4;
-  repeated int32 mod_id = 5;
-  repeated int32 ev_id = 6;
+  repeated TaskInfo tasks = 5;
+  repeated int32 evs = 6;
 }
 
-message EVNodeValue {
+
+message EVNodeSnapshot {
   int32 ev_id = 1;
   value_tm val = 2;
 }
 
-message EVNodeSnapshot { repeated EVNodeValue vals = 1; }
+message EVSnapshot { repeated EVNodeSnapshot ev_vals = 1; }
 
 message ModInfo {
-  string mod_id = 1;
+  int32 mod_id = 1;
   string mod_name = 2;
   string mod_uuid = 3;
   uint32 cmd_id = 4;
 }
-
+message TaskInfo {
+  int32 mod_id = 1;
+  int32 task_id = 4;
+}
 message ProjectInfoReq {
   string host_name = 1;
   string host_ip = 2;

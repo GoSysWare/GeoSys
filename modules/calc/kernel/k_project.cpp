@@ -438,22 +438,20 @@ int prj_to_snapshot(Bus::ProjSnapshotReq *snapshot_req,
   enode_t *p_en = 0;
   fb_t *p_fb = 0;
   unsigned int i = 0;
+  unsigned int m = 0;
 
   prjinfo_to_snapshot(snapshot->mutable_proj_info());
 
-  p_pn = pn_head.p_next;
-  while (p_pn != &pn_head) {
-    Bus::ModSnapshot *mod_sp = snapshot->add_mods();
-    mod_sp->set_mod_id(p_pn->id);
-    p_mn = p_pn->p_mod->mn_head.p_next;
-    if (p_mn->stop.load()) continue;
-    while (p_mn != &p_pn->p_mod->mn_head) {
-      // apollo::cyber::base::ReadLockGuard<apollo::cyber::base::AtomicRWLock>
-      // lg(
-      //     p_mn->mutex);
-      Bus::TaskSnapshot *task_sp = mod_sp->add_tasks();
-      task_sp->set_mod_id(p_pn->id);
-      task_sp->set_task_id(p_mn->id);
+  for (m = 0; m < snapshot_req->tasks_size(); m++) {
+    int mod_id = snapshot_req->tasks(m).mod_id();
+    int task_id = snapshot_req->tasks(m).task_id();
+    p_mn = prj_prg_info_find(mod_id, task_id);
+    if (p_mn) {
+      apollo::cyber::base::ReadLockGuard<apollo::cyber::base::AtomicRWLock> lg(
+          p_mn->mutex);
+      Bus::TaskSnapshot *task_sp = snapshot->add_tasks();
+      task_sp->set_mod_id(mod_id);
+      task_sp->set_task_id(task_id);
       task_sp->set_status(p_mn->info.status.load());
       task_sp->set_begin_time(p_mn->info.begin_time);
       task_sp->set_expend_time(p_mn->info.expend_time);
@@ -463,6 +461,13 @@ int prj_to_snapshot(Bus::ProjSnapshotReq *snapshot_req,
       while (p_en != &p_mn->p_prg->en_head) {
         if (p_en->p_fb != ((void *)0)) {
           p_fb = p_en->p_fb;
+          AERROR << "fb.libname:" << p_fb->h.libname
+                 << " fb.fbname:" << p_fb->h.fbname
+                 << " fb.fcname:" << p_fb->h.fcname
+                 << " fb.in size: " << p_fb->ins.size()
+                 << " fb.out size: " << p_fb->outs.size()
+                 << " task val size:" << task_sp->vals_size();
+
           // 解析fb的header
           value_tm *val_sp = task_sp->add_vals();
           val_sp->set_t(v_type::T_UINT64);
@@ -485,23 +490,8 @@ int prj_to_snapshot(Bus::ProjSnapshotReq *snapshot_req,
                   apollo::cyber::base::ReentrantRWLock>
                   lg(*(p_fb->ins[i].l));
               val_sp->CopyFrom(*(p_fb->ins[i].v));
-              size_t len1 = val_sp->ByteSizeLong();
-              size_t len2 = p_fb->ins[i].v->ByteSizeLong();
-              if (len1 != len2) {
-                AERROR << "fb.libname:"<< p_fb->h.libname << " fb.fbname:" << p_fb->h.fbname << " fb.fcname:" << p_fb->h.fcname  << " i:" << i << " ++++ " << len1 << " --- " << len2;
-                AINFO << "val origin :" << p_fb->ins[i].v->ShortDebugString();
-                AINFO << "val == :" << val_sp->ShortDebugString();
-
-              }
             } else {
               val_sp->CopyFrom(*(p_fb->ins[i].v));
-              size_t len1 = val_sp->ByteSizeLong();
-              size_t len2 = p_fb->ins[i].v->ByteSizeLong();
-              if (len1 != len2) {
-                AERROR << "fb.libname:"<< p_fb->h.libname << " fb.fbname:" << p_fb->h.fbname << " fb.fcname:" << p_fb->h.fcname  << " i:" << i << " ++++ " << len1 << " --- " << len2;
-                AINFO << "val origin :" << p_fb->ins[i].v->ShortDebugString();
-                AINFO << "val == :" << val_sp->ShortDebugString();
-              }
             }
           }
           for (i = 0; i < p_fb->outs.size(); i++) {
@@ -512,36 +502,148 @@ int prj_to_snapshot(Bus::ProjSnapshotReq *snapshot_req,
                   apollo::cyber::base::ReentrantRWLock>
                   lg(*(p_fb->outs[i].l));
               val_sp->CopyFrom(*(p_fb->outs[i].v));
-              size_t len1 = val_sp->ByteSizeLong();
-              size_t len2 = p_fb->outs[i].v->ByteSizeLong();
-              if (len1 != len2) {
-                AERROR << "fb.libname:"<< p_fb->h.libname << " fb.fbname:" << p_fb->h.fbname << " fb.fcname:" << p_fb->h.fcname  << " i:" << i << " ++++ " << len1 << " --- " << len2;
-                AINFO << "val origin :" << p_fb->outs[i].v->ShortDebugString();
-                AINFO << "val == :" << val_sp->ShortDebugString();
-              }
             } else {
               val_sp->CopyFrom(*(p_fb->outs[i].v));
-              size_t len1 = val_sp->ByteSizeLong();
-              size_t len2 = p_fb->outs[i].v->ByteSizeLong();
-              if (len1 != len2) {
-                AERROR << "fb.libname:"<< p_fb->h.libname << " fb.fbname:" << p_fb->h.fbname << " fb.fcname:" << p_fb->h.fcname  << " i:" << i << " ++++ " << len1 << " --- " << len2;
-                AINFO << "val origin :" << p_fb->outs[i].v->ShortDebugString();
-                AINFO << "val == :" << val_sp->ShortDebugString();
-              }
             }
           }
         }
         p_en = p_en->p_next;
       }
-      p_mn = p_mn->p_next;
     }
-    p_pn = p_pn->p_next;
   }
-
   ev_to_snapshot(snapshot_req, snapshot);
-  
   return 0;
 }
+
+// int prj_to_snapshot(Bus::ProjSnapshotReq *snapshot_req,
+//                     Bus::ProjSnapshotRsp *snapshot) {
+//   pnode_t *p_pn = 0;
+//   mnode_t *p_mn = 0;
+//   enode_t *p_en = 0;
+//   fb_t *p_fb = 0;
+//   unsigned int i = 0;
+
+//   prjinfo_to_snapshot(snapshot->mutable_proj_info());
+
+//   p_pn = pn_head.p_next;
+//   while (p_pn != &pn_head) {
+//     snapshot->tasks
+
+//         Bus::ModSnapshot *mod_sp = snapshot->add_mods();
+//     mod_sp->set_mod_id(p_pn->id);
+//     p_mn = p_pn->p_mod->mn_head.p_next;
+//     if (p_mn->stop.load()) continue;
+//     while (p_mn != &p_pn->p_mod->mn_head) {
+//       //
+//       apollo::cyber::base::ReadLockGuard<apollo::cyber::base::AtomicRWLock>
+//       // lg(
+//       //     p_mn->mutex);
+//       Bus::TaskSnapshot *task_sp = mod_sp->add_tasks();
+//       task_sp->set_mod_id(p_pn->id);
+//       task_sp->set_task_id(p_mn->id);
+//       task_sp->set_status(p_mn->info.status.load());
+//       task_sp->set_begin_time(p_mn->info.begin_time);
+//       task_sp->set_expend_time(p_mn->info.expend_time);
+//       task_sp->set_creator("test creator");
+
+//       p_en = p_mn->p_prg->en_head.p_next;
+//       while (p_en != &p_mn->p_prg->en_head) {
+//         if (p_en->p_fb != ((void *)0)) {
+//           p_fb = p_en->p_fb;
+//           // 解析fb的header
+//           value_tm *val_sp = task_sp->add_vals();
+//           val_sp->set_t(v_type::T_UINT64);
+//           val_sp->mutable_v()->set_ull(p_fb->h.cycle_time);
+//           val_sp = task_sp->add_vals();
+//           val_sp->set_t(v_type::T_UINT64);
+//           val_sp->mutable_v()->set_ull(p_fb->h.begin_time);
+//           val_sp = task_sp->add_vals();
+//           val_sp->set_t(v_type::T_UINT64);
+//           val_sp->mutable_v()->set_ull(p_fb->h.expend_time);
+//           val_sp = task_sp->add_vals();
+//           val_sp->set_t(v_type::T_INT32);
+//           val_sp->mutable_v()->set_i(p_fb->h.flag);
+
+//           for (i = 0; i < p_fb->ins.size(); i++) {
+//             if (IS_NOT_UPLOAD_TYPE(p_fb->ins[i].t)) continue;
+//             val_sp = task_sp->add_vals();
+//             if (p_fb->ins[i].s == PIN_HAS_LOCK) {
+//               apollo::cyber::base::ReadLockGuard<
+//                   apollo::cyber::base::ReentrantRWLock>
+//                   lg(*(p_fb->ins[i].l));
+//               val_sp->CopyFrom(*(p_fb->ins[i].v));
+//               size_t len1 = val_sp->ByteSizeLong();
+//               size_t len2 = p_fb->ins[i].v->ByteSizeLong();
+//               if (len1 != len2) {
+//                 AERROR << "fb.libname:" << p_fb->h.libname
+//                        << " fb.fbname:" << p_fb->h.fbname
+//                        << " fb.fcname:" << p_fb->h.fcname << " i:" << i
+//                        << " ++++ " << len1 << " --- " << len2;
+//                 AINFO << "val origin :" <<
+//                 p_fb->ins[i].v->ShortDebugString(); AINFO << "val == :" <<
+//                 val_sp->ShortDebugString();
+//               }
+//             } else {
+//               val_sp->CopyFrom(*(p_fb->ins[i].v));
+//               size_t len1 = val_sp->ByteSizeLong();
+//               size_t len2 = p_fb->ins[i].v->ByteSizeLong();
+//               if (len1 != len2) {
+//                 AERROR << "fb.libname:" << p_fb->h.libname
+//                        << " fb.fbname:" << p_fb->h.fbname
+//                        << " fb.fcname:" << p_fb->h.fcname << " i:" << i
+//                        << " ++++ " << len1 << " --- " << len2;
+//                 AINFO << "val origin :" <<
+//                 p_fb->ins[i].v->ShortDebugString(); AINFO << "val == :" <<
+//                 val_sp->ShortDebugString();
+//               }
+//             }
+//           }
+//           for (i = 0; i < p_fb->outs.size(); i++) {
+//             if (IS_NOT_UPLOAD_TYPE(p_fb->outs[i].t)) continue;
+//             val_sp = task_sp->add_vals();
+//             if (p_fb->outs[i].s == PIN_HAS_LOCK) {
+//               apollo::cyber::base::ReadLockGuard<
+//                   apollo::cyber::base::ReentrantRWLock>
+//                   lg(*(p_fb->outs[i].l));
+//               val_sp->CopyFrom(*(p_fb->outs[i].v));
+//               size_t len1 = val_sp->ByteSizeLong();
+//               size_t len2 = p_fb->outs[i].v->ByteSizeLong();
+//               if (len1 != len2) {
+//                 AERROR << "fb.libname:" << p_fb->h.libname
+//                        << " fb.fbname:" << p_fb->h.fbname
+//                        << " fb.fcname:" << p_fb->h.fcname << " i:" << i
+//                        << " ++++ " << len1 << " --- " << len2;
+//                 AINFO << "val origin :" <<
+//                 p_fb->outs[i].v->ShortDebugString(); AINFO << "val == :" <<
+//                 val_sp->ShortDebugString();
+//               }
+//             } else {
+//               val_sp->CopyFrom(*(p_fb->outs[i].v));
+//               size_t len1 = val_sp->ByteSizeLong();
+//               size_t len2 = p_fb->outs[i].v->ByteSizeLong();
+//               if (len1 != len2) {
+//                 AERROR << "fb.libname:" << p_fb->h.libname
+//                        << " fb.fbname:" << p_fb->h.fbname
+//                        << " fb.fcname:" << p_fb->h.fcname << " i:" << i
+//                        << " ++++ " << len1 << " --- " << len2;
+//                 AINFO << "val origin :" <<
+//                 p_fb->outs[i].v->ShortDebugString(); AINFO << "val == :" <<
+//                 val_sp->ShortDebugString();
+//               }
+//             }
+//           }
+//         }
+//         p_en = p_en->p_next;
+//       }
+//       p_mn = p_mn->p_next;
+//     }
+//     p_pn = p_pn->p_next;
+//   }
+
+//   ev_to_snapshot(snapshot_req, snapshot);
+
+//   return 0;
+// }
 
 int info_cmp(prjinfo_t *info, Bus::ProjectInfoRsp *bus_proj_info) {
   if (info->uuid != bus_proj_info->prj_uuid()) {
@@ -566,23 +668,18 @@ int prj_from_snapshot(Bus::ProjSnapshotRsp *snapshot) {
   if (info_cmp(&info, snapshot->mutable_proj_info()) != 0) {
     return 1;
   }
-  p_pn = pn_head.p_next;
-  while (p_pn != &pn_head) {
-    p_mn = p_pn->p_mod->mn_head.p_next;
-    Bus::ModSnapshot mod_sp = snapshot->mods(m++);
-    assert(mod_sp.mod_id() == p_pn->id);
-    n = 0;
-    while (p_mn != &p_pn->p_mod->mn_head) {
-      // apollo::cyber::base::WriteLockGuard<apollo::cyber::base::AtomicRWLock>
-      // lg(
-      //     p_mn->mutex);
+  for (m = 0; m < snapshot->tasks_size(); m++) {
+    int mod_id = snapshot->tasks(m).mod_id();
+    int task_id = snapshot->tasks(m).task_id();
+    p_mn = prj_prg_info_find(mod_id, task_id);
 
-      p_en = p_mn->p_prg->en_head.p_next;
-      Bus::TaskSnapshot task_sp = mod_sp.tasks(n++);
+    if (p_mn) {
+      Bus::TaskSnapshot task_sp = snapshot->tasks(m);
       assert(task_sp.task_id() == p_mn->id);
       p_mn->info.status.store(task_sp.status());
       p_mn->info.begin_time = task_sp.begin_time();
       p_mn->info.expend_time = task_sp.expend_time();
+      p_en = p_mn->p_prg->en_head.p_next;
 
       k = 0;
       while (p_en != &p_mn->p_prg->en_head) {
@@ -618,12 +715,85 @@ int prj_from_snapshot(Bus::ProjSnapshotRsp *snapshot) {
         }
         p_en = p_en->p_next;
       }
-      p_mn = p_mn->p_next;
     }
-    p_pn = p_pn->p_next;
   }
-
   ev_from_snapshot(snapshot);
 
   return 0;
 }
+
+// int prj_from_snapshot(Bus::ProjSnapshotRsp *snapshot) {
+//   pnode_t *p_pn = 0;
+//   mnode_t *p_mn = 0;
+//   enode_t *p_en = 0;
+//   fb_t *p_fb = 0;
+//   unsigned int i = 0;
+//   unsigned int m = 0;
+//   unsigned int n = 0;
+//   unsigned int k = 0;
+
+//   if (info_cmp(&info, snapshot->mutable_proj_info()) != 0) {
+//     return 1;
+//   }
+//   p_pn = pn_head.p_next;
+//   while (p_pn != &pn_head) {
+//     p_mn = p_pn->p_mod->mn_head.p_next;
+//     Bus::TaskSnapshot task_sp = snapshot->tasks(m++);
+//     assert(task_sp.mod_id() == p_pn->id);
+//     n = 0;
+//     while (p_mn != &p_pn->p_mod->mn_head) {
+//       //
+//       apollo::cyber::base::WriteLockGuard<apollo::cyber::base::AtomicRWLock>
+//       // lg(
+//       //     p_mn->mutex);
+
+//       p_en = p_mn->p_prg->en_head.p_next;
+//       Bus::TaskSnapshot task_sp = task_sp.tasks(n++);
+//       assert(task_sp.task_id() == p_mn->id);
+//       p_mn->info.status.store(task_sp.status());
+//       p_mn->info.begin_time = task_sp.begin_time();
+//       p_mn->info.expend_time = task_sp.expend_time();
+
+//       k = 0;
+//       while (p_en != &p_mn->p_prg->en_head) {
+//         if (p_en->p_fb != ((void *)0)) {
+//           p_fb = p_en->p_fb;
+//           p_fb->h.cycle_time = task_sp.vals(k++).v().ull();
+//           p_fb->h.begin_time = task_sp.vals(k++).v().ull();
+//           p_fb->h.expend_time = task_sp.vals(k++).v().ull();
+//           p_fb->h.flag = task_sp.vals(k++).v().i();
+//           for (i = 0; i < p_fb->ins.size(); i++) {
+//             if (IS_NOT_UPLOAD_TYPE(p_fb->ins[i].t)) continue;
+
+//             if (p_fb->ins[i].s == PIN_HAS_LOCK) {
+//               apollo::cyber::base::WriteLockGuard<
+//                   apollo::cyber::base::ReentrantRWLock>
+//                   lg(*(p_fb->ins[i].l));
+//               p_fb->ins[i].v->CopyFrom(task_sp.vals(k++));
+//             } else {
+//               p_fb->ins[i].v->CopyFrom(task_sp.vals(k++));
+//             }
+//           }
+//           for (i = 0; i < p_fb->outs.size(); i++) {
+//             if (IS_NOT_UPLOAD_TYPE(p_fb->outs[i].t)) continue;
+//             if (p_fb->outs[i].s == PIN_HAS_LOCK) {
+//               apollo::cyber::base::WriteLockGuard<
+//                   apollo::cyber::base::ReentrantRWLock>
+//                   lg(*(p_fb->outs[i].l));
+//               p_fb->outs[i].v->CopyFrom(task_sp.vals(k++));
+//             } else {
+//               p_fb->outs[i].v->CopyFrom(task_sp.vals(k++));
+//             }
+//           }
+//         }
+//         p_en = p_en->p_next;
+//       }
+//       p_mn = p_mn->p_next;
+//     }
+//     p_pn = p_pn->p_next;
+//   }
+
+//   ev_from_snapshot(snapshot);
+
+//   return 0;
+// }

@@ -6,81 +6,81 @@
 //定时器中刷新各个引脚和变量的值，并更新画面
 void PLTarget::timerEvent(QTimerEvent *e) {
 
-  std::shared_ptr<Bus::ProjectInfoRsp> info_res =
-      bus_proj_info_send(gNode, gclient_proj_info);
+  // std::shared_ptr<Bus::ProjectInfoRsp> info_res =
+  //     bus_proj_info_send(gNode, gclient_proj_info);
 
-  if (info_res != nullptr && info_res->has_result() &&
-      info_res->result().code() == Bus::ResultCode::OK) {
-    idCmdTarget = info_res->cmd_id();
-    uuidTarget = QString::fromStdString(info_res->prj_uuid());
-    qDebug() << "Target cmd_id:" << idCmdTarget << "uuid" << uuidTarget;
-    qDebug() << "HMI cmd_id:" << gMainModel->cmdID << "uuid"
-             << gMainModel->project.uuid;
+  // if (info_res != nullptr && info_res->has_result() &&
+  //     info_res->result().code() == Bus::ResultCode::OK) {
+  //   idCmdTarget = info_res->cmd_id();
+  //   uuidTarget = QString::fromStdString(info_res->prj_uuid());
+  //   qDebug() << "Target cmd_id:" << idCmdTarget << "uuid" << uuidTarget;
+  //   qDebug() << "HMI cmd_id:" << gMainModel->cmdID << "uuid"
+  //            << gMainModel->project.uuid;
 
-  } else {
-    online(false, NULL);
-  }
+  // } else {
+  //   online(false, NULL);
+  // }
 
-  if (bMonitor) {
-    std::shared_ptr<Bus::ProjSnapshotRsp> sp_res =
-        bus_proj_snapshot_send(gNode, gclient_proj_snapshot, ev_ids);
+  // if (bMonitor) {
+  //   std::shared_ptr<Bus::ProjSnapshotRsp> sp_res =
+  //       bus_proj_snapshot_send(gNode, gclient_proj_snapshot, ev_ids);
 
-    if (sp_res != nullptr && sp_res->has_result() &&
-        sp_res->result().code() == Bus::ResultCode::OK) {
+  //   if (sp_res != nullptr && sp_res->has_result() &&
+  //       sp_res->result().code() == Bus::ResultCode::OK) {
 
-      prj_from_snapshot( sp_res.get());
-      // prj_dump();
-      int i, j, k, n, m;
-      // load fbs value
-      PLModule *mod;
+  //     prj_from_snapshot( sp_res.get());
+  //     // prj_dump();
+  //     int i, j, k, n, m;
+  //     // load fbs value
+  //     PLModule *mod;
 
-      PLProgram *prg;
-      PLFunctionBlock *fb;
-      fb_t *p_fb;
-      for (m = 0; m < gMainModel->modList.size(); m++) {
-        mod = &gMainModel->modList[m];
+  //     PLProgram *prg;
+  //     PLFunctionBlock *fb;
+  //     fb_t *p_fb;
+  //     for (m = 0; m < gMainModel->modList.size(); m++) {
+  //       mod = &gMainModel->modList[m];
 
-        for (i = 0; i < mod->prgList.size(); i++) {
-          prg = &mod->prgList[i];
-          for (j = 0; j < prg->fbs.size(); j++) {
-            fb = &prg->fbs[j];
-            p_fb = prj_fbfind(fb->idMod, fb->idPrg, fb->id);
-            // header
-            fb->flag = p_fb->h.flag;
-            fb->cycle_time = p_fb->h.cycle_time;
-            fb->begin_time = p_fb->h.begin_time;
-            fb->expend_time = p_fb->h.expend_time;
+  //       for (i = 0; i < mod->prgList.size(); i++) {
+  //         prg = &mod->prgList[i];
+  //         for (j = 0; j < prg->fbs.size(); j++) {
+  //           fb = &prg->fbs[j];
+  //           p_fb = prj_fbfind(fb->idMod, fb->idPrg, fb->id);
+  //           // header
+  //           fb->flag = p_fb->h.flag;
+  //           fb->cycle_time = p_fb->h.cycle_time;
+  //           fb->begin_time = p_fb->h.begin_time;
+  //           fb->expend_time = p_fb->h.expend_time;
 
-            // input
-            for (k = 0; k < fb->input.size(); k++) {
-              fb->input[k].value = *(p_fb->ins[k].v);
-            }
-            // output
-            for (k = 0; k < fb->output.size(); k++) {
-              fb->output[k].value = *(p_fb->outs[k].v);
-              // qDebug() << "fb" << fb->id << "pin" << k << "val"
-              //          << fb->output[k].value.v().i();
-            }
-            // // property
-            // for (k = 0; k < fb->property.size(); k++) {
-            //   fb->property[k].value = *(p_fb->props[k].v);
-            // }
-          }
-        }
-      }
-      // load evs value
-      PLEVData *ev;
-      value_tm *p_ev;
-      for (int i = 0; i < gMainModel->evList.size(); i++) {
-        ev = &gMainModel->evList[i];
-        p_ev = ev_find_v(ev->id)->get();
-        ev->value = *p_ev;
-      }
-      gMainFrame->updateCadView();
-    } else {
-      online(false, NULL);
-    }
-  }
+  //           // input
+  //           for (k = 0; k < fb->input.size(); k++) {
+  //             fb->input[k].value = *(p_fb->ins[k].v);
+  //           }
+  //           // output
+  //           for (k = 0; k < fb->output.size(); k++) {
+  //             fb->output[k].value = *(p_fb->outs[k].v);
+  //             // qDebug() << "fb" << fb->id << "pin" << k << "val"
+  //             //          << fb->output[k].value.v().i();
+  //           }
+  //           // // property
+  //           // for (k = 0; k < fb->property.size(); k++) {
+  //           //   fb->property[k].value = *(p_fb->props[k].v);
+  //           // }
+  //         }
+  //       }
+  //     }
+  //     // load evs value
+  //     PLEVData *ev;
+  //     value_tm *p_ev;
+  //     for (int i = 0; i < gMainModel->evList.size(); i++) {
+  //       ev = &gMainModel->evList[i];
+  //       p_ev = ev_find_v(ev->id)->get();
+  //       ev->value = *p_ev;
+  //     }
+  //     gMainFrame->updateCadView();
+  //   } else {
+  //     online(false, NULL);
+  //   }
+  // }
 }
 
 PLTarget::PLTarget(QObject *parent) {
@@ -108,9 +108,16 @@ PLTarget::PLTarget(QObject *parent) {
     }
 
     if (this->bMonitor) {
+      if(!gMainModel->modCurrent || !gMainModel->prgCurrent) return;
+      
+      Bus::TaskInfo info;
+      std::vector<Bus::TaskInfo> task_infos ;
+      info.set_mod_id(gMainModel->modCurrent->id);
+      info.set_task_id(gMainModel->prgCurrent->id);
+      task_infos.push_back(info);
 
       std::shared_ptr<Bus::ProjSnapshotRsp> sp_res =
-          bus_proj_snapshot_send(gNode, gclient_proj_snapshot, this->ev_ids);
+          bus_proj_snapshot_send(gNode, gclient_proj_snapshot, this->ev_ids,task_infos);
 
       if (sp_res != nullptr && sp_res->has_result() &&
           sp_res->result().code() == Bus::ResultCode::OK) {

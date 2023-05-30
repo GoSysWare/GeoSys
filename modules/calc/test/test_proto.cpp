@@ -8,8 +8,11 @@
 #include <regex>
 #include <stdlib.h>
 #include <vector>
+#include <google/protobuf/util/json_util.h>
 using namespace std;
 using namespace google::protobuf;
+
+using namespace google::protobuf::util;
 
 static void Stringsplit(const string &str, const string &split,
                         vector<string> &res) {
@@ -65,9 +68,31 @@ int main() {
   value.set_t(v_type::T_ANY);
   value.mutable_v()->mutable_any()->PackFrom(path);
   std::cout << "any :" << value.ShortDebugString()<<std::endl;
+  std::string json_result;
+  JsonOptions options;
+
+  MessageToJsonString(value,&json_result,options);
+  std::cout << "json_result :" << json_result<<std::endl;
+
+  options.add_whitespace = true;
+  MessageToJsonString(value,&json_result,options);
+  std::cout << "json_result :" << json_result<<std::endl;
+
+  options.always_print_primitive_fields = true;
+  MessageToJsonString(value,&json_result,options);
+  std::cout << "json_result :" << json_result<<std::endl;
+
+  options.preserve_proto_field_names = true;
+  MessageToJsonString(value,&json_result,options);
+  std::cout << "json_result :" << json_result<<std::endl;
+
+
+  options.always_print_enums_as_ints = true;
+  MessageToJsonString(value,&json_result,options);
+  std::cout << "json_result :" << json_result<<std::endl;
 
   string type_name;
-  internal::ParseAnyTypeUrl(value.v().any().type_url(), &type_name);
+  google::protobuf::internal::ParseAnyTypeUrl(value.v().any().type_url(), &type_name);
   const Descriptor *new_descriptor =
       DescriptorPool::generated_pool()->FindMessageTypeByName(type_name);
   const Message *new_prototype =

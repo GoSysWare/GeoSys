@@ -1,6 +1,7 @@
 
 
 #include "modules/calc/include/k_bus.h"
+
 #include "modules/calc/common/calc_gflags.h"
 #include "modules/calc/include/k_command.h"
 
@@ -39,24 +40,22 @@ static int on_bus_download(Bus::EditInfos infos) {
   AINFO << "on_bus_download " << infos.ShortDebugString();
   ret = cmds_dispatch(infos);
   // archive logic
-  if(ret == 0){
+  if (ret == 0) {
     AINFO << "on_bus_download succ";
-     cmds_append(infos);
-  }
-  else{
-    AINFO << "on_bus_download error" ;
-
+    cmds_append(infos);
+  } else {
+    AINFO << "on_bus_download error";
   }
   return ret;
 }
 
 static int on_bus_upload(Bus::EditInfos *infos) {
-  AINFO << "on_bus_upload " ;
+  AINFO << "on_bus_upload ";
   return cmds_load(infos);
 }
 
 static int on_bus_set_val(Bus::EditInfos infos) {
-  AINFO << "on_bus_set_val " ;
+  AINFO << "on_bus_set_val ";
   return cmds_set_val(infos);
 }
 
@@ -67,7 +66,6 @@ static int on_bus_sync() {
 }
 static bool filter_service(std::string host_name, std::string host_ip,
                            std::string process_id, std::string prj_name) {
-
   return true;
 }
 
@@ -81,7 +79,6 @@ std::shared_ptr<apollo::cyber::Service<Bus::ProjectCmdReq, Bus::ProjectCmdRsp>>
     prj_cmd_srv;
 
 int bus_init(std::shared_ptr<apollo::cyber::Node> node) {
-
   prj_info_srv = node->CreateService<Bus::ProjectInfoReq, Bus::ProjectInfoRsp>(
       FLAGS_prj_info_name,
       [](const std::shared_ptr<Bus::ProjectInfoReq> &request,
@@ -93,7 +90,6 @@ int bus_init(std::shared_ptr<apollo::cyber::Node> node) {
 
         response->mutable_result()->set_code(Bus::ResultCode::OK);
         response->mutable_result()->set_msg("success");
-
       });
   prj_snapshot_srv =
       node->CreateService<Bus::ProjSnapshotReq, Bus::ProjSnapshotRsp>(
@@ -105,12 +101,13 @@ int bus_init(std::shared_ptr<apollo::cyber::Node> node) {
 
             response->mutable_result()->set_code(Bus::ResultCode::OK);
             response->mutable_result()->set_msg("success");
-            if(request->ev_id_size()){
-              response->mutable_ev_id()->CopyFrom(request->ev_id());
+            if (request->evs_size()) {
+              response->mutable_ev_id()->CopyFrom(request->evs());
             }
-            prj_to_snapshot(request.get(),response.get());
+            prj_to_snapshot(request.get(), response.get());
 
-            AINFO << "prj_snapshot_name response size:" << response->ByteSizeLong();
+            AINFO << "prj_snapshot_name response size:"
+                  << response->ByteSizeLong();
 
             // response->mutable_result()->set_code(Bus::ResultCode::OK);
             // response->mutable_result()->set_msg("success");
@@ -118,57 +115,57 @@ int bus_init(std::shared_ptr<apollo::cyber::Node> node) {
   prj_cmd_srv = node->CreateService<Bus::ProjectCmdReq, Bus::ProjectCmdRsp>(
       FLAGS_prj_cmd_name, [](const std::shared_ptr<Bus::ProjectCmdReq> &request,
                              std::shared_ptr<Bus::ProjectCmdRsp> &response) {
-        AINFO << "prject  cmd:" ;
-        AINFO << "request:" << request->DebugString() ;
+        AINFO << "prject  cmd:";
+        AINFO << "request:" << request->DebugString();
         Bus::EditInfos info;
 
         switch (request->cmd_type()) {
-        case Bus::RunType::ONLINE:
-          on_bus_connect();
-          response->mutable_result()->set_code((int)Bus::ResultCode::OK);
-          break;
-        case Bus::RunType::OFFLINE:
-          on_bus_disconnect();
-          response->mutable_result()->set_code((int)Bus::ResultCode::OK);
-          break;
-        case Bus::RunType::RUN:
-          on_bus_run();
-          response->mutable_result()->set_code((int)Bus::ResultCode::OK);
-          break;
-        case Bus::RunType::STOP:
-          on_bus_stop();
-          response->mutable_result()->set_code((int)Bus::ResultCode::OK);
-          break;
-        case Bus::RunType::RESET:
-          on_bus_reset();
-          response->mutable_result()->set_code((int)Bus::ResultCode::OK);
-          break;
-        case Bus::RunType::SYNC:
-          on_bus_sync();
-          response->mutable_result()->set_code((int)Bus::ResultCode::OK);
-          break;
-        case Bus::RunType::DOWNLOAD:
-          if(on_bus_download(request->req_infos()) == 0){
+          case Bus::RunType::ONLINE:
+            on_bus_connect();
             response->mutable_result()->set_code((int)Bus::ResultCode::OK);
-          }else{
-            response->mutable_result()->set_code((int)Bus::ResultCode::FAIL);
-          }
-          break;
-        case Bus::RunType::UPLOAD:
-          if(on_bus_upload(response->mutable_rsp_infos()) == 0){
+            break;
+          case Bus::RunType::OFFLINE:
+            on_bus_disconnect();
             response->mutable_result()->set_code((int)Bus::ResultCode::OK);
-          }else{
-            response->mutable_result()->set_code((int)Bus::ResultCode::FAIL);
-          }
-        case Bus::RunType::SETVAL:
-          if(on_bus_set_val(request->req_infos()) == 0){
+            break;
+          case Bus::RunType::RUN:
+            on_bus_run();
             response->mutable_result()->set_code((int)Bus::ResultCode::OK);
-          }else{
-            response->mutable_result()->set_code((int)Bus::ResultCode::FAIL);
-          }
-          break;
-        default:
-          break;
+            break;
+          case Bus::RunType::STOP:
+            on_bus_stop();
+            response->mutable_result()->set_code((int)Bus::ResultCode::OK);
+            break;
+          case Bus::RunType::RESET:
+            on_bus_reset();
+            response->mutable_result()->set_code((int)Bus::ResultCode::OK);
+            break;
+          case Bus::RunType::SYNC:
+            on_bus_sync();
+            response->mutable_result()->set_code((int)Bus::ResultCode::OK);
+            break;
+          case Bus::RunType::DOWNLOAD:
+            if (on_bus_download(request->req_infos()) == 0) {
+              response->mutable_result()->set_code((int)Bus::ResultCode::OK);
+            } else {
+              response->mutable_result()->set_code((int)Bus::ResultCode::FAIL);
+            }
+            break;
+          case Bus::RunType::UPLOAD:
+            if (on_bus_upload(response->mutable_rsp_infos()) == 0) {
+              response->mutable_result()->set_code((int)Bus::ResultCode::OK);
+            } else {
+              response->mutable_result()->set_code((int)Bus::ResultCode::FAIL);
+            }
+          case Bus::RunType::SETVAL:
+            if (on_bus_set_val(request->req_infos()) == 0) {
+              response->mutable_result()->set_code((int)Bus::ResultCode::OK);
+            } else {
+              response->mutable_result()->set_code((int)Bus::ResultCode::FAIL);
+            }
+            break;
+          default:
+            break;
         }
       });
 }
@@ -177,20 +174,17 @@ int bus_uninit() {}
 
 std::shared_ptr<apollo::cyber::Client<Bus::ProjectInfoReq, Bus::ProjectInfoRsp>>
 bus_init_client_info(std::shared_ptr<apollo::cyber::Node> node) {
-
   return node->CreateClient<Bus::ProjectInfoReq, Bus::ProjectInfoRsp>(
       FLAGS_prj_info_name);
 }
 std::shared_ptr<apollo::cyber::Client<Bus::ProjectCmdReq, Bus::ProjectCmdRsp>>
 bus_init_client_cmd(std::shared_ptr<apollo::cyber::Node> node) {
-
   return node->CreateClient<Bus::ProjectCmdReq, Bus::ProjectCmdRsp>(
       FLAGS_prj_cmd_name);
 }
 std::shared_ptr<
     apollo::cyber::Client<Bus::ProjSnapshotReq, Bus::ProjSnapshotRsp>>
 bus_init_client_snapshot(std::shared_ptr<apollo::cyber::Node> node) {
-
   return node->CreateClient<Bus::ProjSnapshotReq, Bus::ProjSnapshotRsp>(
       FLAGS_prj_snapshot_name);
 }
@@ -222,11 +216,11 @@ std::shared_ptr<Bus::ProjectCmdRsp> bus_disconnect_send(
   req->set_prj_name("test proj name");
   return bus_cmd->SendRequest(req);
 }
-std::shared_ptr<Bus::ProjectCmdRsp>
-bus_run_send(std::shared_ptr<apollo::cyber::Node> node,
-             std::shared_ptr<
-                 apollo::cyber::Client<Bus::ProjectCmdReq, Bus::ProjectCmdRsp>>
-                 bus_cmd) {
+std::shared_ptr<Bus::ProjectCmdRsp> bus_run_send(
+    std::shared_ptr<apollo::cyber::Node> node,
+    std::shared_ptr<
+        apollo::cyber::Client<Bus::ProjectCmdReq, Bus::ProjectCmdRsp>>
+        bus_cmd) {
   std::shared_ptr<Bus::ProjectCmdReq> req =
       std::make_shared<Bus::ProjectCmdReq>();
   req->set_cmd_type(Bus::RunType::RUN);
@@ -237,11 +231,11 @@ bus_run_send(std::shared_ptr<apollo::cyber::Node> node,
   return bus_cmd->SendRequest(req);
 }
 
-std::shared_ptr<Bus::ProjectCmdRsp>
-bus_stop_send(std::shared_ptr<apollo::cyber::Node> node,
-              std::shared_ptr<
-                  apollo::cyber::Client<Bus::ProjectCmdReq, Bus::ProjectCmdRsp>>
-                  bus_cmd) {
+std::shared_ptr<Bus::ProjectCmdRsp> bus_stop_send(
+    std::shared_ptr<apollo::cyber::Node> node,
+    std::shared_ptr<
+        apollo::cyber::Client<Bus::ProjectCmdReq, Bus::ProjectCmdRsp>>
+        bus_cmd) {
   std::shared_ptr<Bus::ProjectCmdReq> req =
       std::make_shared<Bus::ProjectCmdReq>();
   req->set_cmd_type(Bus::RunType::STOP);
@@ -249,7 +243,7 @@ bus_stop_send(std::shared_ptr<apollo::cyber::Node> node,
   req->set_host_ip("test host ip");
   req->set_process_id("test process id");
   req->set_prj_name("test proj name");
-  return bus_cmd->SendRequest(req,std::chrono::seconds(20));
+  return bus_cmd->SendRequest(req, std::chrono::seconds(20));
 }
 
 std::shared_ptr<Bus::ProjectCmdRsp> bus_reset_send(
@@ -267,11 +261,11 @@ std::shared_ptr<Bus::ProjectCmdRsp> bus_reset_send(
   return bus_cmd->SendRequest(req);
 }
 
-std::shared_ptr<Bus::ProjectCmdRsp>
-bus_sync_send(std::shared_ptr<apollo::cyber::Node> node,
-              std::shared_ptr<
-                  apollo::cyber::Client<Bus::ProjectCmdReq, Bus::ProjectCmdRsp>>
-                  bus_cmd) {
+std::shared_ptr<Bus::ProjectCmdRsp> bus_sync_send(
+    std::shared_ptr<apollo::cyber::Node> node,
+    std::shared_ptr<
+        apollo::cyber::Client<Bus::ProjectCmdReq, Bus::ProjectCmdRsp>>
+        bus_cmd) {
   std::shared_ptr<Bus::ProjectCmdReq> req =
       std::make_shared<Bus::ProjectCmdReq>();
   req->set_cmd_type(Bus::RunType::SYNC);
@@ -334,7 +328,8 @@ std::shared_ptr<Bus::ProjSnapshotRsp> bus_proj_snapshot_send(
     std::shared_ptr<apollo::cyber::Node> node,
     std::shared_ptr<
         apollo::cyber::Client<Bus::ProjSnapshotReq, Bus::ProjSnapshotRsp>>
-        bus_cmd,std::vector<int> ev_ids) {
+        bus_cmd,
+    std::vector<int> ev_ids, std::vector<Bus::TaskInfo> task_infos) {
   std::shared_ptr<Bus::ProjSnapshotReq> proj_sp_req =
       std::make_shared<Bus::ProjSnapshotReq>();
   proj_sp_req->set_host_name("test host name");
@@ -342,7 +337,10 @@ std::shared_ptr<Bus::ProjSnapshotRsp> bus_proj_snapshot_send(
   proj_sp_req->set_process_id("test process id");
   proj_sp_req->set_prj_name("test proj name");
 
-  proj_sp_req->mutable_ev_id()->CopyFrom({ev_ids.begin(),ev_ids.end()});
+  proj_sp_req->mutable_evs()->CopyFrom({ev_ids.begin(), ev_ids.end()});
+  proj_sp_req->mutable_tasks()->CopyFrom(
+      {task_infos.begin(), task_infos.end()});
+
   return bus_cmd->SendRequest(proj_sp_req);
 }
 
