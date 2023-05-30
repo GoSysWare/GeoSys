@@ -62,6 +62,9 @@ void CadPanel::zoom(int mode) {
 
 void CadPanel::paintEvent(QPaintEvent *) {
   QPainter painter(this);
+
+  QElapsedTimer ElapsedTimer;
+  ElapsedTimer.start();
   painter.translate(step, step);
 
   drawGrid(painter);
@@ -69,6 +72,8 @@ void CadPanel::paintEvent(QPaintEvent *) {
   if (gMainModel->prgCurrent == NULL) {
     return;
   }
+  gMainModel->prgCurrent->mutex->lock();
+
   int i;
   // draw links
   for (i = 0; i < gMainModel->prgCurrent->lks.size(); i++) {
@@ -92,6 +97,9 @@ void CadPanel::paintEvent(QPaintEvent *) {
     drawTracker(painter, xMov - xSel, yMov - ySel);
     onTracker = false;
   }
+  gMainModel->prgCurrent->mutex->unlock();
+
+  qDebug()<<"刷新耗时"<<ElapsedTimer.elapsed()<<"毫秒";
 }
 
 void CadPanel::drawGrid(QPainter &painter) {

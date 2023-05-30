@@ -300,7 +300,8 @@
         "v_set_any": "cpp",
         "v_set_double": "cpp",
         "pb2json": "cpp",
-        "json2pb": "cpp"
+        "json2pb": "cpp",
+        "__mutex_base": "cpp"
     },
     "C_Cpp.errorSquiggles": "disabled"
 }

@@ -674,6 +674,8 @@ int prj_from_snapshot(Bus::ProjSnapshotRsp *snapshot) {
     p_mn = prj_prg_info_find(mod_id, task_id);
 
     if (p_mn) {
+      apollo::cyber::base::WriteLockGuard<apollo::cyber::base::AtomicRWLock> lg(
+          p_mn->mutex);
       Bus::TaskSnapshot task_sp = snapshot->tasks(m);
       assert(task_sp.task_id() == p_mn->id);
       p_mn->info.status.store(task_sp.status());

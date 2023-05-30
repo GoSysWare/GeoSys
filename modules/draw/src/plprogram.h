@@ -26,6 +26,7 @@ public:
     QList<PLLink> lks;
     QList<PLVLink> vis;
     QList<PLVLink> vos;
+    QSharedPointer<QMutex> mutex;
 };
 
 #endif // PLPROGRAM_H
