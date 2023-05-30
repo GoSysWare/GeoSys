@@ -1,0 +1,62 @@
+#include <google/protobuf/util/json_util.h>
+
+
+
+static void run_PB2JSON(void *p) {
+  fb_t *pb = (fb_t *)p;
+  vam_t &enable = pb->ins[0].v;
+  vam_t &status = pb->outs[0].v;
+  if (enable->v().b() == false) return;
+  vam_t in_any = pb->ins[1].v;
+  bool is_in_any_lock = pb->ins[1].s;
+  apollo::cyber::base::ReentrantRWLock *in_any_lock = pb->ins[1].l;
+  vam_t add_whitespace = pb->ins[2].v;
+  vam_t always_print_primitive_fields = pb->ins[3].v;
+  vam_t preserve_proto_field_names = pb->ins[4].v;
+  vam_t always_print_enums_as_ints = pb->ins[5].v;
+
+  vam_t &out_json = pb->outs[1].v;
+  bool is_out_any_lock = pb->outs[1].s;
+  apollo::cyber::base::ReentrantRWLock *out_any_lock = pb->outs[1].l;
+
+  google::protobuf::util::JsonOptions options;
+  options.add_whitespace = add_whitespace->v().b();
+  options.always_print_primitive_fields = always_print_primitive_fields->v().b();
+  options.preserve_proto_field_names = preserve_proto_field_names->v().b();
+  options.always_print_enums_as_ints = always_print_enums_as_ints->v().b();
+
+  std::string json_result;
+
+  if (is_in_any_lock == PIN_HAS_LOCK) {
+    apollo::cyber::base::ReadLockGuard<apollo::cyber::base::ReentrantRWLock> lg(
+        *(in_any_lock));
+    Status st = google::protobuf::util::MessageToJsonString(*in_any,&json_result,options);
+    status->mutable_v()->set_i(st.code());
+  } else {
+    Status st = google::protobuf::util::MessageToJsonString(*in_any,&json_result,options);
+    status->mutable_v()->set_i(st.code());
+  }
+
+
+  if (is_out_any_lock == PIN_HAS_LOCK) {
+    apollo::cyber::base::ReadLockGuard<apollo::cyber::base::ReentrantRWLock> lg(
+        *(out_any_lock));
+    out_json->mutable_v()->set_str(json_result);
+  } else {
+    out_json->mutable_v()->set_str(json_result);
+  }
+
+
+  return;
+}
+
+static fb_t fb_PB2JSON = {
+    {"Value", "PB2JSON", "", 0, 0, 0, FB_EXEC, run_PB2JSON},
+    {{"EN", PIN_NO_LOCK, T_BOOL, "", "", nullptr, 0},
+     {"IN", PIN_NO_LOCK, T_ANY, "", "", nullptr, 0},
+     {"SPACE", PIN_NO_LOCK, T_BOOL, "", "", nullptr, 0},      // 空格
+     {"PRIMITIVE", PIN_NO_LOCK, T_BOOL, "", "", nullptr, 0},  // 默认值
+     {"PRESERVE", PIN_NO_LOCK, T_BOOL, "", "", nullptr, 0},   // key是否用proto的原始字符串
+     {"ENUM", PIN_NO_LOCK, T_BOOL, "", "", nullptr, 0}},
+    {{"STATUS", PIN_NO_LOCK, T_INT32, "", "", nullptr, 0},
+     {"OUT", PIN_NO_LOCK, T_STRING, "", "", nullptr, 0}}};

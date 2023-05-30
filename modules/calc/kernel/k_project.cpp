@@ -461,7 +461,7 @@ int prj_to_snapshot(Bus::ProjSnapshotReq *snapshot_req,
       while (p_en != &p_mn->p_prg->en_head) {
         if (p_en->p_fb != ((void *)0)) {
           p_fb = p_en->p_fb;
-          AERROR << "fb.libname:" << p_fb->h.libname
+          AINFO << "fb.libname:" << p_fb->h.libname
                  << " fb.fbname:" << p_fb->h.fbname
                  << " fb.fcname:" << p_fb->h.fcname
                  << " fb.in size: " << p_fb->ins.size()

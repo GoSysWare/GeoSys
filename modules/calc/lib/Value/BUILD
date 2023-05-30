@@ -9,6 +9,8 @@ cc_library(
     includes = [
     ],
     hdrs = [
+        "JSON2PB",
+        "PB2JSON",
         "V_GET_ANY",
         "V_GET_DOUBLE",
         "V_SET_ANY",

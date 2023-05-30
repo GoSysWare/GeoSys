@@ -46,7 +46,7 @@ static void run_V_SET_DOUBLE(void *p) {
     return;
   }
   string type_name;
-  internal::ParseAnyTypeUrl(in_any->v().any().type_url(), &type_name);
+  google::protobuf::internal::ParseAnyTypeUrl(in_any->v().any().type_url(), &type_name);
   const Descriptor *new_descriptor =
       DescriptorPool::generated_pool()->FindMessageTypeByName(type_name);
   if (!new_descriptor) {
