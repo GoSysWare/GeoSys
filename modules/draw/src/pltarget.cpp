@@ -160,13 +160,19 @@ PLTarget::PLTarget(QObject *parent) {
         // load evs value
         PLEVData *ev;
         value_tm *p_ev;
+        gMainModel->modelEVData.beginReset();
+
         for (int i = 0; i < gMainModel->evList.size(); i++) {
           ev = &gMainModel->evList[i];
           p_ev = ev_find_v(ev->id)->get();
           ev->value = *p_ev;
         }
+        gMainModel->modelEVData.endReset();
 
         gMainFrame->updateCadView();
+
+        // emit gMainModel->modelEVData.dataChanged(index(0,0),index(RowMax-1,ColMax-1),QVector<int>());
+
       } else {
         this->online(false, NULL);
       }
