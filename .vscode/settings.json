@@ -301,7 +301,8 @@
         "v_set_double": "cpp",
         "pb2json": "cpp",
         "json2pb": "cpp",
-        "__mutex_base": "cpp"
+        "__mutex_base": "cpp",
+        "ios": "cpp"
     },
     "C_Cpp.errorSquiggles": "disabled"
 }

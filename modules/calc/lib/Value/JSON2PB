@@ -7,7 +7,7 @@ static void return_JSON2PB(vam_t &status, int s, bool is_out_lock,
                            vam_t &out, Message *any_msg) {
   status->mutable_v()->set_i(s);
   if (is_out_lock == PIN_HAS_LOCK) {
-    apollo::cyber::base::ReadLockGuard<apollo::cyber::base::ReentrantRWLock> lg(
+    apollo::cyber::base::WriteLockGuard<apollo::cyber::base::ReentrantRWLock> lg(
         *(out_lock));
     if (any_msg) {
       out->CopyFrom(*any_msg);

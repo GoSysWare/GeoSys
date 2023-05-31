@@ -7,15 +7,17 @@
 // 5 注意管脚索引的排序 不要弄错,输入输出分别有两个系统默认管脚
 //   用户可用管脚从1开始计数
 static void run_PATH_CREATE(void *p) {
-
   fb_t *pb = (fb_t *)p;
   vam_t &enable = pb->ins[0].v;
   vam_t &status = pb->outs[0].v;
-  if (enable->v().b() == false)
-    return;
+  if (enable->v().b() == false) return;
   vam_t &in = pb->ins[1].v;
   vam_t &out = pb->outs[1].v;
+  bool is_out_any_lock = pb->outs[1].s;
+  apollo::cyber::base::ReentrantRWLock *out_any_lock = pb->outs[1].l;
+
   unsigned int count = in->v().ui();
+
   Geo::Path path;
   for (auto i = 0; i < count; i++) {
     Geo::Pose *pose = path.add_poses();
@@ -27,12 +29,19 @@ static void run_PATH_CREATE(void *p) {
     pose->mutable_position()->set_y(0.26 + i);
     pose->mutable_position()->set_z(0.27 + i);
   }
-  out->mutable_v()->mutable_any()->PackFrom(path);
+  if (is_out_any_lock == PIN_HAS_LOCK) {
+    apollo::cyber::base::ReadLockGuard<apollo::cyber::base::ReentrantRWLock> lg(
+        *(out_any_lock));
+    out->mutable_v()->mutable_any()->PackFrom(path);
+
+  } else {
+    out->mutable_v()->mutable_any()->PackFrom(path);
+  }
 }
 
 static fb_t fb_PATH_CREATE = {
     {"Geometry", "PATH_CREATE", "", 0, 0, 0, 0, run_PATH_CREATE},
-    {{"EN", PIN_NO_LOCK, T_BOOL, "", "",nullptr,0},
-     {"IN", PIN_NO_LOCK, T_UINT32, "", "",nullptr,0}},
-    {{"STATUS", PIN_NO_LOCK, T_INT32, "", "",nullptr,0},
-     {"OUT", PIN_NO_LOCK, T_ANY, "", "",nullptr,0}}};
+    {{"EN", PIN_NO_LOCK, T_BOOL, "", "", nullptr, 0},
+     {"IN", PIN_NO_LOCK, T_UINT32, "", "", nullptr, 0}},
+    {{"STATUS", PIN_NO_LOCK, T_INT32, "", "", nullptr, 0},
+     {"OUT", PIN_NO_LOCK, T_ANY, "", "", nullptr, 0}}};

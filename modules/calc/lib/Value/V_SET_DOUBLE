@@ -4,7 +4,7 @@ static void return_V_SET_DOUBLE(vam_t &status, int s, bool is_out_lock,
                                 Message *any_msg, double value = 0) {
   status->mutable_v()->set_i(s);
   if (is_out_lock == PIN_HAS_LOCK) {
-    apollo::cyber::base::ReadLockGuard<apollo::cyber::base::ReentrantRWLock> lg(
+    apollo::cyber::base::WriteLockGuard<apollo::cyber::base::ReentrantRWLock> lg(
         *(out_lock));
     if (field_message) {
       out->mutable_v()->mutable_any()->PackFrom(*any_msg);

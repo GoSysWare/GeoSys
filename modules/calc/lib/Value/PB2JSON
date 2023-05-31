@@ -39,7 +39,7 @@ static void run_PB2JSON(void *p) {
 
 
   if (is_out_any_lock == PIN_HAS_LOCK) {
-    apollo::cyber::base::ReadLockGuard<apollo::cyber::base::ReentrantRWLock> lg(
+    apollo::cyber::base::WriteLockGuard<apollo::cyber::base::ReentrantRWLock> lg(
         *(out_any_lock));
     out_json->mutable_v()->set_str(json_result);
   } else {
