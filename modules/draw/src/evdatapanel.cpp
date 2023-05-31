@@ -44,14 +44,12 @@ EVDataPanel::EVDataPanel()
     buttonAddData = new QPushButton(tr("Add"));
     buttonEditData = new QPushButton(tr("Edit"));
     buttonRemoveData = new QPushButton(tr("Remove"));
-    buttonShowValue = new QPushButton(tr("Show"));
 
     layoutButton = new QHBoxLayout;
     layoutButton->setAlignment(Qt::AlignLeft);
     layoutButton->addWidget(buttonAddData);
     layoutButton->addWidget(buttonEditData);
     layoutButton->addWidget(buttonRemoveData);
-    layoutButton->addWidget(buttonShowValue);
 
     layout = new QVBoxLayout;
     layout->addWidget(tableData);
@@ -61,7 +59,6 @@ EVDataPanel::EVDataPanel()
     connect(buttonAddData, SIGNAL(clicked(bool)), this, SLOT(addEVData(bool)));
     connect(buttonEditData, SIGNAL(clicked(bool)), this, SLOT(editEVData(bool)));
     connect(buttonRemoveData, SIGNAL(clicked(bool)), this, SLOT(removeEVData(bool)));
-    connect(buttonShowValue, SIGNAL(clicked(bool)), this, SLOT(showEVData(bool)));
 
     connect(tableData, SIGNAL(doubleClicked(const QModelIndex&)), this, SLOT(tableDoubleClicked(const QModelIndex &)));
 
@@ -117,6 +114,7 @@ void EVDataPanel::addEVData(bool check)
 void EVDataPanel::editEVData(bool check)
 {
     if(gTarget->isMonitor()){
+        showEVData(false);
         return;
     }
 
@@ -174,6 +172,7 @@ void EVDataPanel::tableDoubleClicked(const QModelIndex & index)
 void EVDataPanel::removeEVData(bool check)
 {
     if(gTarget->isMonitor()){
+
         return;
     }
 

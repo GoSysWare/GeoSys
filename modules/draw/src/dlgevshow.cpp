@@ -7,21 +7,20 @@
 
 DlgEvShow::DlgEvShow(QWidget *parent, Qt::WindowFlags f) : QDialog(parent, f) {
 
-  label = new QLabel(tr("Show Value Deatil:"));
+  // label = new QLabel(tr("Show Value Deatil:"));
   str_value = new QTextEdit;
-  str_value->setReadOnly(true);
+  str_value->setFixedSize(500,400);
   img_value = new QLabel;
-  img_value->setFixedSize(1000, 800);
+  img_value->setFixedSize(500, 400);
   img_value->setStyleSheet("border:1px solid black");
-  layout = new QVBoxLayout;
-  layout->addWidget(label);
+  layout = new QHBoxLayout;
+  // layout->addWidget(label);
   layout->addWidget(str_value);
   layout->addWidget(img_value);
   setLayout(layout);
 }
 
 DlgEvShow::~DlgEvShow() {
-  delete label;
   delete str_value;
   delete img_value;
 }
@@ -68,7 +67,7 @@ void DlgEvShow::setValueData(PLEVData ev) {
     ptr =  ev.value.v().img().data().c_str();
     img=QImage((const uchar*)ptr, width, height, QImage::Format_RGB888);
     pixmap = QPixmap::fromImage(img);
-    // pixmap = pixmap.scaled(img_value->size(),Qt::KeepAspectRatio,Qt::SmoothTransformation);
+    pixmap = pixmap.scaled(img_value->size(),Qt::KeepAspectRatio,Qt::SmoothTransformation);
     img_value->setPixmap(pixmap);
     break;
   default:

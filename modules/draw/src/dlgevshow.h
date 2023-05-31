@@ -21,7 +21,7 @@ public:
     void setTitle(QString title);
     void setValueData(PLEVData ev);
 private:
-    QVBoxLayout *layout;
+    QHBoxLayout *layout;
     QLabel *label;
     QTextEdit  *str_value;
     QLabel *img_value;

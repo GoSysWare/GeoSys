@@ -34,7 +34,6 @@ private:
     QPushButton *buttonAddData;
     QPushButton *buttonEditData;
     QPushButton *buttonRemoveData;
-    QPushButton *buttonShowValue;
     QHBoxLayout *layoutButton;
     QVBoxLayout *layout;
     PLEVData evLast;
