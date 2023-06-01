@@ -359,6 +359,7 @@ int prg_viremove(prog_t *p_prg, int idfb, int pin) {
   if (p_fb == 0) {
     return -1;
   }
+ 
   p_pin = fb_getpin(p_fb, PININPUT, pin);
   if (p_pin == 0) {
     return -1;

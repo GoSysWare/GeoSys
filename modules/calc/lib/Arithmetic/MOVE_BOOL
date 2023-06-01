@@ -1,21 +1,18 @@
+#include "cyber/cyber.h"
 static void run_MOVE_BOOL(void *p) {
-
-   fb_t *pb = (fb_t *)p;
+  fb_t *pb = (fb_t *)p;
   vam_t &enable = pb->ins[0].v;
   vam_t &status = pb->outs[0].v;
-  if (enable->v().b() == false)
-    return;
+  if (enable->v().b() == false) return;
   vam_t &out = pb->outs[1].v;
   vam_t in1 = pb->ins[1].v;
 
   out->mutable_v()->set_b(in1->v().b());
-
 }
 
 static fb_t fb_MOVE_BOOL = {
-    {"Arithmetic","MOVE_BOOL","", 0,0,0,0, run_MOVE_BOOL},
-    {{"EN", PIN_NO_LOCK,T_BOOL,"", "",nullptr,0},
-     {"IN1", PIN_NO_LOCK,T_BOOL, "","",nullptr,0}},
-    {{"STATUS", PIN_NO_LOCK,T_INT32,"", "",nullptr,0}, 
-    {"OUT", PIN_NO_LOCK,T_BOOL, "","",nullptr,0}}};
-
+    {"Arithmetic", "MOVE_BOOL", "", 0, 0, 0, 0, run_MOVE_BOOL},
+    {{"EN", PIN_NO_LOCK, T_BOOL, "", "", nullptr, 0},
+     {"IN1", PIN_NO_LOCK, T_BOOL, "", "", nullptr, 0}},
+    {{"STATUS", PIN_NO_LOCK, T_INT32, "", "", nullptr, 0},
+     {"OUT", PIN_NO_LOCK, T_BOOL, "", "", nullptr, 0}}};

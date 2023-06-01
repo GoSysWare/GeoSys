@@ -1,9 +1,9 @@
 infos {
-  cmd_id: 936
+  cmd_id: 941
   edit_type: SET
   proj {
     proj_name: "rotbot-engine-project"
-    proj_uuid: "{e0b59455-c59b-457d-8190-a7ddabcf1151}"
+    proj_uuid: "{cdb52da7-d2ca-4c4c-b5cf-3e3779ace9ef}"
   }
 }
 infos {
@@ -7398,5 +7398,66 @@ infos {
   pos {
     x: 76
     y: 99
+  }
+}
+infos {
+  cmd_id: 937
+  element: EV
+  edit_type: ADD
+  ev {
+    ev_id: 186
+    ev_name: "EV_B_1"
+    ev_type: 1
+    ev_desc: "Desc"
+    init_val {
+      t: T_BOOL
+      v {
+        b: false
+      }
+      tm: 1685607646905898808
+    }
+  }
+}
+infos {
+  cmd_id: 938
+  element: FB
+  edit_type: ADD
+  fb {
+    mod_id: 17
+    task_id: 18
+    fb_id: 187
+    flib_name: "Arithmetic"
+    fc_name: "MOVE_BOOL"
+  }
+  pos {
+    x: 26
+    y: 124
+  }
+}
+infos {
+  cmd_id: 940
+  element: FB
+  edit_type: MV
+  fb {
+    mod_id: 17
+    task_id: 18
+    fb_id: 187
+  }
+  pos {
+    x: 26
+    y: 136
+  }
+}
+infos {
+  cmd_id: 941
+  element: VO
+  edit_type: ADD
+  vo {
+    mod_id: 17
+    task_id: 18
+    fb_id: 187
+    pin_index: 1
+    ev_id: 186
+    vo_id: 188
   }
 }

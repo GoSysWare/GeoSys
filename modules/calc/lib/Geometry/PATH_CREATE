@@ -30,7 +30,7 @@ static void run_PATH_CREATE(void *p) {
     pose->mutable_position()->set_z(0.27 + i);
   }
   if (is_out_any_lock == PIN_HAS_LOCK) {
-    apollo::cyber::base::ReadLockGuard<apollo::cyber::base::ReentrantRWLock> lg(
+    apollo::cyber::base::WriteLockGuard<apollo::cyber::base::ReentrantRWLock> lg(
         *(out_any_lock));
     out->mutable_v()->mutable_any()->PackFrom(path);
 

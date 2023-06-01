@@ -1,11 +1,12 @@
 #include "modules/calc/include/k_command.h"
-#include "modules/calc/include/k_evdata.h"
-#include "modules/calc/include/k_lib.h"
-#include "modules/calc/include/k_project.h"
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
+#include "modules/calc/include/k_evdata.h"
+#include "modules/calc/include/k_lib.h"
+#include "modules/calc/include/k_project.h"
 
 int cmd_dispatch(const Bus::EditInfo &edit_info) {
   int ret = -1;
@@ -15,9 +16,7 @@ int cmd_dispatch(const Bus::EditInfo &edit_info) {
 
   if (element == Bus::EditElement::PROJ) {
     if (type == Bus::EditType::ADD) {
-
     } else if (type == Bus::EditType::RM) {
-
     } else if (type == Bus::EditType::SET) {
       prjinfo_t *info;
       info = prj_info();
@@ -42,7 +41,14 @@ int cmd_dispatch(const Bus::EditInfo &edit_info) {
       ret = prj_modremove(edit_info.mod().mod_id());
 
     } else if (type == Bus::EditType::SET) {
-      ret = 0;
+      pnode_t *p_mn = prj_mod_info_find(edit_info.mod().mod_id());
+      if (p_mn) {
+        p_mn->name = edit_info.mod().mod_name();
+        p_mn->desc = edit_info.mod().mod_desc();
+        ret = 0;
+      } else {
+        ret = -1;
+      }
 
     } else if (type == Bus::EditType::SHOW) {
       ret = 0;
@@ -52,7 +58,6 @@ int cmd_dispatch(const Bus::EditInfo &edit_info) {
     }
   } else if (element == Bus::EditElement::TASK) {
     if (type == Bus::EditType::ADD) {
-
       ret =
           prj_prgadd(edit_info.task().mod_id(), edit_info.task().task_id(),
                      edit_info.task().task_name(), edit_info.task().task_type(),
@@ -62,14 +67,15 @@ int cmd_dispatch(const Bus::EditInfo &edit_info) {
       ret =
           prj_prgremove(edit_info.task().mod_id(), edit_info.task().task_id());
     } else if (type == Bus::EditType::SET) {
-      mnode_t *p_mn = prj_prg_info_find(edit_info.task().mod_id(),edit_info.task().task_id());
-      if(p_mn){
+      mnode_t *p_mn = prj_prg_info_find(edit_info.task().mod_id(),
+                                        edit_info.task().task_id());
+      if (p_mn) {
         p_mn->name = edit_info.task().task_name();
         p_mn->type = edit_info.task().task_type();
         p_mn->desc = edit_info.task().task_desc();
         ret = 0;
-      }else{
-      ret = -1;
+      } else {
+        ret = -1;
       }
 
     } else if (type == Bus::EditType::SHOW) {
@@ -87,18 +93,17 @@ int cmd_dispatch(const Bus::EditInfo &edit_info) {
       ret = ev_remove(edit_info.ev().ev_id());
 
     } else if (type == Bus::EditType::SET) {
-
-      vam_t *p_val = ev_find_v(edit_info.ev().ev_id());
-      if (p_val) {
-        p_val->get()->CopyFrom(edit_info.ev().real_val());
+      evnode_t *p_en = ev_find_n(edit_info.ev().ev_id());
+      if (p_en) {
+        p_en->name = edit_info.ev().ev_name();
+        p_en->= edit_info.ev().ev_desc();
+        p_en->v->CopyFrom(edit_info.ev().init_val());
         ret = 0;
       } else {
         ret = -1;
       }
-
     } else if (type == Bus::EditType::SHOW) {
       ret = 0;
-
     } else {
       ret = 0;
     }
@@ -128,8 +133,14 @@ int cmd_dispatch(const Bus::EditInfo &edit_info) {
       ret = prj_fbremove(edit_info.fb().mod_id(), edit_info.fb().task_id(),
                          edit_info.fb().fb_id());
     } else if (type == Bus::EditType::SET) {
-      ret = 0;
-
+      fb_t *fb = prj_fbfind(edit_info.fb().mod_id(), edit_info.fb().task_id(),
+                            edit_info.fb().fb_id());
+      if (fb) {
+        fb->h.fbname = edit_info.fb().fb_name();
+        ret = 0;
+      } else {
+        ret = -1;
+      }
     } else if (type == Bus::EditType::SHOW) {
       ret = 0;
 
@@ -166,7 +177,6 @@ int cmd_dispatch(const Bus::EditInfo &edit_info) {
       ret = 0;
 
     } else if (type == Bus::EditType::SET) {
-
       fb_t *p_fb;
       p_fb = prj_fbfind(edit_info.pin().mod_id(), edit_info.pin().task_id(),
                         edit_info.pin().fb_id());
@@ -185,7 +195,6 @@ int cmd_dispatch(const Bus::EditInfo &edit_info) {
     }
   } else if (element == Bus::EditElement::VI) {
     if (type == Bus::EditType::ADD) {
-
       ret = prj_viadd(edit_info.vi().mod_id(), edit_info.vi().task_id(),
                       edit_info.vi().ev_id(), edit_info.vi().fb_id(),
                       edit_info.vi().pin_index());
@@ -210,7 +219,7 @@ int cmd_dispatch(const Bus::EditInfo &edit_info) {
                       edit_info.vo().pin_index());
 
     } else if (type == Bus::EditType::RM) {
-      ret = prj_viremove(edit_info.vo().mod_id(), edit_info.vo().task_id(),
+      ret = prj_voremove(edit_info.vo().mod_id(), edit_info.vo().task_id(),
                          edit_info.vo().fb_id(), edit_info.vo().pin_index());
 
     } else if (type == Bus::EditType::SET) {
@@ -223,7 +232,7 @@ int cmd_dispatch(const Bus::EditInfo &edit_info) {
       ret = 0;
     }
   }
-  if(ret == -1){
+  if (ret == -1) {
     AINFO << "cmd_dispatch error:" << edit_info.DebugString();
   }
 
@@ -231,7 +240,6 @@ int cmd_dispatch(const Bus::EditInfo &edit_info) {
 }
 
 int cmds_dispatch(const Bus::EditInfos &edit_infos) {
-
   int info_size = edit_infos.infos_size();
   for (auto i = 0; i < info_size; i++) {
     if (cmd_dispatch(edit_infos.infos(i)) != 0) {
@@ -242,7 +250,6 @@ int cmds_dispatch(const Bus::EditInfos &edit_infos) {
   return 0;
 }
 int cmds_set_val(const Bus::EditInfos &edit_infos) {
-
   int info_size = edit_infos.infos_size();
   for (auto i = 0; i < info_size; i++) {
     if (cmd_dispatch(edit_infos.infos(i)) != 0) {
@@ -267,7 +274,6 @@ int cmds_reset() {
 }
 
 int cmds_append(Bus::EditInfos &infos) {
-
   return apollo::cyber::common::SetProtoToASCIIFile(infos, DEFCTRLFILE) ? 0
                                                                         : -1;
 }
