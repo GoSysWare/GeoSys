@@ -96,7 +96,6 @@ int cmd_dispatch(const Bus::EditInfo &edit_info) {
       evnode_t *p_en = ev_find_n(edit_info.ev().ev_id());
       if (p_en) {
         p_en->name = edit_info.ev().ev_name();
-        p_en->= edit_info.ev().ev_desc();
         p_en->v->CopyFrom(edit_info.ev().init_val());
         ret = 0;
       } else {
