@@ -95,13 +95,13 @@ void DlgPinSet::exchangeValue(QString &constValue, PLEVData &ev, bool &isConst, 
 void DlgPinSet::ok(bool check)
 {
     if(rbConst->isChecked()){
-        if(textConst->text().isEmpty()){
-            QMessageBox::warning(this, tr("Warning"), tr("Const is empty"));
-            return;
-        }else{
+        // if(textConst->text().isEmpty()){
+        //     QMessageBox::warning(this, tr("Warning"), tr("Const is empty"));
+        //     return;
+        // }else{
             accept();
             return;
-        }
+        // }
     }
 
     if(textVariable->text().isEmpty()){

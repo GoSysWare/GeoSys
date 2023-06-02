@@ -15,6 +15,7 @@ load("//third_party/cpplint:workspace.bzl", cpplint = "repo")
 load("//third_party/fastrtps:workspace.bzl", fastrtps = "repo")
 load("//third_party/poco:workspace.bzl", poco = "repo")
 load("//third_party/uuid:workspace.bzl", uuid = "repo")
+load("//third_party/nlohmann_json:workspace.bzl", nlohmann_json = "repo")
 
 #########################################################################################
 # 图像处理、点云、地图功能库
@@ -58,7 +59,7 @@ def initialize_third_party():
     glog()
 
     # gtest()
-    # nlohmann_json()
+    nlohmann_json()
     opencv()
     poco()
 

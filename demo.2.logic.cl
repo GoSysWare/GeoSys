@@ -1,5 +1,5 @@
 infos {
-  cmd_id: 941
+  cmd_id: 943
   edit_type: SET
   proj {
     proj_name: "rotbot-engine-project"
@@ -7459,5 +7459,36 @@ infos {
     pin_index: 1
     ev_id: 186
     vo_id: 188
+  }
+}
+infos {
+  cmd_id: 942
+  element: EV
+  edit_type: ADD
+  ev {
+    ev_id: 189
+    ev_name: "Json_Str_1"
+    ev_type: 9
+    ev_desc: "Desc"
+    init_val {
+      t: T_STRING
+      v {
+        str: ""
+      }
+      tm: 1685672719328552028
+    }
+  }
+}
+infos {
+  cmd_id: 943
+  element: VO
+  edit_type: ADD
+  vo {
+    mod_id: 162
+    task_id: 163
+    fb_id: 181
+    pin_index: 1
+    ev_id: 189
+    vo_id: 190
   }
 }

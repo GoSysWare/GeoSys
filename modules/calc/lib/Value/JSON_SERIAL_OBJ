@@ -1,0 +1,368 @@
+
+
+static void run_JSON_SERIAL_OBJ(void *p) {
+  fb_t *pb = (fb_t *)p;
+  vam_t &enable = pb->ins[0].v;
+  vam_t &status = pb->outs[0].v;
+  if (enable->v().b() == false) return;
+  vam_t in_order = pb->ins[1].v;
+  bool is_in_order_lock = pb->ins[1].s;
+  apollo::cyber::base::ReentrantRWLock *in_order_lock = pb->ins[1].l;
+
+  vam_t K_1 = pb->ins[2].v;
+  bool is_K_1_lock = pb->ins[2].s;
+  apollo::cyber::base::ReentrantRWLock *K_1_lock = pb->ins[2].l;
+
+  vam_t V_1 = pb->ins[3].v;
+  bool is_V_1_lock = pb->ins[3].s;
+  apollo::cyber::base::ReentrantRWLock *V_1_lock = pb->ins[3].l;
+
+  vam_t K_2 = pb->ins[4].v;
+  bool is_K_2_lock = pb->ins[4].s;
+  apollo::cyber::base::ReentrantRWLock *K_2_lock = pb->ins[4].l;
+
+  vam_t V_2 = pb->ins[5].v;
+  bool is_V_2_lock = pb->ins[5].s;
+  apollo::cyber::base::ReentrantRWLock *V_2_lock = pb->ins[5].l;
+
+  vam_t K_3 = pb->ins[6].v;
+  bool is_K_3_lock = pb->ins[6].s;
+  apollo::cyber::base::ReentrantRWLock *K_3_lock = pb->ins[6].l;
+
+  vam_t V_3 = pb->ins[7].v;
+  bool is_V_3_lock = pb->ins[7].s;
+  apollo::cyber::base::ReentrantRWLock *V_3_lock = pb->ins[7].l;
+
+  vam_t K_4 = pb->ins[8].v;
+  bool is_K_4_lock = pb->ins[8].s;
+  apollo::cyber::base::ReentrantRWLock *K_4_lock = pb->ins[8].l;
+
+  vam_t V_4 = pb->ins[9].v;
+  bool is_V_4_lock = pb->ins[9].s;
+  apollo::cyber::base::ReentrantRWLock *V_4_lock = pb->ins[9].l;
+
+  vam_t K_5 = pb->ins[10].v;
+  bool is_K_5_lock = pb->ins[10].s;
+  apollo::cyber::base::ReentrantRWLock *K_5_lock = pb->ins[10].l;
+
+  vam_t V_5 = pb->ins[11].v;
+  bool is_V_5_lock = pb->ins[11].s;
+  apollo::cyber::base::ReentrantRWLock *V_5_lock = pb->ins[11].l;
+
+  vam_t out = pb->outs[1].v;
+  bool is_out_lock = pb->outs[1].s;
+  apollo::cyber::base::ReentrantRWLock *out_lock = pb->outs[1].l;
+
+  std::string str_K_1;
+  std::string str_V_1;
+  std::string str_K_2;
+  std::string str_V_2;
+  std::string str_K_3;
+  std::string str_V_3;
+  std::string str_K_4;
+  std::string str_V_4;
+  std::string str_K_5;
+  std::string str_V_5;
+
+  bool is_order_json = in_order->v().b();
+  std::string out_str;
+
+  if (is_K_1_lock) {
+    apollo::cyber::base::ReadLockGuard<apollo::cyber::base::ReentrantRWLock> lg(
+        *(K_1_lock));
+    str_K_1 = K_1->v().str();
+  } else {
+    str_K_1 = K_1->v().str();
+  }
+  if (is_V_1_lock) {
+    apollo::cyber::base::ReadLockGuard<apollo::cyber::base::ReentrantRWLock> lg(
+        *(V_1_lock));
+    str_V_1 = V_1->v().str();
+  } else {
+    str_V_1 = V_1->v().str();
+  }
+
+  if (is_K_2_lock) {
+    apollo::cyber::base::ReadLockGuard<apollo::cyber::base::ReentrantRWLock> lg(
+        *(K_2_lock));
+    str_K_2 = K_2->v().str();
+  } else {
+    str_K_2 = K_2->v().str();
+  }
+  if (is_V_2_lock) {
+    apollo::cyber::base::ReadLockGuard<apollo::cyber::base::ReentrantRWLock> lg(
+        *(V_2_lock));
+    str_V_2 = V_2->v().str();
+  } else {
+    str_V_2 = V_2->v().str();
+  }
+
+  if (is_K_3_lock) {
+    apollo::cyber::base::ReadLockGuard<apollo::cyber::base::ReentrantRWLock> lg(
+        *(K_3_lock));
+    str_K_3 = K_3->v().str();
+  } else {
+    str_K_3 = K_3->v().str();
+  }
+  if (is_V_3_lock) {
+    apollo::cyber::base::ReadLockGuard<apollo::cyber::base::ReentrantRWLock> lg(
+        *(V_3_lock));
+    str_V_3 = V_3->v().str();
+  } else {
+    str_V_3 = V_3->v().str();
+  }
+
+  if (is_K_4_lock) {
+    apollo::cyber::base::ReadLockGuard<apollo::cyber::base::ReentrantRWLock> lg(
+        *(K_4_lock));
+    str_K_4 = K_4->v().str();
+  } else {
+    str_K_4 = K_4->v().str();
+  }
+  if (is_V_4_lock) {
+    apollo::cyber::base::ReadLockGuard<apollo::cyber::base::ReentrantRWLock> lg(
+        *(V_4_lock));
+    str_V_4 = V_4->v().str();
+  } else {
+    str_V_4 = V_4->v().str();
+  }
+
+  if (is_K_5_lock) {
+    apollo::cyber::base::ReadLockGuard<apollo::cyber::base::ReentrantRWLock> lg(
+        *(K_5_lock));
+    str_K_5 = K_5->v().str();
+  } else {
+    str_K_5 = K_5->v().str();
+  }
+  if (is_V_5_lock) {
+    apollo::cyber::base::ReadLockGuard<apollo::cyber::base::ReentrantRWLock> lg(
+        *(V_5_lock));
+    str_V_5 = V_5->v().str();
+  } else {
+    str_V_5 = V_5->v().str();
+  }
+
+  int check_cond = str_K_1.empty() + str_K_2.empty() + str_K_3.empty() +
+                   str_K_4.empty() + str_K_5.empty();
+
+  // 非数组类型
+  if (check_cond != 5) {
+    //前置条件检查
+    // 要不=0 全当数组用
+    // 要不某一个 key 和 Value全为空
+    // K V同时有值或者同时没有值
+    if ((str_K_1.empty() ^ str_V_1.empty()) ||
+        (str_K_2.empty() ^ str_V_2.empty()) ||
+        (str_K_3.empty() ^ str_V_3.empty()) ||
+        (str_K_4.empty() ^ str_V_4.empty()) ||
+        (str_K_5.empty() ^ str_V_5.empty())) {
+      status->mutable_v()->set_i(1);
+      if (is_out_lock) {
+        apollo::cyber::base::WriteLockGuard<
+            apollo::cyber::base::ReentrantRWLock>
+            lg(*(out_lock));
+        out->clear_v();
+      } else {
+        out->clear_v();
+      }
+      return;
+    }
+
+    if (is_order_json) {
+      nlohmann::ordered_json out_j;
+      if (!str_K_1.empty()) {
+        out_j[str_K_1] = nlohmann::ordered_json::parse(str_V_1, nullptr, false);
+      }
+      if (!str_K_2.empty()) {
+        out_j[str_K_2] = nlohmann::ordered_json::parse(str_V_2, nullptr, false);
+      }
+      if (!str_K_3.empty()) {
+        out_j[str_K_3] = nlohmann::ordered_json::parse(str_V_3, nullptr, false);
+      }
+      if (!str_K_4.empty()) {
+        out_j[str_K_4] = nlohmann::ordered_json::parse(str_V_4, nullptr, false);
+      }
+      if (!str_K_5.empty()) {
+        out_j[str_K_5] = nlohmann::ordered_json::parse(str_V_5, nullptr, false);
+      }
+      out_str = out_j.dump(0);
+
+    } else {
+      nlohmann::json out_j;
+      if (!str_K_1.empty()) {
+        nlohmann::ordered_json tmp =
+            nlohmann::ordered_json::parse(str_V_1, nullptr, false);
+        if (tmp.is_discarded()) {
+          out_j[str_K_1] = str_V_1;
+        } else {
+          out_j[str_K_1] = tmp;
+        }
+      }
+      if (!str_K_2.empty()) {
+        nlohmann::ordered_json tmp =
+            nlohmann::ordered_json::parse(str_V_2, nullptr, false);
+        if (tmp.is_discarded()) {
+          out_j[str_K_2] = str_V_2;
+        } else {
+          out_j[str_K_2] = tmp;
+        }
+      }
+      if (!str_K_3.empty()) {
+        nlohmann::ordered_json tmp =
+            nlohmann::ordered_json::parse(str_V_3, nullptr, false);
+        if (tmp.is_discarded()) {
+          out_j[str_K_3] = str_V_3;
+        } else {
+          out_j[str_K_3] = tmp;
+        }
+      }
+      if (!str_K_4.empty()) {
+        nlohmann::ordered_json tmp =
+            nlohmann::ordered_json::parse(str_V_4, nullptr, false);
+        if (tmp.is_discarded()) {
+          out_j[str_K_4] = str_V_4;
+        } else {
+          out_j[str_K_4] = tmp;
+        }
+      }
+      if (!str_K_5.empty()) {
+        nlohmann::ordered_json tmp =
+            nlohmann::ordered_json::parse(str_V_5, nullptr, false);
+        if (tmp.is_discarded()) {
+          out_j[str_K_5] = str_V_5;
+        } else {
+          out_j[str_K_5] = tmp;
+        }
+      }
+      out_str = out_j.dump(0);
+    }
+    //数组类型
+  } else {
+    if (is_order_json) {
+      nlohmann::ordered_json out_j = nlohmann::ordered_json::array();
+      if (!str_V_1.empty()) {
+        nlohmann::ordered_json tmp =
+            nlohmann::ordered_json::parse(str_V_1, nullptr, false);
+        if (tmp.is_discarded()) {
+          out_j.push_back(str_V_1);
+        } else {
+          out_j.push_back(tmp);
+        }
+      }
+      if (!str_V_2.empty()) {
+        nlohmann::ordered_json tmp =
+            nlohmann::ordered_json::parse(str_V_2, nullptr, false);
+        if (tmp.is_discarded()) {
+          out_j.push_back(str_V_2);
+        } else {
+          out_j.push_back(tmp);
+        }
+      }
+      if (!str_V_3.empty()) {
+        nlohmann::ordered_json tmp =
+            nlohmann::ordered_json::parse(str_V_3, nullptr, false);
+        if (tmp.is_discarded()) {
+          out_j.push_back(str_V_3);
+        } else {
+          out_j.push_back(tmp);
+        }
+      }
+      if (!str_V_4.empty()) {
+        nlohmann::ordered_json tmp =
+            nlohmann::ordered_json::parse(str_V_4, nullptr, false);
+        if (tmp.is_discarded()) {
+          out_j.push_back(str_V_4);
+        } else {
+          out_j.push_back(tmp);
+        }
+      }
+      if (!str_V_5.empty()) {
+        nlohmann::ordered_json tmp =
+            nlohmann::ordered_json::parse(str_V_5, nullptr, false);
+        if (tmp.is_discarded()) {
+          out_j.push_back(str_V_5);
+        } else {
+          out_j.push_back(tmp);
+        }
+      }
+      out_str = out_j.dump(0);
+    } else {
+      nlohmann::json out_j = nlohmann::json::array();
+      if (!str_V_1.empty()) {
+        nlohmann::json tmp =
+            nlohmann::ordered_json::parse(str_V_1, nullptr, false);
+        if (tmp.is_discarded()) {
+          out_j.push_back(str_V_1);
+        } else {
+          out_j.push_back(tmp);
+        }
+      }
+      if (!str_V_2.empty()) {
+        nlohmann::json tmp =
+            nlohmann::ordered_json::parse(str_V_2, nullptr, false);
+        if (tmp.is_discarded()) {
+          out_j.push_back(str_V_2);
+        } else {
+          out_j.push_back(tmp);
+        }
+      }
+      if (!str_V_3.empty()) {
+        nlohmann::json tmp =
+            nlohmann::ordered_json::parse(str_V_3, nullptr, false);
+        if (tmp.is_discarded()) {
+          out_j.push_back(str_V_3);
+        } else {
+          out_j.push_back(tmp);
+        }
+      }
+      if (!str_V_4.empty()) {
+        nlohmann::json tmp =
+            nlohmann::ordered_json::parse(str_V_4, nullptr, false);
+        if (tmp.is_discarded()) {
+          out_j.push_back(str_V_4);
+        } else {
+          out_j.push_back(tmp);
+        }
+      }
+      if (!str_V_5.empty()) {
+        nlohmann::json tmp =
+            nlohmann::ordered_json::parse(str_V_5, nullptr, false);
+        if (tmp.is_discarded()) {
+          out_j.push_back(str_V_5);
+        } else {
+          out_j.push_back(tmp);
+        }
+      }
+      out_str = out_j.dump(0);
+    }
+  }
+  status->mutable_v()->set_i(0);
+
+  if (is_out_lock) {
+    apollo::cyber::base::WriteLockGuard<apollo::cyber::base::ReentrantRWLock>
+        lg(*(out_lock));
+    out->mutable_v()->set_str(out_str);
+  } else {
+    out->mutable_v()->set_str(out_str);
+  }
+
+  return;
+}
+
+static fb_t fb_JSON_SERIAL_OBJ = {
+    {"Value", "JSON_SERIAL_OBJ", "", 0, 0, 0, FB_EXEC, run_JSON_SERIAL_OBJ},
+    {{"EN", PIN_NO_LOCK, T_BOOL, "", "", nullptr, 0},
+     {"ORDER", PIN_NO_LOCK, T_BOOL, "", "", nullptr,
+      0},  // 1 用户原始顺序  0 自动排序
+     {"K_1", PIN_NO_LOCK, T_STRING, "", "", nullptr, 0},
+     {"V_1", PIN_NO_LOCK, T_STRING, "", "", nullptr, 0},
+     {"K_2", PIN_NO_LOCK, T_STRING, "", "", nullptr, 0},
+     {"V_2", PIN_NO_LOCK, T_STRING, "", "", nullptr, 0},
+     {"K_3", PIN_NO_LOCK, T_STRING, "", "", nullptr, 0},
+     {"V_3", PIN_NO_LOCK, T_STRING, "", "", nullptr, 0},
+     {"K_4", PIN_NO_LOCK, T_STRING, "", "", nullptr, 0},
+     {"V_4", PIN_NO_LOCK, T_STRING, "", "", nullptr, 0},
+     {"K_5", PIN_NO_LOCK, T_STRING, "", "", nullptr, 0},
+     {"V_5", PIN_NO_LOCK, T_STRING, "", "", nullptr, 0}},
+    {{"STATUS", PIN_NO_LOCK, T_INT32, "", "", nullptr, 0},
+     {"OUT", PIN_NO_LOCK, T_STRING, "", "", nullptr, 0}}};

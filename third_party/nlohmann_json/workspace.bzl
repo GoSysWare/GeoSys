@@ -9,11 +9,10 @@ def clean_dep(dep):
 
 def repo():
     http_archive(
-        name = "com_github_nlohmann_json",
-        sha256 = "7d0edf65f2ac7390af5e5a0b323b31202a6c11d744a74b588dc30f5a8c9865ba",
-        strip_prefix = "json-3.8.0",
+        name = "nlohmann_json",
+        strip_prefix = "json-3.10.5",
         build_file = clean_dep("//third_party/nlohmann_json:json.BUILD"),
         urls = [
-            "https://github.com/nlohmann/json/archive/v3.8.0.tar.gz",
+            "https://github.com/nlohmann/json/archive/v3.10.5.tar.gz",
         ],
     )

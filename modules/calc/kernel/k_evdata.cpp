@@ -99,6 +99,10 @@ value_tm setvar(v_type t, std::string value) {
   value_tm vam;
   vam.set_tm(apollo::cyber::Time::Now().ToNanosecond());
   vam.set_t(t);
+  if(value.empty()){
+    return std::move(vam);
+
+  }
   switch (t) {
   case v_type::T_BOOL:
     vam.mutable_v()->set_b(

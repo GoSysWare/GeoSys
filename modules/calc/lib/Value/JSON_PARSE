@@ -1,4 +1,8 @@
-static void return_JSON2PB(vam_t &status, int s, bool is_out_lock,
+#include <google/protobuf/util/json_util.h>
+
+#include "cyber/cyber.h"
+
+static void return_JSON_PARSE(vam_t &status, int s, bool is_out_lock,
                            apollo::cyber::base::ReentrantRWLock *out_lock,
                            vam_t &out, Message *any_msg) {
   status->mutable_v()->set_i(s);
@@ -20,7 +24,7 @@ static void return_JSON2PB(vam_t &status, int s, bool is_out_lock,
   return;
 }
 
-static void run_JSON2PB(void *p) {
+static void run_JSON_PARSE(void *p) {
   fb_t *pb = (fb_t *)p;
   vam_t &enable = pb->ins[0].v;
   vam_t &status = pb->outs[0].v;
@@ -43,6 +47,7 @@ static void run_JSON2PB(void *p) {
   options.ignore_unknown_fields = ignore_unknown_fields->v().b();
 
   std::string json_str = in_json->v().str();
+  AINFO << "json_str:" << json_str;
   Status st;
   if (is_in_json_lock == PIN_HAS_LOCK) {
     apollo::cyber::base::ReadLockGuard<apollo::cyber::base::ReentrantRWLock> lg(
@@ -54,17 +59,17 @@ static void run_JSON2PB(void *p) {
         google::protobuf::util::JsonStringToMessage(json_str, &any_msg, options);
   }
   if (st.ok()) {
-    return_JSON2PB(status, st.code(), is_out_any_lock, out_any_lock, out_any,
+    return_JSON_PARSE(status, st.code(), is_out_any_lock, out_any_lock, out_any,
                    &any_msg);
   } else {
-    return_JSON2PB(status, st.code(), is_out_any_lock, out_any_lock, out_any,
+    return_JSON_PARSE(status, st.code(), is_out_any_lock, out_any_lock, out_any,
                    0);
   }
   return;
 }
 
-static fb_t fb_JSON2PB = {
-    {"Value", "JSON2PB", "", 0, 0, 0, FB_EXEC, run_JSON2PB},
+static fb_t fb_JSON_PARSE = {
+    {"Value", "JSON_PARSE", "", 0, 0, 0, FB_EXEC, run_JSON_PARSE},
     {{"EN", PIN_NO_LOCK, T_BOOL, "", "", nullptr, 0},
      {"IN", PIN_NO_LOCK, T_STRING, "", "", nullptr, 0},
      {"UNKONWN", PIN_NO_LOCK, T_BOOL, "", "", nullptr, 0},  // 是否打印未知字段

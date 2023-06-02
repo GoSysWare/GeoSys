@@ -1,0 +1,180 @@
+
+
+static void run_JSON_OBJ_MERGE(void *p) {
+  fb_t *pb = (fb_t *)p;
+  vam_t &enable = pb->ins[0].v;
+  vam_t &status = pb->outs[0].v;
+  if (enable->v().b() == false) return;
+  vam_t in_order = pb->ins[1].v;
+  bool is_in_order_lock = pb->ins[1].s;
+  apollo::cyber::base::ReentrantRWLock *in_order_lock = pb->ins[1].l;
+
+  vam_t J_1 = pb->ins[2].v;
+  bool is_J_1_lock = pb->ins[2].s;
+  apollo::cyber::base::ReentrantRWLock *J_1_lock = pb->ins[2].l;
+
+  vam_t J_2 = pb->ins[3].v;
+  bool is_J_2_lock = pb->ins[3].s;
+  apollo::cyber::base::ReentrantRWLock *J_2_lock = pb->ins[3].l;
+
+  vam_t J_3 = pb->ins[4].v;
+  bool is_J_3_lock = pb->ins[4].s;
+  apollo::cyber::base::ReentrantRWLock *J_3_lock = pb->ins[4].l;
+
+  vam_t J_4 = pb->ins[5].v;
+  bool is_J_4_lock = pb->ins[5].s;
+  apollo::cyber::base::ReentrantRWLock *J_4_lock = pb->ins[5].l;
+
+  vam_t out = pb->outs[1].v;
+  bool is_out_lock = pb->outs[1].s;
+  apollo::cyber::base::ReentrantRWLock *out_lock = pb->outs[1].l;
+
+  std::string str_J_1;
+  std::string str_J_2;
+  std::string str_J_3;
+  std::string str_J_4;
+  std::string out_str;
+
+  nlohmann::json tmp_J_1;
+  nlohmann::json tmp_J_2;
+  nlohmann::json tmp_J_3;
+  nlohmann::json tmp_J_4;
+  nlohmann::json tmp_Json;
+
+  bool is_order_json = in_order->v().b();
+
+  if (is_J_1_lock) {
+    apollo::cyber::base::ReadLockGuard<apollo::cyber::base::ReentrantRWLock> lg(
+        *(J_1_lock));
+    str_J_1 = J_1->v().str();
+  } else {
+    str_J_1 = J_1->v().str();
+  }
+  if (is_J_2_lock) {
+    apollo::cyber::base::ReadLockGuard<apollo::cyber::base::ReentrantRWLock> lg(
+        *(J_2_lock));
+    str_J_2 = J_2->v().str();
+  } else {
+    str_J_2 = J_2->v().str();
+  }
+
+  if (is_J_3_lock) {
+    apollo::cyber::base::ReadLockGuard<apollo::cyber::base::ReentrantRWLock> lg(
+        *(J_3_lock));
+    str_J_3 = J_3->v().str();
+  } else {
+    str_J_3 = J_3->v().str();
+  }
+  if (is_J_4_lock) {
+    apollo::cyber::base::ReadLockGuard<apollo::cyber::base::ReentrantRWLock> lg(
+        *(J_4_lock));
+    str_J_4 = J_4->v().str();
+  } else {
+    str_J_4 = J_4->v().str();
+  }
+
+  if (!str_J_1.empty()) {
+    tmp_J_1 = nlohmann::json::parse(str_J_1, nullptr, false);
+  }
+  if (!str_J_2.empty()) {
+    tmp_J_2 = nlohmann::json::parse(str_J_2, nullptr, false);
+  }
+  if (!str_J_3.empty()) {
+    tmp_J_3 = nlohmann::json::parse(str_J_3, nullptr, false);
+  }
+  if (!str_J_4.empty()) {
+    tmp_J_4 = nlohmann::json::parse(str_J_4, nullptr, false);
+  }
+  if (tmp_J_1.is_discarded() || tmp_J_2.is_discarded() ||
+      tmp_J_3.is_discarded() || tmp_J_4.is_discarded()) {
+    out->clear_v();
+    status->mutable_v()->set_i(1);
+    return;
+  }
+  
+  if(!tmp_J_1.is_null()){
+   tmp_Json.merge_patch(tmp_J_1);
+  }
+  if(!tmp_J_2.is_null()){
+   tmp_Json.merge_patch(tmp_J_2);
+  }
+  if(!tmp_J_3.is_null()){
+   tmp_Json.merge_patch(tmp_J_3);
+  }
+  if(!tmp_J_4.is_null()){
+   tmp_Json.merge_patch(tmp_J_4);
+  }
+
+
+  out_str = tmp_Json.dump();
+
+  if (is_out_lock) {
+    apollo::cyber::base::WriteLockGuard<apollo::cyber::base::ReentrantRWLock>
+        lg(*(out_lock));
+    out->mutable_v()->set_str(out_str);
+  } else {
+    out->mutable_v()->set_str(out_str);
+  }
+
+  return;
+}
+// json 对象 级联
+
+static fb_t fb_JSON_OBJ_MERGE = {
+    {"Value", "JSON_OBJ_MERGE", "", 0, 0, 0, FB_EXEC, run_JSON_OBJ_MERGE},
+    {{"EN", PIN_NO_LOCK, T_BOOL, "", "", nullptr, 0},
+     {"ORDER", PIN_NO_LOCK, T_BOOL, "", "", nullptr, 0},
+     {"J_1", PIN_NO_LOCK, T_STRING, "", "", nullptr, 0},
+     {"J_2", PIN_NO_LOCK, T_STRING, "", "", nullptr, 0},
+     {"J_3", PIN_NO_LOCK, T_STRING, "", "", nullptr, 0},
+     {"J_4", PIN_NO_LOCK, T_STRING, "", "", nullptr, 0}},
+    {{"STATUS", PIN_NO_LOCK, T_INT32, "", "", nullptr, 0},
+     {"OUT", PIN_NO_LOCK, T_STRING, "", "", nullptr, 0}}};
+
+
+// RFC 7396 (JSON Merge Patch)
+// https://datatracker.ietf.org/doc/html/rfc7396
+//  ORIGINAL        PATCH            RESULT
+//    ------------------------------------------
+//    {"a":"b"}       {"a":"c"}       {"a":"c"}
+
+//    {"a":"b"}       {"b":"c"}       {"a":"b",
+//                                     "b":"c"}
+
+//    {"a":"b"}       {"a":null}      {}
+
+//    {"a":"b",       {"a":null}      {"b":"c"}
+//     "b":"c"}
+
+//    {"a":["b"]}     {"a":"c"}       {"a":"c"}
+
+//    {"a":"c"}       {"a":["b"]}     {"a":["b"]}
+
+//    {"a": {         {"a": {         {"a": {
+//      "b": "c"}       "b": "d",       "b": "d"
+//    }                 "c": null}      }
+//                    }               }
+
+//    {"a": [         {"a": [1]}      {"a": [1]}
+//      {"b":"c"}
+//     ]
+//    }
+
+//    ["a","b"]       ["c","d"]       ["c","d"]
+
+//    {"a":"b"}       ["c"]           ["c"]
+
+//    {"a":"foo"}     null            null
+
+//    {"a":"foo"}     "bar"           "bar"
+
+//    {"e":null}      {"a":1}         {"e":null,
+//                                     "a":1}
+
+//    [1,2]           {"a":"b",       {"a":"b"}
+//                     "c":null}
+
+//    {}              {"a":            {"a":
+//                     {"bb":           {"bb":
+//                      {"ccc":          {}}}
+//                       null}}}

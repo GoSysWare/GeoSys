@@ -302,7 +302,10 @@
         "pb2json": "cpp",
         "json2pb": "cpp",
         "__mutex_base": "cpp",
-        "ios": "cpp"
+        "ios": "cpp",
+        "json_serial_obj": "cpp",
+        "__string": "cpp",
+        "json_obj_merge": "cpp"
     },
     "C_Cpp.errorSquiggles": "disabled"
 }

@@ -9,6 +9,8 @@ cc_library(
     includes = [
     ],
     hdrs = [
+        "JSON_OBJ_MERGE",
+        "JSON_SERIAL_OBJ",
         "JSON2PB",
         "PB2JSON",
         "V_GET_ANY",
@@ -24,5 +26,6 @@ cc_library(
         "//modules/calc/include:calc_include",
         "//modules/calc/include/lib:lib_include",
         "//modules/calc/proto:bus_cc_proto",
+        "@nlohmann_json//:single_json",
          ],
 )
