@@ -10,7 +10,7 @@ cc_library(
     ],
     hdrs = [
         "JSON_OBJ_MERGE",
-        "JSON_SERIAL_OBJ",
+        "JSON_SERIAL",
         "JSON2PB",
         "PB2JSON",
         "V_GET_ANY",

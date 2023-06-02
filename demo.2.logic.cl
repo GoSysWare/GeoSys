@@ -1,5 +1,5 @@
 infos {
-  cmd_id: 943
+  cmd_id: 975
   edit_type: SET
   proj {
     proj_name: "rotbot-engine-project"
@@ -7490,5 +7490,166 @@ infos {
     pin_index: 1
     ev_id: 189
     vo_id: 190
+  }
+}
+infos {
+  cmd_id: 944
+  element: TASK
+  edit_type: ADD
+  task {
+    mod_id: 162
+    task_id: 191
+    task_name: "Json"
+    interval: 1000
+  }
+}
+infos {
+  cmd_id: 965
+  element: FB
+  edit_type: ADD
+  fb {
+    mod_id: 162
+    task_id: 191
+    fb_id: 192
+    flib_name: "Value"
+    fc_name: "JSON_SERIAL"
+  }
+  pos {
+    x: 21
+    y: 26
+  }
+}
+infos {
+  cmd_id: 966
+  element: FB
+  edit_type: ADD
+  fb {
+    mod_id: 162
+    task_id: 191
+    fb_id: 193
+    flib_name: "Value"
+    fc_name: "JSON_SERIAL"
+  }
+  pos {
+    x: 55
+    y: 52
+  }
+}
+infos {
+  cmd_id: 970
+  element: FB
+  edit_type: MV
+  fb {
+    mod_id: 162
+    task_id: 191
+    fb_id: 192
+  }
+  pos {
+    x: 23
+    y: 31
+  }
+}
+infos {
+  cmd_id: 971
+  element: FB
+  edit_type: MV
+  fb {
+    mod_id: 162
+    task_id: 191
+    fb_id: 193
+  }
+  pos {
+    x: 23
+    y: 71
+  }
+}
+infos {
+  cmd_id: 972
+  element: FB
+  edit_type: ADD
+  fb {
+    mod_id: 162
+    task_id: 191
+    fb_id: 194
+    flib_name: "Value"
+    fc_name: "JSON_SERIAL"
+  }
+  pos {
+    x: 73
+    y: 64
+  }
+}
+infos {
+  cmd_id: 973
+  element: FB
+  edit_type: MV
+  fb {
+    mod_id: 162
+    task_id: 191
+    fb_id: 194
+  }
+  pos {
+    x: 68
+    y: 44
+  }
+}
+infos {
+  cmd_id: 974
+  element: LK
+  edit_type: ADD
+  lk {
+    mod_id: 162
+    task_id: 191
+    lk_id: 195
+    src_fb_id: 192
+    src_pin_index: 1
+    target_fb_id: 194
+    target_pin_index: 4
+  }
+  pos {
+    x: 44
+    y: 38
+  }
+  pos {
+    x: 56
+    y: 38
+  }
+  pos {
+    x: 56
+    y: 57
+  }
+  pos {
+    x: 68
+    y: 57
+  }
+}
+infos {
+  cmd_id: 975
+  element: LK
+  edit_type: ADD
+  lk {
+    mod_id: 162
+    task_id: 191
+    lk_id: 196
+    src_fb_id: 193
+    src_pin_index: 1
+    target_fb_id: 194
+    target_pin_index: 12
+  }
+  pos {
+    x: 44
+    y: 78
+  }
+  pos {
+    x: 56
+    y: 78
+  }
+  pos {
+    x: 56
+    y: 73
+  }
+  pos {
+    x: 68
+    y: 73
   }
 }

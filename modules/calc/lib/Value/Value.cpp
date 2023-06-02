@@ -21,7 +21,7 @@ using namespace google::protobuf::util;
 
 
 #include "JSON_OBJ_MERGE"
-#include "JSON_SERIAL_OBJ"
+#include "JSON_SERIAL"
 
 #include "JSON2PB"
 #include "PB2JSON"
@@ -32,7 +32,7 @@ using namespace google::protobuf::util;
 
 static void *fb_table[] = {
 	&fb_JSON_OBJ_MERGE,
-	&fb_JSON_SERIAL_OBJ,
+	&fb_JSON_SERIAL,
     &fb_JSON2PB,      &fb_PB2JSON,   &fb_V_GET_ANY,
     &fb_V_GET_DOUBLE, &fb_V_SET_ANY, &fb_V_SET_DOUBLE,
 

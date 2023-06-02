@@ -305,7 +305,8 @@
         "ios": "cpp",
         "json_serial_obj": "cpp",
         "__string": "cpp",
-        "json_obj_merge": "cpp"
+        "json_obj_merge": "cpp",
+        "json_serial": "cpp"
     },
     "C_Cpp.errorSquiggles": "disabled"
 }
