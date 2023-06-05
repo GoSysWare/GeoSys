@@ -24,4 +24,5 @@ static fb_t fb_STR_ERASE = {
      {"POS", PIN_NO_LOCK,T_UINT32,"", "",nullptr,0},
      {"LEN", PIN_NO_LOCK,T_UINT32,"", "",nullptr,0}},
     {{"STATUS", PIN_NO_LOCK,T_INT32,"", "",nullptr,0}, 
-    {"OUT", PIN_NO_LOCK,T_STRING, "","",nullptr,0}}};
+    {"OUT", PIN_NO_LOCK,T_STRING, "","",nullptr,0},
+    {"LENGTH", PIN_NO_LOCK,T_UINT32, "","",nullptr,0}}};
