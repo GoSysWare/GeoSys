@@ -43,7 +43,7 @@ static void run_JSON2PB(void *p) {
   options.ignore_unknown_fields = ignore_unknown_fields->v().b();
 
   std::string json_str = in_json->v().str();
-  Status st;
+  absl::Status st;
   if (is_in_json_lock == PIN_HAS_LOCK) {
     apollo::cyber::base::ReadLockGuard<apollo::cyber::base::ReentrantRWLock> lg(
         *(in_json_lock));
@@ -54,10 +54,10 @@ static void run_JSON2PB(void *p) {
         google::protobuf::util::JsonStringToMessage(json_str, &any_msg, options);
   }
   if (st.ok()) {
-    return_JSON2PB(status, st.code(), is_out_any_lock, out_any_lock, out_any,
+    return_JSON2PB(status, (int)st.code(), is_out_any_lock, out_any_lock, out_any,
                    &any_msg);
   } else {
-    return_JSON2PB(status, st.code(), is_out_any_lock, out_any_lock, out_any,
+    return_JSON2PB(status, (int)st.code(), is_out_any_lock, out_any_lock, out_any,
                    0);
   }
   return;

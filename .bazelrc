@@ -19,7 +19,7 @@ build:optimize --host_copt=-march=native
 
 
 # Enable C++14
-build --cxxopt="-std=c++14" 
+build --cxxopt=-std=c++14 --host_cxxopt=-std=c++14
 build --cxxopt="-mavx" 
 build --cxxopt="-mavx2"
 

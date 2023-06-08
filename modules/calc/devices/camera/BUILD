@@ -34,10 +34,6 @@ cc_library(
         "-lswscale",
         "-lavformat",
         "-lavutil",
-        # "-lprotobuf",
-        # "-L/home/shuimujie/Works/GeoSys/bazel-bin/external/com_google_protobuf/",
-        # "-lprotobuf",
-        # "-lprotobuf_lite",
     ],
 
     deps = [

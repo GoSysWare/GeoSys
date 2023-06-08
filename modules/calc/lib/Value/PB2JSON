@@ -29,11 +29,11 @@ static void run_PB2JSON(void *p) {
   if (is_in_any_lock == PIN_HAS_LOCK) {
     apollo::cyber::base::ReadLockGuard<apollo::cyber::base::ReentrantRWLock> lg(
         *(in_any_lock));
-    Status st = google::protobuf::util::MessageToJsonString(*in_any,&json_result,options);
-    status->mutable_v()->set_i(st.code());
+    absl::Status st = google::protobuf::util::MessageToJsonString(*in_any,&json_result,options);
+    status->mutable_v()->set_i((int)st.code());
   } else {
-    Status st = google::protobuf::util::MessageToJsonString(*in_any,&json_result,options);
-    status->mutable_v()->set_i(st.code());
+    absl::Status st = google::protobuf::util::MessageToJsonString(*in_any,&json_result,options);
+    status->mutable_v()->set_i((int)st.code());
   }
 
 

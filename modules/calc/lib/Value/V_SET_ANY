@@ -47,7 +47,7 @@ static void run_V_SET_ANY(void *p) {
   }
 
   //输入的any 转化为原型
-  string type_name;
+  std::string type_name;
   google::protobuf::internal::ParseAnyTypeUrl(in_any->v().any().type_url(), &type_name);
   const Descriptor *new_descriptor =
       DescriptorPool::generated_pool()->FindMessageTypeByName(type_name);
@@ -75,7 +75,7 @@ static void run_V_SET_ANY(void *p) {
   }
 
   //设定的any 转化为原型
-  string set_val_type_name;
+  std::string set_val_type_name;
   google::protobuf::internal::ParseAnyTypeUrl(in_any->v().any().type_url(), &set_val_type_name);
   const Descriptor *set_val_new_descriptor =
       DescriptorPool::generated_pool()->FindMessageTypeByName(
