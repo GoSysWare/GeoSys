@@ -461,12 +461,12 @@ int prj_to_snapshot(Bus::ProjSnapshotReq *snapshot_req,
       while (p_en != &p_mn->p_prg->en_head) {
         if (p_en->p_fb != ((void *)0)) {
           p_fb = p_en->p_fb;
-          AINFO << "fb.libname:" << p_fb->h.libname
-                 << " fb.fbname:" << p_fb->h.fbname
-                 << " fb.fcname:" << p_fb->h.fcname
-                 << " fb.in size: " << p_fb->ins.size()
-                 << " fb.out size: " << p_fb->outs.size()
-                 << " task val size:" << task_sp->vals_size();
+          // AINFO << "fb.libname:" << p_fb->h.libname
+          //        << " fb.fbname:" << p_fb->h.fbname
+          //        << " fb.fcname:" << p_fb->h.fcname
+          //        << " fb.in size: " << p_fb->ins.size()
+          //        << " fb.out size: " << p_fb->outs.size()
+          //        << " task val size:" << task_sp->vals_size();
 
           // 解析fb的header
           value_tm *val_sp = task_sp->add_vals();

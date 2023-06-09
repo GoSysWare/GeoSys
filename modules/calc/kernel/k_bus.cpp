@@ -99,24 +99,20 @@ int bus_init(std::shared_ptr<apollo::cyber::Node> node) {
             // std::cout << "get project snapshot:" << std::endl;
             // std::cout << "request:" << request->DebugString() << std::endl;
 
+            prj_to_snapshot(request.get(), response.get());
+
             response->mutable_result()->set_code(Bus::ResultCode::OK);
             response->mutable_result()->set_msg("success");
             if (request->evs_size()) {
               response->mutable_ev_id()->CopyFrom(request->evs());
             }
-            prj_to_snapshot(request.get(), response.get());
-
             AINFO << "prj_snapshot_name response size:"
                   << response->ByteSizeLong();
-
-            // response->mutable_result()->set_code(Bus::ResultCode::OK);
-            // response->mutable_result()->set_msg("success");
           });
   prj_cmd_srv = node->CreateService<Bus::ProjectCmdReq, Bus::ProjectCmdRsp>(
       FLAGS_prj_cmd_name, [](const std::shared_ptr<Bus::ProjectCmdReq> &request,
                              std::shared_ptr<Bus::ProjectCmdRsp> &response) {
-        AINFO << "prject  cmd:";
-        AINFO << "request:" << request->DebugString();
+        AINFO << "prject  cmd type" <<  request->cmd_type();
         Bus::EditInfos info;
 
         switch (request->cmd_type()) {
