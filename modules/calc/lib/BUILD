@@ -16,6 +16,7 @@ cc_library(
         "//modules/calc/lib/Devices:Devices",
         "//modules/calc/lib/Fsm:Fsm",
         "//modules/calc/lib/Geometry:Geometry",
+        "//modules/calc/lib/Http:Http",
 
         "//modules/calc/lib/Task:Task",
         "//modules/calc/lib/Logic:Logic",

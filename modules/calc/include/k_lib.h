@@ -6,6 +6,7 @@
 #include "k_functionblock.h"
 
 using fbget = std::function<void* (void)>;
+using fbinit = std::function<void (void)>;
 
 typedef struct Lib{
 	std::string libname;

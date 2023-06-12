@@ -1,0 +1,150 @@
+size_t curl_write_back(char *buffer, size_t size, size_t nmemb,
+                       std::string *stream) {
+  size_t sizes = size * nmemb;
+  if (stream == NULL) {
+    return 0;
+  }
+  stream->append(buffer, sizes);
+
+  return sizes;
+}
+
+static void return_CURL_SEND(
+    vam_t &status, int s, vam_t &out_code, int ret_code, bool is_out_data__lock,
+    apollo::cyber::base::ReentrantRWLock *out_data_lock, vam_t &out_data,
+    const std::string &str_out_data) {
+  status->mutable_v()->set_i(s);
+  if (is_out_data__lock == PIN_HAS_LOCK) {
+    apollo::cyber::base::WriteLockGuard<apollo::cyber::base::ReentrantRWLock>
+        lg(*(out_data_lock));
+    out_data->mutable_v()->set_str(str_out_data);
+  } else {
+    out_data->mutable_v()->set_str(str_out_data);
+  }
+
+  if (ret_code >= 100 && ret_code <= 600) {
+    out_code->mutable_v()->set_ui(ret_code);
+  } else {
+    out_code->clear_v();
+  }
+  return;
+}
+
+static void run_CURL_SEND(void *p) {
+  fb_t *pb = (fb_t *)p;
+  vam_t &enable = pb->ins[0].v;
+  vam_t &status = pb->outs[0].v;
+  if (enable->v().b() == false) return;
+
+  vam_t in_url = pb->ins[1].v;
+  bool is_in_url_lock = pb->ins[1].s;
+  apollo::cyber::base::ReentrantRWLock *in_url_lock = pb->ins[1].l;
+
+  vam_t in_header = pb->ins[2].v;
+  bool is_in_header_lock = pb->ins[2].s;
+  apollo::cyber::base::ReentrantRWLock *in_header_lock = pb->ins[2].l;
+
+  vam_t in_request_data = pb->ins[3].v;
+  bool is_in_request_data_lock = pb->ins[3].s;
+  apollo::cyber::base::ReentrantRWLock *in_request_data_lock = pb->ins[3].l;
+
+  vam_t in_communication_timeout = pb->ins[4].v;
+
+  unsigned int communication_timeout = in_communication_timeout->v().ui();
+
+  vam_t &out_code = pb->outs[1].v;
+  bool is_out_code_lock = pb->outs[1].s;
+  apollo::cyber::base::ReentrantRWLock *out_code_lock = pb->outs[1].l;
+
+  vam_t &out_data = pb->outs[2].v;
+  bool is_out_data_lock = pb->outs[2].s;
+  apollo::cyber::base::ReentrantRWLock *out_data_lock = pb->outs[2].l;
+
+  std::string str_url;
+  if (is_in_url_lock) {
+    apollo::cyber::base::ReadLockGuard<apollo::cyber::base::ReentrantRWLock> lg(
+        *(in_url_lock));
+    str_url = in_url->v().str();
+  } else {
+    str_url = in_url->v().str();
+  }
+
+  std::string str_header;
+  if (is_in_header_lock) {
+    apollo::cyber::base::ReadLockGuard<apollo::cyber::base::ReentrantRWLock> lg(
+        *(in_header_lock));
+    str_header = in_header->v().str();
+  } else {
+    str_header = in_header->v().str();
+  }
+
+  std::string str_request_data;
+  if (is_in_request_data_lock) {
+    apollo::cyber::base::ReadLockGuard<apollo::cyber::base::ReentrantRWLock> lg(
+        *(in_request_data_lock));
+    str_request_data = in_request_data->v().str();
+  } else {
+    str_request_data = in_request_data->v().str();
+  }
+
+  CURLcode res;
+
+  CURL *curl = NULL;
+  int64_t resp_code;
+
+  std::string response_data;
+
+  curl = curl_easy_init();
+  if (!curl) {
+    return_CURL_SEND(status,-1, out_code, -1, is_out_data_lock, out_data_lock,
+                     out_data, "");
+  }
+  struct curl_slist *header = NULL;
+
+  header = curl_slist_append(
+      header, "Content-Type: application/x-www-form-urlencoded;charset=utf-8");
+  curl_easy_setopt(curl, CURLOPT_HTTPHEADER, header);
+
+  curl_easy_setopt(curl, CURLOPT_NOSIGNAL, 1L);
+  curl_easy_setopt(curl, CURLOPT_POST, 1);
+
+  curl_easy_setopt(curl, CURLOPT_POSTFIELDS,
+                   str_request_data.c_str());  // post请求消息数据
+  curl_easy_setopt(curl, CURLOPT_POSTFIELDSIZE,
+                   str_request_data.length());  // 消息长度
+
+  curl_easy_setopt(curl, CURLOPT_TIMEOUT,
+                   communication_timeout);  // 传输超时时间
+  curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, curl_write_back);  // 回调函数
+  curl_easy_setopt(curl, CURLOPT_WRITEDATA, &response_data);  // 数据接收变量
+  curl_easy_setopt(curl, CURLOPT_URL, str_url.c_str());       // 指定url
+
+  res = curl_easy_perform(curl);
+  if (res != CURLE_OK) {
+    return_CURL_SEND(status,res, out_code, -1, is_out_data_lock, out_data_lock,
+                     out_data, "");
+    curl_slist_free_all(header);
+    curl_easy_cleanup(curl); 
+    return;
+  }
+  curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &resp_code);
+  return_CURL_SEND(status,res, out_code, resp_code, is_out_data_lock, out_data_lock,
+                   out_data, response_data);
+
+  curl_slist_free_all(header);
+  curl_easy_cleanup(curl);
+
+  return;
+}
+
+static fb_t fb_CURL_SEND = {
+    {"Http", "CURL_SEND", "", 0, 0, 0, FB_EXEC, run_CURL_SEND},
+    {{"EN", PIN_NO_LOCK, T_BOOL, "", "", nullptr, 0},
+     {"URL", PIN_NO_LOCK, T_STRING, "", "", nullptr, 0},
+     {"HEAD_DATA", PIN_NO_LOCK, T_STRING, "", "", nullptr, 0},
+     {"REQUEST_DATA", PIN_NO_LOCK, T_STRING, "", "", nullptr, 0},
+     {"CONTENT_TYPE", PIN_NO_LOCK, T_UINT32, "", "", nullptr, 0},
+     {"TIMEOUT", PIN_NO_LOCK, T_UINT32, "", "", nullptr, 0}},
+    {{"STATUS", PIN_NO_LOCK, T_INT32, "", "", nullptr, 0},
+     {"RET_CODE", PIN_NO_LOCK, T_INT64, "", "", nullptr, 0},
+     {"RESPONE_DATA", PIN_NO_LOCK, T_STRING, "", "", nullptr, 0}}};

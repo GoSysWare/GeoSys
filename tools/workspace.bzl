@@ -16,6 +16,7 @@ load("//third_party/fastrtps:workspace.bzl", fastrtps = "repo")
 load("//third_party/poco:workspace.bzl", poco = "repo")
 load("//third_party/uuid:workspace.bzl", uuid = "repo")
 load("//third_party/nlohmann_json:workspace.bzl", nlohmann_json = "repo")
+load("//third_party/curl:workspace.bzl", curl = "repo")
 
 #########################################################################################
 # 图像处理、点云、地图功能库
@@ -43,6 +44,7 @@ def initialize_third_party():
 
     # boost()
     # bluez()
+    curl()
     # geos()
     # gdal()
     # spatialite()

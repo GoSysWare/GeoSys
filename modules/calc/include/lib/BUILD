@@ -17,6 +17,7 @@ cc_library(
         "Fsm.h",
         "Logic.h",
         "Maths.h",
+        "Http.h",
         "Opencv.h",
         "System.h",
         "Timer.h",

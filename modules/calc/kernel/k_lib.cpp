@@ -11,6 +11,7 @@
 #include "modules/calc/include/lib/Fsm.h"
 #include "modules/calc/include/lib/Logic.h"
 #include "modules/calc/include/lib/Maths.h"
+#include "modules/calc/include/lib/Http.h"
 #include "modules/calc/include/lib/Opencv.h"
 #include "modules/calc/include/lib/System.h"
 #include "modules/calc/include/lib/Trigger.h"
@@ -24,7 +25,7 @@
 static size_t cursor;
 static lib_t lib_table[NLIBCOUNT]; 
 
-static void lib_set_table(unsigned int id,  std::string  name, fbget first, fbget next)
+static void lib_set_table(unsigned int id,  std::string  name, fbget first, fbget next,fbinit init_function = nullptr)
 {
 	if(id >= NLIBCOUNT){
 		return;
@@ -32,6 +33,9 @@ static void lib_set_table(unsigned int id,  std::string  name, fbget first, fbge
 	lib_table[id].libname = name;
 	lib_table[id].first = first;
 	lib_table[id].next = next;
+	if(init_function){
+		init_function();
+	}
 }
 
 void lib_init()
@@ -46,6 +50,8 @@ void lib_init()
 	lib_set_table(8, "Value", value_first, value_next);
 	lib_set_table(9, "Logic", logic_first, logic_next);
 // 	// lib_set_table(10, "Maths", maths_first, maths_next);
+	lib_set_table(11, "Http", http_first, http_next,http_int);
+
 	lib_set_table(12, "System", system_first, system_next);
 	lib_set_table(13, "Trigger", trigger_first, trigger_next);
 	lib_set_table(14, "Timer", timer_first, timer_next);

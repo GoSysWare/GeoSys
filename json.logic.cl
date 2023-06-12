@@ -1,9 +1,9 @@
 infos {
-  cmd_id: 11
+  cmd_id: 5
   edit_type: SET
   proj {
     proj_name: "rotbot-engine-project"
-    proj_uuid: "{84894565-5a66-4434-902f-1b595a29c18b}"
+    proj_uuid: "{d64fbb74-ed39-4328-aff9-eeac1380e82a}"
   }
 }
 infos {
@@ -22,7 +22,7 @@ infos {
   task {
     mod_id: 1
     task_id: 2
-    task_name: "P2"
+    task_name: "P1"
     interval: 1000
   }
 }
@@ -34,131 +34,43 @@ infos {
     mod_id: 1
     task_id: 2
     fb_id: 3
-    flib_name: "Value"
-    fc_name: "JSON_SERIAL"
+    flib_name: "Http"
+    fc_name: "CURL_SEND"
   }
   pos {
-    x: 15
-    y: 10
+    x: 29
+    y: 12
   }
 }
 infos {
   cmd_id: 4
-  element: FB
-  edit_type: ADD
-  fb {
+  element: PIN
+  edit_type: SET
+  pin {
     mod_id: 1
     task_id: 2
-    fb_id: 4
-    flib_name: "Value"
-    fc_name: "JSON_SERIAL"
-  }
-  pos {
-    x: 15
-    y: 10
+    fb_id: 3
+    pin_index: 1
+    pin_val {
+      t: T_STRING
+      v {
+        str: "https://c63a6f30-2fbc-4deb-bf6f-078236fbec11.mock.pstmn.io/getname"
+      }
+      tm: 1686573925468933857
+    }
   }
 }
 infos {
-  cmd_id: 6
-  element: FB
-  edit_type: MV
-  fb {
-    mod_id: 1
-    task_id: 2
-    fb_id: 4
-  }
-  pos {
-    x: 14
-    y: 53
-  }
-}
-infos {
-  cmd_id: 7
-  element: FB
-  edit_type: ADD
-  fb {
-    mod_id: 1
-    task_id: 2
-    fb_id: 5
-    flib_name: "Value"
-    fc_name: "JSON_SERIAL"
-  }
-  pos {
-    x: 15
-    y: 10
-  }
-}
-infos {
-  cmd_id: 9
+  cmd_id: 5
   element: FB
   edit_type: MV
   fb {
     mod_id: 1
     task_id: 2
-    fb_id: 5
+    fb_id: 3
   }
   pos {
-    x: 77
-    y: 28
-  }
-}
-infos {
-  cmd_id: 10
-  element: LK
-  edit_type: ADD
-  lk {
-    mod_id: 1
-    task_id: 2
-    lk_id: 6
-    src_fb_id: 3
-    src_pin_index: 1
-    target_fb_id: 5
-    target_pin_index: 4
-  }
-  pos {
-    x: 36
-    y: 17
-  }
-  pos {
-    x: 56
-    y: 17
-  }
-  pos {
-    x: 56
-    y: 41
-  }
-  pos {
-    x: 77
-    y: 41
-  }
-}
-infos {
-  cmd_id: 11
-  element: LK
-  edit_type: ADD
-  lk {
-    mod_id: 1
-    task_id: 2
-    lk_id: 7
-    src_fb_id: 4
-    src_pin_index: 1
-    target_fb_id: 5
-    target_pin_index: 12
-  }
-  pos {
-    x: 35
-    y: 60
-  }
-  pos {
-    x: 56
-    y: 60
-  }
-  pos {
-    x: 56
-    y: 57
-  }
-  pos {
-    x: 77
-    y: 57
+    x: 40
+    y: 12
   }
 }
