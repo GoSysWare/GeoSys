@@ -21,5 +21,7 @@ cc_library(
         "//modules/calc/proto:bus_cc_proto",
         "//modules/calc/devices/sim:device_sim",
         "@curl",
+        "@nlohmann_json//:single_json",
+
     ],
 )

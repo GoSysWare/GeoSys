@@ -1,5 +1,5 @@
 infos {
-  cmd_id: 8
+  cmd_id: 14
   edit_type: SET
   proj {
     proj_name: "rotbot-engine-project"
@@ -69,7 +69,7 @@ infos {
     pin_val {
       t: T_STRING
       v {
-        str: "https://c63a6f30-2fbc-4deb-bf6f-078236fbec11.mock.pstmn.io/getname"
+        str: "http://127.0.0.1:5000/getname"
       }
       tm: 1686650797647883666
     }
@@ -87,5 +87,111 @@ infos {
   pos {
     x: 48
     y: 15
+  }
+}
+infos {
+  cmd_id: 9
+  element: FB
+  edit_type: ADD
+  fb {
+    mod_id: 1
+    task_id: 2
+    fb_id: 4
+    flib_name: "Http"
+    fc_name: "CURL_SEND"
+  }
+  pos {
+    x: 23
+    y: 42
+  }
+}
+infos {
+  cmd_id: 10
+  element: PIN
+  edit_type: SET
+  pin {
+    mod_id: 1
+    task_id: 2
+    fb_id: 4
+    pin_index: 1
+    pin_val {
+      t: T_STRING
+      v {
+        str: "127.0.0.1:8899/login"
+      }
+      tm: 1686658112833193839
+    }
+  }
+}
+infos {
+  cmd_id: 11
+  element: PIN
+  edit_type: SET
+  pin {
+    mod_id: 1
+    task_id: 2
+    fb_id: 4
+    pin_index: 2
+    pin_val {
+      t: T_STRING
+      v {
+        str: "{\"account\":\"1001\",\"password\":\"123\"}"
+      }
+      tm: 1686658157617642561
+    }
+  }
+}
+infos {
+  cmd_id: 12
+  element: PIN
+  edit_type: SET
+  pin {
+    mod_id: 1
+    task_id: 2
+    fb_id: 4
+    pin_index: 3
+    pin_val {
+      t: T_STRING
+      v {
+        str: "post"
+      }
+      tm: 1686658162449461883
+    }
+  }
+}
+infos {
+  cmd_id: 13
+  element: PIN
+  edit_type: SET
+  pin {
+    mod_id: 1
+    task_id: 2
+    fb_id: 3
+    pin_index: 1
+    pin_val {
+      t: T_STRING
+      v {
+        str: "127.0.0.1:8899/users"
+      }
+      tm: 1686659556934919951
+    }
+  }
+}
+infos {
+  cmd_id: 14
+  element: PIN
+  edit_type: SET
+  pin {
+    mod_id: 1
+    task_id: 2
+    fb_id: 4
+    pin_index: 4
+    pin_val {
+      t: T_STRING
+      v {
+        str: "multipart/form-data"
+      }
+      tm: 1686659808641529288
+    }
   }
 }

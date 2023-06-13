@@ -1,5 +1,6 @@
 #include <stddef.h>
 #include <curl/curl.h>
+#include <nlohmann/json.hpp>
 #include "modules/calc/include/k_functionblock.h"
 
 #include "modules/calc/ioss/ioss.h"
