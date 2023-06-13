@@ -141,11 +141,11 @@ static void run_CURL_SEND(void *p) {
 
 
   std::string response_data;
-  if (!check_url(str_url)) {
-    return_CURL_SEND(status, -1, out_code, -1, is_out_data_lock, out_data_lock,
-                     out_data, "");
-    return;
-  }
+  // if (!check_url(str_url)) {
+  //   return_CURL_SEND(status, -1, out_code, -1, is_out_data_lock, out_data_lock,
+  //                    out_data, "");
+  //   return;
+  // }
 
 // content-type
   // 支持两种模式
