@@ -1,3 +1,12 @@
+
+bool check_url(std::string url) {
+  const std::regex urlpattern(
+      "^(((file|gopher|news|nntp|telnet|http|ftp|https|ftps|sftp)://"
+      ")|(www\.))+(([a-zA-Z0-9\._-]+\.[a-zA-Z]{2,6})|([0-9]{1,3}\.[0-9]{1,3}\.["
+      "0-9]{1,3}\.[0-9]{1,3}))(/[a-zA-Z0-9\&%_\./-~-]*)?$");
+  return regex_match(url, urlpattern);
+}
+
 size_t curl_write_back(char *buffer, size_t size, size_t nmemb,
                        std::string *stream) {
   size_t sizes = size * nmemb;
@@ -40,15 +49,27 @@ static void run_CURL_SEND(void *p) {
   bool is_in_url_lock = pb->ins[1].s;
   apollo::cyber::base::ReentrantRWLock *in_url_lock = pb->ins[1].l;
 
-  vam_t in_header = pb->ins[2].v;
-  bool is_in_header_lock = pb->ins[2].s;
-  apollo::cyber::base::ReentrantRWLock *in_header_lock = pb->ins[2].l;
+  vam_t in_request_data = pb->ins[2].v;
+  bool is_in_request_data_lock = pb->ins[2].s;
+  apollo::cyber::base::ReentrantRWLock *in_request_data_lock = pb->ins[2].l;
 
-  vam_t in_request_data = pb->ins[3].v;
-  bool is_in_request_data_lock = pb->ins[3].s;
-  apollo::cyber::base::ReentrantRWLock *in_request_data_lock = pb->ins[3].l;
+  vam_t in_method = pb->ins[3].v;
+  bool is_in_method_lock = pb->ins[3].s;
+  apollo::cyber::base::ReentrantRWLock *in_method_lock = pb->ins[3].l;
 
-  vam_t in_communication_timeout = pb->ins[4].v;
+  vam_t in_content_type = pb->ins[4].v;
+  bool is_in_content_type_lock = pb->ins[4].s;
+  apollo::cyber::base::ReentrantRWLock *in_content_type_lock = pb->ins[4].l;
+
+  vam_t in_charset = pb->ins[5].v;
+  bool is_in_charset_lock = pb->ins[5].s;
+  apollo::cyber::base::ReentrantRWLock *in_charset_lock = pb->ins[5].l;
+
+  vam_t in_header = pb->ins[6].v;
+  bool is_in_header_lock = pb->ins[6].s;
+  apollo::cyber::base::ReentrantRWLock *in_header_lock = pb->ins[6].l;
+
+  vam_t in_communication_timeout = pb->ins[7].v;
 
   unsigned int communication_timeout = in_communication_timeout->v().ui();
 
@@ -69,15 +90,6 @@ static void run_CURL_SEND(void *p) {
     str_url = in_url->v().str();
   }
 
-  std::string str_header;
-  if (is_in_header_lock) {
-    apollo::cyber::base::ReadLockGuard<apollo::cyber::base::ReentrantRWLock> lg(
-        *(in_header_lock));
-    str_header = in_header->v().str();
-  } else {
-    str_header = in_header->v().str();
-  }
-
   std::string str_request_data;
   if (is_in_request_data_lock) {
     apollo::cyber::base::ReadLockGuard<apollo::cyber::base::ReentrantRWLock> lg(
@@ -87,31 +99,136 @@ static void run_CURL_SEND(void *p) {
     str_request_data = in_request_data->v().str();
   }
 
+  std::string str_method;
+  if (is_in_method_lock) {
+    apollo::cyber::base::ReadLockGuard<apollo::cyber::base::ReentrantRWLock> lg(
+        *(in_method_lock));
+    str_method = in_method->v().str();
+  } else {
+    str_method = in_method->v().str();
+  }
+    transform(str_method.begin(), str_method.end(), str_method.begin(), ::tolower);
+
+  std::string str_content_type;
+  if (is_in_content_type_lock) {
+    apollo::cyber::base::ReadLockGuard<apollo::cyber::base::ReentrantRWLock> lg(
+        *(in_content_type_lock));
+    str_content_type = in_content_type->v().str();
+  } else {
+    str_content_type = in_content_type->v().str();
+  }
+    transform(str_content_type.begin(), str_content_type.end(), str_content_type.begin(), ::tolower);
+
+  std::string str_charset;
+  if (is_in_charset_lock) {
+    apollo::cyber::base::ReadLockGuard<apollo::cyber::base::ReentrantRWLock> lg(
+        *(in_charset_lock));
+    str_charset = in_charset->v().str();
+  } else {
+    str_charset = in_charset->v().str();
+  }
+    transform(str_charset.begin(), str_charset.end(), str_charset.begin(), ::tolower);
+
+  std::string str_header;
+  if (is_in_header_lock) {
+    apollo::cyber::base::ReadLockGuard<apollo::cyber::base::ReentrantRWLock> lg(
+        *(in_header_lock));
+    str_header = in_header->v().str();
+  } else {
+    str_header = in_header->v().str();
+  }
+
+
+
+  std::string response_data;
+  if (!check_url(str_url)) {
+    return_CURL_SEND(status, -1, out_code, -1, is_out_data_lock, out_data_lock,
+                     out_data, "");
+    return;
+  }
+
+// content-type
+  // 支持两种模式
+  if (str_content_type == "application/x-www-form-urlencoded" || str_content_type == "" || str_content_type == "0")
+  {
+    str_content_type = "Content-Type: application/x-www-form-urlencoded; ";
+  }else if(str_content_type == "application/json" ||str_content_type == "1"){
+    str_content_type = "Content-Type: application/json; ";
+    
+  }else if(str_content_type == "application/xml" ||str_content_type == "2"){
+    str_content_type = "Content-Type: application/xml; ";
+    
+  }else if(str_content_type == "multipart/form-data" ||str_content_type == "3"){
+     str_content_type = "Content-Type: multipart/form-data; ";
+   
+  }else if(str_content_type == "text/xml" ||str_content_type == "4"){
+     str_content_type = "Content-Type: text/xml; ";
+   
+  }else if(str_content_type == "text/html" ||str_content_type == "5"){
+    str_content_type = "Content-Type: text/html; ";
+    
+  }else if(str_content_type == "text/plain" ||str_content_type == "6"){
+     str_content_type = "Content-Type: text/plain; ";
+   
+  }else{
+    str_content_type = "Content-Type: application/x-www-form-urlencoded; ";
+  }
+  // charset
+ if (str_charset== "utf-8" || str_charset == "" || str_charset == "0")
+  {
+    str_charset = "charset=utf-8";
+  }else if(str_charset == "us-ascii" ||str_charset == "1"){
+     str_charset = "charset=us-ascii";
+  }else if(str_charset == "iso-8859-1" ||str_charset == "1"){
+     str_charset = "charset=iso-8859-1";
+  }else if(str_charset == "gb2312" ||str_charset == "1"){
+     str_charset = "charset=GB2312";
+  }else{
+    str_charset = "charset=utf-8";
+  }
+  // method
+ if (str_method== "get"|| str_method == "" || str_method == "0")
+  {
+    str_method = "GET";
+  }else if(str_charset == "post" ||str_charset == "1"){
+    str_method = "POST";
+  }else if(str_charset == "put" ||str_charset == "2"){
+    str_method = "PUT";
+  }else if(str_charset == "delete" ||str_charset == "3"){
+    str_method = "DELETE";
+  }else{
+    str_method = "GET";
+  }
+
+
   CURLcode res;
 
   CURL *curl = NULL;
   int64_t resp_code;
-
-  std::string response_data;
-
   curl = curl_easy_init();
   if (!curl) {
-    return_CURL_SEND(status,-1, out_code, -1, is_out_data_lock, out_data_lock,
+    return_CURL_SEND(status, -2, out_code, -1, is_out_data_lock, out_data_lock,
                      out_data, "");
+    return;
   }
+
   struct curl_slist *header = NULL;
 
   header = curl_slist_append(
-      header, "Content-Type: application/x-www-form-urlencoded;charset=utf-8");
+      header, std::string(str_content_type + str_charset).c_str());
+
   curl_easy_setopt(curl, CURLOPT_HTTPHEADER, header);
 
   curl_easy_setopt(curl, CURLOPT_NOSIGNAL, 1L);
-  curl_easy_setopt(curl, CURLOPT_POST, 1);
 
-  curl_easy_setopt(curl, CURLOPT_POSTFIELDS,
+  curl_easy_setopt(curl, CURLOPT_CUSTOMREQUEST, str_method.c_str());
+
+  if(str_method == "POST" || str_method == "PUT"){
+    curl_easy_setopt(curl, CURLOPT_POSTFIELDS,
                    str_request_data.c_str());  // post请求消息数据
-  curl_easy_setopt(curl, CURLOPT_POSTFIELDSIZE,
+    curl_easy_setopt(curl, CURLOPT_POSTFIELDSIZE,
                    str_request_data.length());  // 消息长度
+  }
 
   curl_easy_setopt(curl, CURLOPT_TIMEOUT,
                    communication_timeout);  // 传输超时时间
@@ -121,15 +238,15 @@ static void run_CURL_SEND(void *p) {
 
   res = curl_easy_perform(curl);
   if (res != CURLE_OK) {
-    return_CURL_SEND(status,res, out_code, -1, is_out_data_lock, out_data_lock,
+    return_CURL_SEND(status, res, out_code, -1, is_out_data_lock, out_data_lock,
                      out_data, "");
     curl_slist_free_all(header);
-    curl_easy_cleanup(curl); 
+    curl_easy_cleanup(curl);
     return;
   }
   curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &resp_code);
-  return_CURL_SEND(status,res, out_code, resp_code, is_out_data_lock, out_data_lock,
-                   out_data, response_data);
+  return_CURL_SEND(status, res, out_code, resp_code, is_out_data_lock,
+                   out_data_lock, out_data, response_data);
 
   curl_slist_free_all(header);
   curl_easy_cleanup(curl);
@@ -141,10 +258,34 @@ static fb_t fb_CURL_SEND = {
     {"Http", "CURL_SEND", "", 0, 0, 0, FB_EXEC, run_CURL_SEND},
     {{"EN", PIN_NO_LOCK, T_BOOL, "", "", nullptr, 0},
      {"URL", PIN_NO_LOCK, T_STRING, "", "", nullptr, 0},
-     {"HEAD_DATA", PIN_NO_LOCK, T_STRING, "", "", nullptr, 0},
-     {"REQUEST_DATA", PIN_NO_LOCK, T_STRING, "", "", nullptr, 0},
-     {"CONTENT_TYPE", PIN_NO_LOCK, T_UINT32, "", "", nullptr, 0},
+     {"REQUEST", PIN_NO_LOCK, T_STRING, "", "", nullptr, 0},
+     {"METHOD", PIN_NO_LOCK, T_STRING, "", "", nullptr, 0},
+     {"CONTENT_TYPE", PIN_NO_LOCK, T_STRING, "", "", nullptr, 0},
+     {"CHARSET", PIN_NO_LOCK, T_STRING, "", "", nullptr, 0},
+     {"HEADER", PIN_NO_LOCK, T_STRING, "", "", nullptr, 0},
      {"TIMEOUT", PIN_NO_LOCK, T_UINT32, "", "", nullptr, 0}},
     {{"STATUS", PIN_NO_LOCK, T_INT32, "", "", nullptr, 0},
-     {"RET_CODE", PIN_NO_LOCK, T_INT64, "", "", nullptr, 0},
-     {"RESPONE_DATA", PIN_NO_LOCK, T_STRING, "", "", nullptr, 0}}};
+     {"HTTP_CODE", PIN_NO_LOCK, T_INT32, "", "", nullptr, 0},
+     {"RESPONE", PIN_NO_LOCK, T_STRING, "", "", nullptr, 0}}};
+
+// CONTENT_TYPE
+// 0 application/x-www-form-urlencoded 在发送到服务器之前，所有字符都会进行编码，空格转换为 “+” 加号，特殊符号转换为  ASCII HEX 值。 窗体数据被编码为：名称/值对，这是标准的编码格式。 
+// 1 application/json  数据以json形式进行编码 
+// 2 application/xml 数据以xml形式进行编码，application/xml会根据xml头指定的编码格式来编码。 
+// 3 multipart/form-data  窗体数据被编码为一条消息，页上的每个控件对应消息中的一个部分，上传附件用到。在使用包含文件上传控件的表单时，必须使用该值。
+// 4 text/xml  文本方式的xml文件，text/xml忽略xml头所指定编码格式而默认采用US-ASCII编码。 
+// 5 text/html   文本方式的网页文件
+// 6 text/plain窗体数据以纯文本形式进行编码，其中不含任何控件或格式字符。空格转换为 “+” 加号，但不对特殊字符编码
+
+// CHARSET
+//  0 utf-8
+//  1 us-ascii
+//  2 iso-8859-1
+//  3 GB2312
+
+
+// method
+//  0 GET
+//  1 POST
+//  2 PUT
+//  3 DELETE
