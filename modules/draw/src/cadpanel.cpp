@@ -1,4 +1,8 @@
 #include "cadpanel.h"
+
+#include <QMessageBox>
+#include <QToolTip>
+
 #include "dlgobjname.h"
 #include "dlgpinset.h"
 #include "gdefine.h"
@@ -7,8 +11,6 @@
 #include "plfunctionblock.h"
 #include "pllink.h"
 #include "plprogram.h"
-#include <QMessageBox>
-#include <QToolTip>
 CadPanel::CadPanel() {
   fontMetrics = NULL;
   zoom(0);
@@ -99,7 +101,7 @@ void CadPanel::paintEvent(QPaintEvent *) {
   }
   gMainModel->prgCurrent->mutex->unlock();
 
-  qDebug()<<"刷新耗时"<<ElapsedTimer.elapsed()<<"毫秒";
+  qDebug() << "刷新耗时" << ElapsedTimer.elapsed() << "毫秒";
 }
 
 void CadPanel::drawGrid(QPainter &painter) {
@@ -377,51 +379,51 @@ void CadPanel::mousePressEvent(QMouseEvent *event) {
 
   PLPoint pt;
   switch (selCurrent.type) {
-  case PT_LKH:
-    linkSel.clear();
-    selCurrent.lk->isSelected = true;
-    linkSel = *selCurrent.lk;
-    break;
-  case PT_LKV:
-    linkSel.clear();
-    selCurrent.lk->isSelected = true;
-    linkSel = *selCurrent.lk;
-    break;
-  case PT_INPUT:
-    linkSel.clear();
-    // linkTracker.clear();
-    linkSel.idMod = selCurrent.fb->idMod;
-    linkSel.idPrg = selCurrent.fb->idPrg;
-    linkSel.idFbTgt = selCurrent.fb->id;
-    linkSel.pinTgt = selCurrent.value;
-    linkSel.typeTgt = selCurrent.fb->input.at(selCurrent.value).value.t();
-    pt.x = selCurrent.fb->x;
-    pt.y = selCurrent.fb->y + 5 + selCurrent.value * 2;
-    linkSel.pts.append(pt);
-    linkSel.pts.append(pt);
-    linkSel.pts.append(pt);
-    linkSel.pts.append(pt);
-    break;
-  case PT_OUTPUT:
-    linkSel.clear();
-    // linkTracker.clear();
-    linkSel.idMod = selCurrent.fb->idMod;
-    linkSel.idPrg = selCurrent.fb->idPrg;
-    linkSel.idFbSrc = selCurrent.fb->id;
-    linkSel.pinSrc = selCurrent.value;
-    linkSel.typeSrc = selCurrent.fb->output.at(selCurrent.value).value.t();
-    pt.x = selCurrent.fb->x + selCurrent.fb->w + 4;
-    pt.y = selCurrent.fb->y + 5 + selCurrent.value * 2;
-    linkSel.pts.append(pt);
-    linkSel.pts.append(pt);
-    linkSel.pts.append(pt);
-    linkSel.pts.append(pt);
-    break;
-  case PT_VI:
-  case PT_VO:
-    selCurrent.vlk->isSelected = true;
-    break;
-  default:;
+    case PT_LKH:
+      linkSel.clear();
+      selCurrent.lk->isSelected = true;
+      linkSel = *selCurrent.lk;
+      break;
+    case PT_LKV:
+      linkSel.clear();
+      selCurrent.lk->isSelected = true;
+      linkSel = *selCurrent.lk;
+      break;
+    case PT_INPUT:
+      linkSel.clear();
+      // linkTracker.clear();
+      linkSel.idMod = selCurrent.fb->idMod;
+      linkSel.idPrg = selCurrent.fb->idPrg;
+      linkSel.idFbTgt = selCurrent.fb->id;
+      linkSel.pinTgt = selCurrent.value;
+      linkSel.typeTgt = selCurrent.fb->input.at(selCurrent.value).value.t();
+      pt.x = selCurrent.fb->x;
+      pt.y = selCurrent.fb->y + 5 + selCurrent.value * 2;
+      linkSel.pts.append(pt);
+      linkSel.pts.append(pt);
+      linkSel.pts.append(pt);
+      linkSel.pts.append(pt);
+      break;
+    case PT_OUTPUT:
+      linkSel.clear();
+      // linkTracker.clear();
+      linkSel.idMod = selCurrent.fb->idMod;
+      linkSel.idPrg = selCurrent.fb->idPrg;
+      linkSel.idFbSrc = selCurrent.fb->id;
+      linkSel.pinSrc = selCurrent.value;
+      linkSel.typeSrc = selCurrent.fb->output.at(selCurrent.value).value.t();
+      pt.x = selCurrent.fb->x + selCurrent.fb->w + 4;
+      pt.y = selCurrent.fb->y + 5 + selCurrent.value * 2;
+      linkSel.pts.append(pt);
+      linkSel.pts.append(pt);
+      linkSel.pts.append(pt);
+      linkSel.pts.append(pt);
+      break;
+    case PT_VI:
+    case PT_VO:
+      selCurrent.vlk->isSelected = true;
+      break;
+    default:;
   }
 
   update();
@@ -433,7 +435,6 @@ void CadPanel::mousePressEvent(QMouseEvent *event) {
 }
 
 void CadPanel::mouseMoveEvent(QMouseEvent *event) {
-
   if (gMainModel->prgCurrent == NULL) {
     return;
   }
@@ -452,11 +453,14 @@ void CadPanel::mouseMoveEvent(QMouseEvent *event) {
   if (gTarget->isMonitor()) {
     hitTest(xMov, yMov);
     if (selCurrent.type == PT_FB) {
-      QString tipString = tr("begin time(ns) :") + QString::number(selCurrent.fb->begin_time);
+      QString tipString =
+          tr("begin time(ns) :") + QString::number(selCurrent.fb->begin_time);
       tipString += "\n";
-      tipString += tr("cycle time(ms) :") + QString::number(selCurrent.fb->cycle_time/1000000);
+      tipString += tr("cycle time(ms) :") +
+                   QString::number(selCurrent.fb->cycle_time / 1000000);
       tipString += "\n";
-      tipString += tr("last expend (ns) :") + QString::number(selCurrent.fb->expend_time);    
+      tipString += tr("last expend (ns) :") +
+                   QString::number(selCurrent.fb->expend_time);
       QToolTip::showText(QCursor::pos(), tipString);
     } else {
       QToolTip::hideText();
@@ -472,25 +476,25 @@ void CadPanel::mouseMoveEvent(QMouseEvent *event) {
   } else {
     hitTest(xMov, yMov);
     switch (selCurrent.type) {
-    case PT_FB:
-      setCursor(Qt::SizeAllCursor);
-      break;
-    case PT_INPUT:
-    case PT_OUTPUT:
-      setCursor(Qt::CrossCursor);
-      break;
-    case PT_LKH:
-      setCursor(Qt::SplitVCursor);
-      break;
-    case PT_LKV:
-      setCursor(Qt::SplitHCursor);
-      break;
-    case PT_VI:
-    case PT_VO:
-      setCursor(*cursorEv);
-      break;
-    default:
-      setCursor(Qt::ArrowCursor);
+      case PT_FB:
+        setCursor(Qt::SizeAllCursor);
+        break;
+      case PT_INPUT:
+      case PT_OUTPUT:
+        setCursor(Qt::CrossCursor);
+        break;
+      case PT_LKH:
+        setCursor(Qt::SplitVCursor);
+        break;
+      case PT_LKV:
+        setCursor(Qt::SplitHCursor);
+        break;
+      case PT_VI:
+      case PT_VO:
+        setCursor(*cursorEv);
+        break;
+      default:
+        setCursor(Qt::ArrowCursor);
     }
   }
 }
@@ -517,104 +521,104 @@ void CadPanel::mouseReleaseEvent(QMouseEvent *event) {
   int m;
 
   switch (selCurrent.type) {
-  case PT_NONE:
-    rt.setCoords(xSel, ySel, xMov, yMov);
-    for (i = 0; i < gMainModel->prgCurrent->fbs.size(); i++) {
-      fbRectSelect(gMainModel->prgCurrent->fbs[i], rt);
-    }
-    for (i = 0; i < gMainModel->prgCurrent->lks.size(); i++) {
-      lkRectSelect(gMainModel->prgCurrent->lks[i], rt);
-    }
-    for (i = 0; i < gMainModel->prgCurrent->vis.size(); i++) {
-      vlkRectSelect(gMainModel->prgCurrent->vis[i], rt);
-    }
-    for (i = 0; i < gMainModel->prgCurrent->vos.size(); i++) {
-      vlkRectSelect(gMainModel->prgCurrent->vos[i], rt);
-    }
-    break;
-  case PT_LKH:
-  case PT_LKV:
-    if (linkTracker.id != 0) {
-      gMainModel->makeLkMoveCmd(cmd, linkTracker);
-      if (!gMainModel->exeCommand(cmd)) {
-        QMessageBox::critical(
-            this, "Error",
-            QString::fromStdString(cmd.editInfo.ShortDebugString()));
+    case PT_NONE:
+      rt.setCoords(xSel, ySel, xMov, yMov);
+      for (i = 0; i < gMainModel->prgCurrent->fbs.size(); i++) {
+        fbRectSelect(gMainModel->prgCurrent->fbs[i], rt);
       }
-    }
-    break;
-  case PT_INPUT:
-    m = pinMatch();
-    if (m > 0) {
-      linkSel.idFbSrc = selTarget.fb->id;
-      linkSel.pinSrc = selTarget.value;
-      linkSel.pts[0].x = selTarget.fb->x + selTarget.fb->w + 4;
-      linkSel.pts[0].y = selTarget.fb->y + 5 + selTarget.value * 2;
-      linkSel.pts[3].x = selCurrent.fb->x;
-      linkSel.pts[3].y = selCurrent.fb->y + 5 + selCurrent.value * 2;
-      linkSel.pts[1].x = (linkSel.pts[0].x + linkSel.pts[3].x) / 2;
-      linkSel.pts[1].y = linkSel.pts[0].y;
-      linkSel.pts[2].x = (linkSel.pts[0].x + linkSel.pts[3].x) / 2;
-      linkSel.pts[2].y = linkSel.pts[3].y;
-      if (prj_checkloop(gMainModel->prgCurrent->idMod,
-                        gMainModel->prgCurrent->id, linkSel.idFbSrc,
-                        linkSel.idFbTgt)) {
-        QMessageBox::warning(this, "warning", "Signal loop - can't add link");
-      } else {
-        gMainModel->makeLkNewCmd(cmd, linkSel);
+      for (i = 0; i < gMainModel->prgCurrent->lks.size(); i++) {
+        lkRectSelect(gMainModel->prgCurrent->lks[i], rt);
+      }
+      for (i = 0; i < gMainModel->prgCurrent->vis.size(); i++) {
+        vlkRectSelect(gMainModel->prgCurrent->vis[i], rt);
+      }
+      for (i = 0; i < gMainModel->prgCurrent->vos.size(); i++) {
+        vlkRectSelect(gMainModel->prgCurrent->vos[i], rt);
+      }
+      break;
+    case PT_LKH:
+    case PT_LKV:
+      if (linkTracker.id != 0) {
+        gMainModel->makeLkMoveCmd(cmd, linkTracker);
         if (!gMainModel->exeCommand(cmd)) {
           QMessageBox::critical(
               this, "Error",
               QString::fromStdString(cmd.editInfo.ShortDebugString()));
         }
       }
-    }
-    selTarget.reset();
-    break;
-  case PT_OUTPUT:
-    m = pinMatch();
-    if (m > 0) {
-      linkSel.idFbTgt = selTarget.fb->id;
-      linkSel.pinTgt = selTarget.value;
-      linkSel.pts[0].x = selCurrent.fb->x + selCurrent.fb->w + 4;
-      linkSel.pts[0].y = selCurrent.fb->y + 5 + selCurrent.value * 2;
-      linkSel.pts[3].x = selTarget.fb->x;
-      linkSel.pts[3].y = selTarget.fb->y + 5 + selTarget.value * 2;
-      linkSel.pts[1].x = (linkSel.pts[0].x + linkSel.pts[3].x) / 2;
-      linkSel.pts[1].y = linkSel.pts[0].y;
-      linkSel.pts[2].x = (linkSel.pts[0].x + linkSel.pts[3].x) / 2;
-      linkSel.pts[2].y = linkSel.pts[3].y;
-      if (prj_checkloop(gMainModel->prgCurrent->idMod,
-                        gMainModel->prgCurrent->id, linkSel.idFbSrc,
-                        linkSel.idFbTgt)) {
-        QMessageBox::warning(this, "warning", "Signal loop - can't add link");
-      } else {
-        gMainModel->makeLkNewCmd(cmd, linkSel);
-        if (!gMainModel->exeCommand(cmd)) {
-          QMessageBox::critical(
-              this, "Error",
-              QString::fromStdString(cmd.editInfo.ShortDebugString()));
+      break;
+    case PT_INPUT:
+      m = pinMatch();
+      if (m > 0) {
+        linkSel.idFbSrc = selTarget.fb->id;
+        linkSel.pinSrc = selTarget.value;
+        linkSel.pts[0].x = selTarget.fb->x + selTarget.fb->w + 4;
+        linkSel.pts[0].y = selTarget.fb->y + 5 + selTarget.value * 2;
+        linkSel.pts[3].x = selCurrent.fb->x;
+        linkSel.pts[3].y = selCurrent.fb->y + 5 + selCurrent.value * 2;
+        linkSel.pts[1].x = (linkSel.pts[0].x + linkSel.pts[3].x) / 2;
+        linkSel.pts[1].y = linkSel.pts[0].y;
+        linkSel.pts[2].x = (linkSel.pts[0].x + linkSel.pts[3].x) / 2;
+        linkSel.pts[2].y = linkSel.pts[3].y;
+        if (prj_checkloop(gMainModel->prgCurrent->idMod,
+                          gMainModel->prgCurrent->id, linkSel.idFbSrc,
+                          linkSel.idFbTgt)) {
+          QMessageBox::warning(this, "warning", "Signal loop - can't add link");
+        } else {
+          gMainModel->makeLkNewCmd(cmd, linkSel);
+          if (!gMainModel->exeCommand(cmd)) {
+            QMessageBox::critical(
+                this, "Error",
+                QString::fromStdString(cmd.editInfo.ShortDebugString()));
+          }
         }
       }
-    }
-    selTarget.reset();
-    break;
-  case PT_FB:
-    if (dx < 0) {
-      ddx = (dx - 0.5 * step) / step;
-    } else {
-      ddx = (dx + 0.5 * step) / step;
-    }
-    if (dy < 0) {
-      ddy = (dy - 0.5 * step) / step;
-    } else {
-      ddy = (dy + 0.5 * step) / step;
-    }
-    if (ddx != 0 || ddy != 0) {
-      moveAllSelectedFbs(ddx, ddy);
-    }
-    break;
-  default:;
+      selTarget.reset();
+      break;
+    case PT_OUTPUT:
+      m = pinMatch();
+      if (m > 0) {
+        linkSel.idFbTgt = selTarget.fb->id;
+        linkSel.pinTgt = selTarget.value;
+        linkSel.pts[0].x = selCurrent.fb->x + selCurrent.fb->w + 4;
+        linkSel.pts[0].y = selCurrent.fb->y + 5 + selCurrent.value * 2;
+        linkSel.pts[3].x = selTarget.fb->x;
+        linkSel.pts[3].y = selTarget.fb->y + 5 + selTarget.value * 2;
+        linkSel.pts[1].x = (linkSel.pts[0].x + linkSel.pts[3].x) / 2;
+        linkSel.pts[1].y = linkSel.pts[0].y;
+        linkSel.pts[2].x = (linkSel.pts[0].x + linkSel.pts[3].x) / 2;
+        linkSel.pts[2].y = linkSel.pts[3].y;
+        if (prj_checkloop(gMainModel->prgCurrent->idMod,
+                          gMainModel->prgCurrent->id, linkSel.idFbSrc,
+                          linkSel.idFbTgt)) {
+          QMessageBox::warning(this, "warning", "Signal loop - can't add link");
+        } else {
+          gMainModel->makeLkNewCmd(cmd, linkSel);
+          if (!gMainModel->exeCommand(cmd)) {
+            QMessageBox::critical(
+                this, "Error",
+                QString::fromStdString(cmd.editInfo.ShortDebugString()));
+          }
+        }
+      }
+      selTarget.reset();
+      break;
+    case PT_FB:
+      if (dx < 0) {
+        ddx = (dx - 0.5 * step) / step;
+      } else {
+        ddx = (dx + 0.5 * step) / step;
+      }
+      if (dy < 0) {
+        ddy = (dy - 0.5 * step) / step;
+      } else {
+        ddy = (dy + 0.5 * step) / step;
+      }
+      if (ddx != 0 || ddy != 0) {
+        moveAllSelectedFbs(ddx, ddy);
+      }
+      break;
+    default:;
   }
 
   onTracker = false;
@@ -622,14 +626,12 @@ void CadPanel::mouseReleaseEvent(QMouseEvent *event) {
 }
 
 void CadPanel::mouseDoubleClickEvent(QMouseEvent *event) {
-
   int x, y;
   x = event->x() - step;
   y = event->y() - step;
   hitTest(x, y);
 
   if (gTarget->isMonitor()) {
-
     if (selCurrent.type == PT_INPUT) {
       if (selCurrent.fb->input.at(selCurrent.value).hasVariable) {
         return;
@@ -638,7 +640,7 @@ void CadPanel::mouseDoubleClickEvent(QMouseEvent *event) {
         return;
       }
       PLEVData ev;
-      QString constValue = "0";
+      QString constValue = selCurrent.fb->input[selCurrent.value].getStrPureValue();
       bool isConst = true;
       DlgPinSet dlgPinSet(this);
       dlgPinSet.exchangeValue(constValue, ev, isConst, true, true);
@@ -699,19 +701,19 @@ void CadPanel::mouseDoubleClickEvent(QMouseEvent *event) {
     if (selCurrent.fb->input.at(selCurrent.value).hasInputLink) {
       return;
     }
-    ev.initValue.set_t(
-        selCurrent.fb->input.at(selCurrent.value).value.t());
+    ev.initValue.set_t(selCurrent.fb->input.at(selCurrent.value).value.t());
     isInput = true;
   } else if (selCurrent.type == PT_OUTPUT) {
     if (selCurrent.fb->output.at(selCurrent.value).hasVariable) {
       return;
     }
-    ev.initValue.set_t(
-        selCurrent.fb->output.at(selCurrent.value).value.t());
+    ev.initValue.set_t(selCurrent.fb->output.at(selCurrent.value).value.t());
     isInput = false;
   }
 
-  QString constValue = "0";
+  QString constValue =
+      isInput ? selCurrent.fb->input[selCurrent.value].getStrPureValue()
+              : selCurrent.fb->output[selCurrent.value].getStrPureValue();
   bool isConst = true;
   DlgPinSet dlgPinSet(this);
   dlgPinSet.exchangeValue(constValue, ev, isConst, isInput, true);
@@ -986,95 +988,95 @@ void CadPanel::drawTracker(QPainter &painter, int dx, int dy) {
   PLFunctionBlock fb;
 
   switch (selCurrent.type) {
-  case PT_NONE:
-    rt.setCoords(xSel, ySel, xSel + dx, ySel + dy);
-    painter.drawRect(rt);
-    break;
-  case PT_INPUT:
-    linkTracker = linkSel;
-    pt0 = &linkTracker.pts[0];
-    pt1 = &linkTracker.pts[1];
-    pt2 = &linkTracker.pts[2];
-    pt3 = &linkTracker.pts[3];
-    pt0->x = pt3->x + ddx;
-    pt0->y = pt3->y + ddy;
-    pt1->x = (pt0->x + pt3->x) / 2;
-    pt1->y = pt0->y;
-    pt2->x = (pt0->x + pt3->x) / 2;
-    pt2->y = pt3->y;
-    drawLinkTracker(painter, linkTracker);
-    break;
-  case PT_OUTPUT:
-    linkTracker = linkSel;
-    pt0 = &linkTracker.pts[0];
-    pt1 = &linkTracker.pts[1];
-    pt2 = &linkTracker.pts[2];
-    pt3 = &linkTracker.pts[3];
-    pt3->x = pt0->x + ddx;
-    pt3->y = pt0->y + ddy;
-    pt1->x = (pt0->x + pt3->x) / 2;
-    pt1->y = pt0->y;
-    pt2->x = (pt0->x + pt3->x) / 2;
-    pt2->y = pt3->y;
-    drawLinkTracker(painter, linkTracker);
-    break;
-  case PT_LKV:
-    linkTracker = linkSel;
-    pt0 = &linkTracker.pts[selCurrent.value - 1];
-    pt1 = &linkTracker.pts[selCurrent.value];
-    if (linkTracker.pts.size() < 3) {
-      linkTracker.pts.insert(0, *pt0);
-    } else {
-      if (selCurrent.value == 1) {
+    case PT_NONE:
+      rt.setCoords(xSel, ySel, xSel + dx, ySel + dy);
+      painter.drawRect(rt);
+      break;
+    case PT_INPUT:
+      linkTracker = linkSel;
+      pt0 = &linkTracker.pts[0];
+      pt1 = &linkTracker.pts[1];
+      pt2 = &linkTracker.pts[2];
+      pt3 = &linkTracker.pts[3];
+      pt0->x = pt3->x + ddx;
+      pt0->y = pt3->y + ddy;
+      pt1->x = (pt0->x + pt3->x) / 2;
+      pt1->y = pt0->y;
+      pt2->x = (pt0->x + pt3->x) / 2;
+      pt2->y = pt3->y;
+      drawLinkTracker(painter, linkTracker);
+      break;
+    case PT_OUTPUT:
+      linkTracker = linkSel;
+      pt0 = &linkTracker.pts[0];
+      pt1 = &linkTracker.pts[1];
+      pt2 = &linkTracker.pts[2];
+      pt3 = &linkTracker.pts[3];
+      pt3->x = pt0->x + ddx;
+      pt3->y = pt0->y + ddy;
+      pt1->x = (pt0->x + pt3->x) / 2;
+      pt1->y = pt0->y;
+      pt2->x = (pt0->x + pt3->x) / 2;
+      pt2->y = pt3->y;
+      drawLinkTracker(painter, linkTracker);
+      break;
+    case PT_LKV:
+      linkTracker = linkSel;
+      pt0 = &linkTracker.pts[selCurrent.value - 1];
+      pt1 = &linkTracker.pts[selCurrent.value];
+      if (linkTracker.pts.size() < 3) {
         linkTracker.pts.insert(0, *pt0);
+      } else {
+        if (selCurrent.value == 1) {
+          linkTracker.pts.insert(0, *pt0);
+        }
+        if (selCurrent.value == linkTracker.pts.size() - 1) {
+          linkTracker.pts.append(*pt1);
+        }
       }
-      if (selCurrent.value == linkTracker.pts.size() - 1) {
-        linkTracker.pts.append(*pt1);
+      pt0->x += ddx;
+      if (pt0->x < 0) {
+        pt0->x = 0;
       }
-    }
-    pt0->x += ddx;
-    if (pt0->x < 0) {
-      pt0->x = 0;
-    }
-    if (pt0->x >= DEF_WIDTH) {
-      pt0->x = DEF_WIDTH;
-    }
-    pt1->x = pt0->x;
-    drawLinkTracker(painter, linkTracker);
-    break;
-  case PT_LKH:
-    linkTracker = linkSel;
-    pt0 = &linkTracker.pts[selCurrent.value - 1];
-    pt1 = &linkTracker.pts[selCurrent.value];
-    if (linkTracker.pts.size() < 3) {
-      linkTracker.pts.insert(0, *pt0);
-    } else {
-      if (selCurrent.value == 1) {
+      if (pt0->x >= DEF_WIDTH) {
+        pt0->x = DEF_WIDTH;
+      }
+      pt1->x = pt0->x;
+      drawLinkTracker(painter, linkTracker);
+      break;
+    case PT_LKH:
+      linkTracker = linkSel;
+      pt0 = &linkTracker.pts[selCurrent.value - 1];
+      pt1 = &linkTracker.pts[selCurrent.value];
+      if (linkTracker.pts.size() < 3) {
         linkTracker.pts.insert(0, *pt0);
+      } else {
+        if (selCurrent.value == 1) {
+          linkTracker.pts.insert(0, *pt0);
+        }
+        if (selCurrent.value == linkTracker.pts.size() - 1) {
+          linkTracker.pts.append(*pt1);
+        }
       }
-      if (selCurrent.value == linkTracker.pts.size() - 1) {
-        linkTracker.pts.append(*pt1);
+      pt0->y += ddy;
+      if (pt0->y < 0) {
+        pt0->y = 0;
       }
-    }
-    pt0->y += ddy;
-    if (pt0->y < 0) {
-      pt0->y = 0;
-    }
-    if (pt0->y >= DEF_HEIGHT) {
-      pt0->y = DEF_HEIGHT;
-    }
-    pt1->y = pt0->y;
-    drawLinkTracker(painter, linkTracker);
-    break;
-  default:
-    for (int i = 0; i < gMainModel->prgCurrent->fbs.size(); i++) {
-      if (gMainModel->prgCurrent->fbs.at(i).isSelected) {
-        fb = gMainModel->prgCurrent->fbs.at(i);
-        fb.x += ddx;
-        fb.y += ddy;
-        drawFunctionBlockTracker(painter, fb);
+      if (pt0->y >= DEF_HEIGHT) {
+        pt0->y = DEF_HEIGHT;
       }
-    }
+      pt1->y = pt0->y;
+      drawLinkTracker(painter, linkTracker);
+      break;
+    default:
+      for (int i = 0; i < gMainModel->prgCurrent->fbs.size(); i++) {
+        if (gMainModel->prgCurrent->fbs.at(i).isSelected) {
+          fb = gMainModel->prgCurrent->fbs.at(i);
+          fb.x += ddx;
+          fb.y += ddy;
+          drawFunctionBlockTracker(painter, fb);
+        }
+      }
   }
 }
 

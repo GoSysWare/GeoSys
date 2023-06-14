@@ -307,7 +307,8 @@
         "__string": "cpp",
         "json_obj_merge": "cpp",
         "json_serial": "cpp",
-        "curl_send": "cpp"
+        "curl_send": "cpp",
+        "camera_init": "cpp"
     },
     "C_Cpp.errorSquiggles": "disabled"
 }

@@ -1,0 +1,25 @@
+static void run_CAMERA_INIT(void *p) {
+
+  fb_t *pb = (fb_t *)p;
+  vam_t &enable = pb->ins[0].v;
+  vam_t &status = pb->outs[0].v;
+  if (enable->v().b() == false)
+    return;
+  vam_t in_dev_name = pb->ins[1].v;
+  vam_t in_topic= pb->ins[2].v;
+
+  std::string dev_name = in_dev_name->v().str();
+  std::string topic = in_topic->v().str();
+
+
+  
+
+  
+  return;
+}
+
+static fb_t fb_CAMERA_INIT = {{"Devices","CAMERA_INIT", "",0,0,0,0,run_CAMERA_INIT},
+                        {{"EN",PIN_NO_LOCK, T_BOOL, "", "",nullptr,0},
+                         {"DEV_NAME", PIN_NO_LOCK,T_STRING, "", "",nullptr,0},
+                         {"TOPIC", PIN_NO_LOCK,T_STRING, "", "",nullptr,0}},
+                        {{"STATUS", PIN_NO_LOCK,T_INT32, "", "",nullptr,0}}};

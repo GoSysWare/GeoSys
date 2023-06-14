@@ -12,7 +12,7 @@ public:
 
     PLPin(const PLPin &pin);
     QString getStrValue();
-
+    QString getStrPureValue();
     QString name;
     value_tm value;
     v_type   type;
