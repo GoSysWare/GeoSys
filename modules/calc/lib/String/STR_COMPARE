@@ -18,7 +18,7 @@ static void run_STR_COMPARE(void *p) {
 
 
 static fb_t fb_STR_COMPARE = {
-    {"String","STR_COMPARE","", 0,0,0,0, run_STR_COMPARE},
+    {"String","STR_COMPARE","", 0, 0, 0, 0, FB_EXEC, run_STR_COMPARE},
     {{"EN", PIN_NO_LOCK,T_BOOL,"", "",nullptr,0},
      {"IN1", PIN_NO_LOCK,T_STRING, "","",nullptr,0},
      {"IN2", PIN_NO_LOCK,T_STRING,"", "",nullptr,0},

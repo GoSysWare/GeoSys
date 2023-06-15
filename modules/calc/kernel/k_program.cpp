@@ -40,6 +40,38 @@ static void en_moveafter(enode_t *p_en, enode_t *p_ref) {
   en_addafter(p_en, p_ref);
 }
 
+void prg_init(MNode *p_mn) {
+  enode_t *p_en;
+  prog_t *p_prg = p_mn->p_prg;
+  proginfo_t *p_prog_info = &p_mn->info;
+
+  /* fb to fb */
+  p_en = p_prg->en_head.p_next;
+  while (p_en != &p_prg->en_head) {
+    // 当是功能块 且是初始化型功能块
+    if (p_en->p_fb != 0) {
+      //每个功能快记录prg的指针
+      p_en->p_fb->h.owner = p_mn;
+
+      if (p_en->p_fb->h.flag == FB_INIT) {
+        // 为了方便Timer功能块的计算，把周期间隔给到每个功能块
+        p_en->p_fb->h.cycle_time = p_prog_info->cycle_time;
+        p_en->p_fb->h.begin_time = apollo::cyber::Time::Now().ToNanosecond();
+        // 执行核心主体 执行每个功能块定义的具体run_func
+        //
+        p_en->p_fb->h.run(p_en->p_fb);
+        //
+        //
+        p_en->p_fb->h.expend_time =
+            (apollo::cyber::Time::Now() -
+             apollo::cyber::Time(p_en->p_fb->h.begin_time))
+                .ToNanosecond();
+      }
+    }
+    p_en = p_en->p_next;
+  }
+}
+
 void prg_init(prog_t *p_prg, proginfo_t *p_prog_info) {
   enode_t *p_en;
   /* fb to fb */
@@ -63,6 +95,45 @@ void prg_init(prog_t *p_prg, proginfo_t *p_prog_info) {
     p_en = p_en->p_next;
   }
 }
+
+void prg_exec(MNode *p_mn)
+{
+  //发出停止命令
+        if (p_mn->stop.load()) {
+          p_mn->info.status.store(TaskStatus::ABORT);
+          return;
+        }
+        p_mn->info.status.store(TaskStatus::START);
+
+        p_mn->info.status = p_mn->info.begin_time =
+            apollo::cyber::Time::Now().ToNanosecond();
+        p_mn->info.cycle_time =
+            apollo::cyber::Duration(
+                int64_t(p_mn->info.begin_time - p_mn->info.prev_time))
+                .ToNanosecond();
+        p_mn->info.prev_time = p_mn->info.begin_time;
+
+        {
+          apollo::cyber::base::WriteLockGuard<apollo::cyber::base::AtomicRWLock>
+              lg(p_mn->mutex);
+
+          prg_exec(p_mn->p_prg, &p_mn->info);
+        }
+
+        // prg_dump(p_mn->p_prg);
+        p_mn->info.expend_time = (apollo::cyber::Time::Now() -
+                                  apollo::cyber::Time(p_mn->info.begin_time))
+                                     .ToNanosecond();
+        // task完成一次运算周期
+        p_mn->info.status.store(TaskStatus::FINISH);
+
+        AINFO << "Async task name:" << p_mn->name
+               << " begin_time:" << p_mn->info.begin_time
+               << " cycle_time:" << p_mn->info.cycle_time
+               << " expend_time:" << p_mn->info.expend_time;
+               return;
+}
+
 
 void prg_exec(prog_t *p_prg, proginfo_t *p_prog_info) {
   enode_t *p_en;

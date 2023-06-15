@@ -9,7 +9,7 @@ static void run_LT_FLOAT(void *p) {
       (pb->ins[1].v->v().f() < pb->ins[2].v->v().f() ? true : false));
 }
 static fb_t fb_LT_FLOAT = {
-    {"Comparision", "LT_FLOAT", "", 0, 0, 0, 0, run_LT_FLOAT},
+    {"Comparision", "LT_FLOAT", "", 0, 0, 0, 0, FB_EXEC, run_LT_FLOAT},
     {{"EN", PIN_NO_LOCK, T_BOOL, "", "",nullptr,0},
      {"IN1", PIN_NO_LOCK, T_FLOAT32, "", "",nullptr,0},
      {"IN2", PIN_NO_LOCK, T_FLOAT32, "", "",nullptr,0}},

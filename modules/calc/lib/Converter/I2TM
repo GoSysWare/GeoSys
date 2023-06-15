@@ -11,7 +11,7 @@ static void run_I2TM(void *p) {
   }
   pb->outs[1].v->mutable_v()->set_tm((uint64_t)pb->ins[1].v->v().i());
 }
-static fb_t fb_I2TM = {{"Converter", "I2TM", "", 0, 0, 0, 0, run_I2TM},
+static fb_t fb_I2TM = {{"Converter", "I2TM", "", 0, 0, 0, 0, FB_EXEC, run_I2TM},
                       {{"EN", PIN_NO_LOCK, T_BOOL, "", "",nullptr,0},
                        {"IN", PIN_NO_LOCK, T_INT32, "", "",nullptr,0}},
                       {{"STATUS", PIN_NO_LOCK, T_INT32, "", "",nullptr,0},

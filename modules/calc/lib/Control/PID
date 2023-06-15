@@ -137,7 +137,7 @@ static void run_PID(void *p) {
   OLD_PV->mutable_v()->set_d(PV);
 }
 
-static fb_t fb_PID = {{"Control", "PID", "", 0, 0, 0, 0, run_PID},
+static fb_t fb_PID = {{"Control", "PID", "", 0, 0, 0, 0, FB_EXEC, run_PID},
                       {{"EN", PIN_NO_LOCK, T_BOOL, "", "",nullptr,0},
                        {"MAN", PIN_NO_LOCK, T_BOOL, "", "",nullptr,0},
                        {"HALT", PIN_NO_LOCK, T_BOOL, "", "",nullptr,0},

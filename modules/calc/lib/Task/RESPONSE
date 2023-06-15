@@ -63,7 +63,7 @@ static void run_RESPONSE(void *p) {
 }
 
 static fb_t fb_RESPONSE = {
-    {"Task", "RESPONSE", "",0,0,0,0, run_RESPONSE},
+    {"Task", "RESPONSE", "", 0, 0, 0, 0, FB_EXEC, run_RESPONSE},
     {{"EN", PIN_NO_LOCK, T_BOOL, "", "",nullptr,0},
      {"RESPONSE_BOOL", PIN_NO_LOCK, T_BOOL, "", "",nullptr,0},
      {"RESPONSE_INT32", PIN_NO_LOCK, T_INT32, "", "",nullptr,0},

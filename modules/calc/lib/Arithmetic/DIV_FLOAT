@@ -18,7 +18,7 @@ static void run_DIV_FLOAT(void *p) {
 }
 
 static fb_t fb_DIV_FLOAT = {
-    {"Arithmetic", "DIV_FLOAT", "", 0, 0, 0, 0, run_DIV_FLOAT},
+    {"Arithmetic", "DIV_FLOAT", "", 0, 0, 0, 0, FB_EXEC, run_DIV_FLOAT},
     {{"EN", PIN_NO_LOCK, T_BOOL, "", "",nullptr,0},
      {"IN1", PIN_NO_LOCK, T_FLOAT32, "", "",nullptr,0},
      {"IN2", PIN_NO_LOCK, T_FLOAT32, "", "",nullptr,0}},

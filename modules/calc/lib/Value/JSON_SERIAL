@@ -357,7 +357,7 @@ static void run_JSON_SERIAL(void *p) {
 // SPACE :1 增加\n 换行
 
 static fb_t fb_JSON_SERIAL = {
-    {"Value", "JSON_SERIAL", "", 0, 0, 0, FB_EXEC, run_JSON_SERIAL},
+    {"Value", "JSON_SERIAL", "", 0, 0, 0, 0, FB_EXEC, run_JSON_SERIAL},
     {{"EN", PIN_NO_LOCK, T_BOOL, "", "", nullptr, 0},
      {"ORDER", PIN_NO_LOCK, T_BOOL, "", "", nullptr, 0},
      {"SPACE", PIN_NO_LOCK, T_BOOL, "", "", nullptr, 0},

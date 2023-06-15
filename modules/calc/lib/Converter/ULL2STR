@@ -8,7 +8,7 @@ static void run_ULL2STR(void *p) {
   pb->outs[1].v->mutable_v()->set_str(
       std::to_string(pb->ins[1].v->v().ull()));
 }
-static fb_t fb_ULL2STR = {{"Converter", "ULL2STR", "", 0, 0, 0, 0, run_ULL2STR},
+static fb_t fb_ULL2STR = {{"Converter", "ULL2STR", "", 0, 0, 0, 0, FB_EXEC, run_ULL2STR},
                       {{"EN", PIN_NO_LOCK, T_BOOL, "", "",nullptr,0},
                        {"IN", PIN_NO_LOCK, T_UINT64, "", "",nullptr,0}},
                       {{"STATUS", PIN_NO_LOCK, T_INT32, "", "",nullptr,0},

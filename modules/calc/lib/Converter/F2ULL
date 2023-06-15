@@ -11,7 +11,7 @@ static void run_F2ULL(void *p) {
   }
   pb->outs[1].v->mutable_v()->set_ull((uint64_t)pb->ins[1].v->v().f());
 }
-static fb_t fb_F2ULL = {{"Converter", "F2ULL", "", 0, 0, 0, 0, run_F2ULL},
+static fb_t fb_F2ULL = {{"Converter", "F2ULL", "", 0, 0, 0, 0, FB_EXEC, run_F2ULL},
                          {{"EN", PIN_NO_LOCK, T_BOOL, "", "",nullptr,0},
                           {"IN", PIN_NO_LOCK, T_FLOAT32, "", "",nullptr,0}},
                          {{"STATUS", PIN_NO_LOCK, T_INT32, "", "",nullptr,0},

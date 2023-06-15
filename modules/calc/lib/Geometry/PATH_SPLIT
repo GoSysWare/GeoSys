@@ -21,7 +21,7 @@ static void run_PATH_SPLIT(void *p) {
 }
 
 static fb_t fb_PATH_SPLIT = {
-    {"Geometry", "PATH_SPLIT", "", 0, 0, 0, 0, run_PATH_SPLIT},
+    {"Geometry", "PATH_SPLIT", "", 0, 0, 0, 0, FB_EXEC, run_PATH_SPLIT},
     {{"EN", PIN_NO_LOCK, T_BOOL, "", "",nullptr,0},
      {"IN1", PIN_NO_LOCK, T_ANY, "Geo.Pose", "",nullptr,0},
      {"IN2", PIN_NO_LOCK, T_ANY, "Geo.Pose", "",nullptr,0}},

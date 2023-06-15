@@ -25,7 +25,7 @@ static void run_ADD_INT(void *p) {
 }
 
 static fb_t fb_ADD_INT = {
-    {"Arithmetic", "ADD_INT", "", 0, 0, 0, 0, run_ADD_INT},
+    {"Arithmetic", "ADD_INT", "", 0, 0, 0, 0, FB_EXEC, run_ADD_INT},
     {{"EN", PIN_NO_LOCK, T_BOOL, "", "",nullptr,0},
      {"IN1", PIN_NO_LOCK, T_INT32, "", "",nullptr,0},
      {"IN2", PIN_NO_LOCK, T_INT32, "", "",nullptr,0}},

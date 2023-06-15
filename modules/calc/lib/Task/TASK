@@ -12,6 +12,7 @@ static void run_TASK(void *p) {
   fb_t *pb = (fb_t *)p;
   vam_t &enable = pb->ins[0].v;
   vam_t &status = pb->outs[0].v;
+  mnode_t *p_ower = (mnode_t *)pb->h.owner;
   if (enable->v().b() == false)
     return;
 
@@ -80,17 +81,15 @@ static void run_TASK(void *p) {
       rsp_time->mutable_v()->set_tm(0);
       return;
     }
+    if (p_mn == p_ower) {
+      status->mutable_v()->set_i(-2);
+      next_task->mutable_v()->set_b(false);
+      rsp_time->mutable_v()->set_tm(0);
+      return;
+    }
     // 同步子任务执行
-    p_mn->info.begin_time = apollo::cyber::Time::Now().ToNanosecond();
-    p_mn->info.cycle_time =
-        apollo::cyber::Duration(
-            int64_t(p_mn->info.begin_time - p_mn->info.prev_time))
-            .ToNanosecond();
-    p_mn->info.prev_time = p_mn->info.begin_time;
-    prg_exec(p_mn->p_prg, &p_mn->info);
-    p_mn->info.expend_time = (apollo::cyber::Time::Now() -
-                              apollo::cyber::Time(p_mn->info.begin_time))
-                                 .ToNanosecond();
+    prg_exec(p_mn);
+
     //同步子任务结束
     status->mutable_v()->set_i(0);
     rsp_time->mutable_v()->set_tm(MonoTime());
@@ -100,7 +99,7 @@ static void run_TASK(void *p) {
   return;
 }
 
-static fb_t fb_TASK = {{"Task", "TASK", "", 0, 0, 0, 0, run_TASK},
+static fb_t fb_TASK = {{"Task", "TASK", "", 0, 0, 0, 0, FB_EXEC, run_TASK},
                        {{"EN", PIN_NO_LOCK, T_BOOL, "", "",nullptr,0},
                         {"FIRE", PIN_NO_LOCK, T_BOOL, "", "",nullptr,0},
                         {"MOD_NAME", PIN_NO_LOCK, T_STRING, "", "",nullptr,0},

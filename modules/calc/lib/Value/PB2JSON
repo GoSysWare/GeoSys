@@ -49,7 +49,7 @@ static void run_PB2JSON(void *p) {
 }
 
 static fb_t fb_PB2JSON = {
-    {"Value", "PB2JSON", "", 0, 0, 0, FB_EXEC, run_PB2JSON},
+    {"Value", "PB2JSON", "", 0, 0, 0, 0, FB_EXEC, run_PB2JSON},
     {{"EN", PIN_NO_LOCK, T_BOOL, "", "", nullptr, 0},
      {"IN", PIN_NO_LOCK, T_ANY, "", "", nullptr, 0},
      {"SPACE", PIN_NO_LOCK, T_BOOL, "", "", nullptr, 0},      // 空格

@@ -18,7 +18,7 @@ static void run_STR_ERASE(void *p) {
   }
 
 static fb_t fb_STR_ERASE = {
-    {"String","STR_ERASE","", 0,0,0,0, run_STR_ERASE},
+    {"String","STR_ERASE","", 0, 0, 0, 0, FB_EXEC, run_STR_ERASE},
     {{"EN", PIN_NO_LOCK,T_BOOL,"", "",nullptr,0},
      {"IN", PIN_NO_LOCK,T_STRING, "","",nullptr,0},
      {"POS", PIN_NO_LOCK,T_UINT32,"", "",nullptr,0},

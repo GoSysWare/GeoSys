@@ -10,7 +10,7 @@ static void run_TM2I(void *p) {
   }
   pb->outs[1].v->mutable_v()->set_i((int)pb->ins[1].v->v().tm());
 }
-static fb_t fb_TM2I = {{"Converter", "TM2I", "", 0, 0, 0, 0, run_TM2I},
+static fb_t fb_TM2I = {{"Converter", "TM2I", "", 0, 0, 0, 0, FB_EXEC, run_TM2I},
                       {{"EN", PIN_NO_LOCK, T_BOOL, "", "",nullptr,0},
                        {"IN", PIN_NO_LOCK, T_TIME, "", "",nullptr,0}},
                       {{"STATUS", PIN_NO_LOCK, T_INT32, "", "",nullptr,0},

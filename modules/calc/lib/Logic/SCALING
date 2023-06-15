@@ -16,7 +16,7 @@ static void run_SCALING(void *p) {
                           in_min->v().f());
 }
 
-static fb_t fb_SCALING = {{"Logic", "SCALING", "", 0, 0, 0, 0, run_SCALING},
+static fb_t fb_SCALING = {{"Logic", "SCALING", "", 0, 0, 0, 0, FB_EXEC, run_SCALING},
                           {{"EN", PIN_NO_LOCK, T_BOOL, "", "",nullptr,0},
                            {"IN", PIN_NO_LOCK, T_FLOAT32, "", "",nullptr,0},
                            {"MAX", PIN_NO_LOCK, T_FLOAT32, "", "",nullptr,0},

@@ -16,7 +16,7 @@ static void run_U_TRIG(void *p)
 }
 
 
-static fb_t fb_U_TRIG = {{"Trigger","U_TRIG", "",0,0,0,0,run_U_TRIG},
+static fb_t fb_U_TRIG = {{"Trigger","U_TRIG", "", 0, 0, 0, 0, FB_EXEC,run_U_TRIG},
                         {{"EN",PIN_NO_LOCK, T_BOOL, "", "",nullptr,0},
                          {"CLK", PIN_NO_LOCK,T_BOOL, "", "",nullptr,0}},
                         {{"STATUS", PIN_NO_LOCK,T_INT32, "", "",nullptr,0},

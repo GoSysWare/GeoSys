@@ -26,7 +26,7 @@ static void run_ADD_FLOAT(void *p) {
 }
 
 static fb_t fb_ADD_FLOAT = {
-    {"Arithmetic", "ADD_FLOAT", "", 0, 0, 0, 0, run_ADD_FLOAT},
+    {"Arithmetic", "ADD_FLOAT", "", 0, 0, 0, 0, FB_EXEC, run_ADD_FLOAT},
     {{"EN", PIN_NO_LOCK, T_BOOL, "", "",nullptr,0},
      {"IN1", PIN_NO_LOCK, T_FLOAT32, "", "",nullptr,0},
      {"IN2", PIN_NO_LOCK, T_FLOAT32, "", "",nullptr,0}},

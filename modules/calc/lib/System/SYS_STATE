@@ -79,7 +79,7 @@ static void run_SYS_STATE(void *p) {
   }
 }
 
-static fb_t fb_SYS_STATE = {{"System", "SYS_STATE", "", 0, 0, 0, 0, run_SYS_STATE},
+static fb_t fb_SYS_STATE = {{"System", "SYS_STATE", "", 0, 0, 0, 0, FB_EXEC, run_SYS_STATE},
                            {{"EN", PIN_NO_LOCK, T_BOOL, "", "",nullptr,0}},
                            {{"STATUS", PIN_NO_LOCK, T_INT32, "", "",nullptr,0},
                             {"COUNT", PIN_NO_LOCK, T_UINT32, "", "",nullptr,0},

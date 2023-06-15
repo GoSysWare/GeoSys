@@ -17,7 +17,7 @@ static void run_SUB_UINT(void *p) {
 }
 
 static fb_t fb_SUB_UINT = {
-    {"Arithmetic","SUB_UINT","", 0,0,0,0, run_SUB_UINT},
+    {"Arithmetic","SUB_UINT","", 0, 0, 0, 0, FB_EXEC, run_SUB_UINT},
     {{"EN", PIN_NO_LOCK,T_BOOL,"", "",nullptr,0},
      {"IN1", PIN_NO_LOCK,T_UINT32, "","",nullptr,0},
      {"IN2", PIN_NO_LOCK,T_UINT32,"", "",nullptr,0}},

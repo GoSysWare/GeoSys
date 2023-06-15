@@ -10,7 +10,7 @@ static void run_LE_TIME(void *p) {
       (pb->ins[1].v->v().tm() <= pb->ins[2].v->v().tm() ? true : false));
 }
 static fb_t fb_LE_TIME = {
-    {"Comparision", "LE_TIME", "", 0, 0, 0, 0, run_LE_TIME},
+    {"Comparision", "LE_TIME", "", 0, 0, 0, 0, FB_EXEC, run_LE_TIME},
     {{"EN", PIN_NO_LOCK, T_BOOL, "", "",nullptr,0},
      {"IN1", PIN_NO_LOCK, T_TIME, "", "",nullptr,0},
      {"IN2", PIN_NO_LOCK, T_TIME, "", "",nullptr,0}},

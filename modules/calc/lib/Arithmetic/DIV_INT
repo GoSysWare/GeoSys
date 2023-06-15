@@ -18,7 +18,7 @@ static void run_DIV_INT(void *p) {
 }
 
 static fb_t fb_DIV_INT = {
-    {"Arithmetic","DIV_INT","", 0,0,0,0, run_DIV_INT},
+    {"Arithmetic","DIV_INT","", 0, 0, 0, 0, FB_EXEC, run_DIV_INT},
     {{"EN", PIN_NO_LOCK,T_BOOL,"", "",nullptr,0},
      {"IN1", PIN_NO_LOCK,T_INT32, "","",nullptr,0},
      {"IN2", PIN_NO_LOCK,T_INT32,"", "",nullptr,0}},

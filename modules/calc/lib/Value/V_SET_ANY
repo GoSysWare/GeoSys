@@ -174,7 +174,7 @@ static void run_V_SET_ANY(void *p) {
 }
 
 static fb_t fb_V_SET_ANY = {
-    {"Value", "V_SET_ANY", "", 0, 0, 0, FB_EXEC, run_V_SET_ANY},
+    {"Value", "V_SET_ANY", "", 0, 0, 0, 0, FB_EXEC, run_V_SET_ANY},
     {{"EN", PIN_NO_LOCK, T_BOOL, "", "", nullptr, 0},
      {"IN", PIN_NO_LOCK, T_ANY, "", "", nullptr, 0},
      {"FIELD", PIN_NO_LOCK, T_STRING, "", "", nullptr, 0},

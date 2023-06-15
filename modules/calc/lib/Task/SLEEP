@@ -17,7 +17,7 @@ static void run_SLEEP(void *p) {
   out->mutable_v()->set_b(in->v().b());
 }
 
-static fb_t fb_SLEEP = {{"TASK", "SLEEP", "", 0, 0, 0, 0, run_SLEEP},
+static fb_t fb_SLEEP = {{"TASK", "SLEEP", "", 0, 0, 0, 0, FB_EXEC, run_SLEEP},
                         {{"EN", PIN_NO_LOCK, T_BOOL, "", "",nullptr,0},
                          {"IN", PIN_NO_LOCK, T_BOOL, "", "",nullptr,0},
                          {"TIMEOUT", PIN_NO_LOCK, T_TIME, "", "",nullptr,0}},

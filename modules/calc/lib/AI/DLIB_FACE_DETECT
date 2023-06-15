@@ -214,7 +214,7 @@ static void run_DLIB_FACE_DETECT(void *p) {
 }
 
 static fb_t fb_DLIB_FACE_DETECT = {
-    {"AI", "DLIB_FACE_DETECT", "", 0, 0, 0, FB_EXEC, run_DLIB_FACE_DETECT},
+    {"AI", "DLIB_FACE_DETECT", "", 0, 0, 0, 0, FB_EXEC, run_DLIB_FACE_DETECT},
     {{"EN", PIN_NO_LOCK, T_BOOL, "", "",nullptr,0},
      {"IMG", PIN_NO_LOCK, T_IMAGE, "", "",nullptr,0},
      {"WIDTH", PIN_NO_LOCK, T_UINT32, "", "",nullptr,0},

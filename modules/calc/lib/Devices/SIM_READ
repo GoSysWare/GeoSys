@@ -51,7 +51,7 @@ static void run_SIM_READ(void *p) {
   return;
 }
 
-static fb_t fb_SIM_READ = {{"Devices","SIM_READ", "",0,0,0,0,run_SIM_READ},
+static fb_t fb_SIM_READ = {{"Devices","SIM_READ", "", 0, 0, 0, 0, FB_EXEC,run_SIM_READ},
                         {{"EN",PIN_NO_LOCK, T_BOOL, "", "",nullptr,0},
                          {"NAME", PIN_NO_LOCK,T_STRING, "", "",nullptr,0},
                          {"IN1", PIN_NO_LOCK,T_STRING, "", "",nullptr,0},

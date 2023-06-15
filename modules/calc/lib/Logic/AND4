@@ -15,7 +15,7 @@ static void run_AND4(void *p) {
                           in4->v().b());
 }
 
-static fb_t fb_AND4 = {{"Logic", "AND4", "", 0, 0, 0, 0, run_AND4},
+static fb_t fb_AND4 = {{"Logic", "AND4", "", 0, 0, 0, 0, FB_EXEC, run_AND4},
                        {{"EN", PIN_NO_LOCK, T_BOOL, "", "",nullptr,0},
                         {"IN1", PIN_NO_LOCK, T_BOOL, "", "",nullptr,0},
                         {"IN2", PIN_NO_LOCK, T_BOOL, "", "",nullptr,0},

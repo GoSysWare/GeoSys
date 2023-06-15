@@ -9,7 +9,7 @@ static void run_NE_BOOL(void *p) {
       (pb->ins[1].v->v().b() != pb->ins[2].v->v().b() ? true : false));
 }
 static fb_t fb_NE_BOOL= {
-    {"Comparision", "NE_BOOL", "", 0, 0, 0, 0, run_NE_BOOL},
+    {"Comparision", "NE_BOOL", "", 0, 0, 0, 0, FB_EXEC, run_NE_BOOL},
     {{"EN", PIN_NO_LOCK, T_BOOL, "", "",nullptr,0},
      {"IN1", PIN_NO_LOCK, T_BOOL, "", "",nullptr,0},
      {"IN2", PIN_NO_LOCK, T_BOOL,"", "",nullptr,0}},

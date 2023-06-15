@@ -14,7 +14,7 @@ static void run_STR2TM(void *p) {
     status->mutable_v()->set_i(1);
   }
 }
-static fb_t fb_STR2TM = {{"Converter", "STR2TM", "", 0, 0, 0, 0, run_STR2TM},
+static fb_t fb_STR2TM = {{"Converter", "STR2TM", "", 0, 0, 0, 0, FB_EXEC, run_STR2TM},
                       {{"EN", PIN_NO_LOCK, T_BOOL, "", "",nullptr,0},
                        {"IN", PIN_NO_LOCK, T_STRING, "", "",nullptr,0}},
                       {{"STATUS", PIN_NO_LOCK, T_INT32, "", "",nullptr,0},

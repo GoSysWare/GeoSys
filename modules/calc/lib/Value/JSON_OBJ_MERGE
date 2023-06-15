@@ -121,7 +121,7 @@ static void run_JSON_OBJ_MERGE(void *p) {
 // json 对象 级联
 
 static fb_t fb_JSON_OBJ_MERGE = {
-    {"Value", "JSON_OBJ_MERGE", "", 0, 0, 0, FB_EXEC, run_JSON_OBJ_MERGE},
+    {"Value", "JSON_OBJ_MERGE", "", 0, 0, 0, 0, FB_EXEC, run_JSON_OBJ_MERGE},
     {{"EN", PIN_NO_LOCK, T_BOOL, "", "", nullptr, 0},
      {"ORDER", PIN_NO_LOCK, T_BOOL, "", "", nullptr, 0},
      {"J_1", PIN_NO_LOCK, T_STRING, "", "", nullptr, 0},

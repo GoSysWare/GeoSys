@@ -1,9 +1,11 @@
+#include "modules/calc/include/k_module.h"
+
 #include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
+
 #include <string>
 
-#include "modules/calc/include/k_module.h"
 #include "modules/calc/include/k_project.h"
 #include "modules/calc/include/k_util.h"
 
@@ -46,7 +48,6 @@ static void mn_remove(mnode_t *p) {
 
 static void mod_init(mnode_t *p_mnode, int id, std::string name, int type,
                      std::string desc, int interval) {
-
   if (type == Bus::TaskType::PERIODIC) {
     ((period_node_t *)p_mnode)->interval = interval;
   } else if (type == Bus::TaskType::SERVICE) {
@@ -118,54 +119,19 @@ void mod_run(PNode *p_pn, mod_t *p_mod) {
 
   p_mn = p_mod->mn_head.p_next;
   while (p_mn != &p_mod->mn_head) {
-
     // task的使能
-    if (!p_mn->enable)
-      continue;
+    if (!p_mn->enable) continue;
     // task 初始化
     p_mn->info.status.store(TaskStatus::READY);
-
-    prg_init(p_mn->p_prg, &p_mn->info);
+    prg_init(p_mn);
 
     // task 分类型处理
     if (p_mn->type == Bus::TaskType::PERIODIC) {
       apollo::cyber::TimerOption opt;
       opt.oneshot = false;
-      opt.callback = [p_mn]() {
-        //发出停止命令
-        if (p_mn->stop.load()) {
-          p_mn->info.status.store(TaskStatus::ABORT);
-          return;
-        }
-        p_mn->info.status.store(TaskStatus::START);
+      //核心处理
+      opt.callback = [p_mn]() { prg_exec(p_mn); };
 
-        p_mn->info.status = p_mn->info.begin_time =
-            apollo::cyber::Time::Now().ToNanosecond();
-        p_mn->info.cycle_time =
-            apollo::cyber::Duration(
-                int64_t(p_mn->info.begin_time - p_mn->info.prev_time))
-                .ToNanosecond();
-        p_mn->info.prev_time = p_mn->info.begin_time;
-
-        {
-          apollo::cyber::base::WriteLockGuard<apollo::cyber::base::AtomicRWLock>
-              lg(p_mn->mutex);
-
-          prg_exec(p_mn->p_prg, &p_mn->info);
-        }
-
-        // prg_dump(p_mn->p_prg);
-        p_mn->info.expend_time = (apollo::cyber::Time::Now() -
-                                  apollo::cyber::Time(p_mn->info.begin_time))
-                                     .ToNanosecond();
-        // task完成一次运算周期
-        p_mn->info.status.store(TaskStatus::FINISH);
-
-        AINFO << "Async task name:" << p_mn->name
-               << " begin_time:" << p_mn->info.begin_time
-               << " cycle_time:" << p_mn->info.cycle_time
-               << " expend_time:" << p_mn->info.expend_time;
-      };
       opt.period = ((period_node_t *)p_mn)->interval;
       ((period_node_t *)p_mn)->timer.SetTimerOption(opt);
       ((period_node_t *)p_mn)->timer.Start();
@@ -188,41 +154,11 @@ void mod_run(PNode *p_pn, mod_t *p_mod) {
     } else if (p_mn->type == Bus::TaskType::ACTION) {
       // to do
     } else if (p_mn->type == Bus::TaskType::ASYNC) {
-
+      //核心处理
       auto f = [p_mn](const std::shared_ptr<TaskReqParam> &request,
                       std::shared_ptr<TaskRspParam> &response) {
-        //发出停止命令
-        if (p_mn->stop.load()) {
-          p_mn->info.status.store(TaskStatus::ABORT);
-          return;
-        }
-        p_mn->info.status.store(TaskStatus::START);
         ((task_node_t *)p_mn)->client = request->client();
-        p_mn->info.begin_time = apollo::cyber::Time::Now().ToNanosecond();
-        p_mn->info.cycle_time =
-            apollo::cyber::Duration(
-                int64_t(p_mn->info.begin_time - p_mn->info.prev_time))
-                .ToNanosecond();
-        p_mn->info.prev_time = p_mn->info.begin_time;
-        {
-          apollo::cyber::base::WriteLockGuard<apollo::cyber::base::AtomicRWLock>
-              lg(p_mn->mutex);
-
-          prg_exec(p_mn->p_prg, &p_mn->info);
-        }
-
-        p_mn->info.expend_time = (apollo::cyber::Time::Now() -
-                                  apollo::cyber::Time(p_mn->info.begin_time))
-                                     .ToNanosecond();
-        response->set_timestamp(apollo::cyber::Time::Now().ToNanosecond());
-
-        p_mn->info.status.store(TaskStatus::FINISH);
-
-        // AERROR << "Async task name:" << p_mn->name
-        //        << " client:" << request->client()
-        //        << " begin_time:" << p_mn->info.begin_time
-        //        << " cycle_time:" << p_mn->info.cycle_time
-        //        << " expend_time:" << p_mn->info.expend_time;
+        prg_exec(p_mn);
       };
       ((task_node_t *)p_mn)->task_server =
           apollo::cyber::GlobalNode()
@@ -271,8 +207,7 @@ void mod_exit(PNode *p_pn, mod_t *p_mod) {
   p_mn = p_mod->mn_head.p_next;
   while (p_mn != &p_mod->mn_head) {
     // task的使能
-    if (!p_mn->enable)
-      continue;
+    if (!p_mn->enable) continue;
     if (p_mn->type == Bus::TaskType::PERIODIC) {
       ((period_node_t *)p_mn)->timer.Stop();
     } else if (p_mn->type == Bus::TaskType::SERVICE) {
@@ -288,7 +223,6 @@ void mod_exit(PNode *p_pn, mod_t *p_mod) {
     p_mn = p_mn->p_next;
   }
 }
-
 
 mod_t *mod_new() {
   mod_t *p_new;

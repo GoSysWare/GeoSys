@@ -12,13 +12,13 @@ static void run_CAMERA_INIT(void *p) {
   std::string topic = in_topic->v().str();
 
 
-  
+
 
   
   return;
 }
 
-static fb_t fb_CAMERA_INIT = {{"Devices","CAMERA_INIT", "",0,0,0,0,run_CAMERA_INIT},
+static fb_t fb_CAMERA_INIT = {{"Devices","CAMERA_INIT", "", 0, 0, 0, 0, FB_EXEC,run_CAMERA_INIT},
                         {{"EN",PIN_NO_LOCK, T_BOOL, "", "",nullptr,0},
                          {"DEV_NAME", PIN_NO_LOCK,T_STRING, "", "",nullptr,0},
                          {"TOPIC", PIN_NO_LOCK,T_STRING, "", "",nullptr,0}},

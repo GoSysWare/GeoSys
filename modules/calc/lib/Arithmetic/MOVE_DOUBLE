@@ -13,7 +13,7 @@ static void run_MOVE_DOUBLE(void *p) {
 }
 
 static fb_t fb_MOVE_DOUBLE = {
-    {"Arithmetic","MOVE_DOUBLE","", 0,0,0,0, run_MOVE_DOUBLE},
+    {"Arithmetic","MOVE_DOUBLE","", 0, 0, 0, 0, FB_EXEC, run_MOVE_DOUBLE},
     {{"EN", PIN_NO_LOCK,T_BOOL,"", "",nullptr,0},
      {"IN1", PIN_NO_LOCK,T_FLOAT64, "","",nullptr,0}},
     {{"STATUS", PIN_NO_LOCK,T_INT32,"", "",nullptr,0}, 

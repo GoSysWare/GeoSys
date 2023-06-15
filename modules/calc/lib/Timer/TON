@@ -58,7 +58,7 @@ static void run_TON(void *p) {
 
 // T ms
 // ET ms
-static fb_t fb_TON = {{"Timer", "TON", "", 0, 0, 0, 0, run_TON},
+static fb_t fb_TON = {{"Timer", "TON", "", 0, 0, 0, 0, FB_EXEC, run_TON},
                       {{"EN", PIN_NO_LOCK, T_BOOL, "", "",nullptr,0},
                        {"S", PIN_NO_LOCK, T_BOOL, "", "",nullptr,0},
                        {"T", PIN_NO_LOCK, T_TIME, "", "",nullptr,0}},

@@ -1,9 +1,9 @@
 infos {
-  cmd_id: 996
+  cmd_id: 997
   edit_type: SET
   proj {
     proj_name: "rotbot-engine-project"
-    proj_uuid: "{f68f9820-3f61-4200-af35-78f5e0d61c8e}"
+    proj_uuid: "{c02b115c-a647-42e7-b37e-4bfc9c53d610}"
   }
 }
 infos {
@@ -7903,6 +7903,24 @@ infos {
         str: "multipart/form-data"
       }
       tm: 1686711431347585710
+    }
+  }
+}
+infos {
+  cmd_id: 997
+  element: PIN
+  edit_type: SET
+  pin {
+    mod_id: 1
+    task_id: 2
+    fb_id: 4
+    pin_index: 2
+    pin_val {
+      t: T_INT32
+      v {
+        i: 23
+      }
+      tm: 1686745634234130767
     }
   }
 }
