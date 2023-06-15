@@ -3,23 +3,24 @@ static void run_CAMERA_INIT(void *p) {
   fb_t *pb = (fb_t *)p;
   vam_t &enable = pb->ins[0].v;
   vam_t &status = pb->outs[0].v;
+  mnode_t * p_owner = ( mnode_t *)pb->h.owner;
   if (enable->v().b() == false)
     return;
   vam_t in_dev_name = pb->ins[1].v;
   vam_t in_topic= pb->ins[2].v;
 
   std::string dev_name = in_dev_name->v().str();
-  std::string topic = in_topic->v().str();
+  std::string event_name = in_topic->v().str();
 
-
+  io_install_event_handler(dev_name,event_name,[p_owner](){return prg_exec(p_owner);});
 
 
   
   return;
 }
 
-static fb_t fb_CAMERA_INIT = {{"Devices","CAMERA_INIT", "", 0, 0, 0, 0, FB_EXEC,run_CAMERA_INIT},
+static fb_t fb_CAMERA_INIT = {{"Devices","CAMERA_INIT", "", 0, 0, 0, 0, FB_INIT,run_CAMERA_INIT},
                         {{"EN",PIN_NO_LOCK, T_BOOL, "", "",nullptr,0},
                          {"DEV_NAME", PIN_NO_LOCK,T_STRING, "", "",nullptr,0},
-                         {"TOPIC", PIN_NO_LOCK,T_STRING, "", "",nullptr,0}},
+                         {"EVENT_NAME", PIN_NO_LOCK,T_STRING, "", "",nullptr,0}},
                         {{"STATUS", PIN_NO_LOCK,T_INT32, "", "",nullptr,0}}};

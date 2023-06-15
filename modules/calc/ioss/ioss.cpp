@@ -85,6 +85,28 @@ bool io_update_tag(std::string device_name, std::string tag, vam_t value) {
   return true;
 }
 
+bool io_install_event_handler(std::string device_name, std::string event_name, IO_EVENT_HANDLER handler) {
+  device_t *dev;
+  dev = io_get_devices(device_name);
+  if (!dev) {
+    return false;
+  }
+
+  if (!dev->drv) {
+    return false;
+  }
+
+  if (!dev->drv->event_hanlder) {
+    return false;
+  }
+
+  if (dev->drv->event_hanlder) {
+    dev->drv->event_hanlder(dev, event_name, handler);
+  }
+
+  return true;
+}
+
 bool io_write_device(std::string device_name, std::string tag, vam_t value) {
   bool ret = false;
 

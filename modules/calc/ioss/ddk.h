@@ -33,6 +33,9 @@ typedef struct DeviceInfo {
 // using IO_UPDATE_VALUE_PROC = std::function<void(std::string, vam_t)>;
 // using IO_WRITE_VALUE_PROC = std::function<bool(std::string, vam_t)>;
 
+using IO_EVENT_HANDLER = std::function<void()>;
+
+
 typedef bool (*IO_LOAD_PROC)(struct DriverInfo *driver);
 typedef bool (*IO_UNLOAD_PROC)();
 typedef bool (*IO_START_DEVICE_PROC)(device_t *dev);
@@ -40,6 +43,7 @@ typedef bool (*IO_STOP_DEVICE_PROC)(device_t *dev);
 typedef bool (*IO_ADDRESS_TRANSLATE_PROC)(device_t *dev,std::string tte);
 typedef void (*IO_UPDATE_VALUE_PROC)(device_t *dev,std::string tag_name, vam_t v);
 typedef bool (*IO_WRITE_VALUE_PROC)(device_t *dev,std::string tag_name, vam_t v);
+typedef bool (*IO_INSTALL_EVENT_HANDLER)(device_t *dev,std::string event_name,IO_EVENT_HANDLER handler);
 
 typedef struct DriverInfo {
   void *plugin_handle{0};
@@ -50,6 +54,7 @@ typedef struct DriverInfo {
   IO_ADDRESS_TRANSLATE_PROC address_translate{0};
   IO_UPDATE_VALUE_PROC update_value{0};
   IO_WRITE_VALUE_PROC write_value{0};
+  IO_INSTALL_EVENT_HANDLER event_hanlder{0};
   uint32_t device_count{0};
   std::string description;
   std::string parameter;
@@ -66,6 +71,8 @@ bool stop_device(device_t *device);
 bool address_translate(device_t *device,std::string tag_name);
 bool update_value(device_t *device,std::string tag_name, vam_t value);
 bool write_value(device_t *device,std::string tag_name, vam_t vaule);
+bool install_event_handler(device_t *device,std::string event_name,IO_EVENT_HANDLER handler);
+
 }
 
 #endif

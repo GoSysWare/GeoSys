@@ -43,3 +43,11 @@ bool update_value(device_t *device, std::string tag_name, vam_t value) {
   }
   value->set_tm(apollo::cyber::Time::Now().ToNanosecond());
 }
+
+
+bool install_event_handler(device_t *device,std::string event_name,IO_EVENT_HANDLER handler)
+{
+
+ 
+
+}

@@ -42,7 +42,7 @@ typedef struct FBHead{
 	u_int64_t cycle_time;		// 上次执行周期总时长
 	u_int64_t begin_time;		// 本次开始执行时间 = now
 	u_int64_t expend_time;		// 任务执行消耗时长
-	const void * owner;			// 所属的program
+	void * owner;			// 所属的program
     int flag;			
 	fb_function run;
 } fbhead_t;

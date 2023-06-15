@@ -1,9 +1,10 @@
+#include "modules/calc/include/k_program.h"
+
 #include <stddef.h>
 #include <stdio.h>
 
 #include "modules/calc/include/k_evdata.h"
 #include "modules/calc/include/k_lib.h"
-#include "modules/calc/include/k_program.h"
 #include "modules/calc/include/k_project.h"
 #include "modules/calc/include/k_util.h"
 
@@ -96,44 +97,43 @@ void prg_init(prog_t *p_prg, proginfo_t *p_prog_info) {
   }
 }
 
-void prg_exec(MNode *p_mn)
-{
+void prg_exec(MNode *p_mn) {
   //发出停止命令
-        if (p_mn->stop.load()) {
-          p_mn->info.status.store(TaskStatus::ABORT);
-          return;
-        }
-        p_mn->info.status.store(TaskStatus::START);
+  if (p_mn->stop.load()) {
+    p_mn->info.status.store(TaskStatus::ABORT);
+    return;
+  }
+  p_mn->info.status.store(TaskStatus::START);
 
-        p_mn->info.status = p_mn->info.begin_time =
-            apollo::cyber::Time::Now().ToNanosecond();
-        p_mn->info.cycle_time =
-            apollo::cyber::Duration(
-                int64_t(p_mn->info.begin_time - p_mn->info.prev_time))
-                .ToNanosecond();
-        p_mn->info.prev_time = p_mn->info.begin_time;
+  p_mn->info.status = p_mn->info.begin_time =
+      apollo::cyber::Time::Now().ToNanosecond();
+  p_mn->info.cycle_time =
+      apollo::cyber::Duration(
+          int64_t(p_mn->info.begin_time - p_mn->info.prev_time))
+          .ToNanosecond();
+  p_mn->info.prev_time = p_mn->info.begin_time;
 
-        {
-          apollo::cyber::base::WriteLockGuard<apollo::cyber::base::AtomicRWLock>
-              lg(p_mn->mutex);
+  {
+    apollo::cyber::base::WriteLockGuard<apollo::cyber::base::AtomicRWLock> lg(
+        p_mn->mutex);
 
-          prg_exec(p_mn->p_prg, &p_mn->info);
-        }
+    prg_exec(p_mn->p_prg, &p_mn->info);
+  }
 
-        // prg_dump(p_mn->p_prg);
-        p_mn->info.expend_time = (apollo::cyber::Time::Now() -
-                                  apollo::cyber::Time(p_mn->info.begin_time))
-                                     .ToNanosecond();
-        // task完成一次运算周期
-        p_mn->info.status.store(TaskStatus::FINISH);
+  // prg_dump(p_mn->p_prg);
+  p_mn->info.expend_time =
+      (apollo::cyber::Time::Now() - apollo::cyber::Time(p_mn->info.begin_time))
+          .ToNanosecond();
+  // task完成一次运算周期
+  p_mn->info.status.store(TaskStatus::FINISH);
 
-        AINFO << "Async task name:" << p_mn->name
-               << " begin_time:" << p_mn->info.begin_time
-               << " cycle_time:" << p_mn->info.cycle_time
-               << " expend_time:" << p_mn->info.expend_time;
-               return;
+  AINFO << " task name:" << p_mn->name
+        << " task type:" << p_mn->type
+        << " begin_time:" << p_mn->info.begin_time
+        << " cycle_time:" << p_mn->info.cycle_time
+        << " expend_time:" << p_mn->info.expend_time;
+  return;
 }
-
 
 void prg_exec(prog_t *p_prg, proginfo_t *p_prog_info) {
   enode_t *p_en;
@@ -156,8 +156,7 @@ void prg_exec(prog_t *p_prg, proginfo_t *p_prog_info) {
              apollo::cyber::Time(p_en->p_fb->h.begin_time))
                 .ToNanosecond();
       }
-    }
-     else {
+    } else {
       // 当是pin之间link链接时
       //
       // if (p_en->p_vsrc->s == PIN_HAS_LOCK) {
@@ -176,11 +175,11 @@ void prg_exec(prog_t *p_prg, proginfo_t *p_prog_info) {
       //   p_en->p_vtgt->v = p_en->p_vsrc->v;
       // }
       // p_en = p_en->p_next;
-    p_en->p_vtgt->s = p_en->p_vsrc->s;
-    p_en->p_vtgt->l = p_en->p_vsrc->l;
-    p_en->p_vtgt->v = p_en->p_vsrc->v;   
+      p_en->p_vtgt->s = p_en->p_vsrc->s;
+      p_en->p_vtgt->l = p_en->p_vsrc->l;
+      p_en->p_vtgt->v = p_en->p_vsrc->v;
     }
-  p_en = p_en->p_next;
+    p_en = p_en->p_next;
   }
 }
 
@@ -430,7 +429,7 @@ int prg_viremove(prog_t *p_prg, int idfb, int pin) {
   if (p_fb == 0) {
     return -1;
   }
- 
+
   p_pin = fb_getpin(p_fb, PININPUT, pin);
   if (p_pin == 0) {
     return -1;
@@ -481,14 +480,13 @@ int prg_voremove(prog_t *p_prg, int idfb, int pin) {
 
   fb_init_pin(p_pin);
 
-
   return 0;
 }
 int prg_lkadd(prog_t *p_prg, int id, int fbsrc, int pinsrc, int fbtgt,
               int pintgt) {
-  enode_t *p_en,*p_mv;
+  enode_t *p_en, *p_mv;
   enode_t *p_src, *p_tgt;
-  pin_t * pin_src,*pin_tgt;
+  pin_t *pin_src, *pin_tgt;
 
   /* get link map */
   prg_enselect(p_prg, fbsrc);
@@ -520,8 +518,6 @@ int prg_lkadd(prog_t *p_prg, int id, int fbsrc, int pinsrc, int fbtgt,
   if (pin_src->t != pin_tgt->t) {
     return -1;
   }
-
-
 
   p_en = en_new();
   if (p_en == 0) {

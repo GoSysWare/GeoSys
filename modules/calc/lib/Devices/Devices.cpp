@@ -1,14 +1,16 @@
 #include <stddef.h>
 #include "modules/calc/include/k_functionblock.h"
-
+#include "modules/calc/include/k_project.h"
+#include "modules/calc/include/k_module.h"
 #include "modules/calc/ioss/ioss.h"
 
 #include "SIM_READ"
 #include "CAMERA"
-
+#include "CAMERA_INIT"
 static void *fb_table[]={
 	&fb_SIM_READ,
 	&fb_CAMERA,
+	&fb_CAMERA_INIT,
 
 	};
 

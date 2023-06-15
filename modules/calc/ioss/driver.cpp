@@ -63,8 +63,7 @@ bool _load_module(driver_t &driver) {
   (FARPROC &)driver.address_translate = GetProcAddress(h, "address_translate");
   (FARPROC &)driver.update_value = GetProcAddress(h, "update_value");
   (FARPROC &)driver.write_value = GetProcAddress(h, "write_value");
-
-
+  (FARPROC &)driver.event_hanlder = GetProcAddress(h, "install_event_handler");
 
   return true;
 }

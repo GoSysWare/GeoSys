@@ -34,6 +34,7 @@ bool io_stop_device(device_t *dev);
 
 bool io_update_tag(std::string device_name, std::string tag, vam_t value);
 bool io_write_device(std::string device_name, std::string tag, vam_t value);
+bool io_install_event_handler(std::string device_name, std::string event_name, IO_EVENT_HANDLER handler);
 
 typedef std::list<driver_t> DRIVER_LIST;
 extern DRIVER_LIST g_drivers;
