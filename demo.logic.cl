@@ -1,5 +1,5 @@
 infos {
-  cmd_id: 997
+  cmd_id: 1025
   edit_type: SET
   proj {
     proj_name: "rotbot-engine-project"
@@ -7921,6 +7921,572 @@ infos {
         i: 23
       }
       tm: 1686745634234130767
+    }
+  }
+}
+infos {
+  cmd_id: 998
+  element: PIN
+  edit_type: SET
+  pin {
+    mod_id: 162
+    task_id: 191
+    fb_id: 192
+    pin_index: 3
+    pin_val {
+      t: T_STRING
+      v {
+        str: "a"
+      }
+      tm: 1686903464438609994
+    }
+  }
+}
+infos {
+  cmd_id: 999
+  element: PIN
+  edit_type: SET
+  pin {
+    mod_id: 162
+    task_id: 191
+    fb_id: 192
+    pin_index: 4
+    pin_val {
+      t: T_STRING
+      v {
+        str: "1"
+      }
+      tm: 1686903467382337264
+    }
+  }
+}
+infos {
+  cmd_id: 1000
+  element: PIN
+  edit_type: SET
+  pin {
+    mod_id: 162
+    task_id: 191
+    fb_id: 192
+    pin_index: 7
+    pin_val {
+      t: T_STRING
+      v {
+        str: "b"
+      }
+      tm: 1686903472498266899
+    }
+  }
+}
+infos {
+  cmd_id: 1001
+  element: PIN
+  edit_type: SET
+  pin {
+    mod_id: 162
+    task_id: 191
+    fb_id: 192
+    pin_index: 8
+    pin_val {
+      t: T_STRING
+      v {
+        str: "2"
+      }
+      tm: 1686903474606202596
+    }
+  }
+}
+infos {
+  cmd_id: 1002
+  element: PIN
+  edit_type: SET
+  pin {
+    mod_id: 162
+    task_id: 191
+    fb_id: 193
+    pin_index: 7
+    pin_val {
+      t: T_STRING
+      v {
+        str: "c"
+      }
+      tm: 1686903479726058268
+    }
+  }
+}
+infos {
+  cmd_id: 1003
+  element: PIN
+  edit_type: SET
+  pin {
+    mod_id: 162
+    task_id: 191
+    fb_id: 193
+    pin_index: 8
+    pin_val {
+      t: T_STRING
+      v {
+        str: "3"
+      }
+      tm: 1686903484078106782
+    }
+  }
+}
+infos {
+  cmd_id: 1004
+  element: PIN
+  edit_type: SET
+  pin {
+    mod_id: 162
+    task_id: 191
+    fb_id: 193
+    pin_index: 11
+    pin_val {
+      t: T_STRING
+      v {
+        str: "d"
+      }
+      tm: 1686903491197602183
+    }
+  }
+}
+infos {
+  cmd_id: 1005
+  element: PIN
+  edit_type: SET
+  pin {
+    mod_id: 162
+    task_id: 191
+    fb_id: 193
+    pin_index: 12
+    pin_val {
+      t: T_STRING
+      v {
+        str: "null"
+      }
+      tm: 1686903499753434950
+    }
+  }
+}
+infos {
+  cmd_id: 1006
+  element: PIN
+  edit_type: SET
+  pin {
+    mod_id: 162
+    task_id: 191
+    fb_id: 192
+    pin_index: 8
+    pin_val {
+      t: T_STRING
+      v {
+        str: "2.01"
+      }
+      tm: 1686903506680884110
+    }
+  }
+}
+infos {
+  cmd_id: 1007
+  element: PIN
+  edit_type: SET
+  pin {
+    mod_id: 162
+    task_id: 191
+    fb_id: 193
+    pin_index: 3
+    pin_val {
+      t: T_STRING
+      v {
+        str: "sa"
+      }
+      tm: 1686903531088212209
+    }
+  }
+}
+infos {
+  cmd_id: 1008
+  element: PIN
+  edit_type: SET
+  pin {
+    mod_id: 162
+    task_id: 191
+    fb_id: 193
+    pin_index: 4
+    pin_val {
+      t: T_STRING
+      v {
+        str: "test string"
+      }
+      tm: 1686903536703918504
+    }
+  }
+}
+infos {
+  cmd_id: 1009
+  element: PIN
+  edit_type: SET
+  pin {
+    mod_id: 162
+    task_id: 191
+    fb_id: 194
+    pin_index: 3
+    pin_val {
+      t: T_STRING
+      v {
+        str: "l2_a"
+      }
+      tm: 1686903556351347833
+    }
+  }
+}
+infos {
+  cmd_id: 1010
+  element: PIN
+  edit_type: SET
+  pin {
+    mod_id: 162
+    task_id: 191
+    fb_id: 194
+    pin_index: 11
+    pin_val {
+      t: T_STRING
+      v {
+        str: "L2_d"
+      }
+      tm: 1686903565662923500
+    }
+  }
+}
+infos {
+  cmd_id: 1011
+  element: FB
+  edit_type: ADD
+  fb {
+    mod_id: 162
+    task_id: 191
+    fb_id: 202
+    flib_name: "Value"
+    fc_name: "JSON_MERGE"
+  }
+  pos {
+    x: 76
+    y: 93
+  }
+}
+infos {
+  cmd_id: 1012
+  element: LK
+  edit_type: ADD
+  lk {
+    mod_id: 162
+    task_id: 191
+    lk_id: 203
+    src_fb_id: 192
+    src_pin_index: 1
+    target_fb_id: 202
+    target_pin_index: 2
+  }
+  pos {
+    x: 44
+    y: 38
+  }
+  pos {
+    x: 60
+    y: 38
+  }
+  pos {
+    x: 60
+    y: 102
+  }
+  pos {
+    x: 76
+    y: 102
+  }
+}
+infos {
+  cmd_id: 1013
+  element: LK
+  edit_type: ADD
+  lk {
+    mod_id: 162
+    task_id: 191
+    lk_id: 204
+    src_fb_id: 193
+    src_pin_index: 1
+    target_fb_id: 202
+    target_pin_index: 5
+  }
+  pos {
+    x: 44
+    y: 78
+  }
+  pos {
+    x: 60
+    y: 78
+  }
+  pos {
+    x: 60
+    y: 108
+  }
+  pos {
+    x: 76
+    y: 108
+  }
+}
+infos {
+  cmd_id: 1014
+  element: LK
+  edit_type: MV
+  lk {
+    mod_id: 162
+    task_id: 191
+    lk_id: 204
+  }
+  pos {
+    x: 44
+    y: 78
+  }
+  pos {
+    x: 56
+    y: 78
+  }
+  pos {
+    x: 56
+    y: 108
+  }
+  pos {
+    x: 76
+    y: 108
+  }
+}
+infos {
+  cmd_id: 1015
+  element: LK
+  edit_type: MV
+  lk {
+    mod_id: 162
+    task_id: 191
+    lk_id: 195
+  }
+  pos {
+    x: 44
+    y: 38
+  }
+  pos {
+    x: 60
+    y: 38
+  }
+  pos {
+    x: 60
+    y: 57
+  }
+  pos {
+    x: 68
+    y: 57
+  }
+}
+infos {
+  cmd_id: 1016
+  element: FB
+  edit_type: ADD
+  fb {
+    mod_id: 162
+    task_id: 191
+    fb_id: 205
+    flib_name: "Value"
+    fc_name: "JSON_SERIAL"
+  }
+  pos {
+    x: 23
+    y: 71
+  }
+}
+infos {
+  cmd_id: 1017
+  element: FB
+  edit_type: MV
+  fb {
+    mod_id: 162
+    task_id: 191
+    fb_id: 205
+  }
+  pos {
+    x: 23
+    y: 114
+  }
+}
+infos {
+  cmd_id: 1018
+  element: FB
+  edit_type: ADD
+  fb {
+    mod_id: 162
+    task_id: 191
+    fb_id: 206
+    flib_name: "Value"
+    fc_name: "JSON_MERGE"
+  }
+  pos {
+    x: 116
+    y: 126
+  }
+}
+infos {
+  cmd_id: 1019
+  element: LK
+  edit_type: ADD
+  lk {
+    mod_id: 162
+    task_id: 191
+    lk_id: 207
+    src_fb_id: 202
+    src_pin_index: 1
+    target_fb_id: 206
+    target_pin_index: 3
+  }
+  pos {
+    x: 97
+    y: 100
+  }
+  pos {
+    x: 106
+    y: 100
+  }
+  pos {
+    x: 106
+    y: 137
+  }
+  pos {
+    x: 116
+    y: 137
+  }
+}
+infos {
+  cmd_id: 1020
+  element: LK
+  edit_type: ADD
+  lk {
+    mod_id: 162
+    task_id: 191
+    lk_id: 208
+    src_fb_id: 205
+    src_pin_index: 1
+    target_fb_id: 202
+    target_pin_index: 4
+  }
+  pos {
+    x: 44
+    y: 121
+  }
+  pos {
+    x: 60
+    y: 121
+  }
+  pos {
+    x: 60
+    y: 106
+  }
+  pos {
+    x: 76
+    y: 106
+  }
+}
+infos {
+  cmd_id: 1021
+  element: LK
+  edit_type: MV
+  lk {
+    mod_id: 162
+    task_id: 191
+    lk_id: 208
+  }
+  pos {
+    x: 44
+    y: 121
+  }
+  pos {
+    x: 49
+    y: 121
+  }
+  pos {
+    x: 49
+    y: 106
+  }
+  pos {
+    x: 76
+    y: 106
+  }
+}
+infos {
+  cmd_id: 1022
+  element: PIN
+  edit_type: SET
+  pin {
+    mod_id: 162
+    task_id: 191
+    fb_id: 205
+    pin_index: 3
+    pin_val {
+      t: T_STRING
+      v {
+        str: "f"
+      }
+      tm: 1686903638064938775
+    }
+  }
+}
+infos {
+  cmd_id: 1023
+  element: PIN
+  edit_type: SET
+  pin {
+    mod_id: 162
+    task_id: 191
+    fb_id: 205
+    pin_index: 4
+    pin_val {
+      t: T_STRING
+      v {
+        str: "6"
+      }
+      tm: 1686903641184897514
+    }
+  }
+}
+infos {
+  cmd_id: 1024
+  element: PIN
+  edit_type: SET
+  pin {
+    mod_id: 162
+    task_id: 191
+    fb_id: 205
+    pin_index: 9
+    pin_val {
+      t: T_STRING
+      v {
+        str: "g"
+      }
+      tm: 1686903647240608569
+    }
+  }
+}
+infos {
+  cmd_id: 1025
+  element: PIN
+  edit_type: SET
+  pin {
+    mod_id: 162
+    task_id: 191
+    fb_id: 205
+    pin_index: 10
+    pin_val {
+      t: T_STRING
+      v {
+        str: "\"7\""
+      }
+      tm: 1686903653040637946
     }
   }
 }
