@@ -6,11 +6,11 @@
 
 #include "SIM_READ"
 #include "CAMERA"
-#include "CAMERA_INIT"
+#include "EVENT_HANDLER"
 static void *fb_table[]={
 	&fb_SIM_READ,
 	&fb_CAMERA,
-	&fb_CAMERA_INIT,
+	&fb_EVENT_HANDLER,
 
 	};
 

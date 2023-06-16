@@ -149,6 +149,8 @@ static void run_JSON_SERIAL(void *p) {
   int check_cond = str_K_1.empty() + str_K_2.empty() + str_K_3.empty() +
                    str_K_4.empty() + str_K_5.empty();
 
+  int check_v_cond = str_V_1.empty() + str_V_2.empty() + str_V_3.empty() +
+                   str_V_4.empty() + str_V_5.empty();
   // 非数组类型
   if (check_cond != 5) {
     // 前置条件检查
@@ -242,6 +244,18 @@ static void run_JSON_SERIAL(void *p) {
     }
     // 数组类型
   } else {
+    // 一个数据都没有
+    if(check_v_cond == 5 ){
+      status->mutable_v()->set_i(0);
+      if (is_out_lock) {
+        apollo::cyber::base::WriteLockGuard<apollo::cyber::base::ReentrantRWLock>
+            lg(*(out_lock));
+        out->clear_v();
+      } else {
+        out->clear_v();
+      }
+      return;
+    }
     if (is_order_json) {
       nlohmann::ordered_json out_j = nlohmann::ordered_json::array();
       if (!str_V_1.empty()) {
@@ -355,6 +369,8 @@ static void run_JSON_SERIAL(void *p) {
 
 // ORDER :1 用户原始顺序  0 自动排序
 // SPACE :1 增加\n 换行
+
+// https://json.nlohmann.me/api/basic_json/
 
 static fb_t fb_JSON_SERIAL = {
     {"Value", "JSON_SERIAL", "", 0, 0, 0, 0, FB_EXEC, run_JSON_SERIAL},

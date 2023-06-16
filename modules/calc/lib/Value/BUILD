@@ -9,7 +9,7 @@ cc_library(
     includes = [
     ],
     hdrs = [
-        "JSON_OBJ_MERGE",
+        "JSON_MERGE",
         "JSON_SERIAL",
         "JSON2PB",
         "PB2JSON",

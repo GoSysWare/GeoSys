@@ -308,7 +308,11 @@
         "json_obj_merge": "cpp",
         "json_serial": "cpp",
         "curl_send": "cpp",
-        "camera_init": "cpp"
+        "camera_init": "cpp",
+        "event_handler": "cpp",
+        "json_parallel": "cpp",
+        "json_expand": "cpp",
+        "json_merge": "cpp"
     },
     "C_Cpp.errorSquiggles": "disabled"
 }

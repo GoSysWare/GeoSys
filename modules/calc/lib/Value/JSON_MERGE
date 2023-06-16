@@ -1,6 +1,6 @@
 
 
-static void run_JSON_OBJ_MERGE(void *p) {
+static void run_JSON_MERGE(void *p) {
   fb_t *pb = (fb_t *)p;
   vam_t &enable = pb->ins[0].v;
   vam_t &status = pb->outs[0].v;
@@ -105,9 +105,19 @@ static void run_JSON_OBJ_MERGE(void *p) {
    tmp_Json.merge_patch(tmp_J_4);
   }
 
+  if(tmp_Json.is_null()){
+    if (is_out_lock) {
+      apollo::cyber::base::WriteLockGuard<apollo::cyber::base::ReentrantRWLock>
+          lg(*(out_lock));
+      out->clear_v();
+    } else {
+      out->clear_v();
+    }
+    status->mutable_v()->set_i(0);
+    return;
+  }
 
   out_str = tmp_Json.dump();
-
   if (is_out_lock) {
     apollo::cyber::base::WriteLockGuard<apollo::cyber::base::ReentrantRWLock>
         lg(*(out_lock));
@@ -115,13 +125,13 @@ static void run_JSON_OBJ_MERGE(void *p) {
   } else {
     out->mutable_v()->set_str(out_str);
   }
-
+  status->mutable_v()->set_i(0);
   return;
 }
 // json 对象 级联
 
-static fb_t fb_JSON_OBJ_MERGE = {
-    {"Value", "JSON_OBJ_MERGE", "", 0, 0, 0, 0, FB_EXEC, run_JSON_OBJ_MERGE},
+static fb_t fb_JSON_MERGE = {
+    {"Value", "JSON_MERGE", "", 0, 0, 0, 0, FB_EXEC, run_JSON_MERGE},
     {{"EN", PIN_NO_LOCK, T_BOOL, "", "", nullptr, 0},
      {"ORDER", PIN_NO_LOCK, T_BOOL, "", "", nullptr, 0},
      {"J_1", PIN_NO_LOCK, T_STRING, "", "", nullptr, 0},
