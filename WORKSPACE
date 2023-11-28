@@ -22,16 +22,16 @@ load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 #bazel 内部支持
 #########################################################################################
 #bazel_skylib
-http_archive(
-    name = "bazel_skylib",
-    urls = [
-        "https://github.com/bazelbuild/bazel-skylib/releases/download/1.4.2/bazel-skylib-1.4.2.tar.gz",
-    ],
-)
+# http_archive(
+#    name = "bazel_skylib",
+#    urls = [
+#        "https://github.com/bazelbuild/bazel-skylib/releases/download/1.4.2/bazel-skylib-1.4.2.tar.gz",
+#    ],
+# )
 
-load("@bazel_skylib//:workspace.bzl", "bazel_skylib_workspace")
+# load("@bazel_skylib//:workspace.bzl", "bazel_skylib_workspace")
 
-bazel_skylib_workspace()
+# bazel_skylib_workspace()
 
 
 #rules_python
